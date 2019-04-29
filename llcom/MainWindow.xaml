@@ -6,7 +6,10 @@
         xmlns:local="clr-namespace:llcom"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Style>
+        <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
+    </Window.Style>
     <Grid>
-        
+        <Button Content="123"/>
     </Grid>
 </Window>
