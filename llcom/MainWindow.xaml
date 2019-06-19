@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:llcom"
         mc:Ignorable="d"
-        Title="LLCOM" Height="450" Width="800">
+        Title="LLCOM" Height="450" Width="800" MinWidth="800" MinHeight="200"
+        Loaded="Window_Loaded">
     <Window.Style>
         <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
     </Window.Style>
@@ -17,6 +18,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <!-- 收发数据显示 -->
@@ -48,10 +50,10 @@
                 <Paragraph Foreground="Gray" >
                     [2019/06/19 21:05:01.326]
                     <Span Foreground="Black" FontWeight="Bold">→</Span>
-                    <Span Foreground="DarkRed" FontSize="15">ab1cdfzefg</Span>
+                    <Span Foreground="DarkRed" FontSize="15">中文数据来啦~~fsdfsdfs</Span>
                 </Paragraph>
                 <Paragraph Foreground="Gray">
-                    HEX:61 62 31 63 64 66 7A 65 66 67
+                    HEX:D6 D0 CE C4 CA FD BE DD C0 B4 C0 B2 7E 7E 66 73 64 66 73 64 66 73
                 </Paragraph>
                 <Paragraph Foreground="Gray" >
                     [2019/06/19 21:06:01.326]
@@ -152,7 +154,7 @@
                 <ComboBoxItem Content="COM2 CH340 Serial Port"/>
                 <ComboBoxItem Content="COM3 CH340 Serial Port"/>
             </ComboBox>
-            <TextBlock Text="波特率：" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <TextBlock Text="波特率" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <ComboBox Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1" Margin="2">
                 <ComboBoxItem Content="115200" IsSelected="True"/>
                 <ComboBoxItem Content="921600"/>
@@ -161,14 +163,14 @@
             <Button Content="打开" Grid.Column="3" Grid.RowSpan="2" Margin="2"/>
             <CheckBox Content="16进制发送" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <Button Content="更多设置" Grid.Column="4" Grid.Row="1" Margin="2" ToolTip="可设置串口校验位停止位等信息、设置发送前的自动处理脚本。"/>
-            <TextBox Text="123456" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="4" 
+            <TextBox Text="123456" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="4" Height="50"
                      TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2"/>
             <Button Content="发送" Grid.Column="9" Grid.RowSpan="2" Margin="2" ToolTip="按Ctrl+Enter同样也可以发送数据。"/>
         </Grid>
         
         
         <!-- 底部状态栏 -->
-        <DockPanel Grid.Row="2" Grid.ColumnSpan="2" >
+        <DockPanel Grid.Row="2" Grid.ColumnSpan="3" >
             <StatusBar DockPanel.Dock="Bottom">
                 <StatusBar.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -230,7 +232,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="15" />
                 <StatusBarItem Grid.Column="16">
-                    <TextBlock Text="已接收字节" />
+                    <TextBlock Text="已接收字节：" />
                 </StatusBarItem>
                 <Separator Grid.Column="17" />
                 <StatusBarItem Grid.Column="18">
@@ -238,8 +240,55 @@
                 </StatusBarItem>
             </StatusBar>
         </DockPanel>
+
+        <!-- 中间改变分割大小的东西 -->
+        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
         
-        
+        <!-- 右侧脚本、快捷发送 -->
+        <TabControl Grid.Column="3" Grid.RowSpan="2">
+            <TabItem Header="快捷发送列表">
+                <ScrollViewer VerticalScrollBarVisibility="Visible">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="编号" Grid.Column="0" HorizontalAlignment="Center"/>
+                            <TextBlock Text="内容" Grid.Column="1" HorizontalAlignment="Center"/>
+                            <TextBlock Text="HEX" Grid.Column="2" HorizontalAlignment="Center"/>
+                            <TextBlock Text="发送" Grid.Column="3" HorizontalAlignment="Center"/>
+                        </Grid>
+                        <ItemsControl Name="toSendList">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,3,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="4*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding id}" Grid.Column="0" HorizontalAlignment="Center" Margin="3"/>
+                                        <TextBox Text="{Binding text}" Grid.Column="1" HorizontalAlignment="Stretch"/>
+                                        <CheckBox IsChecked="{Binding hex}"  Grid.Column="2" HorizontalAlignment="Center" Margin="3"/>
+                                        <Button Content="发送" Grid.Column="3" HorizontalAlignment="Stretch"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="运行lua脚本">
+
+            </TabItem>
+            <TabItem Header="关于与反馈">
+
+            </TabItem>
+        </TabControl>
         
     </Grid>
 </Window>
