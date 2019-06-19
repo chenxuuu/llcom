@@ -242,7 +242,7 @@
         </DockPanel>
 
         <!-- 中间改变分割大小的东西 -->
-        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
+        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" Grid.RowSpan="2" />
         
         <!-- 右侧脚本、快捷发送 -->
         <TabControl Grid.Column="3" Grid.RowSpan="2">
@@ -251,34 +251,35 @@
                     <StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="40"/>
                                 <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="4*"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="编号" Grid.Column="0" HorizontalAlignment="Center"/>
                             <TextBlock Text="内容" Grid.Column="1" HorizontalAlignment="Center"/>
-                            <TextBlock Text="HEX" Grid.Column="2" HorizontalAlignment="Center"/>
-                            <TextBlock Text="发送" Grid.Column="3" HorizontalAlignment="Center"/>
+                            <!--<TextBlock Text="发送" Grid.Column="2" HorizontalAlignment="Center"/>-->
+                            <TextBlock Text="HEX" Grid.Column="3" HorizontalAlignment="Center"/>
                         </Grid>
                         <ItemsControl Name="toSendList">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Margin="0,3,0,0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="20"/>
                                             <ColumnDefinition Width="4*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="40"/>
+                                            <ColumnDefinition Width="20"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding id}" Grid.Column="0" HorizontalAlignment="Center" Margin="3"/>
-                                        <TextBox Text="{Binding text}" Grid.Column="1" HorizontalAlignment="Stretch"/>
-                                        <CheckBox IsChecked="{Binding hex}"  Grid.Column="2" HorizontalAlignment="Center" Margin="3"/>
-                                        <Button Content="发送" Grid.Column="3" HorizontalAlignment="Stretch"/>
+                                        <TextBlock Text="{Binding id}" Grid.Column="0" HorizontalAlignment="Center" Margin="2"/>
+                                        <TextBox Text="{Binding text}" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,0,2,0"/>
+                                        <Button Content="发送" Grid.Column="2" HorizontalAlignment="Stretch"/>
+                                        <CheckBox IsChecked="{Binding hex}"  Grid.Column="3" HorizontalAlignment="Center" Margin="2"/>
                                     </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
+                        <Button Content="添加新项目" Margin="3"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
