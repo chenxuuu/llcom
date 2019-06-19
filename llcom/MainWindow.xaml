@@ -247,7 +247,7 @@
         <!-- 右侧脚本、快捷发送 -->
         <TabControl Grid.Column="3" Grid.RowSpan="2">
             <TabItem Header="快捷发送列表">
-                <ScrollViewer VerticalScrollBarVisibility="Visible">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -273,13 +273,21 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="{Binding id}" Grid.Column="0" HorizontalAlignment="Center" Margin="2"/>
                                         <TextBox Text="{Binding text}" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,0,2,0"/>
-                                        <Button Content="发送" Grid.Column="2" HorizontalAlignment="Stretch"/>
+                                        <Button Content="发送" Grid.Column="2" HorizontalAlignment="Stretch" ToolTip="回车键可快速发送"/>
                                         <CheckBox IsChecked="{Binding hex}"  Grid.Column="3" HorizontalAlignment="Center" Margin="2"/>
                                     </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <Button Content="添加新项目" Margin="3"/>
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Content="添加新项目" Margin="3"/>
+                            <Button Content="删除最后一项" Grid.Column="1" Margin="3"/>
+                        </Grid>
+                        <TextBlock Text="此处发送的数据，也会触发数据处理的lua脚本。" TextWrapping="Wrap" FontWeight="Bold"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
