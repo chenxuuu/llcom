@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:llcom"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="LLCOM" Height="450" Width="800">
     <Window.Style>
         <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
     </Window.Style>
@@ -13,48 +13,233 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Row="1" Grid.Column="0">
+        <!-- 收发数据显示 -->
+        <FlowDocumentScrollViewer VerticalScrollBarVisibility="Visible">
+            <!-- 更改段落间距 -->
+            <FlowDocumentScrollViewer.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0" />
+                </Style>
+            </FlowDocumentScrollViewer.Resources>
+            <!-- 更改段落间距END -->
+            <FlowDocument FontSize="12" FontFamily="Consolas" >
+                <Paragraph Foreground="Gray" >
+                    [2019/06/19 21:05:01.326]
+                    <Span Foreground="Black" FontWeight="Bold">→</Span>
+                    <Span Foreground="DarkRed" FontSize="15">ab1cdfzefg</Span>
+                </Paragraph>
+                <Paragraph Foreground="Gray">
+                    HEX:61 62 31 63 64 66 7A 65 66 67
+                </Paragraph>
+                <Paragraph Foreground="Gray" >
+                    [2019/06/19 21:06:01.326]
+                    <Span Foreground="Black" FontWeight="Bold">←</Span>
+                    <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
+                </Paragraph>
+                <Paragraph Foreground="Gray">
+                    HEX:5E 25 24 35 36 74 5E 67 69 48
+                </Paragraph>
+                <Paragraph Foreground="Gray" >
+                    [2019/06/19 21:05:01.326]
+                    <Span Foreground="Black" FontWeight="Bold">→</Span>
+                    <Span Foreground="DarkRed" FontSize="15">ab1cdfzefg</Span>
+                </Paragraph>
+                <Paragraph Foreground="Gray">
+                    HEX:61 62 31 63 64 66 7A 65 66 67
+                </Paragraph>
+                <Paragraph Foreground="Gray" >
+                    [2019/06/19 21:06:01.326]
+                    <Span Foreground="Black" FontWeight="Bold">←</Span>
+                    <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
+                </Paragraph>
+                <Paragraph Foreground="Gray">
+                    HEX:5E 25 24 35 36 74 5E 67 69 48
+                </Paragraph>
+                <Paragraph Foreground="Gray" >
+                    [2019/06/19 21:05:01.326]
+                    <Span Foreground="Black" FontWeight="Bold">→</Span>
+                    <Span Foreground="DarkRed" FontSize="15">ab1cdfzefg</Span>
+                </Paragraph>
+                <Paragraph Foreground="Gray">
+                    HEX:61 62 31 63 64 66 7A 65 66 67
+                </Paragraph>
+                <Paragraph Foreground="Gray" >
+                    [2019/06/19 21:06:01.326]
+                    <Span Foreground="Black" FontWeight="Bold">←</Span>
+                    <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
+                </Paragraph>
+                <Paragraph Foreground="Gray">
+                    HEX:5E 25 24 35 36 74 5E 67 69 48
+                </Paragraph>
+                <Paragraph Foreground="Gray" >
+                    [2019/06/19 21:05:01.326]
+                    <Span Foreground="Black" FontWeight="Bold">→</Span>
+                    <Span Foreground="DarkRed" FontSize="15">ab1cdfzefg</Span>
+                </Paragraph>
+                <Paragraph Foreground="Gray">
+                    HEX:61 62 31 63 64 66 7A 65 66 67
+                </Paragraph>
+                <Paragraph Foreground="Gray" >
+                    [2019/06/19 21:06:01.326]
+                    <Span Foreground="Black" FontWeight="Bold">←</Span>
+                    <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
+                </Paragraph>
+                <Paragraph Foreground="Gray">
+                    HEX:5E 25 24 35 36 74 5E 67 69 48
+                </Paragraph>
+                <Paragraph Foreground="Gray" >
+                    [2019/06/19 21:05:01.326]
+                    <Span Foreground="Black" FontWeight="Bold">→</Span>
+                    <Span Foreground="DarkRed" FontSize="15">ab1cdfzefg</Span>
+                </Paragraph>
+                <Paragraph Foreground="Gray">
+                    HEX:61 62 31 63 64 66 7A 65 66 67
+                </Paragraph>
+                <Paragraph Foreground="Gray" >
+                    [2019/06/19 21:06:01.326]
+                    <Span Foreground="Black" FontWeight="Bold">←</Span>
+                    <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
+                </Paragraph>
+                <Paragraph Foreground="Gray">
+                    HEX:5E 25 24 35 36 74 5E 67 69 48
+                </Paragraph>
+                <Paragraph Foreground="Gray" >
+                    [2019/06/19 21:05:01.326]
+                    <Span Foreground="Black" FontWeight="Bold">→</Span>
+                    <Span Foreground="DarkRed" FontSize="15">ab1cdfzefg</Span>
+                </Paragraph>
+                <Paragraph Foreground="Gray">
+                    HEX:61 62 31 63 64 66 7A 65 66 67
+                </Paragraph>
+                <Paragraph Foreground="Gray" >
+                    [2019/06/19 21:06:01.326]
+                    <Span Foreground="Black" FontWeight="Bold">←</Span>
+                    <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
+                </Paragraph>
+                <Paragraph Foreground="Gray">
+                    HEX:5E 25 24 35 36 74 5E 67 69 48
+                </Paragraph>
+            </FlowDocument>
+        </FlowDocumentScrollViewer>
+
+        
+        <!-- 发送数据区 -->
+        <Grid Grid.Row="1" Margin="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <WrapPanel Grid.Column="0" Orientation="Vertical" Margin="5">
-                <ComboBox Width="100">
-                    <ComboBoxItem>COM1</ComboBoxItem>
-                    <ComboBoxItem>COM2</ComboBoxItem>
-                    <ComboBoxItem>COM3</ComboBoxItem>
-                </ComboBox>
-                <Button Name="openSerialButton" Content="打开串口" Height="30" Width="100" Margin="0,5,0,0" FontSize="17"/>
-            </WrapPanel>
-            <Grid Margin="5" Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="波特率：" FontSize="17" VerticalAlignment="Center"/>
-                <ComboBox Width="70" Grid.Column="1">
-                    <ComboBoxItem>115200</ComboBoxItem>
-                    <ComboBoxItem>921600</ComboBoxItem>
-                    <ComboBoxItem>9600</ComboBoxItem>
-                </ComboBox>
-                <TextBlock Grid.Column="0" Grid.Row="1"/>
-                <Button Grid.Row="1" Grid.Column="1" Content="更多设置" Height="30" Margin="0,5,0,0" FontSize="15"/>
-            </Grid>
-            <TextBox Grid.Column="2" Margin="5" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Height="55">
-                abcdefg
-            </TextBox>
-            <Button Grid.Column="3" Content="发送" Width="50" FontSize="17" Margin="5"/>
+            <ComboBox Grid.ColumnSpan="3" Margin="2">
+                <ComboBoxItem Content="COM1 CH340 Serial Port" IsSelected="True"/>
+                <ComboBoxItem Content="COM2 CH340 Serial Port"/>
+                <ComboBoxItem Content="COM3 CH340 Serial Port"/>
+            </ComboBox>
+            <TextBlock Text="波特率：" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <ComboBox Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1" Margin="2">
+                <ComboBoxItem Content="115200" IsSelected="True"/>
+                <ComboBoxItem Content="921600"/>
+                <ComboBoxItem Content="1000000"/>
+            </ComboBox>
+            <Button Content="打开" Grid.Column="3" Grid.RowSpan="2" Margin="2"/>
+            <CheckBox Content="16进制发送" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Button Content="更多设置" Grid.Column="4" Grid.Row="1" Margin="2" ToolTip="可设置串口校验位停止位等信息、设置发送前的自动处理脚本。"/>
+            <TextBox Text="123456" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="4" 
+                     TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2"/>
+            <Button Content="发送" Grid.Column="9" Grid.RowSpan="2" Margin="2" ToolTip="按Ctrl+Enter同样也可以发送数据。"/>
         </Grid>
+        
+        
+        <!-- 底部状态栏 -->
+        <DockPanel Grid.Row="2" Grid.ColumnSpan="2" >
+            <StatusBar DockPanel.Dock="Bottom">
+                <StatusBar.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+                </StatusBar.ItemsPanel>
+                <StatusBarItem Grid.Column="0">
+                    <TextBlock Text="端口：" />
+                </StatusBarItem>
+                <Separator Grid.Column="1" />
+                <StatusBarItem Grid.Column="2">
+                    <TextBlock Text="COM1" />
+                </StatusBarItem>
+                <Separator Grid.Column="3" />
+                <StatusBarItem Grid.Column="4">
+                    <TextBlock Text="波特率：" />
+                </StatusBarItem>
+                <Separator Grid.Column="5" />
+                <StatusBarItem Grid.Column="6">
+                    <TextBlock Text="921600" />
+                </StatusBarItem>
+                <Separator Grid.Column="7" />
+                <StatusBarItem Grid.Column="8">
+                    <TextBlock Text="状态：" />
+                </StatusBarItem>
+                <Separator Grid.Column="9" />
+                <StatusBarItem Grid.Column="10">
+                    <TextBlock Text="已关闭" />
+                </StatusBarItem>
+                <Separator Grid.Column="11" />
+                <StatusBarItem Grid.Column="12">
+                    <TextBlock Text="已发送字节：" />
+                </StatusBarItem>
+                <Separator Grid.Column="13" />
+                <StatusBarItem Grid.Column="14">
+                    <TextBlock Text="12345" />
+                </StatusBarItem>
+                <Separator Grid.Column="15" />
+                <StatusBarItem Grid.Column="16">
+                    <TextBlock Text="已接收字节" />
+                </StatusBarItem>
+                <Separator Grid.Column="17" />
+                <StatusBarItem Grid.Column="18">
+                    <TextBlock Text="23333" />
+                </StatusBarItem>
+            </StatusBar>
+        </DockPanel>
+        
+        
+        
     </Grid>
 </Window>
