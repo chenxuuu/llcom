@@ -41,13 +41,14 @@ namespace llcom
             items.Add(new ToSendData() { id = 6, text = "AA BB CC DD", hex = true });
             items.Add(new ToSendData() { id = 7, text = "11 22 66 22 44", hex = true });
 
-            toSendList.ItemsSource = items;
+            for (int i = 8; i <= 100; i++)
+                items.Add(new ToSendData() { id = i, text = "test" + i, hex = false });
 
+            toSendList.ItemsSource = items;
 
             //快速搜索
             textEditor.TextArea.DefaultInputHandler.NestedInputHandlers.Add(
                 new SearchInputHandler(textEditor.TextArea));
-
             string name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name + ".Lua.xshd";
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             using (System.IO.Stream s = assembly.GetManifestResourceStream(name))
@@ -59,6 +60,9 @@ namespace llcom
                 }
 
             }
+
+            Window window = new SettingWindow();
+            window.Show();
         }
     }
 
