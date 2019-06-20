@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:llcom"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
         Title="LLCOM" Height="450" Width="800" MinWidth="400" MinHeight="200"
         Loaded="Window_Loaded">
@@ -142,7 +143,7 @@
                 <ColumnDefinition Width="0"/>
                 <ColumnDefinition Width="0"/>
                 <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="90"/>
+                <ColumnDefinition Width="75"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -155,9 +156,9 @@
                     <TextBlock Text="串口"/>
                 </WrapPanel>
             </Button>
-            <CheckBox Content="16进制发送" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <CheckBox Content="发16进制" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <Button Content="更多设置" Grid.Column="4" Grid.Row="1" Margin="2" ToolTip="可设置串口校验位停止位等信息、设置发送前的自动处理脚本。"/>
-            <TextBox Text="123456" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="4" Height="50"
+            <TextBox Text="123456" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="4" Height="50" VerticalContentAlignment="Top"
                      TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2" FontFamily="Consolas"/>
             <Button Content="发送" Grid.Column="9" Grid.RowSpan="2" Margin="2" ToolTip="按Ctrl+Enter同样也可以发送数据。"/>
         </Grid>
@@ -184,11 +185,11 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
                         </Grid>
                     </ItemsPanelTemplate>
@@ -295,17 +296,77 @@
             </TabItem>
             <TabItem Header="运行lua脚本">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <avalonEdit:TextEditor
+                    <!-- 脚本编辑界面 -->
+                    <Grid Visibility="Collapsed">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <WrapPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <ComboBox Width="100">
+                                <ComboBoxItem Content="AT test" IsSelected="True"/>
+                                <ComboBoxItem Content="Air720 test"/>
+                                <ComboBoxItem Content="file send test"/>
+                            </ComboBox>
+                            <Button Margin="3,0,0,0" ToolTip="新建脚本">
+                                <Grid>
+                                    <fa:FontAwesome Icon="File" Foreground="LightSkyBlue"/>
+                                    <fa:FontAwesome Icon="FileCodeOutline"/>
+                                </Grid>
+                            </Button>
+                            <Button Margin="3,0,0,0" ToolTip="保存代码">
+                                <fa:FontAwesome Icon="FloppyOutline"/>
+                            </Button>
+                            <Button Margin="3,0,0,0" ToolTip="运行脚本">
+                                <fa:FontAwesome Icon="Play" Foreground="DarkGreen"/>
+                            </Button>
+                            <Button Margin="3,0,0,0" ToolTip="打开脚本与日志目录">
+                                <Grid>
+                                    <fa:FontAwesome Icon="FolderOpen" Foreground="Yellow"/>
+                                    <fa:FontAwesome Icon="FolderOutlinepenOutline"/>
+                                </Grid>
+                            </Button>
+                            <Button Margin="3,0,0,0" ToolTip="查看接口文档">
+                                <fa:FontAwesome Icon="Book" Foreground="DarkSlateGray"/>
+                            </Button>
+                        </WrapPanel>
+                        <avalonEdit:TextEditor
                         Grid.Row="1"
                         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
                         Name="textEditor"
                         FontFamily="Consolas"
                         FontSize="10pt"
                         ShowLineNumbers="True"/>
+                    </Grid>
+                    <!-- 脚本编辑界面END -->
+
+                    <!-- 脚本运行日志界面 -->
+                    <Grid Visibility="Visible">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBox IsReadOnly="true" Text="[2019/06/20 14:01:00] print 123123" HorizontalScrollBarVisibility="Auto" VerticalContentAlignment="Top"/>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Margin="0,3,3,3" ToolTip="停止运行" Foreground="DarkRed">
+                                <fa:FontAwesome Icon="Stop"/>
+                            </Button>
+                            <Button Margin="0,3,3,3" ToolTip="暂停打印" Grid.Column="1" Foreground="GreenYellow">
+                                <fa:FontAwesome Icon="Pause"/>
+                            </Button>
+                            <TextBox Grid.Column="2" Margin="0,3"/>
+                            <Button Margin="3,3,0,3" ToolTip="实时执行lua语句" Grid.Column="3" Foreground="DeepSkyBlue">
+                                <fa:FontAwesome Icon="ArrowUp"/>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    <!-- 脚本运行日志界面END -->
                 </Grid>
             </TabItem>
             <TabItem Header="关于与反馈">
