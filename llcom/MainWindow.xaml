@@ -138,9 +138,9 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40"/>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="0"/>
+                <ColumnDefinition Width="0"/>
+                <ColumnDefinition Width="0"/>
                 <ColumnDefinition Width="45"/>
                 <ColumnDefinition Width="90"/>
                 <ColumnDefinition Width="*"/>
@@ -149,18 +149,12 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="45"/>
             </Grid.ColumnDefinitions>
-            <ComboBox Grid.ColumnSpan="3" Margin="2">
-                <ComboBoxItem Content="COM1 CH340 Serial Port" IsSelected="True"/>
-                <ComboBoxItem Content="COM2 CH340 Serial Port"/>
-                <ComboBoxItem Content="COM3 CH340 Serial Port"/>
-            </ComboBox>
-            <TextBlock Text="波特率" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <ComboBox Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1" Margin="2">
-                <ComboBoxItem Content="115200" IsSelected="True"/>
-                <ComboBoxItem Content="921600"/>
-                <ComboBoxItem Content="1000000"/>
-            </ComboBox>
-            <Button Content="打开" Grid.Column="3" Grid.RowSpan="2" Margin="2"/>
+            <Button Grid.Column="3" Grid.RowSpan="2" Margin="2" >
+                <WrapPanel>
+                    <TextBlock Text="打开"/>
+                    <TextBlock Text="串口"/>
+                </WrapPanel>
+            </Button>
             <CheckBox Content="16进制发送" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <Button Content="更多设置" Grid.Column="4" Grid.Row="1" Margin="2" ToolTip="可设置串口校验位停止位等信息、设置发送前的自动处理脚本。"/>
             <TextBox Text="123456" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="4" Height="50"
@@ -178,7 +172,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="2*" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="Auto" />
@@ -204,7 +198,11 @@
                 </StatusBarItem>
                 <Separator Grid.Column="1" />
                 <StatusBarItem Grid.Column="2">
-                    <TextBlock Text="COM1" />
+                    <ComboBox>
+                        <ComboBoxItem Content="COM1 CH340 Serial Port" IsSelected="True"/>
+                        <ComboBoxItem Content="COM2 CH340 Serial Port"/>
+                        <ComboBoxItem Content="COM3 CH340 Serial Port"/>
+                    </ComboBox>
                 </StatusBarItem>
                 <Separator Grid.Column="3" />
                 <StatusBarItem Grid.Column="4">
@@ -212,7 +210,11 @@
                 </StatusBarItem>
                 <Separator Grid.Column="5" />
                 <StatusBarItem Grid.Column="6">
-                    <TextBlock Text="921600" />
+                    <ComboBox>
+                        <ComboBoxItem Content="115200" IsSelected="True"/>
+                        <ComboBoxItem Content="921600"/>
+                        <ComboBoxItem Content="1000000"/>
+                    </ComboBox>
                 </StatusBarItem>
                 <Separator Grid.Column="7" />
                 <StatusBarItem Grid.Column="8">
