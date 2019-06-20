@@ -5,8 +5,73 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:llcom"
         mc:Ignorable="d"
-        Title="更多串口设置" Height="350" Width="400">
+        Title="更多串口设置" Height="350" Width="400"
+        Loaded="Window_Loaded">
+    <Window.Style>
+        <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
+    </Window.Style>
     <Grid>
-        
+        <TabControl>
+            <TabItem Header="串口基本设置">
+                <StackPanel Margin="10,5,0,0" >
+                    <CheckBox Content="自动恢复被断开的串口连接" Margin="5"/>
+                    <CheckBox Content="自动保存串口收发日志" Margin="5"/>
+                    <CheckBox Content="窗口保持置顶显示" Margin="5"/>
+                    <WrapPanel Margin="5">
+                        <TextBlock Text="分包数据超时时间：" VerticalAlignment="Center"/>
+                        <TextBox Text="10"/>
+                        <TextBlock Text="秒" VerticalAlignment="Center" Margin="3,0"/>
+                    </WrapPanel>
+                    <WrapPanel Margin="5">
+                        <TextBlock Text="数据位长度：" VerticalAlignment="Center"/>
+                        <ComboBox>
+                            <ComboBoxItem Content="5" IsSelected="True"/>
+                            <ComboBoxItem Content="6"/>
+                            <ComboBoxItem Content="7"/>
+                            <ComboBoxItem Content="8"/>
+                        </ComboBox>
+                    </WrapPanel>
+                    <WrapPanel Margin="5">
+                        <TextBlock Text="停止位：" VerticalAlignment="Center"/>
+                        <ComboBox>
+                            <ComboBoxItem Content="1" IsSelected="True"/>
+                            <ComboBoxItem Content="1.5"/>
+                            <ComboBoxItem Content="2"/>
+                        </ComboBox>
+                    </WrapPanel>
+                    <WrapPanel Margin="5">
+                        <TextBlock Text="校验位：" VerticalAlignment="Center"/>
+                        <ComboBox>
+                            <ComboBoxItem Content="无校验" IsSelected="True"/>
+                            <ComboBoxItem Content="奇校验"/>
+                            <ComboBoxItem Content="偶校验"/>
+                        </ComboBox>
+                    </WrapPanel>
+                </StackPanel>
+            </TabItem>
+
+
+            <TabItem Header="对发送数据处理的lua脚本">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <avalonEdit:TextEditor
+                        Grid.Row="0"
+                        xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                        Name="textEditor"
+                        FontFamily="Consolas"
+                        FontSize="10pt"
+                        ShowLineNumbers="True"
+                        Text="return uartData..'\r\n'--结尾加上回车换行"/>
+                    <WrapPanel Grid.Row="1" Margin="5">
+                        <TextBlock Text="传入数据为uartData，传出数据为你脚本return的结果。" TextWrapping="Wrap"/>
+                        <TextBlock Text="此处脚本对快捷发送区也生效，对脚本输出数据无效。" TextWrapping="Wrap"/>
+                        <TextBlock Text="查看接口文档，可点击主界面接口文档按钮。" TextWrapping="Wrap"/>
+                    </WrapPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
