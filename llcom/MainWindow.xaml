@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:llcom"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="LLCOM" Height="450" Width="800" MinWidth="400" MinHeight="200"
+        Title="LLCOM - 能跑lua脚本的开源串口调试工具！" Height="450" Width="800"
         Loaded="Window_Loaded">
     <Window.Style>
         <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
@@ -231,7 +231,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="13" />
                 <StatusBarItem Grid.Column="14">
-                    <TextBlock Text="12345" />
+                    <TextBlock Text="0" />
                 </StatusBarItem>
                 <Separator Grid.Column="15" />
                 <StatusBarItem Grid.Column="16">
@@ -239,7 +239,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="17" />
                 <StatusBarItem Grid.Column="18">
-                    <TextBlock Text="23333" />
+                    <TextBlock Text="0" />
                 </StatusBarItem>
             </StatusBar>
         </DockPanel>
@@ -296,7 +296,7 @@
             <TabItem Header="运行lua脚本">
                 <Grid>
                     <!-- 脚本编辑界面 -->
-                    <Grid Visibility="Collapsed">
+                    <Grid Visibility="Visible">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
@@ -340,7 +340,7 @@
                     <!-- 脚本编辑界面END -->
 
                     <!-- 脚本运行日志界面 -->
-                    <Grid Visibility="Visible">
+                    <Grid Visibility="Collapsed">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="auto"/>
@@ -360,7 +360,7 @@
                                 <fa:FontAwesome Icon="Pause"/>
                             </Button>
                             <TextBox Grid.Column="2" Margin="0,3"/>
-                            <Button Margin="3,3,0,3" ToolTip="实时执行lua语句" Grid.Column="3" Foreground="DeepSkyBlue">
+                            <Button Margin="3,3,0,3" ToolTip="实时执行lua语句 - Enter" Grid.Column="3" Foreground="DeepSkyBlue">
                                 <fa:FontAwesome Icon="ArrowUp"/>
                             </Button>
                         </Grid>

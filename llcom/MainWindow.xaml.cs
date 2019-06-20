@@ -41,9 +41,6 @@ namespace llcom
             items.Add(new ToSendData() { id = 6, text = "AA BB CC DD", hex = true });
             items.Add(new ToSendData() { id = 7, text = "11 22 66 22 44", hex = true });
 
-            for (int i = 8; i <= 100; i++)
-                items.Add(new ToSendData() { id = i, text = "test" + i, hex = false });
-
             toSendList.ItemsSource = items;
 
             //快速搜索
@@ -61,8 +58,8 @@ namespace llcom
 
             }
 
-            Window window = new SettingWindow();
-            window.Show();
+            //Window window = new SettingWindow();
+            //window.Show();
         }
     }
 
