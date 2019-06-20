@@ -261,7 +261,6 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="编号" Grid.Column="0" HorizontalAlignment="Center"/>
                             <TextBlock Text="内容" Grid.Column="1" HorizontalAlignment="Center"/>
-                            <!--<TextBlock Text="发送" Grid.Column="2" HorizontalAlignment="Center"/>-->
                             <TextBlock Text="HEX" Grid.Column="3" HorizontalAlignment="Center"/>
                         </Grid>
                         <ItemsControl Name="toSendList">
@@ -370,7 +369,9 @@
                 </Grid>
             </TabItem>
             <TabItem Header="关于与反馈">
-
+                <ScrollViewer>
+                    
+                </ScrollViewer>
             </TabItem>
         </TabControl>
         
