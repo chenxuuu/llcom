@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:llcom"
         mc:Ignorable="d"
-        Title="LLCOM" Height="450" Width="800" MinWidth="800" MinHeight="200"
+        Title="LLCOM" Height="450" Width="800" MinWidth="400" MinHeight="200"
         Loaded="Window_Loaded">
     <Window.Style>
         <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
@@ -287,12 +287,24 @@
                             <Button Content="添加新项目" Margin="3"/>
                             <Button Content="删除最后一项" Grid.Column="1" Margin="3"/>
                         </Grid>
-                        <TextBlock Text="此处发送的数据，也会触发数据处理的lua脚本。" TextWrapping="Wrap" FontWeight="Bold"/>
+                        <TextBlock Text="发送处理的lua脚本，同样对此处发送的数据生效。" TextWrapping="Wrap" FontWeight="Bold"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="运行lua脚本">
-
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <avalonEdit:TextEditor
+                        Grid.Row="1"
+                        xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                        Name="textEditor"
+                        FontFamily="Consolas"
+                        FontSize="10pt"
+                        ShowLineNumbers="True"/>
+                </Grid>
             </TabItem>
             <TabItem Header="关于与反馈">
 
