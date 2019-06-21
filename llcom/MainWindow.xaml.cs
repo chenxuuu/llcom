@@ -58,8 +58,8 @@ namespace llcom
 
             }
 
-            //Window window = new SettingWindow();
-            //window.Show();
+            Window window = new SettingWindow();
+            window.Show();
         }
     }
 
