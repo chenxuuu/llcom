@@ -32,105 +32,104 @@
             </FlowDocumentScrollViewer.Resources>
             <!-- 更改段落间距END -->
             <FlowDocument FontSize="12" FontFamily="Consolas" >
-                <Paragraph Foreground="Gray" >
+                <Paragraph Foreground="DarkSlateGray" >
                     [2019/06/19 21:05:01.326]
                     <Span Foreground="Black" FontWeight="Bold">→</Span>
                     <Span Foreground="DarkRed" FontSize="15">ab1cdfzefg</Span>
                 </Paragraph>
-                <Paragraph Foreground="Gray">
+                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
                     HEX:61 62 31 63 64 66 7A 65 66 67
                 </Paragraph>
-                <Paragraph Foreground="Gray" >
+                <Paragraph Foreground="DarkSlateGray" >
                     [2019/06/19 21:06:01.326]
                     <Span Foreground="Black" FontWeight="Bold">←</Span>
                     <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
                 </Paragraph>
-                <Paragraph Foreground="Gray">
+                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
                     HEX:5E 25 24 35 36 74 5E 67 69 48
                 </Paragraph>
-                <Paragraph Foreground="Gray" >
+                <Paragraph Foreground="DarkSlateGray" >
                     [2019/06/19 21:05:01.326]
                     <Span Foreground="Black" FontWeight="Bold">→</Span>
                     <Span Foreground="DarkRed" FontSize="15">中文数据来啦~~fsdfsdfs</Span>
                 </Paragraph>
-                <Paragraph Foreground="Gray">
+                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
                     HEX:D6 D0 CE C4 CA FD BE DD C0 B4 C0 B2 7E 7E 66 73 64 66 73 64 66 73
                 </Paragraph>
-                <Paragraph Foreground="Gray" >
+                <Paragraph Foreground="DarkSlateGray" >
                     [2019/06/19 21:06:01.326]
                     <Span Foreground="Black" FontWeight="Bold">←</Span>
                     <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
                 </Paragraph>
-                <Paragraph Foreground="Gray">
+                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
                     HEX:5E 25 24 35 36 74 5E 67 69 48
                 </Paragraph>
-                <Paragraph Foreground="Gray" >
+                <Paragraph Foreground="DarkSlateGray" >
                     [2019/06/19 21:05:01.326]
                     <Span Foreground="Black" FontWeight="Bold">→</Span>
                     <Span Foreground="DarkRed" FontSize="15">ab1cdfzefg</Span>
                 </Paragraph>
-                <Paragraph Foreground="Gray">
+                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
                     HEX:61 62 31 63 64 66 7A 65 66 67
                 </Paragraph>
-                <Paragraph Foreground="Gray" >
+                <Paragraph Foreground="DarkSlateGray" >
                     [2019/06/19 21:06:01.326]
                     <Span Foreground="Black" FontWeight="Bold">←</Span>
                     <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
                 </Paragraph>
-                <Paragraph Foreground="Gray">
+                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
                     HEX:5E 25 24 35 36 74 5E 67 69 48
                 </Paragraph>
-                <Paragraph Foreground="Gray" >
+                <Paragraph Foreground="DarkSlateGray" >
                     [2019/06/19 21:05:01.326]
                     <Span Foreground="Black" FontWeight="Bold">→</Span>
                     <Span Foreground="DarkRed" FontSize="15">ab1cdfzefg</Span>
                 </Paragraph>
-                <Paragraph Foreground="Gray">
+                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
                     HEX:61 62 31 63 64 66 7A 65 66 67
                 </Paragraph>
-                <Paragraph Foreground="Gray" >
+                <Paragraph Foreground="DarkSlateGray" >
                     [2019/06/19 21:06:01.326]
                     <Span Foreground="Black" FontWeight="Bold">←</Span>
                     <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
                 </Paragraph>
-                <Paragraph Foreground="Gray">
+                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
                     HEX:5E 25 24 35 36 74 5E 67 69 48
                 </Paragraph>
-                <Paragraph Foreground="Gray" >
+                <Paragraph Foreground="DarkSlateGray" >
                     [2019/06/19 21:05:01.326]
                     <Span Foreground="Black" FontWeight="Bold">→</Span>
                     <Span Foreground="DarkRed" FontSize="15">ab1cdfzefg</Span>
                 </Paragraph>
-                <Paragraph Foreground="Gray">
+                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
                     HEX:61 62 31 63 64 66 7A 65 66 67
                 </Paragraph>
-                <Paragraph Foreground="Gray" >
+                <Paragraph Foreground="DarkSlateGray" >
                     [2019/06/19 21:06:01.326]
                     <Span Foreground="Black" FontWeight="Bold">←</Span>
                     <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
                 </Paragraph>
-                <Paragraph Foreground="Gray">
+                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
                     HEX:5E 25 24 35 36 74 5E 67 69 48
                 </Paragraph>
-                <Paragraph Foreground="Gray" >
+                <Paragraph Foreground="DarkSlateGray" >
                     [2019/06/19 21:05:01.326]
                     <Span Foreground="Black" FontWeight="Bold">→</Span>
                     <Span Foreground="DarkRed" FontSize="15">ab1cdfzefg</Span>
                 </Paragraph>
-                <Paragraph Foreground="Gray">
+                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
                     HEX:61 62 31 63 64 66 7A 65 66 67
                 </Paragraph>
-                <Paragraph Foreground="Gray" >
+                <Paragraph Foreground="DarkSlateGray" >
                     [2019/06/19 21:06:01.326]
                     <Span Foreground="Black" FontWeight="Bold">←</Span>
                     <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
                 </Paragraph>
-                <Paragraph Foreground="Gray">
+                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
                     HEX:5E 25 24 35 36 74 5E 67 69 48
                 </Paragraph>
             </FlowDocument>
         </FlowDocumentScrollViewer>
-        <Button Content="清空数据" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,5"/>
 
 
         <!-- 发送数据区 -->
@@ -157,7 +156,7 @@
                     <TextBlock Text="串口"/>
                 </WrapPanel>
             </Button>
-            <CheckBox Content="发16进制" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Button Content="清空日志" Grid.Column="4" Margin="2"/>
             <Button Content="更多设置" Grid.Column="4" Grid.Row="1" Margin="2" ToolTip="可设置串口校验位停止位等信息、设置发送前的自动处理脚本。"/>
             <TextBox Text="123456" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="4" Height="50" VerticalContentAlignment="Top"
                      TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2" FontFamily="Consolas"/>
