@@ -71,9 +71,6 @@
                                 <fa:FontAwesome Icon="FileCodeOutline"/>
                             </Grid>
                         </Button>
-                        <Button Margin="3,0,0,0" ToolTip="保存代码">
-                            <fa:FontAwesome Icon="FloppyOutline"/>
-                        </Button>
                         <Button Margin="3,0,0,0" ToolTip="测试脚本">
                             <fa:FontAwesome Icon="Play" Foreground="DarkGreen"/>
                         </Button>
