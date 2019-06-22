@@ -32,6 +32,11 @@ namespace llcom
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            //初始化所有数据
+            Tools.Global.Initial();
+
+            this.Closing += MainWindow_Closing;
+
             List<ToSendData> items = new List<ToSendData>();
             items.Add(new ToSendData() { id = 1, text = "AT", hex = false });
             items.Add(new ToSendData() { id = 2, text = "ATI", hex = false });
@@ -60,6 +65,23 @@ namespace llcom
 
             Window window = new SettingWindow();
             window.Show();
+        }
+
+        /// <summary>
+        /// 窗口关闭事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            foreach (Window win in App.Current.Windows)
+            {
+                if (win != this)
+                {
+                    win.Close();
+                }
+            }
+            e.Cancel = false;//正常关闭
         }
     }
 
