@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:llcom"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="LLCOM - 能跑lua脚本的开源串口调试工具！" Height="450" Width="800"
+        Title="LLCOM - 能跑lua脚本的开源串口调试工具！" Height="500" Width="900"
         Loaded="Window_Loaded">
     <Window.Style>
         <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
@@ -157,7 +157,7 @@
                 </WrapPanel>
             </Button>
             <Button Content="清空日志" Grid.Column="4" Margin="2"/>
-            <Button Content="更多设置" Grid.Column="4" Grid.Row="1" Margin="2" ToolTip="可设置串口校验位停止位等信息、设置发送前的自动处理脚本。"/>
+            <Button Name="MoreSettingButton" Content="更多设置" Grid.Column="4" Grid.Row="1" Margin="2" ToolTip="可设置串口校验位停止位等信息、设置发送前的自动处理脚本。" Click="MoreSettingButton_Click"/>
             <TextBox Text="123456" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="4" Height="50" VerticalContentAlignment="Top"
                      TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2" FontFamily="Consolas"/>
             <Button Content="发送" Grid.Column="9" Grid.RowSpan="2" Margin="2" ToolTip="按Ctrl+Enter同样也可以发送数据。"/>
@@ -212,9 +212,32 @@
                 <Separator Grid.Column="5" />
                 <StatusBarItem Grid.Column="6">
                     <ComboBox>
+                        <ComboBoxItem Content="110"/>
+                        <ComboBoxItem Content="330"/>
+                        <ComboBoxItem Content="600"/>
+                        <ComboBoxItem Content="1200"/>
+                        <ComboBoxItem Content="2400"/>
+                        <ComboBoxItem Content="4800"/>
+                        <ComboBoxItem Content="9600"/>
+                        <ComboBoxItem Content="14400"/>
+                        <ComboBoxItem Content="19200"/>
+                        <ComboBoxItem Content="38400"/>
+                        <ComboBoxItem Content="56000"/>
+                        <ComboBoxItem Content="57600"/>
                         <ComboBoxItem Content="115200" IsSelected="True"/>
+                        <ComboBoxItem Content="128000"/>
+                        <ComboBoxItem Content="230400"/>
+                        <ComboBoxItem Content="256000"/>
+                        <ComboBoxItem Content="460800"/>
+                        <ComboBoxItem Content="500000"/>
+                        <ComboBoxItem Content="128000"/>
+                        <ComboBoxItem Content="512000"/>
+                        <ComboBoxItem Content="600000"/>
+                        <ComboBoxItem Content="750000"/>
                         <ComboBoxItem Content="921600"/>
                         <ComboBoxItem Content="1000000"/>
+                        <ComboBoxItem Content="1500000"/>
+                        <ComboBoxItem Content="2000000"/>
                     </ComboBox>
                 </StatusBarItem>
                 <Separator Grid.Column="7" />
@@ -316,13 +339,13 @@
                             <Button Margin="3,0,0,0" ToolTip="运行脚本">
                                 <fa:FontAwesome Icon="Play" Foreground="DarkGreen"/>
                             </Button>
-                            <Button Margin="3,0,0,0" ToolTip="打开脚本与日志目录">
+                            <Button Name="openScriptFolderButton" Margin="3,0,0,0" ToolTip="打开脚本与日志目录" Click="OpenScriptFolderButton_Click">
                                 <Grid>
                                     <fa:FontAwesome Icon="FolderOpen" Foreground="Yellow"/>
                                     <fa:FontAwesome Icon="FolderOutlinepenOutline"/>
                                 </Grid>
                             </Button>
-                            <Button Margin="3,0,0,0" ToolTip="查看接口文档">
+                            <Button Name="apiDocumentButton" Margin="3,0,0,0" ToolTip="查看接口文档" Click="ApiDocumentButton_Click">
                                 <fa:FontAwesome Icon="Book" Foreground="DarkSlateGray"/>
                             </Button>
                         </WrapPanel>

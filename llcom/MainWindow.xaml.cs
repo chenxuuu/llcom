@@ -3,6 +3,8 @@ using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Search;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,6 +31,7 @@ namespace llcom
         {
             InitializeComponent();
         }
+        ObservableCollection<ToSendData> items = new ObservableCollection<ToSendData>();
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -37,7 +40,10 @@ namespace llcom
 
             this.Closing += MainWindow_Closing;
 
-            List<ToSendData> items = new List<ToSendData>();
+            
+
+            toSendList.ItemsSource = items;
+
             items.Add(new ToSendData() { id = 1, text = "AT", hex = false });
             items.Add(new ToSendData() { id = 2, text = "ATI", hex = false });
             items.Add(new ToSendData() { id = 3, text = "AT+CREG?", hex = false });
@@ -46,7 +52,7 @@ namespace llcom
             items.Add(new ToSendData() { id = 6, text = "AA BB CC DD", hex = true });
             items.Add(new ToSendData() { id = 7, text = "11 22 66 22 44", hex = true });
 
-            toSendList.ItemsSource = items;
+            
 
             //快速搜索
             textEditor.TextArea.DefaultInputHandler.NestedInputHandlers.Add(
@@ -60,11 +66,7 @@ namespace llcom
                     var xshd = HighlightingLoader.LoadXshd(reader);
                     textEditor.SyntaxHighlighting = HighlightingLoader.Load(xshd, HighlightingManager.Instance);
                 }
-
             }
-
-            Window window = new SettingWindow();
-            window.Show();
         }
 
         /// <summary>
@@ -74,6 +76,7 @@ namespace llcom
         /// <param name="e"></param>
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            Tools.Global.isMainWindowsClosed = true;
             foreach (Window win in App.Current.Windows)
             {
                 if (win != this)
@@ -83,6 +86,24 @@ namespace llcom
             }
             e.Cancel = false;//正常关闭
         }
+
+
+        Window settingPage = new SettingWindow();
+        private void MoreSettingButton_Click(object sender, RoutedEventArgs e)
+        {
+            settingPage.Show();
+        }
+
+
+        private void ApiDocumentButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/chenxuuu/llcom");
+        }
+
+        private void OpenScriptFolderButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("explorer.exe", "user_script_run");
+        }
     }
 
     public class ToSendData
@@ -90,5 +111,6 @@ namespace llcom
         public int id { get; set; }
         public string text { get; set; }
         public bool hex { get; set; }
+
     }
 }

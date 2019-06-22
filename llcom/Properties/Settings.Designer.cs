@@ -22,5 +22,163 @@ namespace llcom.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public string dataToSend {
+            get {
+                return ((string)(this["dataToSend"]));
+            }
+            set {
+                this["dataToSend"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("115200")]
+        public int BaudRate {
+            get {
+                return ((int)(this["BaudRate"]));
+            }
+            set {
+                this["BaudRate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool autoReconnect {
+            get {
+                return ((bool)(this["autoReconnect"]));
+            }
+            set {
+                this["autoReconnect"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool autoSaveLog {
+            get {
+                return ((bool)(this["autoSaveLog"]));
+            }
+            set {
+                this["autoSaveLog"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool showHex {
+            get {
+                return ((bool)(this["showHex"]));
+            }
+            set {
+                this["showHex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool topmost {
+            get {
+                return ((bool)(this["topmost"]));
+            }
+            set {
+                this["topmost"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int parity {
+            get {
+                return ((int)(this["parity"]));
+            }
+            set {
+                this["parity"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public int timeout {
+            get {
+                return ((int)(this["timeout"]));
+            }
+            set {
+                this["timeout"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        public int dataBits {
+            get {
+                return ((int)(this["dataBits"]));
+            }
+            set {
+                this["dataBits"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int stopBit {
+            get {
+                return ((int)(this["stopBit"]));
+            }
+            set {
+                this["stopBit"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("默认")]
+        public string sendScript {
+            get {
+                return ((string)(this["sendScript"]));
+            }
+            set {
+                this["sendScript"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("example")]
+        public string runScript {
+            get {
+                return ((string)(this["runScript"]));
+            }
+            set {
+                this["runScript"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("[{\"id\":1,\"text\":\"example string\",\"hex\":false},{\"id\":2,\"text\":\"中文默认utf8编码\",\"hex\":f" +
+            "alse},{\"id\":3,\"text\":\"aa 01 02 0d 0a\",\"hex\":true},{\"id\":4,\"text\":\"此处数据会被lua处理\",\"" +
+            "hex\":false}]")]
+        public string quickData {
+            get {
+                return ((string)(this["quickData"]));
+            }
+            set {
+                this["quickData"] = value;
+            }
+        }
     }
 }

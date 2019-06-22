@@ -15,38 +15,40 @@
         <TabControl>
             <TabItem Header="串口基本设置">
                 <StackPanel Margin="10,5,0,0" >
-                    <CheckBox Content="自动恢复被断开的串口连接" Margin="5"/>
-                    <CheckBox Content="自动保存串口收发日志" Margin="5"/>
-                    <CheckBox Content="串口数据窗口显示HEX值" Margin="5"/>
-                    <CheckBox Content="窗口保持置顶显示" Margin="5"/>
+                    <CheckBox Content="自动恢复被断开的串口连接" Margin="5" IsChecked="{Binding autoReconnect}"/>
+                    <CheckBox Content="自动保存串口收发日志" Margin="5" IsChecked="{Binding autoSaveLog}"/>
+                    <CheckBox Content="串口数据窗口显示HEX值" Margin="5" IsChecked="{Binding showHex}"/>
+                    <CheckBox Content="窗口保持置顶显示" Margin="5" IsChecked="{Binding topmost}"/>
                     <WrapPanel Margin="5">
                         <TextBlock Text="分包数据超时时间：" VerticalAlignment="Center"/>
-                        <TextBox Text="10"/>
+                        <TextBox Text="{Binding timeout}" Width="50"/>
                         <TextBlock Text="秒" VerticalAlignment="Center" Margin="3,0"/>
                     </WrapPanel>
                     <WrapPanel Margin="5">
                         <TextBlock Text="数据位长度：" VerticalAlignment="Center"/>
-                        <ComboBox>
-                            <ComboBoxItem Content="5" IsSelected="True"/>
-                            <ComboBoxItem Content="6"/>
-                            <ComboBoxItem Content="7"/>
-                            <ComboBoxItem Content="8"/>
+                        <ComboBox Name="dataBitsComboBox" Width="50" SelectionChanged="DataBitsComboBox_SelectionChanged">
+                            <ComboBoxItem Tag="5" Content="5"/>
+                            <ComboBoxItem Tag="6" Content="6"/>
+                            <ComboBoxItem Tag="7" Content="7"/>
+                            <ComboBoxItem Tag="8" Content="8"/>
                         </ComboBox>
                     </WrapPanel>
                     <WrapPanel Margin="5">
                         <TextBlock Text="停止位：" VerticalAlignment="Center"/>
-                        <ComboBox>
-                            <ComboBoxItem Content="1" IsSelected="True"/>
-                            <ComboBoxItem Content="1.5"/>
+                        <ComboBox Name="stopBitComboBox" Width="50" SelectionChanged="StopBitComboBox_SelectionChanged">
+                            <ComboBoxItem Content="1"/>
                             <ComboBoxItem Content="2"/>
+                            <ComboBoxItem Content="1.5"/>
                         </ComboBox>
                     </WrapPanel>
                     <WrapPanel Margin="5">
                         <TextBlock Text="校验位：" VerticalAlignment="Center"/>
-                        <ComboBox>
-                            <ComboBoxItem Content="无校验" IsSelected="True"/>
+                        <ComboBox Name="dataCheckComboBox" Width="70" SelectionChanged="DataCheckComboBox_SelectionChanged">
+                            <ComboBoxItem Content="无校验"/>
                             <ComboBoxItem Content="奇校验"/>
                             <ComboBoxItem Content="偶校验"/>
+                            <ComboBoxItem Content="高电平"/>
+                            <ComboBoxItem Content="低电平"/>
                         </ComboBox>
                     </WrapPanel>
                 </StackPanel>
@@ -75,13 +77,13 @@
                         <Button Margin="3,0,0,0" ToolTip="测试脚本">
                             <fa:FontAwesome Icon="Play" Foreground="DarkGreen"/>
                         </Button>
-                        <Button Margin="3,0,0,0" ToolTip="打开脚本与日志目录">
+                        <Button Name="openScriptFolderButton" Margin="3,0,0,0" ToolTip="打开脚本目录" Click="OpenScriptFolderButton_Click">
                             <Grid>
                                 <fa:FontAwesome Icon="FolderOpen" Foreground="Yellow"/>
                                 <fa:FontAwesome Icon="FolderOutlinepenOutline"/>
                             </Grid>
                         </Button>
-                        <Button Margin="3,0,0,0" ToolTip="查看接口文档">
+                        <Button Name="apiDocumentButton" Margin="3,0,0,0" ToolTip="查看接口文档" Click="ApiDocumentButton_Click">
                             <fa:FontAwesome Icon="Book" Foreground="DarkSlateGray"/>
                         </Button>
                     </WrapPanel>
