@@ -17,6 +17,7 @@
                 <StackPanel Margin="10,5,0,0" >
                     <CheckBox Content="自动恢复被断开的串口连接" Margin="5"/>
                     <CheckBox Content="自动保存串口收发日志" Margin="5"/>
+                    <CheckBox Content="串口数据窗口显示HEX值" Margin="5"/>
                     <CheckBox Content="窗口保持置顶显示" Margin="5"/>
                     <WrapPanel Margin="5">
                         <TextBlock Text="分包数据超时时间：" VerticalAlignment="Center"/>

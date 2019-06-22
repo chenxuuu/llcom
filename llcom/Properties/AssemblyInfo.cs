@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyTitle("能跑lua脚本的开源串口调试工具！")]
 [assembly: AssemblyDescription("https://github.com/chenxuuu/llcom")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("晨旭")]
 [assembly: AssemblyProduct("LLCOM")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
