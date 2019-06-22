@@ -224,12 +224,33 @@ namespace llcom
 
         private void LuaTestbutton_Click(object sender, RoutedEventArgs e)
         {
+            if (luaFileList.SelectedItem != null && !fileLoading)
+            {
+                try
+                {
+                    string r = LuaEnv.LuaLoader.Run($"user_script_send_convert/{luaFileList.SelectedItem as string}.lua",
+                                        new System.Collections.ArrayList{"uartData",luaTestTextBox.Text});
+                    MessageBox.Show("运行结果\r\nHEX值：" + Tools.Global.String2Hex(r, " ") +
+                        "\r\n原始字符串：" + r);
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("脚本运行错误：" + ex.ToString());
+                }
 
+            }
         }
 
         private void LuaTestCancelbutton_Click(object sender, RoutedEventArgs e)
         {
             luaTestWrapPanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void TextEditor_LostFocus(object sender, RoutedEventArgs e)
+        {
+            //自动保存脚本
+            if (lastLuaFile != "")
+                saveLuaFile(lastLuaFile);
         }
     }
 }
