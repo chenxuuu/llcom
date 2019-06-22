@@ -4,6 +4,7 @@ using ICSharpCode.AvalonEdit.Search;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,60 @@ namespace llcom
             InitializeComponent();
         }
 
+        //重载锁，防止逻辑卡死
+        private static bool fileLoading = false;
+        //上次打开文件名
+        private static string lastLuaFile = "";
+        /// <summary>
+        /// 加载lua脚本文件
+        /// </summary>
+        /// <param name="fileName">文件名，不带.lua</param>
+        private void loadLuaFile(string fileName)
+        {
+            //检查文件是否存在
+            if (!File.Exists($"user_script_send_convert/{fileName}.lua"))
+            {
+                Tools.Global.setting.sendScript = "默认";
+                if (!File.Exists($"user_script_send_convert/{Tools.Global.setting.sendScript}.lua"))
+                {
+                    File.Create($"user_script_send_convert/{Tools.Global.setting.sendScript}.lua").Close();
+                }
+            }
+            else
+            {
+                Tools.Global.setting.sendScript = fileName;
+            }
+
+            //文件内容显示出来
+            textEditor.Text = File.ReadAllText($"user_script_send_convert/{Tools.Global.setting.sendScript}.lua");
+
+            //刷新文件列表
+            DirectoryInfo luaFileDir = new DirectoryInfo("user_script_send_convert/");
+            FileSystemInfo[] luaFiles = luaFileDir.GetFileSystemInfos();
+            fileLoading = true;
+            luaFileList.Items.Clear();
+            for (int i = 0; i < luaFiles.Length; i++)
+            {
+                FileInfo file = luaFiles[i] as FileInfo;
+                //是文件
+                if (file != null && file.Name.IndexOf(".lua") == file.Name.Length - (".lua").Length)
+                {
+                    luaFileList.Items.Add(file.Name.Substring(0, file.Name.Length - 4));
+                }
+            }
+            luaFileList.Text = lastLuaFile = Tools.Global.setting.sendScript;
+            fileLoading = false;
+        }
+
+        /// <summary>
+        /// 保存lua文件
+        /// </summary>
+        /// <param name="fileName">文件名，不带.lua</param>
+        private void saveLuaFile(string fileName)
+        {
+            File.WriteAllText($"user_script_send_convert/{fileName}.lua", textEditor.Text);
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.DataContext = Tools.Global.setting;
@@ -39,6 +94,7 @@ namespace llcom
             //置顶显示以免被挡住
             this.Topmost = true;
 
+            //初始化下拉框参数
             dataBitsComboBox.SelectedIndex = Tools.Global.setting.dataBits - 5;
             stopBitComboBox.SelectedIndex = Tools.Global.setting.stopBit - 1;
             dataCheckComboBox.SelectedIndex = Tools.Global.setting.parity;
@@ -56,10 +112,15 @@ namespace llcom
                     textEditor.SyntaxHighlighting = HighlightingLoader.Load(xshd, HighlightingManager.Instance);
                 }
             }
+            //加载上次打开的文件
+            loadLuaFile(Tools.Global.setting.sendScript);
         }
 
         private void SettingWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            //自动保存脚本
+            if (lastLuaFile != "")
+                saveLuaFile(lastLuaFile);
             if (Tools.Global.isMainWindowsClosed)
             {
                 //说明软件关了
@@ -103,7 +164,72 @@ namespace llcom
             if (dataCheckComboBox.SelectedItem != null)
             {
                 Tools.Global.setting.parity = dataCheckComboBox.SelectedIndex;
+                //MessageBox.Show((dataCheckComboBox.SelectedItem as ComboBoxItem).Content.ToString());
             }
+        }
+
+        private void NewScriptButton_Click(object sender, RoutedEventArgs e)
+        {
+            luaTestWrapPanel.Visibility = Visibility.Collapsed;
+            newLuaFileWrapPanel.Visibility = Visibility.Visible;
+        }
+
+        private void TestScriptButton_Click(object sender, RoutedEventArgs e)
+        {
+            newLuaFileWrapPanel.Visibility = Visibility.Collapsed;
+            luaTestWrapPanel.Visibility = Visibility.Visible;
+        }
+
+        private void LuaFileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (luaFileList.SelectedItem != null && !fileLoading)
+            {
+                if (lastLuaFile != "")
+                    saveLuaFile(lastLuaFile);
+                string fileName = luaFileList.SelectedItem as string;
+                loadLuaFile(fileName);
+            }
+        }
+
+        private void NewLuaFileCancelbutton_Click(object sender, RoutedEventArgs e)
+        {
+            newLuaFileWrapPanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void NewLuaFilebutton_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(newLuaFileNameTextBox.Text))
+            {
+                MessageBox.Show("请输入文件名！");
+                return;
+            }
+            if (File.Exists($"user_script_send_convert/{newLuaFileNameTextBox.Text}.lua"))
+            {
+                MessageBox.Show("该文件已存在！");
+                return;
+            }
+
+            try
+            {
+                File.Create($"user_script_send_convert/{newLuaFileNameTextBox.Text}.lua").Close();
+                loadLuaFile(newLuaFileNameTextBox.Text);
+            }
+            catch
+            {
+                MessageBox.Show("新建失败，请检查！");
+                return;
+            }
+            newLuaFileWrapPanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void LuaTestbutton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void LuaTestCancelbutton_Click(object sender, RoutedEventArgs e)
+        {
+            luaTestWrapPanel.Visibility = Visibility.Collapsed;
         }
     }
 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:llcom"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="更多串口设置" Height="350" Width="400"
+        Title="更多串口设置" Height="450" Width="450"
         Loaded="Window_Loaded">
     <Window.Style>
         <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
@@ -59,22 +59,20 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <WrapPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <ComboBox Width="100">
-                            <ComboBoxItem Content="末尾加\r\n" IsSelected="True"/>
-                            <ComboBoxItem Content="发送16进制"/>
-                            <ComboBoxItem Content="gps命令包"/>
+                        <ComboBox Name="luaFileList" Width="100" SelectionChanged="LuaFileList_SelectionChanged">
                         </ComboBox>
-                        <Button Margin="3,0,0,0" ToolTip="新建脚本">
+                        <Button Name="newScriptButton" Margin="3,0,0,0" ToolTip="新建脚本" Click="NewScriptButton_Click">
                             <Grid>
                                 <fa:FontAwesome Icon="File" Foreground="LightSkyBlue"/>
                                 <fa:FontAwesome Icon="FileCodeOutline"/>
                             </Grid>
                         </Button>
-                        <Button Margin="3,0,0,0" ToolTip="测试脚本">
+                        <Button Name="testScriptButton" Margin="3,0,0,0" ToolTip="测试脚本" Click="TestScriptButton_Click">
                             <fa:FontAwesome Icon="Play" Foreground="DarkGreen"/>
                         </Button>
                         <Button Name="openScriptFolderButton" Margin="3,0,0,0" ToolTip="打开脚本目录" Click="OpenScriptFolderButton_Click">
@@ -87,15 +85,37 @@
                             <fa:FontAwesome Icon="Book" Foreground="DarkSlateGray"/>
                         </Button>
                     </WrapPanel>
+                    <WrapPanel Grid.Row="1" Name="newLuaFileWrapPanel" Visibility="Collapsed" Margin="3">
+                        <TextBlock Text="文件名：" VerticalAlignment="Center"/>
+                        <TextBox Name="newLuaFileNameTextBox" Width="90" Text="new script"/>
+                        <Button Name="newLuaFilebutton" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="确认新建文件" Click="NewLuaFilebutton_Click">
+                            <fa:FontAwesome Icon="Check" Foreground="Green"/>
+                        </Button>
+                        <Button Name="newLuaFileCancelbutton" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="取消" Click="NewLuaFileCancelbutton_Click">
+                            <fa:FontAwesome Icon="Ban" Foreground="Red"/>
+                        </Button>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="1" Name="luaTestWrapPanel" Visibility="Collapsed" Margin="3">
+                        <TextBlock Text="待测试的值：" VerticalAlignment="Center"/>
+                        <TextBox Name="luaTestTextBox" Width="150" Text="new script"/>
+                        <Button Name="luaTestbutton" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="测试输入值" Click="LuaTestbutton_Click">
+                            <Grid>
+                                <fa:FontAwesome Icon="PaperPlane" Foreground="LightBlue"/>
+                                <fa:FontAwesome Icon="PaperPlaneOutline" Foreground="Black"/>
+                            </Grid>
+                        </Button>
+                        <Button Name="luaTestCancelbutton" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="取消" Click="LuaTestCancelbutton_Click">
+                            <fa:FontAwesome Icon="Ban" Foreground="Red"/>
+                        </Button>
+                    </WrapPanel>
                     <avalonEdit:TextEditor
-                        Grid.Row="1"
+                        Grid.Row="2"
                         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
                         Name="textEditor"
                         FontFamily="Consolas"
                         FontSize="10pt"
-                        ShowLineNumbers="True"
-                        Text="return uartData..'\r\n'--结尾加上回车换行"/>
-                    <WrapPanel Grid.Row="2" Margin="5">
+                        ShowLineNumbers="True"/>
+                    <WrapPanel Grid.Row="3" Margin="5">
                         <TextBlock Text="传入数据为uartData，传出数据为你脚本return的结果。" TextWrapping="Wrap"/>
                         <TextBlock Text="此处脚本对快捷发送区也生效，对脚本输出数据无效。" TextWrapping="Wrap"/>
                         <TextBlock Text="查看接口文档，可点击主界面接口文档按钮。" TextWrapping="Wrap"/>
