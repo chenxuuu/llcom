@@ -87,6 +87,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="LuaEnv\LuaLoader.cs" />
     <Compile Include="Model\Settings.cs" />
     <Compile Include="Model\Uart.cs" />
     <Compile Include="SettingWindow.xaml.cs">
@@ -142,9 +143,7 @@
   <ItemGroup>
     <Resource Include="llcom.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="LuaEnv\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

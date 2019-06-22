@@ -97,7 +97,7 @@
                     </WrapPanel>
                     <WrapPanel Grid.Row="1" Name="luaTestWrapPanel" Visibility="Collapsed" Margin="3">
                         <TextBlock Text="待测试的值：" VerticalAlignment="Center"/>
-                        <TextBox Name="luaTestTextBox" Width="150" Text="new script"/>
+                        <TextBox Name="luaTestTextBox" Width="150" Text="uart data"/>
                         <Button Name="luaTestbutton" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="测试输入值" Click="LuaTestbutton_Click">
                             <Grid>
                                 <fa:FontAwesome Icon="PaperPlane" Foreground="LightBlue"/>
@@ -114,7 +114,8 @@
                         Name="textEditor"
                         FontFamily="Consolas"
                         FontSize="10pt"
-                        ShowLineNumbers="True"/>
+                        ShowLineNumbers="True"
+                        LostFocus="TextEditor_LostFocus"/>
                     <WrapPanel Grid.Row="3" Margin="5">
                         <TextBlock Text="传入数据为uartData，传出数据为你脚本return的结果。" TextWrapping="Wrap"/>
                         <TextBlock Text="此处脚本对快捷发送区也生效，对脚本输出数据无效。" TextWrapping="Wrap"/>
