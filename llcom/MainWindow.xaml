@@ -273,8 +273,7 @@
                         Name="textEditor"
                         FontFamily="Consolas"
                         FontSize="10pt"
-                        ShowLineNumbers="True"
-                            Text="--别着急，这部分还没写"/>
+                        ShowLineNumbers="True"/>
                     </Grid>
                     <!-- 脚本编辑界面END -->
 
@@ -292,14 +291,14 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <Button Margin="0,3,3,3" ToolTip="停止运行" Foreground="DarkRed">
+                            <Button Name="stopLuaButton" Margin="0,3,3,3" ToolTip="停止运行" Foreground="DarkRed">
                                 <fa:FontAwesome Icon="Stop"/>
                             </Button>
-                            <Button Margin="0,3,3,3" ToolTip="暂停打印" Grid.Column="1" Foreground="GreenYellow">
+                            <Button Name="pauseLuaPrintButton" Margin="0,3,3,3" ToolTip="暂停打印" Grid.Column="1" Foreground="GreenYellow">
                                 <fa:FontAwesome Icon="Pause"/>
                             </Button>
                             <TextBox Grid.Column="2" Margin="0,3"/>
-                            <Button Margin="3,3,0,3" ToolTip="实时执行lua语句 - Enter" Grid.Column="3" Foreground="DeepSkyBlue">
+                            <Button Name="sendLuaScriptButton" Margin="3,3,0,3" ToolTip="实时执行lua语句 - Enter" Grid.Column="3" Foreground="DeepSkyBlue">
                                 <fa:FontAwesome Icon="ArrowUp"/>
                             </Button>
                         </Grid>

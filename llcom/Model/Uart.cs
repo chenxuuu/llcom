@@ -30,6 +30,8 @@ namespace llcom.Model
         /// <param name="data">数据内容</param>
         public void SendData(string data)
         {
+            if (data.Length == 0)
+                return;
             byte[] bytesSend = System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(data);
             serial.Write(bytesSend, 0, bytesSend.Length);
             UartDataSent(data, EventArgs.Empty);//回调
@@ -42,6 +44,8 @@ namespace llcom.Model
             if (!serial.IsOpen)//串口被关了，不读了
                 return;
             string d = ((SerialPort)sender).ReadExisting();
+            if (d.Length == 0)
+                return;
             UartDataRecived(d, EventArgs.Empty);//回调事件
         }
     }
