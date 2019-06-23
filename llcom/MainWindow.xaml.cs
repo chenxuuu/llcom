@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -97,13 +98,6 @@ namespace llcom
                 }
             }
 
-            addUartLog("abcdef", true);
-            addUartLog("abcdef", false);
-            addUartLog("abcdef", true);
-            addUartLog("abcdef", true);
-            addUartLog("abcdef", false);
-            addUartLog("abcdef", false);
-
         }
 
         private void Uart_UartDataSent(object sender, EventArgs e)
@@ -120,21 +114,95 @@ namespace llcom
             }));
         }
 
+        private bool refreshLock = false;
         /// <summary>
         /// 刷新设备列表
         /// </summary>
         private void refreshPortList()
         {
+            if (refreshLock)
+                return;
+            refreshLock = true;
             serialPortsListComboBox.Items.Clear();
-            string[] portList = Tools.Global.GetFullNameList();
-            foreach (string i in portList)
-                serialPortsListComboBox.Items.Add(i);
-            if (portList.Length >= 1)
-                serialPortsListComboBox.SelectedIndex = 0;
+            List<string> strs = new List<string>();
+            Task.Run(() =>
+            {
+                while(true)
+                {
+                    try
+                    {
+                        ManagementObjectSearcher searcher =new ManagementObjectSearcher("root\\CIMV2","SELECT * FROM Win32_PnPEntity");
+                        foreach (ManagementObject queryObj in searcher.Get())
+                        {
+                            if ((queryObj["Caption"] != null) && (queryObj["Caption"].ToString().Contains("(COM")))
+                            {
+                                strs.Add(queryObj["Caption"].ToString());
+                            }
+                        }
+                        break;
+                    }
+                    catch
+                    {
+                        Task.Delay(500).Wait();
+                    }
+                    //MessageBox.Show("fail了");
+                }
+                this.Dispatcher.Invoke(new Action(delegate {
+                    foreach (string i in strs)
+                        serialPortsListComboBox.Items.Add(i);
+                    if (strs.Count >= 1)
+                        serialPortsListComboBox.SelectedIndex = 0;
+                    refreshLock = false;
+
+
+                    //选定上次的com口
+                    foreach (string c in serialPortsListComboBox.Items)
+                    {
+                        if ((c).Contains(Tools.Global.uart.serial.PortName))
+                        {
+                            serialPortsListComboBox.Text = c;
+                            //自动重连，不管结果
+                            if (!forcusClosePort && Tools.Global.setting.autoReconnect)
+                            {
+                                try
+                                {
+                                    Tools.Global.uart.serial.Open();
+                                    openClosePortTextBlock.Text = "关闭";
+                                    serialPortsListComboBox.IsEnabled = false;
+                                    statusTextBlock.Text = "开启";
+                                }
+                                catch
+                                {
+                                    //MessageBox.Show("串口打开失败！");
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }));
+            });
         }
         private void UsbDeviceNotifier_OnDeviceNotify(object sender, DeviceNotifyEventArgs e)
         {
-            throw new NotImplementedException();
+            if (Tools.Global.uart.serial.IsOpen)
+            {
+                refreshPortList();
+                foreach(string c in serialPortsListComboBox.Items)
+                {
+                    if ((c).Contains(Tools.Global.uart.serial.PortName))
+                    {
+                        serialPortsListComboBox.Text = c;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                openClosePortTextBlock.Text = "打开";
+                serialPortsListComboBox.IsEnabled = true;
+                statusTextBlock.Text = "关闭";
+                refreshPortList();
+            }
         }
 
         /// <summary>
