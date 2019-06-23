@@ -620,7 +620,7 @@ namespace llcom
 
         private void LuaRunEnv_LuaRunError(object sender, EventArgs e)
         {
-            
+            luaLogPrintable = true;
         }
 
         private void PauseLuaPrintButton_Click(object sender, RoutedEventArgs e)
@@ -630,10 +630,15 @@ namespace llcom
 
         private void SendLuaScriptButton_Click(object sender, RoutedEventArgs e)
         {
-
+            LuaEnv.LuaRunEnv.RunCommand(runOneLineLuaTextBox.Text);
+            //runOneLineLuaTextBox.Clear();
         }
 
-
+        private void RunOneLineLuaTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+                LuaEnv.LuaRunEnv.RunCommand(runOneLineLuaTextBox.Text);
+        }
     }
 
     public class ToSendData
