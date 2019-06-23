@@ -232,21 +232,19 @@
                     <Grid Visibility="Visible">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <WrapPanel Orientation="Horizontal" Margin="0,0,0,5">
-                            <ComboBox Width="100">
-                                <ComboBoxItem Content="AT test" IsSelected="True"/>
-                                <ComboBoxItem Content="Air720 test"/>
-                                <ComboBoxItem Content="file send test"/>
+                            <ComboBox Name="luaFileList" Width="100" SelectionChanged="LuaFileList_SelectionChanged">
                             </ComboBox>
-                            <Button Margin="3,0,0,0" ToolTip="新建脚本">
+                            <Button Name="newScriptButton" Margin="3,0,0,0" ToolTip="新建脚本" Click="NewScriptButton_Click">
                                 <Grid>
                                     <fa:FontAwesome Icon="File" Foreground="LightSkyBlue"/>
                                     <fa:FontAwesome Icon="FileCodeOutline"/>
                                 </Grid>
                             </Button>
-                            <Button Margin="3,0,0,0" ToolTip="运行脚本">
+                            <Button Name="runScriptButton" Margin="3,0,0,0" ToolTip="运行脚本" Click="RunScriptButton_Click">
                                 <fa:FontAwesome Icon="Play" Foreground="DarkGreen"/>
                             </Button>
                             <Button Name="openScriptFolderButton" Margin="3,0,0,0" ToolTip="打开脚本与日志目录" Click="OpenScriptFolderButton_Click">
@@ -259,8 +257,18 @@
                                 <fa:FontAwesome Icon="Book" Foreground="DarkSlateGray"/>
                             </Button>
                         </WrapPanel>
+                        <WrapPanel Grid.Row="1" Name="newLuaFileWrapPanel" Visibility="Collapsed" Margin="3">
+                            <TextBlock Text="文件名：" VerticalAlignment="Center"/>
+                            <TextBox Name="newLuaFileNameTextBox" Width="90" Text="new script"/>
+                            <Button Name="newLuaFilebutton" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="确认新建文件" Click="NewLuaFilebutton_Click">
+                                <fa:FontAwesome Icon="Check" Foreground="Green"/>
+                            </Button>
+                            <Button Name="newLuaFileCancelbutton" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="取消" Click="NewLuaFileCancelbutton_Click">
+                                <fa:FontAwesome Icon="Ban" Foreground="Red"/>
+                            </Button>
+                        </WrapPanel>
                         <avalonEdit:TextEditor
-                        Grid.Row="1"
+                        Grid.Row="2"
                         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
                         Name="textEditor"
                         FontFamily="Consolas"

@@ -111,6 +111,8 @@ namespace llcom
                 }
             }
 
+            //加载上次打开的文件
+            loadLuaFile(Tools.Global.setting.runScript);
         }
 
 
@@ -238,6 +240,9 @@ namespace llcom
         /// <param name="e"></param>
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            //自动保存脚本
+            if (lastLuaFile != "")
+                saveLuaFile(lastLuaFile);
             Tools.Global.isMainWindowsClosed = true;
             foreach (Window win in App.Current.Windows)
             {
@@ -456,6 +461,112 @@ namespace llcom
             }
             data.Add("data", list);
             Tools.Global.setting.quickData = data.ToString();
+        }
+
+        private void NewScriptButton_Click(object sender, RoutedEventArgs e)
+        {
+            newLuaFileWrapPanel.Visibility = Visibility.Visible;
+        }
+
+        private void RunScriptButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NewLuaFilebutton_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(newLuaFileNameTextBox.Text))
+            {
+                MessageBox.Show("请输入文件名！");
+                return;
+            }
+            if (File.Exists($"user_script_run/{newLuaFileNameTextBox.Text}.lua"))
+            {
+                MessageBox.Show("该文件已存在！");
+                return;
+            }
+
+            try
+            {
+                File.Create($"user_script_run/{newLuaFileNameTextBox.Text}.lua").Close();
+                loadLuaFile(newLuaFileNameTextBox.Text);
+            }
+            catch
+            {
+                MessageBox.Show("新建失败，请检查！");
+                return;
+            }
+            newLuaFileWrapPanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void NewLuaFileCancelbutton_Click(object sender, RoutedEventArgs e)
+        {
+            newLuaFileWrapPanel.Visibility = Visibility.Collapsed;
+        }
+
+        //重载锁，防止逻辑卡死
+        private static bool fileLoading = false;
+        //上次打开文件名
+        private static string lastLuaFile = "";
+        /// <summary>
+        /// 加载lua脚本文件
+        /// </summary>
+        /// <param name="fileName">文件名，不带.lua</param>
+        private void loadLuaFile(string fileName)
+        {
+            //检查文件是否存在
+            if (!File.Exists($"user_script_run/{fileName}.lua"))
+            {
+                Tools.Global.setting.runScript = "example";
+                if (!File.Exists($"user_script_run/{Tools.Global.setting.runScript}.lua"))
+                {
+                    File.Create($"user_script_run/{Tools.Global.setting.runScript}.lua").Close();
+                }
+            }
+            else
+            {
+                Tools.Global.setting.runScript = fileName;
+            }
+
+            //文件内容显示出来
+            textEditor.Text = File.ReadAllText($"user_script_run/{Tools.Global.setting.runScript}.lua");
+
+            //刷新文件列表
+            DirectoryInfo luaFileDir = new DirectoryInfo("user_script_run/");
+            FileSystemInfo[] luaFiles = luaFileDir.GetFileSystemInfos();
+            fileLoading = true;
+            luaFileList.Items.Clear();
+            for (int i = 0; i < luaFiles.Length; i++)
+            {
+                FileInfo file = luaFiles[i] as FileInfo;
+                //是文件
+                if (file != null && file.Name.IndexOf(".lua") == file.Name.Length - (".lua").Length)
+                {
+                    luaFileList.Items.Add(file.Name.Substring(0, file.Name.Length - 4));
+                }
+            }
+            luaFileList.Text = lastLuaFile = Tools.Global.setting.runScript;
+            fileLoading = false;
+        }
+
+        /// <summary>
+        /// 保存lua文件
+        /// </summary>
+        /// <param name="fileName">文件名，不带.lua</param>
+        private void saveLuaFile(string fileName)
+        {
+            File.WriteAllText($"user_script_run/{fileName}.lua", textEditor.Text);
+        }
+
+        private void LuaFileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (luaFileList.SelectedItem != null && !fileLoading)
+            {
+                if (lastLuaFile != "")
+                    saveLuaFile(lastLuaFile);
+                string fileName = luaFileList.SelectedItem as string;
+                loadLuaFile(fileName);
+            }
         }
     }
 
