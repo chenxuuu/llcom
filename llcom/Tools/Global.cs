@@ -35,6 +35,7 @@ namespace llcom.Tools
             uart.serial.StopBits = (StopBits)setting.stopBit;
             uart.UartDataRecived += Uart_UartDataRecived;
             uart.UartDataSent += Uart_UartDataSent;
+            LuaEnv.LuaRunEnv.init();
         }
 
 

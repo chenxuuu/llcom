@@ -17,7 +17,22 @@ namespace llcom.LuaEnv
         /// <param name="lua"></param>
         public static void Initial(NLua.Lua lua)
         {
+            //utf8转gbk编码的hex值
+            lua.RegisterFunction("apiUtf8ToHex", null, typeof(LuaApis).GetMethod("Utf8ToAsciiHex")); 
+            //获取软件目录路径
+            lua.RegisterFunction("apiGetPath", null, typeof(LuaApis).GetMethod("GetPath"));
+            //发送串口数据
+            if((lua["runType"] as string) != "send")
+            {
+                lua.RegisterFunction("apiSendUartData", null, typeof(LuaApis).GetMethod("SendUartData"));
+                lua.RegisterFunction("apiStartTimer", null, typeof(LuaRunEnv).GetMethod("StartTimer"));
+            }
+            //输出日志
+            lua.RegisterFunction("apiPrintLog", null, typeof(LuaApis).GetMethod("PrintLog"));
 
+
+            //运行初始化文件
+            lua.DoFile("core_script/head.lua");
         }
 
         /// <summary>

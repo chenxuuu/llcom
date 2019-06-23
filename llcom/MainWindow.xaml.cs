@@ -113,7 +113,13 @@ namespace llcom
 
             //加载上次打开的文件
             loadLuaFile(Tools.Global.setting.runScript);
+
+            //加载lua日志打印事件
+            LuaEnv.LuaApis.PrintLuaLog += LuaApis_PrintLuaLog;
+            //lua代码出错/结束运行事件
+            LuaEnv.LuaRunEnv.LuaRunError += LuaRunEnv_LuaRunError;
         }
+
 
 
         private void Uart_UartDataSent(object sender, EventArgs e)
@@ -435,7 +441,10 @@ namespace llcom
 
         private void DeleteSendListButton_Click(object sender, RoutedEventArgs e)
         {
-            toSendListItems.RemoveAt(toSendListItems.Count - 1);
+            if (toSendListItems.Count > 0)
+            {
+                toSendListItems.RemoveAt(toSendListItems.Count - 1);
+            }
             SaveSendList(null, EventArgs.Empty);
         }
 
@@ -470,7 +479,15 @@ namespace llcom
 
         private void RunScriptButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (luaFileList.SelectedItem != null && !fileLoading)
+            {
+                luaLogTextBox.Clear();
+                LuaEnv.LuaRunEnv.New($"user_script_run/{luaFileList.SelectedItem as string}.lua");
+                luaScriptEditorGrid.Visibility = Visibility.Collapsed;
+                luaLogShowGrid.Visibility = Visibility.Visible;
+                luaLogPrintable = true;
+            }
+            LuaEnv.LuaRunEnv.canRun = true;
         }
 
         private void NewLuaFilebutton_Click(object sender, RoutedEventArgs e)
@@ -568,6 +585,55 @@ namespace llcom
                 loadLuaFile(fileName);
             }
         }
+        private void TextEditor_LostFocus(object sender, RoutedEventArgs e)
+        {
+            //自动保存脚本
+            if (lastLuaFile != "")
+                saveLuaFile(lastLuaFile);
+        }
+
+        private static bool luaLogPrintable = true;
+        private void LuaApis_PrintLuaLog(object sender, EventArgs e)
+        {
+            if (luaLogPrintable)
+            {
+                this.Dispatcher.Invoke(new Action(delegate
+                {
+                    luaLogTextBox.AppendText((sender as string) + "\r\n");
+                    luaLogTextBox.ScrollToEnd();
+                }));
+            }
+        }
+
+        private void StopLuaButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!LuaEnv.LuaRunEnv.isRunning)
+            {
+                luaLogTextBox.Clear();
+                luaScriptEditorGrid.Visibility = Visibility.Visible;
+                luaLogShowGrid.Visibility = Visibility.Collapsed;
+                luaLogPrintable = true;
+            }
+            luaLogPrintable = true;
+            LuaEnv.LuaRunEnv.StopLua("");
+        }
+
+        private void LuaRunEnv_LuaRunError(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void PauseLuaPrintButton_Click(object sender, RoutedEventArgs e)
+        {
+            luaLogPrintable = !luaLogPrintable;
+        }
+
+        private void SendLuaScriptButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
     }
 
     public class ToSendData

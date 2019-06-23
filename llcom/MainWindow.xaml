@@ -229,7 +229,7 @@
             <TabItem Header="运行lua脚本">
                 <Grid>
                     <!-- 脚本编辑界面 -->
-                    <Grid Visibility="Visible">
+                    <Grid Name="luaScriptEditorGrid" Visibility="Visible">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
@@ -273,17 +273,18 @@
                         Name="textEditor"
                         FontFamily="Consolas"
                         FontSize="10pt"
-                        ShowLineNumbers="True"/>
+                        ShowLineNumbers="True"
+                        LostFocus="TextEditor_LostFocus"/>
                     </Grid>
                     <!-- 脚本编辑界面END -->
 
                     <!-- 脚本运行日志界面 -->
-                    <Grid Visibility="Collapsed">
+                    <Grid Name="luaLogShowGrid" Visibility="Collapsed">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <TextBox IsReadOnly="true" Text="[2019/06/20 14:01:00] print 123123" HorizontalScrollBarVisibility="Auto" VerticalContentAlignment="Top"/>
+                        <TextBox Name="luaLogTextBox" IsReadOnly="true" VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top" TextWrapping="Wrap"/>
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
@@ -291,14 +292,14 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <Button Name="stopLuaButton" Margin="0,3,3,3" ToolTip="停止运行" Foreground="DarkRed">
+                            <Button Name="stopLuaButton" Margin="0,3,3,3" ToolTip="停止运行，停止之后再点一下就是关闭" Foreground="DarkRed" Click="StopLuaButton_Click">
                                 <fa:FontAwesome Icon="Stop"/>
                             </Button>
-                            <Button Name="pauseLuaPrintButton" Margin="0,3,3,3" ToolTip="暂停打印" Grid.Column="1" Foreground="GreenYellow">
+                            <Button Name="pauseLuaPrintButton" Margin="0,3,3,3" ToolTip="暂停打印" Grid.Column="1" Foreground="GreenYellow" Click="PauseLuaPrintButton_Click">
                                 <fa:FontAwesome Icon="Pause"/>
                             </Button>
                             <TextBox Grid.Column="2" Margin="0,3"/>
-                            <Button Name="sendLuaScriptButton" Margin="3,3,0,3" ToolTip="实时执行lua语句 - Enter" Grid.Column="3" Foreground="DeepSkyBlue">
+                            <Button Name="sendLuaScriptButton" Margin="3,3,0,3" ToolTip="实时执行lua语句 - Enter" Grid.Column="3" Foreground="DeepSkyBlue" Click="SendLuaScriptButton_Click">
                                 <fa:FontAwesome Icon="ArrowUp"/>
                             </Button>
                         </Grid>

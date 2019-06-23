@@ -45,6 +45,8 @@ namespace llcom.Tools
         /// <param name="l"></param>
         public static void AddLuaLog(string l)
         {
+            if (luaLogFile == "")
+                InitLuaLog();
             File.AppendAllText(luaLogFile, DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss:ffff]") + l + "\r\n");
         }
     }
