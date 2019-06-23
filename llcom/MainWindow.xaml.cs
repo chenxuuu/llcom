@@ -359,9 +359,18 @@ namespace llcom
             uartDataFlowDocument.Document.Blocks.Clear();
         }
 
-        private void SendDataButton_Click(object sender, RoutedEventArgs e)
+        private void BaudRateComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(!Tools.Global.uart.serial.IsOpen)
+            if (baudRateComboBox.SelectedItem != null)
+            {
+                Tools.Global.setting.baudRate = 
+                    int.Parse((baudRateComboBox.SelectedItem as ComboBoxItem).Content.ToString());
+            }
+        }
+
+        private void SendUartData_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (!Tools.Global.uart.serial.IsOpen)
                 openPort();
             if (Tools.Global.uart.serial.IsOpen)
             {
@@ -372,7 +381,7 @@ namespace llcom
                         $"user_script_send_convert/{Tools.Global.setting.sendScript}.lua",
                         new System.Collections.ArrayList { "uartData", toSendDataTextBox.Text });
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show("处理发送数据的脚本运行错误，请检查发送脚本后再试：\r\n" + ex.ToString());
                     return;
@@ -387,20 +396,6 @@ namespace llcom
                     return;
                 }
             }
-        }
-
-        private void BaudRateComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (baudRateComboBox.SelectedItem != null)
-            {
-                Tools.Global.setting.baudRate = 
-                    int.Parse((baudRateComboBox.SelectedItem as ComboBoxItem).Content.ToString());
-            }
-        }
-
-        private void SerialPortsListComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 
