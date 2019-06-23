@@ -90,7 +90,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="LuaEnv\LuaApis.cs" />
     <Compile Include="LuaEnv\LuaLoader.cs" />
+    <Compile Include="LuaEnv\LuaRunEnv.cs" />
     <Compile Include="Model\Settings.cs" />
     <Compile Include="Model\Uart.cs" />
     <Compile Include="SettingWindow.xaml.cs">
