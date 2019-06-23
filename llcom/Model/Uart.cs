@@ -30,7 +30,7 @@ namespace llcom.Model
         /// <param name="data">数据内容</param>
         public void SendData(string data)
         {
-            byte[] bytesSend = System.Text.Encoding.Default.GetBytes(data);
+            byte[] bytesSend = System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(data);
             serial.Write(bytesSend, 0, bytesSend.Length);
             UartDataSent(data, EventArgs.Empty);//回调
         }

@@ -71,7 +71,7 @@
             </Button>
             <Button Name="clearLogButton" Content="清空日志" Grid.Column="4" Margin="2" Click="ClearLogButton_Click"/>
             <Button Name="MoreSettingButton" Content="更多设置" Grid.Column="4" Grid.Row="1" Margin="2" ToolTip="可设置串口校验位停止位等信息、设置发送前的自动处理脚本。" Click="MoreSettingButton_Click"/>
-            <TextBox Name="toSendDataTextBox" Text="123456" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="4" Height="50" VerticalContentAlignment="Top"
+            <TextBox Name="toSendDataTextBox" Text="{Binding dataToSend}" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="4" Height="50" VerticalContentAlignment="Top"
                      TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2" FontFamily="Consolas"/>
             <Button Name="sendDataButton" Content="发送" Grid.Column="9" Grid.RowSpan="2" Margin="2" ToolTip="按Ctrl+Enter同样也可以发送数据。" Command="{StaticResource SendUartData}"/>
         </Grid>
@@ -79,7 +79,7 @@
         
         <!-- 底部状态栏 -->
         <DockPanel Grid.Row="2" Grid.ColumnSpan="3" >
-            <StatusBar Name="bottomStatusBar" DockPanel.Dock="Bottom">
+            <StatusBar DockPanel.Dock="Bottom">
                 <StatusBar.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Grid>
@@ -164,7 +164,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="13" />
                 <StatusBarItem Grid.Column="14">
-                    <TextBlock Text="{Binding sent}" />
+                    <TextBlock Name="sentCountTextBlock" Text="0" />
                 </StatusBarItem>
                 <Separator Grid.Column="15" />
                 <StatusBarItem Grid.Column="16">
@@ -172,7 +172,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="17" />
                 <StatusBarItem Grid.Column="18">
-                    <TextBlock Text="{Binding received}" />
+                    <TextBlock Name="receivedCountTextBlock" Text="0" />
                 </StatusBarItem>
             </StatusBar>
         </DockPanel>
@@ -208,7 +208,7 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="{Binding id}" Grid.Column="0" HorizontalAlignment="Center" Margin="2"/>
                                         <TextBox Text="{Binding text}" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,0,2,0"/>
-                                        <Button Content="发送" Grid.Column="2" HorizontalAlignment="Stretch" ToolTip="回车键可快速发送"/>
+                                        <Button Content="发送" Tag="{Binding}" Grid.Column="2" HorizontalAlignment="Stretch" ToolTip="回车键可快速发送" Click="knowSendDataButton_click"/>
                                         <CheckBox IsChecked="{Binding hex}"  Grid.Column="3" HorizontalAlignment="Center" Margin="2"/>
                                     </Grid>
                                 </DataTemplate>
@@ -219,8 +219,8 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Button Name="addSendListButton" Content="添加新项目" Margin="3"/>
-                            <Button Name="deleteSendListButton" Content="删除最后一项" Grid.Column="1" Margin="3"/>
+                            <Button Name="addSendListButton" Content="添加新项目" Margin="3" Click="AddSendListButton_Click"/>
+                            <Button Name="deleteSendListButton" Content="删除最后一项" Grid.Column="1" Margin="3" Click="DeleteSendListButton_Click"/>
                         </Grid>
                         <TextBlock Text="发送处理的lua脚本，同样对此处发送的数据生效。" TextWrapping="Wrap" FontWeight="Bold"/>
                     </StackPanel>

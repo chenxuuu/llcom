@@ -66,7 +66,7 @@ namespace llcom.Tools
         /// <returns>结果</returns>
         public static string String2Hex(string str, string space)
         {
-             return BitConverter.ToString(Encoding.Default.GetBytes(str)).Replace("-", space);
+             return BitConverter.ToString(Encoding.GetEncoding("ISO-8859-1").GetBytes(str)).Replace("-", space);
         }
 
 
@@ -85,7 +85,7 @@ namespace llcom.Tools
             for (int i = 0; i < mHex.Length; i += 2)
                 if (!byte.TryParse(mHex.Substring(i, 2), NumberStyles.HexNumber, null, out vBytes[i / 2]))
                     vBytes[i / 2] = 0;
-            return Encoding.Default.GetString(vBytes);
+            return Encoding.GetEncoding("ISO-8859-1").GetString(vBytes);
         }
 
     }
