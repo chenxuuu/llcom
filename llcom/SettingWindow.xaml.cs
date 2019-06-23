@@ -135,7 +135,7 @@ namespace llcom
 
         private void ApiDocumentButton_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/chenxuuu/llcom");
+            System.Diagnostics.Process.Start(Tools.Global.apiDocumentUrl);
         }
 
         private void OpenScriptFolderButton_Click(object sender, RoutedEventArgs e)
