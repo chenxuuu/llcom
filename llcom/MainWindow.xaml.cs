@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,6 +37,7 @@ namespace llcom
         sentCount sentCount = new sentCount();
         private static IDeviceNotifier usbDeviceNotifier = DeviceNotifier.OpenDeviceNotifier();
         ScrollViewer sv;
+        private bool forcusClosePort = true;
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //初始化所有数据
@@ -60,10 +62,14 @@ namespace llcom
             Tools.Global.uart.UartDataRecived += Uart_UartDataRecived;
             Tools.Global.uart.UartDataSent += Uart_UartDataSent;
 
+            //使日志富文本区域滚动可控制
             sv = uartDataFlowDocument.Template.FindName("PART_ContentHost", uartDataFlowDocument) as ScrollViewer;
 
-            Tools.Global.uart.serial.PortName = "COM10";
-            Tools.Global.uart.serial.Open();
+            //加载初始波特率
+            baudRateComboBox.Text = Tools.Global.setting.baudRate.ToString();
+
+            //刷新设备列表
+            refreshPortList();
 
             toSendList.ItemsSource = items;
 
@@ -91,6 +97,13 @@ namespace llcom
                 }
             }
 
+            addUartLog("abcdef", true);
+            addUartLog("abcdef", false);
+            addUartLog("abcdef", true);
+            addUartLog("abcdef", true);
+            addUartLog("abcdef", false);
+            addUartLog("abcdef", false);
+
         }
 
         private void Uart_UartDataSent(object sender, EventArgs e)
@@ -107,6 +120,18 @@ namespace llcom
             }));
         }
 
+        /// <summary>
+        /// 刷新设备列表
+        /// </summary>
+        private void refreshPortList()
+        {
+            serialPortsListComboBox.Items.Clear();
+            string[] portList = Tools.Global.GetFullNameList();
+            foreach (string i in portList)
+                serialPortsListComboBox.Items.Add(i);
+            if (portList.Length >= 1)
+                serialPortsListComboBox.SelectedIndex = 0;
+        }
         private void UsbDeviceNotifier_OnDeviceNotify(object sender, DeviceNotifyEventArgs e)
         {
             throw new NotImplementedException();
@@ -176,7 +201,10 @@ namespace llcom
             if (Tools.Global.setting.showHex)
             {
                 p = new Paragraph(new Run("HEX:" + Tools.Global.String2Hex(data, " ")));
-                p.Foreground = Brushes.DarkGray;
+                if (send)
+                    p.Foreground = Brushes.LightPink;
+                else
+                    p.Foreground = Brushes.LightGreen;
                 p.Margin = new Thickness(0, 0, 0, 8);
                 uartDataFlowDocument.Document.Blocks.Add(p);
             }
@@ -201,8 +229,60 @@ namespace llcom
             System.Diagnostics.Process.Start("explorer.exe", "user_script_run");
         }
 
+
+        private void openPort()
+        {
+            if (serialPortsListComboBox.SelectedItem != null)
+            {
+                string[] ports = SerialPort.GetPortNames();//获取所有串口列表
+                string port = "";//最终串口名
+                foreach (string p in ports)//循环查找符合名称串口
+                {
+                    if ((serialPortsListComboBox.SelectedItem as string).Contains(p))//如果和选中项目匹配
+                    {
+                        port = p;
+                        break;
+                    }
+                }
+                if (port != "")
+                {
+                    try
+                    {
+                        forcusClosePort = false;//不再强制关闭串口
+                        Tools.Global.uart.serial.PortName = port;
+                        Tools.Global.uart.serial.Open();
+                        openClosePortTextBlock.Text = "关闭";
+                        serialPortsListComboBox.IsEnabled = false;
+                        statusTextBlock.Text = "开启";
+                    }
+                    catch
+                    {
+                        MessageBox.Show("串口打开失败！");
+                    }
+                }
+            }
+        }
         private void OpenClosePortButton_Click(object sender, RoutedEventArgs e)
         {
+            if(openClosePortTextBlock.Text == "打开")//打开串口逻辑
+            {
+                openPort();
+            }
+            else//关闭串口逻辑
+            {
+                try
+                {
+                    forcusClosePort = true;//不再重新开启串口
+                    Tools.Global.uart.serial.Close();
+                }
+                catch
+                {
+                    MessageBox.Show("串口关闭失败！");
+                }
+                openClosePortTextBlock.Text = "打开";
+                serialPortsListComboBox.IsEnabled = true;
+                statusTextBlock.Text = "关闭";
+            }
 
         }
 
@@ -213,14 +293,39 @@ namespace llcom
 
         private void SendDataButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if(!Tools.Global.uart.serial.IsOpen)
+                openPort();
+            if (Tools.Global.uart.serial.IsOpen)
+            {
+                string dataConvert;
+                try
+                {
+                    dataConvert = LuaEnv.LuaLoader.Run(
+                        $"user_script_send_convert/{Tools.Global.setting.sendScript}.lua",
+                        new System.Collections.ArrayList { "uartData", toSendDataTextBox.Text });
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("处理发送数据的脚本运行错误，请检查发送脚本后再试：\r\n" + ex.ToString());
+                    return;
+                }
+                try
+                {
+                    Tools.Global.uart.SendData(dataConvert);
+                }
+                catch
+                {
+                    MessageBox.Show("串口数据发送失败！请检查连接！");
+                    return;
+                }
+            }
         }
 
         private void BaudRateComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (baudRateComboBox.SelectedItem != null)
             {
-                Tools.Global.uart.serial.BaudRate = 
+                Tools.Global.setting.baudRate = 
                     int.Parse((baudRateComboBox.SelectedItem as ComboBoxItem).Content.ToString());
             }
         }

@@ -235,7 +235,7 @@ namespace llcom
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show("脚本运行错误：" + ex.ToString());
+                    MessageBox.Show("脚本运行错误：\r\n" + ex.ToString());
                 }
 
             }
