@@ -31,6 +31,29 @@ namespace llcom.Tools
             uart.serial.Parity = (Parity)setting.parity;
             uart.serial.DataBits = setting.dataBits;
             uart.serial.StopBits = (StopBits)setting.stopBit;
+            uart.UartDataRecived += Uart_UartDataRecived;
+            uart.UartDataSent += Uart_UartDataSent;
+        }
+
+
+        /// <summary>
+        /// 已发送记录到日志
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private static void Uart_UartDataSent(object sender, EventArgs e)
+        {
+            Logger.AddUartLog($"sent:\t{(string)sender}\r\nhex: {String2Hex((string)sender, " ")}");
+        }
+
+        /// <summary>
+        /// 收到的数据记录到日志
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private static void Uart_UartDataRecived(object sender, EventArgs e)
+        {
+            Logger.AddUartLog($"received:\t{(string)sender}\r\nhex: {String2Hex((string)sender, " ")}");
         }
 
         /// <summary>

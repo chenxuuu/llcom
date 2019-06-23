@@ -56,7 +56,7 @@
             </Grid.ColumnDefinitions>
             <Button Name="openClosePortButton" Grid.Column="3" Grid.RowSpan="2" Margin="2" Click="OpenClosePortButton_Click">
                 <WrapPanel>
-                    <TextBlock Text="打开"/>
+                    <TextBlock Name="openClosePortTextBlock" Text="打开"/>
                     <TextBlock Text="串口"/>
                 </WrapPanel>
             </Button>
@@ -77,7 +77,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="Auto" />
@@ -103,7 +103,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="1" />
                 <StatusBarItem Grid.Column="2">
-                    <ComboBox Name="serialPortsListComboBox" Width="150" SelectionChanged="SerialPortsListComboBox_SelectionChanged">
+                    <ComboBox Name="serialPortsListComboBox" MinWidth="150" SelectionChanged="SerialPortsListComboBox_SelectionChanged">
                     </ComboBox>
                 </StatusBarItem>
                 <Separator Grid.Column="3" />
@@ -125,7 +125,7 @@
                         <ComboBoxItem Content="38400"/>
                         <ComboBoxItem Content="56000"/>
                         <ComboBoxItem Content="57600"/>
-                        <ComboBoxItem Content="115200" IsSelected="True"/>
+                        <ComboBoxItem Content="115200"/>
                         <ComboBoxItem Content="128000"/>
                         <ComboBoxItem Content="230400"/>
                         <ComboBoxItem Content="256000"/>
@@ -256,7 +256,8 @@
                         Name="textEditor"
                         FontFamily="Consolas"
                         FontSize="10pt"
-                        ShowLineNumbers="True"/>
+                        ShowLineNumbers="True"
+                            Text="--别着急，这部分还没写"/>
                     </Grid>
                     <!-- 脚本编辑界面END -->
 

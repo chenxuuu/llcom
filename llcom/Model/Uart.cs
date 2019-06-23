@@ -39,6 +39,8 @@ namespace llcom.Model
         private void Serial_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             Task.Delay(Tools.Global.setting.timeout).Wait();//等待时间
+            if (!serial.IsOpen)//串口被关了，不读了
+                return;
             string d = ((SerialPort)sender).ReadExisting();
             UartDataRecived(d, EventArgs.Empty);//回调事件
         }
