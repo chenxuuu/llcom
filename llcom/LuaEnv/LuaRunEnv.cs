@@ -65,6 +65,19 @@ namespace llcom.LuaEnv
                     if (pool.Count >= 3 && lua.State != null)
                     {
                         lua.GetFunction("tiggerCB").Call(pool[0], pool[1], pool[2]);
+
+                        if ((int)pool[0] >= 0)
+                        {
+                            for (int i = 0; i < timerPool.Count; i += 2)
+                            {
+                                if (i == (int)pool[0])
+                                {
+                                    timerPool.RemoveAt(i);
+                                    timerPool.RemoveAt(i);
+                                    break;
+                                }
+                            }
+                        }
                         pool.RemoveAt(0);
                         pool.RemoveAt(0);
                         pool.RemoveAt(0);
