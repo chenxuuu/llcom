@@ -22,6 +22,21 @@ namespace llcom.Model
         private string _sendScript = Properties.Settings.Default.sendScript;
         private string _runScript = Properties.Settings.Default.runScript;
         private bool _topmost = Properties.Settings.Default.topmost;
+        private string _quickData = Properties.Settings.Default.quickData;
+
+        public string quickData
+        {
+            get
+            {
+                return _quickData;
+            }
+            set
+            {
+                _quickData = value;
+                Properties.Settings.Default.quickData = value;
+                Properties.Settings.Default.Save();
+            }
+        }
 
         public string dataToSend
         {

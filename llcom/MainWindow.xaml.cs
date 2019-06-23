@@ -2,6 +2,8 @@
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Search;
 using LibUsbDotNet.DeviceNotify;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,11 +36,11 @@ namespace llcom
         {
             InitializeComponent();
         }
-        ObservableCollection<ToSendData> items = new ObservableCollection<ToSendData>();
-        sentCount sentCount = new sentCount();
+        ObservableCollection<ToSendData> toSendListItems = new ObservableCollection<ToSendData>();
         private static IDeviceNotifier usbDeviceNotifier = DeviceNotifier.OpenDeviceNotifier();
         ScrollViewer sv;
         private bool forcusClosePort = true;
+        private bool canSaveSendList = true;
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //初始化所有数据
@@ -49,11 +51,6 @@ namespace llcom
 
             //窗口置顶事件
             Tools.Global.setting.MainWindowTop += new EventHandler(topEvent);
-
-            //收发统计数据绑定
-            sentCount.sent = 0;
-            sentCount.received = 0;
-            bottomStatusBar.DataContext = sentCount;
 
             //usb刷新时触发
             usbDeviceNotifier.Enabled = true;
@@ -72,17 +69,33 @@ namespace llcom
             //刷新设备列表
             refreshPortList();
 
-            toSendList.ItemsSource = items;
+            //绑定数据
+            this.toSendDataTextBox.DataContext = Tools.Global.setting;
+            toSendList.ItemsSource = toSendListItems;
+            this.sentCountTextBlock.DataContext = Tools.Global.setting;
+            this.receivedCountTextBlock.DataContext = Tools.Global.setting;
 
-            items.Add(new ToSendData() { id = 1, text = "AT", hex = false });
-            items.Add(new ToSendData() { id = 2, text = "ATI", hex = false });
-            items.Add(new ToSendData() { id = 3, text = "AT+CREG?", hex = false });
-            items.Add(new ToSendData() { id = 4, text = "AT+CGATT?", hex = false });
-            items.Add(new ToSendData() { id = 5, text = "AT+CIPSEND=2,0", hex = false });
-            items.Add(new ToSendData() { id = 6, text = "AA BB CC DD", hex = true });
-            items.Add(new ToSendData() { id = 7, text = "11 22 66 22 44", hex = true });
+            //初始化快捷发送栏的数据
+            canSaveSendList = false;
+            ToSendData.DataChanged += SaveSendList;
+            try
+            {
+                JObject jo = (JObject)JsonConvert.DeserializeObject(Tools.Global.setting.quickData);
+                foreach(var i in jo["data"])
+                {
+                    toSendListItems.Add(new ToSendData() {
+                        id = (int)i["id"],
+                        text = (string)i["text"],
+                        hex = (bool)i["hex"] });
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("待发送列表，数据损坏，全部清空\r\n" + ex.ToString() + "\r\n" + Tools.Global.setting.quickData);
+                Tools.Global.setting.quickData = "{\"data\":[{\"id\":1,\"text\":\"example string\",\"hex\":false},{\"id\":2,\"text\":\"中文默认utf8编码\",\"hex\":false},{\"id\":3,\"text\":\"aa 01 02 0d 0a\",\"hex\":true},{\"id\":4,\"text\":\"此处数据会被lua处理\",\"hex\":false}]}";
+            }
+            canSaveSendList = true;
 
-            
 
             //快速搜索
             textEditor.TextArea.DefaultInputHandler.NestedInputHandlers.Add(
@@ -100,10 +113,12 @@ namespace llcom
 
         }
 
+
         private void Uart_UartDataSent(object sender, EventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate {
                 addUartLog(sender as string, true);
+                sentCountTextBlock.Text = (int.Parse(sentCountTextBlock.Text) + (sender as string).Length).ToString();
             }));
         }
 
@@ -111,6 +126,7 @@ namespace llcom
         {
             this.Dispatcher.Invoke(new Action(delegate {
                 addUartLog(sender as string, false);
+                receivedCountTextBlock.Text = (int.Parse(receivedCountTextBlock.Text) + (sender as string).Length).ToString();
             }));
         }
 
@@ -368,7 +384,11 @@ namespace llcom
             }
         }
 
-        private void SendUartData_Executed(object sender, ExecutedRoutedEventArgs e)
+        /// <summary>
+        /// 发串口数据
+        /// </summary>
+        /// <param name="data"></param>
+        private void sendUartData(string data)
         {
             if (!Tools.Global.uart.serial.IsOpen)
                 openPort();
@@ -379,7 +399,7 @@ namespace llcom
                 {
                     dataConvert = LuaEnv.LuaLoader.Run(
                         $"user_script_send_convert/{Tools.Global.setting.sendScript}.lua",
-                        new System.Collections.ArrayList { "uartData", toSendDataTextBox.Text });
+                        new System.Collections.ArrayList { "uartData", data });
                 }
                 catch (Exception ex)
                 {
@@ -397,20 +417,90 @@ namespace llcom
                 }
             }
         }
+
+        private void SendUartData_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            sendUartData(toSendDataTextBox.Text);
+        }
+
+        private void AddSendListButton_Click(object sender, RoutedEventArgs e)
+        {
+            toSendListItems.Add(new ToSendData() { id = toSendListItems.Count + 1, text = "", hex = false });
+        }
+
+        private void DeleteSendListButton_Click(object sender, RoutedEventArgs e)
+        {
+            toSendListItems.RemoveAt(toSendListItems.Count - 1);
+            SaveSendList(null, EventArgs.Empty);
+        }
+
+        private void knowSendDataButton_click(object sender, RoutedEventArgs e)
+        {
+            ToSendData data = ((Button)sender).Tag as ToSendData;
+            if (data.hex)
+                sendUartData(Tools.Global.Hex2String(data.text));
+            else
+                sendUartData(data.text);
+        }
+
+
+        public void SaveSendList(object sender, EventArgs e)
+        {
+            if (!canSaveSendList)
+                return;
+            var data = new JObject();
+            var list = new JArray();
+            foreach (ToSendData i in toSendListItems)
+            {
+                list.Add(new JObject { { "id", i.id }, { "text", i.text }, { "hex", i.hex } });
+            }
+            data.Add("data", list);
+            Tools.Global.setting.quickData = data.ToString();
+        }
     }
 
     public class ToSendData
     {
-        public int id { get; set; }
-        public string text { get; set; }
-        public bool hex { get; set; }
-
+        public static event EventHandler DataChanged;
+        private int _id;
+        private string _text;
+        private bool _hex;
+        public int id
+        {
+            get
+            {
+                return _id;
+            }
+            set
+            {
+                _id = value;
+                DataChanged(0, EventArgs.Empty);
+            }
+        }
+        public string text
+        {
+            get
+            {
+                return _text;
+            }
+            set
+            {
+                _text = value;
+                DataChanged(0, EventArgs.Empty);
+            }
+        }
+        public bool hex
+        {
+            get
+            {
+                return _hex;
+            }
+            set
+            {
+                _hex = value;
+                DataChanged(0, EventArgs.Empty);
+            }
+        }
     }
 
-    //收发数据统计
-    public class sentCount
-    {
-        public int sent { get; set; }
-        public int received { get; set; }
-    }
 }

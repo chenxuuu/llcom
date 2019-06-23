@@ -25,7 +25,7 @@ namespace llcom.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("uart data")]
         public string dataToSend {
             get {
                 return ((string)(this["dataToSend"]));
@@ -169,9 +169,9 @@ namespace llcom.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[{\"id\":1,\"text\":\"example string\",\"hex\":false},{\"id\":2,\"text\":\"中文默认utf8编码\",\"hex\":f" +
-            "alse},{\"id\":3,\"text\":\"aa 01 02 0d 0a\",\"hex\":true},{\"id\":4,\"text\":\"此处数据会被lua处理\",\"" +
-            "hex\":false}]")]
+        [global::System.Configuration.DefaultSettingValueAttribute("{\"data\":[{\"id\":1,\"text\":\"example string\",\"hex\":false},{\"id\":2,\"text\":\"中文默认utf8编码\"" +
+            ",\"hex\":false},{\"id\":3,\"text\":\"aa 01 02 0d 0a\",\"hex\":true},{\"id\":4,\"text\":\"此处数据会被" +
+            "lua处理\",\"hex\":false}]}")]
         public string quickData {
             get {
                 return ((string)(this["quickData"]));
