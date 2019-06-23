@@ -25,11 +25,11 @@ namespace llcom.LuaEnv
             if((lua["runType"] as string) != "send")
             {
                 lua.RegisterFunction("apiSendUartData", null, typeof(LuaApis).GetMethod("SendUartData"));
-                lua.RegisterFunction("apiStartTimer", null, typeof(LuaRunEnv).GetMethod("StartTimer"));
+                lua.RegisterFunction("apiStartTimer", null, typeof(LuaRunEnv).GetMethod("StartTimer")); 
+                lua.RegisterFunction("apiStopTimer", null, typeof(LuaRunEnv).GetMethod("StopTimer"));
             }
             //输出日志
             lua.RegisterFunction("apiPrintLog", null, typeof(LuaApis).GetMethod("PrintLog"));
-
 
             //运行初始化文件
             lua.DoFile("core_script/head.lua");

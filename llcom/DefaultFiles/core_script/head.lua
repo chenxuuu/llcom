@@ -49,8 +49,29 @@ loadfile = function (s)
     return oldloadfile(s)
 end
 
+--下面的代码一次性的处理函数用不着
+if runType == "send" then return end
+
+log = require("log")
+sys = require("sys")
+uartReceive = function (d) end
+
 tiggerCB = function (id,type,data)
-    print("tigger",id,type,data:toHex())
+    --log.debug("tigger",id,type,data:toHex())
+    if type == "uartRev" then--串口消息
+        uartReceive(data)
+    elseif type == "cmd" then
+        local result, info = pcall(function ()
+            load(data)()
+        end)
+        if result then
+            log.info("实时代码","成功运行")
+        else
+            log.info("实时代码","运行失败\r\n"..tostring(info))
+        end
+    elseif id >= 0 then--定时器消息
+        sys.tigger(id)
+    end
 end
 
 

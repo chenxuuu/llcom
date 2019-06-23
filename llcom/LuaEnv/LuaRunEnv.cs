@@ -14,8 +14,8 @@ namespace llcom.LuaEnv
         public static event EventHandler LuaRunError;//报错的回调
         private static NLua.Lua lua = null;
         private static CancellationTokenSource tokenSource = null;
-        private static ArrayList pool = new ArrayList();//定时器池子
-        private static bool timerRunning = false;
+        private static ArrayList timerPool = new ArrayList();//定时器token池子
+        private static ArrayList pool = new ArrayList();//回调池子
         public static bool isRunning = false;
         public static bool canRun = false;
 
@@ -27,6 +27,23 @@ namespace llcom.LuaEnv
             Tools.Global.uart.UartDataRecived += Uart_UartDataRecived;
         }
 
+        private static void addTigger(int id, string type = "timer", string data = "")
+        {
+            pool.Add(id);
+            pool.Add(type);
+            pool.Add(data);
+        }
+
+
+        /// <summary>
+        /// 实时跑一段lua代码
+        /// </summary>
+        /// <param name="l"></param>
+        public static void RunCommand(string l)
+        {
+            addTigger(-1, "cmd", l);
+        }
+
 
         /// <summary>
         /// 收到串口消息
@@ -35,40 +52,28 @@ namespace llcom.LuaEnv
         /// <param name="e"></param>
         private static void Uart_UartDataRecived(object sender, EventArgs e)
         {
-            Task.Run(() =>
-            {
-                runTigger(-1,"uartRev",sender as string);
-            }, tokenSource.Token);
+            addTigger(-1,"uartRev",sender as string);
         }
 
-        private static void runTigger(int id,string type="timer",string data="")
+        private static void runTigger()
         {
-            if (timerRunning)
+            try
             {
-                pool.Add(id);
-                pool.Add(type);
-                pool.Add(data);
-                return;
-            }
-            else
-            {
-                pool.Add(id);
-                pool.Add(type);
-                pool.Add(data);
-                try
+                while (true)
                 {
-                    while(pool.Count > 0)
+                    Task.Delay(1).Wait();
+                    if (pool.Count >= 3 && lua.State != null)
                     {
-                        lua.GetFunction("tiggerCB").Call(pool[0],pool[1],pool[2]);
+                        lua.GetFunction("tiggerCB").Call(pool[0], pool[1], pool[2]);
                         pool.RemoveAt(0);
                         pool.RemoveAt(0);
                         pool.RemoveAt(0);
                     }
                 }
-                catch(Exception ex)
-                {
-                    StopLua(ex.ToString());
-                }
+            }
+            catch (Exception ex)
+            {
+                StopLua(ex.ToString());
             }
         }
 
@@ -77,13 +82,35 @@ namespace llcom.LuaEnv
         /// </summary>
         /// <param name="id">编号</param>
         /// <param name="time">时间(ms)</param>
-        public static void StartTimer(int id,int time)
+        public static int StartTimer(int id,int time)
         {
+            CancellationTokenSource timerToken = new CancellationTokenSource();
+            timerPool.Add(id);
+            timerPool.Add(timerToken);
             Task.Run(() => 
             {
                 Task.Delay(time).Wait();
-                runTigger(id);
-            }, tokenSource.Token);
+                addTigger(id);
+            }, timerToken.Token);
+            return 1;
+        }
+
+        /// <summary>
+        /// 停止定时器
+        /// </summary>
+        /// <param name="id">编号</param>
+        public static void StopTimer(int id)
+        {
+            for (int i = 0; i < timerPool.Count; i += 2)
+            {
+                if (i == id)
+                {
+                    ((CancellationTokenSource)timerPool[i+1]).Cancel();
+                    timerPool.RemoveAt(i);
+                    timerPool.RemoveAt(i);
+                    break;
+                }
+            }
         }
 
         /// <summary>
@@ -91,18 +118,23 @@ namespace llcom.LuaEnv
         /// </summary>
         public static void StopLua(string ex)
         {
-            if(ex != "")
+            LuaRunError(null, EventArgs.Empty);
+            if (ex != "")
                 LuaApis.PrintLog("lua代码报错了：\r\n" + ex);
             else
                 LuaApis.PrintLog("lua代码已停止");
             tokenSource.Cancel();
             pool.Clear();
+            for(int i = 1; i < timerPool.Count; i+=2)
+            {
+                ((CancellationTokenSource)timerPool[i]).Cancel();
+            }
+            timerPool.Clear();
             if(lua.State != null)
             {
                 lua["runMaxSeconds"] = 0;
             }
             lua.Dispose();
-            LuaRunError(null, EventArgs.Empty);
             isRunning = false;
         }
 
@@ -116,7 +148,7 @@ namespace llcom.LuaEnv
             if (tokenSource != null)
                 tokenSource.Dispose();
             tokenSource = new CancellationTokenSource();//task取消指示
-            lua = new NLua.Lua();
+            
             //文件不存在
             if (!File.Exists(file))
                 return;
@@ -126,6 +158,7 @@ namespace llcom.LuaEnv
                     Task.Delay(100).Wait();
                 try
                 {
+                    lua = new NLua.Lua();
                     lua.State.Encoding = Encoding.UTF8;
                     lua.LoadCLRPackage();
                     lua["runType"] = "script";//一次性处理标志
@@ -136,6 +169,7 @@ namespace llcom.LuaEnv
                 {
                     StopLua(ex.ToString());
                 }
+                runTigger();
             }, tokenSource.Token);
         }
     }

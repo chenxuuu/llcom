@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:llcom"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="LLCOM - 能跑lua脚本的开源串口调试工具！" Height="500" Width="900"
+        Title="LLCOM - 能跑lua脚本的串口调试工具！" Height="500" Width="900"
         Loaded="Window_Loaded">
     <Window.Style>
         <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
@@ -298,8 +298,8 @@
                             <Button Name="pauseLuaPrintButton" Margin="0,3,3,3" ToolTip="暂停打印" Grid.Column="1" Foreground="GreenYellow" Click="PauseLuaPrintButton_Click">
                                 <fa:FontAwesome Icon="Pause"/>
                             </Button>
-                            <TextBox Grid.Column="2" Margin="0,3"/>
-                            <Button Name="sendLuaScriptButton" Margin="3,3,0,3" ToolTip="实时执行lua语句 - Enter" Grid.Column="3" Foreground="DeepSkyBlue" Click="SendLuaScriptButton_Click">
+                            <TextBox Name="runOneLineLuaTextBox" Grid.Column="2" Margin="0,3" KeyDown="RunOneLineLuaTextBox_KeyDown"/>
+                            <Button Name="sendLuaScriptButton" Margin="3,3,0,3" ToolTip="实时执行lua语句 - [Enter]" Grid.Column="3" Foreground="DeepSkyBlue" Click="SendLuaScriptButton_Click">
                                 <fa:FontAwesome Icon="ArrowUp"/>
                             </Button>
                         </Grid>
