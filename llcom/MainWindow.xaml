@@ -23,7 +23,7 @@
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <!-- 收发数据显示 -->
-        <FlowDocumentScrollViewer VerticalScrollBarVisibility="Visible">
+        <FlowDocumentScrollViewer Name="uartDataFlowDocument" VerticalScrollBarVisibility="Visible">
             <!-- 更改段落间距 -->
             <FlowDocumentScrollViewer.Resources>
                 <Style TargetType="{x:Type Paragraph}">
@@ -32,102 +32,6 @@
             </FlowDocumentScrollViewer.Resources>
             <!-- 更改段落间距END -->
             <FlowDocument FontSize="12" FontFamily="Consolas" >
-                <Paragraph Foreground="DarkSlateGray" >
-                    [2019/06/19 21:05:01.326]
-                    <Span Foreground="Black" FontWeight="Bold">→</Span>
-                    <Span Foreground="DarkRed" FontSize="15">ab1cdfzefg</Span>
-                </Paragraph>
-                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
-                    HEX:61 62 31 63 64 66 7A 65 66 67
-                </Paragraph>
-                <Paragraph Foreground="DarkSlateGray" >
-                    [2019/06/19 21:06:01.326]
-                    <Span Foreground="Black" FontWeight="Bold">←</Span>
-                    <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
-                </Paragraph>
-                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
-                    HEX:5E 25 24 35 36 74 5E 67 69 48
-                </Paragraph>
-                <Paragraph Foreground="DarkSlateGray" >
-                    [2019/06/19 21:05:01.326]
-                    <Span Foreground="Black" FontWeight="Bold">→</Span>
-                    <Span Foreground="DarkRed" FontSize="15">中文数据来啦~~fsdfsdfs</Span>
-                </Paragraph>
-                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
-                    HEX:D6 D0 CE C4 CA FD BE DD C0 B4 C0 B2 7E 7E 66 73 64 66 73 64 66 73
-                </Paragraph>
-                <Paragraph Foreground="DarkSlateGray" >
-                    [2019/06/19 21:06:01.326]
-                    <Span Foreground="Black" FontWeight="Bold">←</Span>
-                    <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
-                </Paragraph>
-                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
-                    HEX:5E 25 24 35 36 74 5E 67 69 48
-                </Paragraph>
-                <Paragraph Foreground="DarkSlateGray" >
-                    [2019/06/19 21:05:01.326]
-                    <Span Foreground="Black" FontWeight="Bold">→</Span>
-                    <Span Foreground="DarkRed" FontSize="15">ab1cdfzefg</Span>
-                </Paragraph>
-                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
-                    HEX:61 62 31 63 64 66 7A 65 66 67
-                </Paragraph>
-                <Paragraph Foreground="DarkSlateGray" >
-                    [2019/06/19 21:06:01.326]
-                    <Span Foreground="Black" FontWeight="Bold">←</Span>
-                    <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
-                </Paragraph>
-                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
-                    HEX:5E 25 24 35 36 74 5E 67 69 48
-                </Paragraph>
-                <Paragraph Foreground="DarkSlateGray" >
-                    [2019/06/19 21:05:01.326]
-                    <Span Foreground="Black" FontWeight="Bold">→</Span>
-                    <Span Foreground="DarkRed" FontSize="15">ab1cdfzefg</Span>
-                </Paragraph>
-                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
-                    HEX:61 62 31 63 64 66 7A 65 66 67
-                </Paragraph>
-                <Paragraph Foreground="DarkSlateGray" >
-                    [2019/06/19 21:06:01.326]
-                    <Span Foreground="Black" FontWeight="Bold">←</Span>
-                    <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
-                </Paragraph>
-                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
-                    HEX:5E 25 24 35 36 74 5E 67 69 48
-                </Paragraph>
-                <Paragraph Foreground="DarkSlateGray" >
-                    [2019/06/19 21:05:01.326]
-                    <Span Foreground="Black" FontWeight="Bold">→</Span>
-                    <Span Foreground="DarkRed" FontSize="15">ab1cdfzefg</Span>
-                </Paragraph>
-                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
-                    HEX:61 62 31 63 64 66 7A 65 66 67
-                </Paragraph>
-                <Paragraph Foreground="DarkSlateGray" >
-                    [2019/06/19 21:06:01.326]
-                    <Span Foreground="Black" FontWeight="Bold">←</Span>
-                    <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
-                </Paragraph>
-                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
-                    HEX:5E 25 24 35 36 74 5E 67 69 48
-                </Paragraph>
-                <Paragraph Foreground="DarkSlateGray" >
-                    [2019/06/19 21:05:01.326]
-                    <Span Foreground="Black" FontWeight="Bold">→</Span>
-                    <Span Foreground="DarkRed" FontSize="15">ab1cdfzefg</Span>
-                </Paragraph>
-                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
-                    HEX:61 62 31 63 64 66 7A 65 66 67
-                </Paragraph>
-                <Paragraph Foreground="DarkSlateGray" >
-                    [2019/06/19 21:06:01.326]
-                    <Span Foreground="Black" FontWeight="Bold">←</Span>
-                    <Span Foreground="DarkGreen" FontSize="15">^%$56t^giH</Span>
-                </Paragraph>
-                <Paragraph Foreground="DarkGray" Margin="0,0,0,10">
-                    HEX:5E 25 24 35 36 74 5E 67 69 48
-                </Paragraph>
             </FlowDocument>
         </FlowDocumentScrollViewer>
 
@@ -150,23 +54,23 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="45"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="3" Grid.RowSpan="2" Margin="2" >
+            <Button Name="openClosePortButton" Grid.Column="3" Grid.RowSpan="2" Margin="2" Click="OpenClosePortButton_Click">
                 <WrapPanel>
                     <TextBlock Text="打开"/>
                     <TextBlock Text="串口"/>
                 </WrapPanel>
             </Button>
-            <Button Content="清空日志" Grid.Column="4" Margin="2"/>
+            <Button Name="clearLogButton" Content="清空日志" Grid.Column="4" Margin="2" Click="ClearLogButton_Click"/>
             <Button Name="MoreSettingButton" Content="更多设置" Grid.Column="4" Grid.Row="1" Margin="2" ToolTip="可设置串口校验位停止位等信息、设置发送前的自动处理脚本。" Click="MoreSettingButton_Click"/>
-            <TextBox Text="123456" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="4" Height="50" VerticalContentAlignment="Top"
+            <TextBox Name="toSendDataTextBox" Text="123456" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="4" Height="50" VerticalContentAlignment="Top"
                      TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2" FontFamily="Consolas"/>
-            <Button Content="发送" Grid.Column="9" Grid.RowSpan="2" Margin="2" ToolTip="按Ctrl+Enter同样也可以发送数据。"/>
+            <Button Name="sendDataButton" Content="发送" Grid.Column="9" Grid.RowSpan="2" Margin="2" ToolTip="按Ctrl+Enter同样也可以发送数据。" Click="SendDataButton_Click"/>
         </Grid>
         
         
         <!-- 底部状态栏 -->
         <DockPanel Grid.Row="2" Grid.ColumnSpan="3" >
-            <StatusBar DockPanel.Dock="Bottom">
+            <StatusBar Name="bottomStatusBar" DockPanel.Dock="Bottom">
                 <StatusBar.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Grid>
@@ -199,10 +103,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="1" />
                 <StatusBarItem Grid.Column="2">
-                    <ComboBox>
-                        <ComboBoxItem Content="COM1 CH340 Serial Port" IsSelected="True"/>
-                        <ComboBoxItem Content="COM2 CH340 Serial Port"/>
-                        <ComboBoxItem Content="COM3 CH340 Serial Port"/>
+                    <ComboBox Name="serialPortsListComboBox" Width="150" SelectionChanged="SerialPortsListComboBox_SelectionChanged">
                     </ComboBox>
                 </StatusBarItem>
                 <Separator Grid.Column="3" />
@@ -211,7 +112,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="5" />
                 <StatusBarItem Grid.Column="6">
-                    <ComboBox>
+                    <ComboBox Name="baudRateComboBox" Width="80" SelectionChanged="BaudRateComboBox_SelectionChanged">
                         <ComboBoxItem Content="110"/>
                         <ComboBoxItem Content="330"/>
                         <ComboBoxItem Content="600"/>
@@ -246,7 +147,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="9" />
                 <StatusBarItem Grid.Column="10">
-                    <TextBlock Text="已关闭" />
+                    <TextBlock Name="statusTextBlock" Text="已关闭" />
                 </StatusBarItem>
                 <Separator Grid.Column="11" />
                 <StatusBarItem Grid.Column="12">
@@ -254,7 +155,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="13" />
                 <StatusBarItem Grid.Column="14">
-                    <TextBlock Text="0" />
+                    <TextBlock Text="{Binding sent}" />
                 </StatusBarItem>
                 <Separator Grid.Column="15" />
                 <StatusBarItem Grid.Column="16">
@@ -262,7 +163,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="17" />
                 <StatusBarItem Grid.Column="18">
-                    <TextBlock Text="0" />
+                    <TextBlock Text="{Binding received}" />
                 </StatusBarItem>
             </StatusBar>
         </DockPanel>
@@ -309,8 +210,8 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Button Content="添加新项目" Margin="3"/>
-                            <Button Content="删除最后一项" Grid.Column="1" Margin="3"/>
+                            <Button Name="addSendListButton" Content="添加新项目" Margin="3"/>
+                            <Button Name="deleteSendListButton" Content="删除最后一项" Grid.Column="1" Margin="3"/>
                         </Grid>
                         <TextBlock Text="发送处理的lua脚本，同样对此处发送的数据生效。" TextWrapping="Wrap" FontWeight="Bold"/>
                     </StackPanel>

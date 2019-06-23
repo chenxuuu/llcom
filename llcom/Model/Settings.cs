@@ -9,6 +9,7 @@ namespace llcom.Model
 {
     class Settings
     {
+        public event EventHandler MainWindowTop;
         private string _dataToSend = Properties.Settings.Default.dataToSend;
         private int _baudRate = Properties.Settings.Default.BaudRate;
         private bool _autoReconnect = Properties.Settings.Default.autoReconnect;
@@ -189,6 +190,7 @@ namespace llcom.Model
             {
                 _topmost = value;
                 Properties.Settings.Default.topmost = value;
+                MainWindowTop(value, EventArgs.Empty);
                 Properties.Settings.Default.Save();
             }
         }
