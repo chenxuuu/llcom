@@ -56,7 +56,8 @@ namespace llcom.Tools
         /// <param name="e"></param>
         private static void Uart_UartDataRecived(object sender, EventArgs e)
         {
-            Logger.AddUartLog($"received:\t{(string)sender}\r\nhex: {String2Hex((string)sender, " ")}");
+            string rev = Byte2String(sender as byte[]);
+            Logger.AddUartLog($"received:\t{rev}\r\nhex: {String2Hex(rev, " ")}");
         }
 
         /// <summary>
@@ -67,7 +68,7 @@ namespace llcom.Tools
         /// <returns>结果</returns>
         public static string String2Hex(string str, string space)
         {
-             return BitConverter.ToString(Encoding.GetEncoding("ISO-8859-1").GetBytes(str)).Replace("-", space);
+             return BitConverter.ToString(Encoding.UTF8.GetBytes(str)).Replace("-", space);
         }
 
 
@@ -86,8 +87,43 @@ namespace llcom.Tools
             for (int i = 0; i < mHex.Length; i += 2)
                 if (!byte.TryParse(mHex.Substring(i, 2), NumberStyles.HexNumber, null, out vBytes[i / 2]))
                     vBytes[i / 2] = 0;
-            return Encoding.GetEncoding("ISO-8859-1").GetString(vBytes);
+            return Encoding.UTF8.GetString(vBytes);
         }
 
+
+        /// <summary>
+        /// byte转string
+        /// </summary>
+        /// <param name="mHex"></param>
+        /// <returns></returns>
+        public static string Byte2String(byte[] vBytes)
+        {
+            return Encoding.Default.GetString(vBytes);
+        }
+
+        /// <summary>
+        /// hex转byte
+        /// </summary>
+        /// <param name="mHex">hex值</param>
+        /// <returns>原始字符串</returns>
+        public static byte[] Hex2Byte(string mHex)
+        {
+            mHex = Regex.Replace(mHex, "[^0-9A-Fa-f]", "");
+            if (mHex.Length % 2 != 0)
+                mHex = mHex.Remove(mHex.Length - 1, 1);
+            if (mHex.Length <= 0) return new byte[0];
+            byte[] vBytes = new byte[mHex.Length / 2];
+            for (int i = 0; i < mHex.Length; i += 2)
+                if (!byte.TryParse(mHex.Substring(i, 2), NumberStyles.HexNumber, null, out vBytes[i / 2]))
+                    vBytes[i / 2] = 0;
+            return vBytes;
+        }
+
+
+
+        public static string Byte2Hex(byte[] d)
+        {
+            return BitConverter.ToString(d).Replace("-", "");
+        }
     }
 }

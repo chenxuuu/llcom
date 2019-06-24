@@ -52,7 +52,7 @@ namespace llcom.LuaEnv
         /// <param name="e"></param>
         private static void Uart_UartDataRecived(object sender, EventArgs e)
         {
-            addTigger(-1,"uartRev",sender as string);
+            addTigger(-1,"uartRev", Tools.Global.Byte2Hex(sender as byte[]));
         }
 
         private static void runTigger()

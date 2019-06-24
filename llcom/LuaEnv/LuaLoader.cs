@@ -44,7 +44,7 @@ namespace llcom.LuaEnv
         public static string Run(string file, ArrayList args = null)
         {
             //文件不存在
-            if (!File.Exists(file))
+            if (!File.Exists("user_script_send_convert/" + file))
                 return "";
 
             using (var lua = new NLua.Lua())
@@ -54,13 +54,14 @@ namespace llcom.LuaEnv
                     lua.State.Encoding = Encoding.UTF8;
                     lua.LoadCLRPackage();
                     lua["runType"] = "send";//一次性处理标志
+                    lua["file"] = file;
                     Initial(lua);
                     if (args != null)
                         for (int i = 0; i < args.Count; i += 2)
                         {
                             lua[(string)args[i]] = args[i + 1];
                         }
-                    return (string)lua.DoFile(file)[0];
+                    return lua.DoFile("core_script/once.lua")[0].ToString();
                 }
                 catch (Exception e)
                 {

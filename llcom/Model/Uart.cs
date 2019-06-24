@@ -28,12 +28,11 @@ namespace llcom.Model
         /// 发送数据
         /// </summary>
         /// <param name="data">数据内容</param>
-        public void SendData(string data)
+        public void SendData(byte[] data)
         {
             if (data.Length == 0)
                 return;
-            byte[] bytesSend = System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(data);
-            serial.Write(bytesSend, 0, bytesSend.Length);
+            serial.Write(data, 0, data.Length);
             UartDataSent(data, EventArgs.Empty);//回调
         }
 
@@ -43,10 +42,12 @@ namespace llcom.Model
             Task.Delay(Tools.Global.setting.timeout).Wait();//等待时间
             if (!serial.IsOpen)//串口被关了，不读了
                 return;
-            string d = ((SerialPort)sender).ReadExisting();
-            if (d.Length == 0)
+            int length = ((SerialPort)sender).BytesToRead;
+            byte[] rev = new byte[length];
+            ((SerialPort)sender).Read(rev, 0, length);
+            if (rev.Length == 0)
                 return;
-            UartDataRecived(d, EventArgs.Empty);//回调事件
+            UartDataRecived(rev, EventArgs.Empty);//回调事件
         }
     }
 }

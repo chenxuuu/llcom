@@ -118,6 +118,7 @@ namespace llcom
             LuaEnv.LuaApis.PrintLuaLog += LuaApis_PrintLuaLog;
             //lua代码出错/结束运行事件
             LuaEnv.LuaRunEnv.LuaRunError += LuaRunEnv_LuaRunError;
+
         }
 
 
@@ -125,16 +126,16 @@ namespace llcom
         private void Uart_UartDataSent(object sender, EventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate {
-                addUartLog(sender as string, true);
-                sentCountTextBlock.Text = (int.Parse(sentCountTextBlock.Text) + (sender as string).Length).ToString();
+                addUartLog(sender as byte[], true);
+                sentCountTextBlock.Text = (int.Parse(sentCountTextBlock.Text) + (sender as byte[]).Length).ToString();
             }));
         }
 
         private void Uart_UartDataRecived(object sender, EventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate {
-                addUartLog(sender as string, false);
-                receivedCountTextBlock.Text = (int.Parse(receivedCountTextBlock.Text) + (sender as string).Length).ToString();
+                addUartLog(sender as byte[], false);
+                receivedCountTextBlock.Text = (int.Parse(receivedCountTextBlock.Text) + (sender as byte[]).Length).ToString();
             }));
         }
 
@@ -265,7 +266,7 @@ namespace llcom
         /// </summary>
         /// <param name="data">数据</param>
         /// <param name="send">true为发送，false为接收</param>
-        private void addUartLog(string data, bool send)
+        private void addUartLog(byte[] data, bool send)
         {
             Paragraph p = new Paragraph(new Run(""));
 
@@ -281,7 +282,7 @@ namespace llcom
             text.FontWeight = FontWeights.Bold;
             p.Inlines.Add(text);
 
-            text = new Span(new Run(data));
+            text = new Span(new Run(Tools.Global.Byte2String(data)));
             if (send)
                 text.Foreground = Brushes.DarkRed;
             else
@@ -295,7 +296,7 @@ namespace llcom
 
             if (Tools.Global.setting.showHex)
             {
-                p = new Paragraph(new Run("HEX:" + Tools.Global.String2Hex(data, " ")));
+                p = new Paragraph(new Run("HEX:" + BitConverter.ToString(data).Replace("-","")));
                 if (send)
                     p.Foreground = Brushes.LightPink;
                 else
@@ -399,7 +400,7 @@ namespace llcom
         /// 发串口数据
         /// </summary>
         /// <param name="data"></param>
-        private void sendUartData(string data)
+        private void sendUartData(byte[] data)
         {
             if (!Tools.Global.uart.serial.IsOpen)
                 openPort();
@@ -409,8 +410,8 @@ namespace llcom
                 try
                 {
                     dataConvert = LuaEnv.LuaLoader.Run(
-                        $"user_script_send_convert/{Tools.Global.setting.sendScript}.lua",
-                        new System.Collections.ArrayList { "uartData", data });
+                        $"{Tools.Global.setting.sendScript}.lua",
+                        new System.Collections.ArrayList { "uartData", Tools.Global.Byte2Hex(data) });
                 }
                 catch (Exception ex)
                 {
@@ -419,7 +420,7 @@ namespace llcom
                 }
                 try
                 {
-                    Tools.Global.uart.SendData(dataConvert);
+                    Tools.Global.uart.SendData(Tools.Global.Hex2Byte(dataConvert));
                 }
                 catch
                 {
@@ -431,7 +432,7 @@ namespace llcom
 
         private void SendUartData_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            sendUartData(toSendDataTextBox.Text);
+            sendUartData(Encoding.Default.GetBytes(toSendDataTextBox.Text));
         }
 
         private void AddSendListButton_Click(object sender, RoutedEventArgs e)
@@ -452,9 +453,9 @@ namespace llcom
         {
             ToSendData data = ((Button)sender).Tag as ToSendData;
             if (data.hex)
-                sendUartData(Tools.Global.Hex2String(data.text));
+                sendUartData(Tools.Global.Hex2Byte(data.text));
             else
-                sendUartData(data.text);
+                sendUartData(Encoding.Default.GetBytes(data.text));
         }
 
 
