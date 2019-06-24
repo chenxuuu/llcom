@@ -14,8 +14,10 @@ namespace llcom.LuaEnv
         public static event EventHandler LuaRunError;//报错的回调
         private static NLua.Lua lua = null;
         private static CancellationTokenSource tokenSource = null;
-        private static Dictionary<int,ArrayList> pool = new Dictionary<int, ArrayList>();//回调池子
-        private static List<ArrayList> toRun = new List<ArrayList>();//待运行的池子
+        private static Dictionary<int, CancellationTokenSource> pool = 
+            new Dictionary<int, CancellationTokenSource>();//timer回调池子
+        private static List<LuaPool> toRun = new List<LuaPool>();//待运行的池子
+
         public static bool isRunning = false;
         public static bool canRun = false;
 
@@ -29,7 +31,7 @@ namespace llcom.LuaEnv
 
         private static void addTigger(int id, string type = "timer", string data = "")
         {
-            toRun.Add(new ArrayList { id, type, data });
+            toRun.Add(new LuaPool { id = id, type = type, data = data });
         }
 
 
@@ -64,9 +66,9 @@ namespace llcom.LuaEnv
                         return;
                     if (toRun.Count > 0)
                     {
-                        lua["sys.inputData"] = toRun[0][2];
-                        lua.DoString($"tiggerCB({toRun[0][0]},{toRun[0][1]},sys.inputData)");
-                        //lua.GetFunction("tiggerCB").Call(toRun[0][0], toRun[0][1], toRun[0][2]);
+                        lua["sys.inputData"] = toRun[0].data;
+                        lua.DoString($"tiggerCB({toRun[0].id},{toRun[0].type},sys.inputData)");
+                        //lua.GetFunction("tiggerCB").Call(toRun[0].id, toRun[0].type, toRun[0].data);
                         toRun.RemoveAt(0);
                     }
                 }
@@ -85,7 +87,7 @@ namespace llcom.LuaEnv
         public static int StartTimer(int id,int time)
         {
             CancellationTokenSource timerToken = new CancellationTokenSource();
-            pool.Add(id, new ArrayList { "timer","",timerToken });
+            pool.Add(id, timerToken);
             Task.Run(() => 
             {
                 Task.Delay(time).Wait();
@@ -105,11 +107,8 @@ namespace llcom.LuaEnv
         {
             if(pool[id] != null)
             {
-                Task.Run(() =>
-                {
-                    ((CancellationTokenSource)pool[id][2]).Cancel();
-                    pool.Remove(id);
-                });
+                ((CancellationTokenSource)pool[id]).Cancel();
+                pool.Remove(id);
             }
         }
 
@@ -126,16 +125,9 @@ namespace llcom.LuaEnv
             tokenSource.Cancel();
             foreach(var i in pool)
             {
-                if((string)i.Value[0] == "timer")
-                {
-                    ((CancellationTokenSource)i.Value[2]).Cancel();
-                }
+                StopTimer(i.Key);
             }
-            Task.Run(() =>
-            {
-                Task.Delay(100).Wait();
-                pool.Clear();
-            });
+            pool.Clear();
             if(lua.State != null)
             {
                 lua["runMaxSeconds"] = 0;
@@ -178,5 +170,13 @@ namespace llcom.LuaEnv
                 runTigger();
             }, tokenSource.Token);
         }
+    }
+
+
+    class LuaPool
+    {
+        public int id { get; set; }
+        public string type { get; set; }
+        public string data { get; set; }
     }
 }
