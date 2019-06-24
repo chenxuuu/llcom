@@ -228,10 +228,11 @@ namespace llcom
             {
                 try
                 {
-                    string r = LuaEnv.LuaLoader.Run($"user_script_send_convert/{luaFileList.SelectedItem as string}.lua",
-                                        new System.Collections.ArrayList{"uartData",luaTestTextBox.Text});
-                    MessageBox.Show("运行结果\r\nHEX值：" + Tools.Global.String2Hex(r, " ") +
-                        "\r\n原始字符串：" + r);
+                    string r = LuaEnv.LuaLoader.Run($"{luaFileList.SelectedItem as string}.lua",
+                                        new System.Collections.ArrayList{"uartData",
+                                           Tools.Global.String2Hex(luaTestTextBox.Text,"")});
+                    MessageBox.Show("运行结果\r\nHEX值：" + r +
+                        "\r\n原始字符串：" + Tools.Global.Hex2String(r));
                 }
                 catch(Exception ex)
                 {

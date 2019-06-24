@@ -48,7 +48,7 @@ namespace llcom.LuaEnv
             {
                 try
                 {
-                    Tools.Global.uart.SendData(data);
+                    Tools.Global.uart.SendData(Tools.Global.Hex2Byte(data));
                     return true;
                 }
                 catch
