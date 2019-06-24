@@ -150,13 +150,13 @@ namespace llcom.LuaEnv
             //文件不存在
             if (!File.Exists(file))
                 return;
+            lua = new NLua.Lua();
             Task.Run(() =>
             {
                 while(!canRun)
                     Task.Delay(100).Wait();
                 try
                 {
-                    lua = new NLua.Lua();
                     lua.State.Encoding = Encoding.UTF8;
                     lua.LoadCLRPackage();
                     lua["runType"] = "script";//一次性处理标志
