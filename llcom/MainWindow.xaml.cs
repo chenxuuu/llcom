@@ -119,6 +119,9 @@ namespace llcom
             //lua代码出错/结束运行事件
             LuaEnv.LuaRunEnv.LuaRunError += LuaRunEnv_LuaRunError;
 
+            //关于页面
+            aboutScrollViewer.ScrollToTop();
+            versionTextBlock.Text = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
 
@@ -639,6 +642,16 @@ namespace llcom
         {
             if(e.Key == Key.Enter)
                 LuaEnv.LuaRunEnv.RunCommand(runOneLineLuaTextBox.Text);
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.Uri.AbsoluteUri);
+        }
+
+        private void NewissueButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/chenxuuu/llcom/issues/new/choose");
         }
     }
 

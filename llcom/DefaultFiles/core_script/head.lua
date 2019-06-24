@@ -1,16 +1,6 @@
 --提前运行的脚本
 --用于提前声明某些要用到的函数
 
---重写print函数
-function print(...)
-    arg = { ... }
-    local logAll = {}
-    for i=1,#arg do
-        table.insert(logAll, tostring(arg[i]))
-    end
-    apiPrintLog(table.concat(logAll, "\t"))
-end
-
 --加强随机数随机性
 math.randomseed(tostring(os.time()):reverse():sub(1, 6))
 
@@ -51,6 +41,16 @@ end
 
 --下面的代码一次性的处理函数用不着
 if runType == "send" then return end
+
+--重写print函数
+function print(...)
+    arg = { ... }
+    local logAll = {}
+    for i=1,#arg do
+        table.insert(logAll, tostring(arg[i]))
+    end
+    apiPrintLog(table.concat(logAll, "\t"))
+end
 
 log = require("log")
 sys = require("sys")
