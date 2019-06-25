@@ -12,7 +12,7 @@ namespace llcom.LuaEnv
     class LuaRunEnv
     {
         public static event EventHandler LuaRunError;//报错的回调
-        private static NLua.Lua lua = null;
+        private static vJine.Lua.LuaContext lua = null;
         private static CancellationTokenSource tokenSource = null;
         private static Dictionary<int, CancellationTokenSource> pool = 
             new Dictionary<int, CancellationTokenSource>();//timer回调池子
@@ -66,9 +66,9 @@ namespace llcom.LuaEnv
                         return;
                     if (toRun.Count > 0)
                     {
-                        lua["sys.inputData"] = toRun[0].data;
-                        lua.DoString($"tiggerCB({toRun[0].id},{toRun[0].type},sys.inputData)");
-                        //lua.GetFunction("tiggerCB").Call(toRun[0].id, toRun[0].type, toRun[0].data);
+                        lua.exec("tiggerCB", toRun[0].id, toRun[0].type, toRun[0].data);
+                        if (tokenSource.IsCancellationRequested)
+                            return;
                         toRun.RemoveAt(0);
                     }
                 }
@@ -92,6 +92,8 @@ namespace llcom.LuaEnv
             {
                 Task.Delay(time).Wait();
                 if (timerToken == null || timerToken.IsCancellationRequested)
+                    return;
+                if (tokenSource.IsCancellationRequested)
                     return;
                 addTigger(id);
                 pool.Remove(id);
@@ -122,18 +124,10 @@ namespace llcom.LuaEnv
                 LuaApis.PrintLog("lua代码报错了：\r\n" + ex);
             else
                 LuaApis.PrintLog("lua代码已停止");
-            tokenSource.Cancel();
-            foreach(var i in pool)
-            {
-                StopTimer(i.Key);
-            }
-            pool.Clear();
-            if(lua.State != null)
-            {
-                lua["runMaxSeconds"] = 0;
-            }
-            lua.Dispose();
             isRunning = false;
+            tokenSource.Cancel();
+            pool.Clear();
+            lua = null;
         }
 
         /// <summary>
@@ -150,18 +144,16 @@ namespace llcom.LuaEnv
             //文件不存在
             if (!File.Exists(file))
                 return;
-            lua = new NLua.Lua();
+            lua = new vJine.Lua.LuaContext();
             Task.Run(() =>
             {
                 while(!canRun)
                     Task.Delay(100).Wait();
                 try
                 {
-                    lua.State.Encoding = Encoding.UTF8;
-                    lua.LoadCLRPackage();
-                    lua["runType"] = "script";//一次性处理标志
+                    lua.set("runType", "script");//一次性处理标志
                     LuaLoader.Initial(lua);
-                    lua.DoFile(file);
+                    lua.load(file);
                 }
                 catch (Exception ex)
                 {

@@ -65,9 +65,9 @@ tiggerCB = function (id,type,data)
             load(data)()
         end)
         if result then
-            log.info("实时代码","成功运行")
+            log.info("console","run success")
         else
-            log.info("实时代码","运行失败\r\n"..tostring(info))
+            log.info("console","run failed\r\n"..tostring(info))
         end
     elseif id >= 0 then--定时器消息
         sys.tigger(id)
