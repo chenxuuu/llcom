@@ -295,8 +295,8 @@
                             <Button Name="stopLuaButton" Margin="0,3,3,3" ToolTip="停止运行，停止之后再点一下就是关闭" Foreground="DarkRed" Click="StopLuaButton_Click">
                                 <fa:FontAwesome Icon="Stop"/>
                             </Button>
-                            <Button Name="pauseLuaPrintButton" Margin="0,3,3,3" ToolTip="暂停打印" Grid.Column="1" Foreground="GreenYellow" Click="PauseLuaPrintButton_Click">
-                                <fa:FontAwesome Icon="Pause"/>
+                            <Button Name="pauseLuaPrintButton" Margin="0,3,3,3" ToolTip="暂停打印" Grid.Column="1" Foreground="ForestGreen" Click="PauseLuaPrintButton_Click">
+                                <fa:FontAwesome Name="pauseLuaPrintIcon" Icon="Pause"/>
                             </Button>
                             <TextBox Name="runOneLineLuaTextBox" Grid.Column="2" Margin="0,3" KeyDown="RunOneLineLuaTextBox_KeyDown"/>
                             <Button Name="sendLuaScriptButton" Margin="3,3,0,3" ToolTip="实时执行lua语句 - [Enter]" Grid.Column="3" Foreground="DeepSkyBlue" Click="SendLuaScriptButton_Click">
