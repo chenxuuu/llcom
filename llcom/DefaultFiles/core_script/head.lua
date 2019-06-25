@@ -54,12 +54,24 @@ end
 
 log = require("log")
 sys = require("sys")
-uartReceive = function (d) end
 
+--串口数据接收接口
+local uartCB = function (d)
+    if uartReceive then uartReceive(d:fromHex()) end
+end
+
+--重写串口数据发送接口
+local oldapiSendUartData = apiSendUartData
+apiSendUartData = function (s)
+    local str = s:toHex()
+    return oldapiSendUartData(str)
+end
+
+--协程外部触发
 tiggerCB = function (id,type,data)
     --log.debug("tigger",id,type,data:toHex())
     if type == "uartRev" then--串口消息
-        uartReceive(data)
+        uartCB(data)
     elseif type == "cmd" then
         local result, info = pcall(function ()
             load(data)()
