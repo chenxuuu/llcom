@@ -393,28 +393,6 @@ fatal('moduleA', 'log content')
 
 模块功能：Luat协程调度框架
 
-### sys.restart(r)
-
-软件重启
-
-* 参数
-
-|传入值类型|释义|
-|-|-|
-|string|r 重启原因，用户自定义，一般是string类型，重启后的trace中会打印出此重启原因|
-
-* 返回值
-
-无
-
-* 例子
-
-```lua
-sys.restart('程序超时软件重启')
-```
-
----
-
 ### sys.wait(ms)
 
 Task任务延时函数，只能用于任务函数中
