@@ -314,11 +314,11 @@
                         <TextBlock Text="LLCOM" 
                                    HorizontalAlignment="Center" 
                                    Margin="0,10,0,0"
-                                   FontSize="28"/>
-                        <TextBlock 
-                                   HorizontalAlignment="Center"
+                                   FontSize="28"
+                                   FontWeight="Bold"/>
+                        <TextBlock HorizontalAlignment="Center"
                                    FontSize="15">
-                            <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://github.com/chenxuuu/llcom">能跑Lua脚本的串口调试工具</Hyperlink>
+                            <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://github.com/chenxuuu/llcom" Foreground="Black" TextDecorations="{x:Null}">能跑Lua脚本的串口调试工具</Hyperlink>
                         </TextBlock>
 
                         <TextBlock
@@ -347,7 +347,7 @@
                                    TextWrapping="Wrap">
                             感谢以下开源项目：
                             <LineBreak/>
-                            Nlua与KeraLua
+                            vJine.Lua
                             <LineBreak/>
                             AdonisUI
                             <LineBreak/>
