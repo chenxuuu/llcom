@@ -12,6 +12,7 @@ using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Management;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -41,6 +42,7 @@ namespace llcom
         ScrollViewer sv;
         private bool forcusClosePort = true;
         private bool canSaveSendList = true;
+        private bool isOpeningPort = false;
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //初始化所有数据
@@ -122,6 +124,34 @@ namespace llcom
             //关于页面
             aboutScrollViewer.ScrollToTop();
             versionTextBlock.Text = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+            //检查更新
+            Task.Run(async() =>
+            {
+                try
+                {
+                    HttpClient client = new HttpClient();
+                    client.DefaultRequestHeaders.Add("user-agent", "llcom");
+                    string data = await client.GetStringAsync("https://api.github.com/repos/chenxuuu/llcom/releases/latest");
+                    JObject jo = (JObject)JsonConvert.DeserializeObject(data);
+                    if((string)jo["tag_name"] != 
+                        System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString())
+                    {
+                        var result = MessageBox.Show($"发现新版本{(string)jo["tag_name"]}，是否前往官网进行更新？",
+                            "更新检查",
+                            MessageBoxButton.YesNo);
+                        if(result == MessageBoxResult.Yes)
+                        {
+                            System.Diagnostics.Process.Start("https://github.com/chenxuuu/llcom/releases/latest");
+                        }
+                    }
+                }
+                catch(Exception ex)
+                {
+                    //MessageBox.Show(ex.ToString());
+                    //暂时先不管
+                }
+            });
         }
 
 
@@ -190,19 +220,27 @@ namespace llcom
                         {
                             serialPortsListComboBox.Text = c;
                             //自动重连，不管结果
-                            if (!forcusClosePort && Tools.Global.setting.autoReconnect)
+                            if (!forcusClosePort && Tools.Global.setting.autoReconnect && !isOpeningPort)
                             {
-                                try
+                                Task.Run(() =>
                                 {
-                                    Tools.Global.uart.serial.Open();
-                                    openClosePortTextBlock.Text = "关闭";
-                                    serialPortsListComboBox.IsEnabled = false;
-                                    statusTextBlock.Text = "开启";
-                                }
-                                catch
-                                {
-                                    //MessageBox.Show("串口打开失败！");
-                                }
+                                    isOpeningPort = true;
+                                    try
+                                    {
+                                        Tools.Global.uart.serial.Open();
+                                        Dispatcher.Invoke(new Action(delegate
+                                        {
+                                            openClosePortTextBlock.Text = "关闭";
+                                            serialPortsListComboBox.IsEnabled = false;
+                                            statusTextBlock.Text = "开启";
+                                        }));
+                                    }
+                                    catch
+                                    {
+                                        //MessageBox.Show("串口打开失败！");
+                                    }
+                                    isOpeningPort = false;
+                                });
                             }
                             break;
                         }
@@ -331,6 +369,8 @@ namespace llcom
 
         private void openPort()
         {
+            if (isOpeningPort)
+                return;
             if (serialPortsListComboBox.SelectedItem != null)
             {
                 string[] ports = SerialPort.GetPortNames();//获取所有串口列表
@@ -345,19 +385,28 @@ namespace llcom
                 }
                 if (port != "")
                 {
-                    try
+                    Task.Run(() =>
                     {
-                        forcusClosePort = false;//不再强制关闭串口
-                        Tools.Global.uart.serial.PortName = port;
-                        Tools.Global.uart.serial.Open();
-                        openClosePortTextBlock.Text = "关闭";
-                        serialPortsListComboBox.IsEnabled = false;
-                        statusTextBlock.Text = "开启";
-                    }
-                    catch
-                    {
-                        MessageBox.Show("串口打开失败！");
-                    }
+                        isOpeningPort = true;
+                        try
+                        {
+                            forcusClosePort = false;//不再强制关闭串口
+                            Tools.Global.uart.serial.PortName = port;
+                            Tools.Global.uart.serial.Open();
+                            this.Dispatcher.Invoke(new Action(delegate
+                            {
+                                openClosePortTextBlock.Text = "关闭";
+                                serialPortsListComboBox.IsEnabled = false;
+                                statusTextBlock.Text = "开启";
+                            }));
+                        }
+                        catch
+                        {
+                            MessageBox.Show("串口打开失败！");
+                        }
+                        isOpeningPort = false;
+                    });
+
                 }
             }
         }
