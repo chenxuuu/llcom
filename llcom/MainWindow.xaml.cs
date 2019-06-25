@@ -1,4 +1,5 @@
-﻿using ICSharpCode.AvalonEdit.Highlighting;
+﻿using FontAwesome.WPF;
+using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Search;
 using LibUsbDotNet.DeviceNotify;
@@ -645,7 +646,29 @@ namespace llcom
                 saveLuaFile(lastLuaFile);
         }
 
-        private static bool luaLogPrintable = true;
+        //是否可打印标记
+        private bool _luaLogPrintable = true;
+        private bool luaLogPrintable
+        {
+            get
+            {
+                return _luaLogPrintable;
+            }
+            set
+            {
+                if (value)
+                {
+                    pauseLuaPrintButton.ToolTip = "暂停打印";
+                    pauseLuaPrintIcon.Icon = FontAwesomeIcon.Pause;
+                }
+                else
+                {
+                    pauseLuaPrintButton.ToolTip = "继续打印";
+                    pauseLuaPrintIcon.Icon = FontAwesomeIcon.Play;
+                }
+                _luaLogPrintable = value;
+            }
+        }
         private void LuaApis_PrintLuaLog(object sender, EventArgs e)
         {
             if (luaLogPrintable)
