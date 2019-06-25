@@ -46,7 +46,7 @@ namespace llcom.Tools
         /// <param name="e"></param>
         private static void Uart_UartDataSent(object sender, EventArgs e)
         {
-            Logger.AddUartLog($"sent:\t{(string)sender}\r\nhex: {String2Hex((string)sender, " ")}");
+            Logger.AddUartLog($"sent:\t{Byte2String((byte[])sender)}\r\nhex: {Byte2Hex((byte[])sender, " ")}");
         }
 
         /// <summary>
@@ -56,8 +56,7 @@ namespace llcom.Tools
         /// <param name="e"></param>
         private static void Uart_UartDataRecived(object sender, EventArgs e)
         {
-            string rev = Byte2String(sender as byte[]);
-            Logger.AddUartLog($"received:\t{rev}\r\nhex: {String2Hex(rev, " ")}");
+            Logger.AddUartLog($"received:\t{Byte2String((byte[])sender)}\r\nhex: {Byte2Hex((byte[])sender, " ")}");
         }
 
         /// <summary>
@@ -121,9 +120,9 @@ namespace llcom.Tools
 
 
 
-        public static string Byte2Hex(byte[] d)
+        public static string Byte2Hex(byte[] d, string s = "")
         {
-            return BitConverter.ToString(d).Replace("-", "");
+            return BitConverter.ToString(d).Replace("-", s);
         }
     }
 }
