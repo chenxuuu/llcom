@@ -256,10 +256,11 @@ end
 function sys.publish(...)
     arg = { ... }
     table.insert(messageQueue, arg)
+    dispatch()
 end
 
 -- 分发消息
-local function dispatch()
+function dispatch()
     while true do
         if #messageQueue == 0 then
             break
@@ -278,7 +279,6 @@ local function dispatch()
 end
 ------------------------------------------ Luat 主调度框架  ------------------------------------------
 function sys.tigger(param)
-    dispatch()
     if param < TASK_TIMER_ID_MAX then
         local taskId = timerPool[param]
         timerPool[param] = nil
