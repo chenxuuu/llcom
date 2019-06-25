@@ -15,24 +15,26 @@ namespace llcom.LuaEnv
         /// 初始化lua对象
         /// </summary>
         /// <param name="lua"></param>
-        public static void Initial(NLua.Lua lua)
+        public static void Initial(vJine.Lua.LuaContext lua, string t = "script")
         {
             //utf8转gbk编码的hex值
-            lua.RegisterFunction("apiUtf8ToHex", null, typeof(LuaApis).GetMethod("Utf8ToAsciiHex")); 
+            lua.reg("apiUtf8ToHex", new Func<string,string>(LuaApis.Utf8ToAsciiHex));
             //获取软件目录路径
-            lua.RegisterFunction("apiGetPath", null, typeof(LuaApis).GetMethod("GetPath"));
-            //发送串口数据
-            if((lua["runType"] as string) != "send")
+            lua.reg("apiGetPath", new Func<string>(LuaApis.GetPath));
+            
+            if(t != "send")
             {
-                lua.RegisterFunction("apiSendUartData", null, typeof(LuaApis).GetMethod("SendUartData"));
-                lua.RegisterFunction("apiStartTimer", null, typeof(LuaRunEnv).GetMethod("StartTimer")); 
-                lua.RegisterFunction("apiStopTimer", null, typeof(LuaRunEnv).GetMethod("StopTimer"));
+                //发送串口数据
+                lua.reg("apiSendUartData", new Func<string,bool>(LuaApis.SendUartData));
+                //定时器
+                lua.reg("apiStartTimer", new Func<int,int,int>(LuaRunEnv.StartTimer));
+                lua.reg("apiStopTimer", new Action<int>(LuaRunEnv.StopTimer));
             }
             //输出日志
-            lua.RegisterFunction("apiPrintLog", null, typeof(LuaApis).GetMethod("PrintLog"));
+            lua.reg("apiPrintLog", new Action<string>(LuaApis.PrintLog));
 
             //运行初始化文件
-            lua.DoFile("core_script/head.lua");
+            lua.load("core_script/head.lua");
         }
 
         /// <summary>
@@ -47,21 +49,19 @@ namespace llcom.LuaEnv
             if (!File.Exists("user_script_send_convert/" + file))
                 return "";
 
-            using (var lua = new NLua.Lua())
+            using (var lua = new vJine.Lua.LuaContext())
             {
                 try
                 {
-                    lua.State.Encoding = Encoding.UTF8;
-                    lua.LoadCLRPackage();
-                    lua["runType"] = "send";//一次性处理标志
-                    lua["file"] = file;
-                    Initial(lua);
+                    lua.set("runType", "send");//一次性处理标志
+                    lua.set("file", file);
+                    Initial(lua, "send");
                     if (args != null)
                         for (int i = 0; i < args.Count; i += 2)
                         {
-                            lua[(string)args[i]] = args[i + 1];
+                            lua.set((string)args[i], args[i + 1].ToString());
                         }
-                    return lua.DoFile("core_script/once.lua")[0].ToString();
+                    return lua.load("core_script/once.lua")[0].ToString();
                 }
                 catch (Exception e)
                 {
