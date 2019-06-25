@@ -6,13 +6,13 @@
 [![MIT](https://img.shields.io/static/v1.svg?label=license&message=Apache+2&color=blue)](https://github.com/chenxuuu/llcom/blob/master/LICENSE)
 [![code-size](https://img.shields.io/github/languages/code-size/chenxuuu/llcom.svg)](https://github.com/chenxuuu/llcom/archive/master.zip)
 
-可运行lua脚本的串口调试工具，高自由度的调试工具。
+可运行lua脚本的高自由度串口调试工具。
 
 ## 下载
 
 release页面稳定版：[GitHub Release Page](https://github.com/chenxuuu/llcom/releases/latest)
 
-CI自动构建，快照版：[Appveyor Artifacts](appveyor.com/project/chenxuuu/llcom/build/artifacts)
+CI自动构建，快照版：[Appveyor Artifacts](https://ci.appveyor.com/project/chenxuuu/llcom/build/artifacts)
 
 ## 功能列表
 

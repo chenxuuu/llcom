@@ -4,9 +4,29 @@
 --以免被覆盖掉
 --建议在此处require你在改的脚本
 
+--注册串口接收函数
+uartReceive = function (data)
+    log.info("uartReceive",data)
+    sys.publish("UART",data)--发布消息
+end
+
+--新建任务，等待接收到消息再继续运行
 sys.taskInit(function()
     while true do
-        sys.wait(1000)
-        log.info("task test","pop")
+        local _,udata = sys.waitUntil("UART")--等待消息
+        log.info("task waitUntil",udata)
+        local sendResult = apiSendUartData("ok!")--发送串口消息
+        log.info("uart send",sendResult)
     end
 end)
+
+--新建任务，每休眠1000ms继续一次
+sys.taskInit(function()
+    while true do
+        sys.wait(1000)--等待1000ms
+        log.info("task wait",os.time())
+    end
+end)
+
+--1000ms循环定时器
+sys.timerLoopStart(log.info,1000,"timer test")

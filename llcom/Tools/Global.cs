@@ -15,7 +15,7 @@ namespace llcom.Tools
     class Global
     {
         //api接口文档网址
-        public static string apiDocumentUrl = "https://github.com/chenxuuu/llcom";
+        public static string apiDocumentUrl = "https://github.com/chenxuuu/llcom/blob/master/LuaApi.md";
         //主窗口是否被关闭？
         public static bool isMainWindowsClosed = false;
         //给全局使用的设置参数项

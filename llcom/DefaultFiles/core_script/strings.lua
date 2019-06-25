@@ -34,7 +34,7 @@ function string.fromHex(hex)
     end)
 end
 
--- 返回字符串tonumber的转义字符串(用来支持超过31位整数的转换)
+--- 返回字符串tonumber的转义字符串(用来支持超过31位整数的转换)
 -- @string str 输入字符串
 -- @return str 转换后的lua 二进制字符串
 -- @return len 转换了多少个字符
