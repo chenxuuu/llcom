@@ -425,9 +425,9 @@ namespace llcom
                 {
                     Tools.Global.uart.SendData(Tools.Global.Hex2Byte(dataConvert));
                 }
-                catch
+                catch(Exception ex)
                 {
-                    MessageBox.Show("串口数据发送失败！请检查连接！");
+                    MessageBox.Show("串口数据发送失败！请检查连接！\r\n"+ex.ToString());
                     return;
                 }
             }
