@@ -66,7 +66,14 @@ namespace llcom.LuaEnv
                         return;
                     if (toRun.Count > 0)
                     {
-                        lua.exec("tiggerCB", toRun[0].id, toRun[0].type, toRun[0].data);
+                        try
+                        {
+                            lua.exec("tiggerCB", toRun[0].id, toRun[0].type, toRun[0].data);
+                        }
+                        catch
+                        {
+                            continue;
+                        }
                         if (tokenSource.IsCancellationRequested)
                             return;
                         toRun.RemoveAt(0);
