@@ -46,7 +46,7 @@ if runType == "send" then return end
 function print(...)
     arg = { ... }
     local logAll = {}
-    for i=1,#arg do
+    for i=1,select('#', ...) do
         if type(arg[i]) ~= "string" then
             table.insert(logAll, tostring(arg[i]))
         else
