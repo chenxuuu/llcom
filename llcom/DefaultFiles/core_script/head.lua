@@ -47,12 +47,7 @@ function print(...)
     arg = { ... }
     local logAll = {}
     for i=1,select('#', ...) do
-        if type(arg[i]) ~= "string" then
-            table.insert(logAll, tostring(arg[i]))
-        else
-            local str = apiUtf8ToHex(arg[i]):fromHex()
-            table.insert(logAll, str)
-        end
+        table.insert(logAll, tostring(arg[i]))
     end
     apiPrintLog(table.concat(logAll, "\t"))
 end

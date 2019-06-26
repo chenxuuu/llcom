@@ -6,17 +6,21 @@
 
 --注册串口接收函数
 uartReceive = function (data)
-    log.info("uartReceive",data)
+    log.info("uart receive",data)
     sys.publish("UART",data)--发布消息
 end
 
 --新建任务，等待接收到消息再继续运行
 sys.taskInit(function()
     while true do
-        local _,udata = sys.waitUntil("UART")--等待消息
-        log.info("task waitUntil",udata)
-        local sendResult = apiSendUartData("ok!")--发送串口消息
-        log.info("uart send",sendResult)
+        --等待消息，超时1000ms
+        local r,udata = sys.waitUntil("UART",1000)
+        log.info("uart wait",r,udata)
+        if r then
+            --发送串口消息，并获取发送结果
+            local sendResult = apiSendUartData("ok!")
+            log.info("uart send",sendResult)
+        end
     end
 end)
 
