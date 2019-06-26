@@ -25,7 +25,7 @@ CI自动构建，快照版：[Appveyor Artifacts](https://ci.appveyor.com/projec
 - 可独立运行Lua脚本，并拥有定时器与协程任务特性（移植自合宙Luat Task架构）
 
 ![screen](https://github.com/chenxuuu/llcom/blob/master/screen.png?raw=true)
-![screen2](https://github.com/chenxuuu/llcom/blob/master/screen2.png?raw=true)
+![screen2](https://github.com/chenxuuu/llcom/blob/master/screen2.jpg?raw=true)
 
 ## 特色功能示范
 
