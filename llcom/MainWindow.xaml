@@ -256,6 +256,9 @@
                             <Button Name="apiDocumentButton" Margin="3,0,0,0" ToolTip="查看接口文档" Click="ApiDocumentButton_Click">
                                 <fa:FontAwesome Icon="Book" Foreground="DarkSlateGray"/>
                             </Button>
+                            <Button Name="scriptShareButton" Margin="3,0,0,0" ToolTip="获取社区上分享的脚本，或把脚本分享给大家" Click="ScriptShareButton_Click">
+                                <fa:FontAwesome Icon="ShareAlt" Foreground="DarkCyan"/>
+                            </Button>
                         </WrapPanel>
                         <WrapPanel Grid.Row="1" Name="newLuaFileWrapPanel" Visibility="Collapsed" Margin="3">
                             <TextBlock Text="文件名：" VerticalAlignment="Center"/>
