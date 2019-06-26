@@ -116,7 +116,7 @@ namespace llcom.LuaEnv
         {
             if(pool[id] != null)
             {
-                ((CancellationTokenSource)pool[id]).Cancel();
+                pool[id].Cancel();
                 pool.Remove(id);
             }
         }
@@ -131,6 +131,10 @@ namespace llcom.LuaEnv
                 LuaApis.PrintLog("lua代码报错了：\r\n" + ex);
             else
                 LuaApis.PrintLog("lua代码已停止");
+            foreach(var v in pool)
+            {
+                v.Value.Cancel();
+            }
             isRunning = false;
             tokenSource.Cancel();
             pool.Clear();
