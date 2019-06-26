@@ -24,7 +24,8 @@ CI自动构建，快照版：[Appveyor Artifacts](https://ci.appveyor.com/projec
 - 右侧快捷发送栏，快捷发送条目数量不限制
 - 可独立运行Lua脚本，并拥有定时器与协程任务特性（移植自合宙Luat Task架构）
 
-![icon](https://github.com/chenxuuu/llcom/blob/master/screen.png?raw=true)
+![screen](https://github.com/chenxuuu/llcom/blob/master/screen.png?raw=true)
+![screen2](https://github.com/chenxuuu/llcom/blob/master/screen2.png?raw=true)
 
 ## 特色功能示范
 
