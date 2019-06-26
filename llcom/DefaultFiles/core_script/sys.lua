@@ -57,7 +57,7 @@ end
 -- @usage result, data = sys.waitUntil("SIM_IND", 120000)
 function sys.waitUntil(id, ms)
     sys.subscribe(id, coroutine.running())
-    local message = ms and {wait(ms)} or {coroutine.yield()}
+    local message = ms and {sys.wait(ms)} or {coroutine.yield()}
     sys.unsubscribe(id, coroutine.running())
     return message[1] ~= nil, table.unpack(message, 2, #message)
 end
@@ -70,7 +70,7 @@ end
 -- @usage result, data = sys.waitUntilExt("SIM_IND", 120000)
 function sys.waitUntilExt(id, ms)
     sys.subscribe(id, coroutine.running())
-    local message = ms and {wait(ms)} or {coroutine.yield()}
+    local message = ms and {sys.wait(ms)} or {coroutine.yield()}
     sys.unsubscribe(id, coroutine.running())
     if message[1] ~= nil then return table.unpack(message) end
     return false
