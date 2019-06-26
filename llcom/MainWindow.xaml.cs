@@ -126,6 +126,8 @@ namespace llcom
             aboutScrollViewer.ScrollToTop();
             versionTextBlock.Text = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
+            this.Title += " - " + versionTextBlock.Text;
+
             //检查更新
             Task.Run(async() =>
             {
@@ -135,8 +137,8 @@ namespace llcom
                     client.DefaultRequestHeaders.Add("user-agent", "llcom");
                     string data = await client.GetStringAsync("https://api.github.com/repos/chenxuuu/llcom/releases/latest");
                     JObject jo = (JObject)JsonConvert.DeserializeObject(data);
-                    if((string)jo["tag_name"] != 
-                        System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString())
+                    if(int.Parse(((string)jo["tag_name"]).Replace(".", "")) >
+                        int.Parse(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString().Replace(".","")))
                     {
                         var result = MessageBox.Show($"发现新版本{(string)jo["tag_name"]}，是否前往官网进行更新？",
                             "更新检查",

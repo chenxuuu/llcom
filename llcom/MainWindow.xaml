@@ -355,6 +355,8 @@
                             <LineBreak/>
                             LibUsbDotNet
                             <LineBreak/>
+                            Costura.Fody
+                            <LineBreak/>
                             <LineBreak/>
                         </TextBlock>
                         <TextBlock Text="软件版本"/>
