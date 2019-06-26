@@ -730,6 +730,11 @@ namespace llcom
         {
             System.Diagnostics.Process.Start("https://github.com/chenxuuu/llcom/issues/new/choose");
         }
+
+        private void ScriptShareButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/chenxuuu/llcom/blob/master/scripts");
+        }
     }
 
     public class ToSendData
