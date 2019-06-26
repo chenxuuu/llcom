@@ -212,7 +212,14 @@ namespace llcom
                     foreach (string i in strs)
                         serialPortsListComboBox.Items.Add(i);
                     if (strs.Count >= 1)
+                    {
+                        openClosePortButton.IsEnabled = true;
                         serialPortsListComboBox.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        openClosePortButton.IsEnabled = false;
+                    }
                     refreshLock = false;
 
 
