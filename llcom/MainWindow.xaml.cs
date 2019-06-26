@@ -658,16 +658,19 @@ namespace llcom
             }
             set
             {
-                if (value)
+                this.Dispatcher.Invoke(new Action(delegate
                 {
-                    pauseLuaPrintButton.ToolTip = "暂停打印";
-                    pauseLuaPrintIcon.Icon = FontAwesomeIcon.Pause;
-                }
-                else
-                {
-                    pauseLuaPrintButton.ToolTip = "继续打印";
-                    pauseLuaPrintIcon.Icon = FontAwesomeIcon.Play;
-                }
+                    if (value)
+                    {
+                        pauseLuaPrintButton.ToolTip = "暂停打印";
+                        pauseLuaPrintIcon.Icon = FontAwesomeIcon.Pause;
+                    }
+                    else
+                    {
+                        pauseLuaPrintButton.ToolTip = "继续打印";
+                        pauseLuaPrintIcon.Icon = FontAwesomeIcon.Play;
+                    }
+                }));
                 _luaLogPrintable = value;
             }
         }
