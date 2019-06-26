@@ -17,12 +17,12 @@ CI自动构建，快照版：[Appveyor Artifacts](https://ci.appveyor.com/projec
 ## 功能列表
 
 - 其他串口调试功能具有的功能
-- 收发日志清晰明了
-- 自动保存串口与Lua脚本日志
+- 收发日志清晰明了，同时显示HEX值与实际字符串
+- 自动保存串口与Lua脚本日志，并附带时间
 - 串口断开后，如果再次连接，会自动重连
 - 发送的数据可被用户自定义的Lua脚本提前处理
 - 右侧快捷发送栏，快捷发送条目数量不限制
-- 可独立运行Lua脚本，并拥有定时器与协程任务特性
+- 可独立运行Lua脚本，并拥有定时器与协程任务特性（移植自合宙Luat Task架构）
 
 ![icon](https://github.com/chenxuuu/llcom/blob/master/screen.png?raw=true)
 
