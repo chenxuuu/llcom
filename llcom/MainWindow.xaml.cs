@@ -143,7 +143,8 @@ namespace llcom
                     if(int.Parse(((string)jo["tag_name"]).Replace(".", "")) >
                         int.Parse(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString().Replace(".","")))
                     {
-                        var result = MessageBox.Show($"发现新版本{(string)jo["tag_name"]}，是否前往官网进行更新？",
+                        var result = MessageBox.Show($"发现新版本{(string)jo["tag_name"]}，是否前往官网进行更新？\r\n" +
+                            $"更新内容：{(string)jo["body"]}",
                             "更新检查",
                             MessageBoxButton.YesNo);
                         if(result == MessageBoxResult.Yes)
