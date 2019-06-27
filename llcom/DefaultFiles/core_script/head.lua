@@ -67,24 +67,5 @@ apiSendUartData = function (s)
     return oldapiSendUartData(str)
 end
 
---协程外部触发
-tiggerCB = function (id,type,data)
-    --log.debug("tigger",id,type,data:toHex())
-    if type == "uartRev" then--串口消息
-        uartCB(data)
-    elseif type == "cmd" then
-        local result, info = pcall(function ()
-            load(data)()
-        end)
-        if result then
-            log.info("console","run success")
-        else
-            log.info("console","run failed\r\n"..tostring(info))
-        end
-    elseif id >= 0 then--定时器消息
-        sys.tigger(id)
-    end
-end
-
 
 

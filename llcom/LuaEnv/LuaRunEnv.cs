@@ -12,7 +12,7 @@ namespace llcom.LuaEnv
     class LuaRunEnv
     {
         public static event EventHandler LuaRunError;//报错的回调
-        private static vJine.Lua.LuaContext lua = null;
+        private static NLua.Lua lua = null;
         private static CancellationTokenSource tokenSource = null;
         private static Dictionary<int, CancellationTokenSource> pool = 
             new Dictionary<int, CancellationTokenSource>();//timer回调池子
@@ -55,34 +55,22 @@ namespace llcom.LuaEnv
             addTigger(-1,"uartRev", Tools.Global.Byte2Hex(sender as byte[]));
         }
 
-        private static void runTigger()
+        public static LuaPool Run()
         {
-            try
+            if (toRun.Count > 0 && !tokenSource.IsCancellationRequested)
             {
-                while (true)
-                {
-                    Task.Delay(1).Wait();
-                    if (tokenSource.IsCancellationRequested)
-                        return;
-                    if (toRun.Count > 0)
-                    {
-                        try
-                        {
-                            lua.exec("tiggerCB", toRun[0].id, toRun[0].type, toRun[0].data);
-                        }
-                        catch(Exception le)
-                        {
-                            LuaApis.PrintLog("回调报错：\r\n" + le.ToString());
-                        }
-                        if (tokenSource.IsCancellationRequested)
-                            return;
-                        toRun.RemoveAt(0);
-                    }
-                }
+                var r = toRun[0];
+                toRun.RemoveAt(0);
+                return r;
             }
-            catch (Exception ex)
+            else if (tokenSource.IsCancellationRequested)
             {
-                StopLua(ex.ToString());
+                return new LuaPool { data = "", id = -1, type = "stop" };
+            }
+            else
+            {
+                Task.Delay(1).Wait();
+                return new LuaPool { data = "", id = -1, type = "" };
             }
         }
 
@@ -138,6 +126,7 @@ namespace llcom.LuaEnv
             isRunning = false;
             tokenSource.Cancel();
             pool.Clear();
+            toRun.Clear();
             lua = null;
         }
 
@@ -155,22 +144,22 @@ namespace llcom.LuaEnv
             //文件不存在
             if (!File.Exists(file))
                 return;
-            lua = new vJine.Lua.LuaContext();
+            lua = new NLua.Lua();
             Task.Run(() =>
             {
                 while(!canRun)
                     Task.Delay(100).Wait();
                 try
                 {
-                    lua.set("runType", "script");//一次性处理标志
+                    lua["runType"] = "script";//一次性处理标志
                     LuaLoader.Initial(lua);
-                    lua.load(file);
+                    lua.DoFile(file);
+                    lua.GetFunction("sys.run").Call();
                 }
                 catch (Exception ex)
                 {
                     StopLua(ex.ToString());
                 }
-                runTigger();
             }, tokenSource.Token);
         }
     }

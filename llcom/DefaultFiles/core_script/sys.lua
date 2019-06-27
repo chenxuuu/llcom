@@ -303,4 +303,32 @@ function sys.tigger(param)
 end
 
 log.info("sys","core loaded!")
+
+
+--主线框架启动
+function sys.run()
+    --log.debug("tigger",id,type,data:toHex())
+    while true do
+        local run = apiSysRun()
+        if run.type == "uartRev" then--串口消息
+            uartCB(run.data)
+        elseif run.type == "cmd" then
+            local result, info = pcall(function ()
+                load(data)()
+            end)
+            if result then
+                log.info("console","run success")
+            else
+                log.info("console","run failed\r\n"..tostring(info))
+            end
+        elseif run.type == "stop" then
+            log.info("sys","stoped!")
+            break
+        elseif run.id >= 0 then--定时器消息
+            sys.tigger(run.id)
+        end
+    end
+end
+
+
 return sys
