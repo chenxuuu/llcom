@@ -70,9 +70,9 @@ namespace llcom.LuaEnv
                         {
                             lua.exec("tiggerCB", toRun[0].id, toRun[0].type, toRun[0].data);
                         }
-                        catch
+                        catch(Exception le)
                         {
-                            continue;
+                            LuaApis.PrintLog("回调报错：\r\n" + le.ToString());
                         }
                         if (tokenSource.IsCancellationRequested)
                             return;

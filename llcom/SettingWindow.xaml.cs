@@ -100,8 +100,7 @@ namespace llcom
             dataCheckComboBox.SelectedIndex = Tools.Global.setting.parity;
 
             //快速搜索
-            textEditor.TextArea.DefaultInputHandler.NestedInputHandlers.Add(
-                new SearchInputHandler(textEditor.TextArea));
+            SearchPanel.Install(textEditor.TextArea);
             string name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name + ".Lua.xshd";
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             using (System.IO.Stream s = assembly.GetManifestResourceStream(name))
