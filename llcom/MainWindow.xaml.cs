@@ -134,34 +134,41 @@ namespace llcom
             //检查更新
             Task.Run(async() =>
             {
-                try
+                if(!await CheckUpdate("httaps://api.github.com/repos/chenxuuu/llcom/releases/latest", "httaps://github.com/chenxuuu/llcom/releases/latest"))
                 {
-                    HttpClient client = new HttpClient();
-                    client.DefaultRequestHeaders.Add("user-agent", "llcom");
-                    string data = await client.GetStringAsync("https://api.github.com/repos/chenxuuu/llcom/releases/latest");
-                    JObject jo = (JObject)JsonConvert.DeserializeObject(data);
-                    if(int.Parse(((string)jo["tag_name"]).Replace(".", "")) >
-                        int.Parse(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString().Replace(".","")))
-                    {
-                        var result = MessageBox.Show($"发现新版本{(string)jo["tag_name"]}，是否前往官网进行更新？\r\n" +
-                            $"更新内容：{(string)jo["body"]}",
-                            "更新检查",
-                            MessageBoxButton.YesNo);
-                        if(result == MessageBoxResult.Yes)
-                        {
-                            System.Diagnostics.Process.Start("https://github.com/chenxuuu/llcom/releases/latest");
-                        }
-                    }
-                }
-                catch(Exception ex)
-                {
-                    //MessageBox.Show(ex.ToString());
-                    //暂时先不管
+                    await CheckUpdate("https://gitee.com/api/v5/repos/chenxuuu/llcom/releases/latest", "https://gitee.com/chenxuuu/llcom/releases");
                 }
             });
         }
 
-
+        private async Task<bool> CheckUpdate(string url, string download)
+        {
+            try
+            {
+                HttpClient client = new HttpClient();
+                client.DefaultRequestHeaders.Add("user-agent", "llcom");
+                string data = await client.GetStringAsync("https://gitee.com/api/v5/repos/chenxuuu/llcom/releases/latest");
+                JObject jo = (JObject)JsonConvert.DeserializeObject(data);
+                if (int.Parse(((string)jo["tag_name"]).Replace(".", "")) >
+                    int.Parse(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString().Replace(".", "")))
+                {
+                    var result = MessageBox.Show($"发现新版本{(string)jo["tag_name"]}，是否前往官网进行更新？\r\n" +
+                        $"更新内容：{(string)jo["body"]}",
+                        "更新检查",
+                        MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        System.Diagnostics.Process.Start("https://gitee.com/chenxuuu/llcom/releases");
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                //MessageBox.Show(ex.ToString());
+                return false;
+            }
+        }
 
         private void Uart_UartDataSent(object sender, EventArgs e)
         {
