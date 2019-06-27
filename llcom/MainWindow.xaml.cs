@@ -86,10 +86,14 @@ namespace llcom
                 JObject jo = (JObject)JsonConvert.DeserializeObject(Tools.Global.setting.quickData);
                 foreach(var i in jo["data"])
                 {
+                    if (i["commit"] == null)
+                        i["commit"] = "发送";
                     toSendListItems.Add(new ToSendData() {
                         id = (int)i["id"],
                         text = (string)i["text"],
-                        hex = (bool)i["hex"] });
+                        hex = (bool)i["hex"],
+                        commit = (string)i["commit"]
+                    });
                 }
             }
             catch(Exception ex)
@@ -519,6 +523,11 @@ namespace llcom
                 sendUartData(Encoding.Default.GetBytes(data.text));
         }
 
+        private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ToSendData data = ((Button)sender).Tag as ToSendData;
+            ((Button)sender).Content = data.commit = data.text;
+        }
 
         public void SaveSendList(object sender, EventArgs e)
         {
@@ -528,7 +537,12 @@ namespace llcom
             var list = new JArray();
             foreach (ToSendData i in toSendListItems)
             {
-                list.Add(new JObject { { "id", i.id }, { "text", i.text }, { "hex", i.hex } });
+                list.Add(new JObject {
+                    { "id", i.id },
+                    { "text", i.text },
+                    { "hex", i.hex },
+                    { "commit", i.commit }
+                });
             }
             data.Add("data", list);
             Tools.Global.setting.quickData = data.ToString();
@@ -749,6 +763,7 @@ namespace llcom
         private int _id;
         private string _text;
         private bool _hex;
+        private string _commit;
         public int id
         {
             get
@@ -782,6 +797,19 @@ namespace llcom
             set
             {
                 _hex = value;
+                DataChanged(0, EventArgs.Empty);
+            }
+        }
+
+        public string commit
+        {
+            get
+            {
+                return _commit;
+            }
+            set
+            {
+                _commit = value;
                 DataChanged(0, EventArgs.Empty);
             }
         }
