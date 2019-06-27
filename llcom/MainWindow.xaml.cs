@@ -101,8 +101,7 @@ namespace llcom
 
 
             //快速搜索
-            textEditor.TextArea.DefaultInputHandler.NestedInputHandlers.Add(
-                new SearchInputHandler(textEditor.TextArea));
+            SearchPanel.Install(textEditor.TextArea);
             string name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name + ".Lua.xshd";
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             using (System.IO.Stream s = assembly.GetManifestResourceStream(name))
@@ -347,7 +346,7 @@ namespace llcom
 
             if (Tools.Global.setting.showHex)
             {
-                p = new Paragraph(new Run("HEX:" + BitConverter.ToString(data).Replace("-","")));
+                p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(data," ")));
                 if (send)
                     p.Foreground = Brushes.LightPink;
                 else
