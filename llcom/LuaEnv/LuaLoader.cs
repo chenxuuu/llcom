@@ -55,6 +55,8 @@ namespace llcom.LuaEnv
             {
                 try
                 {
+                    lua.State.Encoding = Encoding.UTF8;
+                    lua.LoadCLRPackage();
                     lua["runType"] = "send";//一次性处理标志
                     lua["file"] = file;
                     Initial(lua);

@@ -145,6 +145,8 @@ namespace llcom.LuaEnv
             if (!File.Exists(file))
                 return;
             lua = new NLua.Lua();
+            lua.State.Encoding = Encoding.UTF8;
+            lua.LoadCLRPackage();
             Task.Run(() =>
             {
                 while(!canRun)
