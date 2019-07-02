@@ -26,7 +26,7 @@ CI自动构建，快照版：[Appveyor Artifacts](https://ci.appveyor.com/projec
 
 ![screen](/screen.png)
 ![screen2](/screen2.jpg)
-![screen3](/screen2.png)
+![screen3](/screen3.png)
 
 ## 特色功能示范
 
