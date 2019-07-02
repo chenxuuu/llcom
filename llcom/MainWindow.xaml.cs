@@ -510,7 +510,7 @@ namespace llcom
 
         private void AddSendListButton_Click(object sender, RoutedEventArgs e)
         {
-            toSendListItems.Add(new ToSendData() { id = toSendListItems.Count + 1, text = "", hex = false });
+            toSendListItems.Add(new ToSendData() { id = toSendListItems.Count + 1, text = "", hex = false , commit = "发送"});
         }
 
         private void DeleteSendListButton_Click(object sender, RoutedEventArgs e)
