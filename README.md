@@ -1,6 +1,6 @@
 # LLCOM
 
-![icon](https://github.com/chenxuuu/llcom/blob/master/llcom/llcom.ico?raw=true)
+![icon](/llcom/llcom.ico)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/telji5j8r0v5001c?svg=true)](https://ci.appveyor.com/project/chenxuuu/llcom)
 [![MIT](https://img.shields.io/static/v1.svg?label=license&message=Apache+2&color=blue)](https://github.com/chenxuuu/llcom/blob/master/LICENSE)
@@ -24,8 +24,9 @@ CI自动构建，快照版：[Appveyor Artifacts](https://ci.appveyor.com/projec
 - 右侧快捷发送栏，快捷发送条目数量不限制
 - 可独立运行Lua脚本，并拥有定时器与协程任务特性（移植自合宙Luat Task架构）
 
-![screen](https://github.com/chenxuuu/llcom/blob/master/screen.png?raw=true)
-![screen2](https://github.com/chenxuuu/llcom/blob/master/screen2.jpg?raw=true)
+![screen](/screen.png)
+![screen2](/screen2.jpg)
+![screen3](/screen2.png)
 
 ## 特色功能示范
 
