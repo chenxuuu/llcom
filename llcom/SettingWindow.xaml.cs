@@ -3,6 +3,7 @@ using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Search;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -251,6 +252,13 @@ namespace llcom
             //自动保存脚本
             if (lastLuaFile != "")
                 saveLuaFile(lastLuaFile);
+        }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("请在关闭软件后，再进行复制或覆盖操作，否则配置文件可能不生效。");
+            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
+            System.Diagnostics.Process.Start("explorer.exe", path.Substring(0,path.Length-11));
         }
     }
 }

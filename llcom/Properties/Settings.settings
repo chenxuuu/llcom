@@ -41,5 +41,8 @@
     <Setting Name="quickData" Type="System.String" Scope="User">
       <Value Profile="(Default)">{"data":[{"id":1,"text":"example string","hex":false},{"id":2,"text":"中文默认utf8编码","hex":false},{"id":3,"text":"aa 01 02 0d 0a","hex":true},{"id":4,"text":"此处数据会被lua处理","hex":false}]}</Value>
     </Setting>
+    <Setting Name="UpgradeRequired" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
