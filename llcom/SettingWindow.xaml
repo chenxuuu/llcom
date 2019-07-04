@@ -22,7 +22,7 @@
                     <WrapPanel Margin="5">
                         <TextBlock Text="分包数据超时时间：" VerticalAlignment="Center"/>
                         <TextBox Text="{Binding timeout}" Width="50"/>
-                        <TextBlock Text="秒" VerticalAlignment="Center" Margin="3,0"/>
+                        <TextBlock Text="毫秒" VerticalAlignment="Center" Margin="3,0"/>
                     </WrapPanel>
                     <WrapPanel Margin="5">
                         <TextBlock Text="数据位长度：" VerticalAlignment="Center"/>
