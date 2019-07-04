@@ -11,7 +11,7 @@
 
 ## 下载
 
-release页面稳定版：[GitHub Release Page](https://github.com/chenxuuu/llcom/releases/latest)
+release页面稳定版：[GitHub](https://github.com/chenxuuu/llcom/releases/latest) | [开源中国Gitee（国内）](https://gitee.com/chenxuuu/llcom/releases)
 
 CI自动构建，快照版：[Appveyor Artifacts](https://ci.appveyor.com/project/chenxuuu/llcom/build/artifacts)
 
@@ -23,7 +23,7 @@ CI自动构建，快照版：[Appveyor Artifacts](https://ci.appveyor.com/projec
 - 串口断开后，如果再次连接，会自动重连
 - 发送的数据可被用户自定义的Lua脚本提前处理
 - 右侧快捷发送栏，快捷发送条目数量不限制
-- 可独立运行Lua脚本，并拥有定时器与协程任务特性（移植自合宙Luat Task架构）
+- 可独立运行Lua脚本，并拥有定时器与协程任务特性（移植自[合宙Luat Task架构](http://wiki.openluat.com/doc/luatFramework/)）
 
 ![screen](/screen.png)
 ![screen2](/screen2.jpg)
@@ -102,7 +102,19 @@ sys.timerLoopStart(log.info,1000,"timer test")
 
 接口文档可以在[这个页面](https://github.com/chenxuuu/llcom/blob/master/LuaApi.md)查看
 
+## 已知问题与待添加的功能（请大家反馈，谢谢！）
+
+- [ ] bug：lua任务回调会报错
+- [ ] bug：使用nlua作为框架时，会在调用协程代码时报错
+- [ ] bug：使用vJine.Lua作为框架时，会出现加载失败的情况，原因不明
+- [ ] 待添加功能：右侧快捷发送数据导入与导出
+- [ ] 配置文件的导入与导出，以便分享
+
+
 ## 开源
 
-代码逻辑相当难看，如果各位大佬不觉得麻烦的话，欢迎对本项目进行pr或直接重构。
+如果各位大佬不觉得麻烦的话，欢迎对本项目进行pr或直接重构。
+
+本项目在前期只是为了实现功能，代码相当零散，所以不太适合阅读我的源码进行学习，等我有空的时候会重构代码。
+
 本项目采用Apache 2.0协议，如有借用，请保留指向该项目的链接。
