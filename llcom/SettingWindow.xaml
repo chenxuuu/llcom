@@ -51,6 +51,7 @@
                             <ComboBoxItem Content="低电平"/>
                         </ComboBox>
                     </WrapPanel>
+                    <Button Name="settingsButton" Content="导入/导出所有配置，打开配置文件目录" ToolTip="包括快捷发送配置，不包括脚本文件" Click="SettingsButton_Click" Margin="5"/>
                 </StackPanel>
             </TabItem>
 

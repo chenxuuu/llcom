@@ -19,7 +19,7 @@ namespace llcom.Tools
         //主窗口是否被关闭？
         public static bool isMainWindowsClosed = false;
         //给全局使用的设置参数项
-        public static Model.Settings setting = new Model.Settings();
+        public static Model.Settings setting;
         public static Model.Uart uart = new Model.Uart();
 
         /// <summary>
@@ -27,6 +27,15 @@ namespace llcom.Tools
         /// </summary>
         public static void Initial()
         {
+            //导入之前的配置文件
+            if (Properties.Settings.Default.UpgradeRequired)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.UpgradeRequired = false;
+                Properties.Settings.Default.Save();
+            }
+            setting = new Model.Settings();
+
             Logger.InitUartLog();
             uart.Init();
             uart.serial.BaudRate = setting.baudRate;
