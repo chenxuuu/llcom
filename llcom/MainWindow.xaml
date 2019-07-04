@@ -85,6 +85,7 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="Auto" />
@@ -107,20 +108,21 @@
                         </Grid>
                     </ItemsPanelTemplate>
                 </StatusBar.ItemsPanel>
-                <StatusBarItem Grid.Column="0">
+                <Button Grid.Column="0" Name="refreshPortButton" Content="刷新串口" Click="RefreshPortButton_Click"/>
+                <StatusBarItem Grid.Column="1">
                     <TextBlock Text="端口：" />
                 </StatusBarItem>
-                <Separator Grid.Column="1" />
-                <StatusBarItem Grid.Column="2">
-                    <ComboBox Name="serialPortsListComboBox" MinWidth="150">
+                <Separator Grid.Column="2" />
+                <StatusBarItem Grid.Column="3">
+                    <ComboBox Name="serialPortsListComboBox" MinWidth="150" MaxWidth="300">
                     </ComboBox>
                 </StatusBarItem>
-                <Separator Grid.Column="3" />
-                <StatusBarItem Grid.Column="4">
+                <Separator Grid.Column="4" />
+                <StatusBarItem Grid.Column="5">
                     <TextBlock Text="波特率：" />
                 </StatusBarItem>
-                <Separator Grid.Column="5" />
-                <StatusBarItem Grid.Column="6">
+                <Separator Grid.Column="6" />
+                <StatusBarItem Grid.Column="7">
                     <ComboBox Name="baudRateComboBox" Width="80" SelectionChanged="BaudRateComboBox_SelectionChanged">
                         <ComboBoxItem Content="110"/>
                         <ComboBoxItem Content="330"/>
@@ -150,28 +152,28 @@
                         <ComboBoxItem Content="2000000"/>
                     </ComboBox>
                 </StatusBarItem>
-                <Separator Grid.Column="7" />
-                <StatusBarItem Grid.Column="8">
+                <Separator Grid.Column="8" />
+                <StatusBarItem Grid.Column="9">
                     <TextBlock Text="状态：" />
                 </StatusBarItem>
-                <Separator Grid.Column="9" />
-                <StatusBarItem Grid.Column="10">
+                <Separator Grid.Column="10" />
+                <StatusBarItem Grid.Column="11">
                     <TextBlock Name="statusTextBlock" Text="已关闭" />
                 </StatusBarItem>
-                <Separator Grid.Column="11" />
-                <StatusBarItem Grid.Column="12">
+                <Separator Grid.Column="12" />
+                <StatusBarItem Grid.Column="13">
                     <TextBlock Text="已发送字节：" />
                 </StatusBarItem>
-                <Separator Grid.Column="13" />
-                <StatusBarItem Grid.Column="14">
+                <Separator Grid.Column="14" />
+                <StatusBarItem Grid.Column="15">
                     <TextBlock Name="sentCountTextBlock" Text="0" />
                 </StatusBarItem>
-                <Separator Grid.Column="15" />
-                <StatusBarItem Grid.Column="16">
+                <Separator Grid.Column="16" />
+                <StatusBarItem Grid.Column="17">
                     <TextBlock Text="已接收字节：" />
                 </StatusBarItem>
-                <Separator Grid.Column="17" />
-                <StatusBarItem Grid.Column="18">
+                <Separator Grid.Column="18" />
+                <StatusBarItem Grid.Column="19">
                     <TextBlock Name="receivedCountTextBlock" Text="0" />
                 </StatusBarItem>
             </StatusBar>
