@@ -27,7 +27,11 @@ namespace llcom.Tools
         /// <param name="l"></param>
         public static void AddUartLog(string l)
         {
-            File.AppendAllText(uartLogFile, DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss:ffff]") + l + "\r\n");
+            try
+            {
+                File.AppendAllText(uartLogFile, DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss:ffff]") + l + "\r\n");
+            }
+            catch { }
         }
 
 
@@ -47,7 +51,11 @@ namespace llcom.Tools
         {
             if (luaLogFile == "")
                 InitLuaLog();
-            File.AppendAllText(luaLogFile, DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss:ffff]") + l + "\r\n");
+            try
+            {
+                File.AppendAllText(luaLogFile, DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss:ffff]") + l + "\r\n");
+            }
+            catch { }
         }
     }
 }

@@ -763,6 +763,11 @@ namespace llcom
         {
             System.Diagnostics.Process.Start("https://github.com/chenxuuu/llcom/blob/master/scripts");
         }
+
+        private void RefreshPortButton_Click(object sender, RoutedEventArgs e)
+        {
+            refreshPortList();
+        }
     }
 
     public class ToSendData
