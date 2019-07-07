@@ -38,11 +38,11 @@ namespace llcom
             SendReport((Exception)unhandledExceptionEventArgs.ExceptionObject);
         }
 
-        public static void SendReport(Exception exception, string developerMessage = "", bool silent = false)
+        public static void SendReport(Exception exception, string developerMessage = "", bool silent = true)
         {
             var reportCrash = new ReportCrash("lolicon@papapoi.com")
             {
-                DeveloperMessage = "llcom错误报告"
+                DeveloperMessage = developerMessage
             };
             reportCrash.Silent = silent;
             reportCrash.CaptureScreen = true;
