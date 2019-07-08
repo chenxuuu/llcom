@@ -58,5 +58,18 @@ namespace llcom.LuaEnv
             }
             return false;
         }
+
+        /// <summary>
+        /// 获取快捷发送区数据
+        /// </summary>
+        /// <param name="id">快捷发送数据的编号</param>
+        /// <returns>内容，如果不存在则为空字符串</returns>
+        public static string QuickSendList(int id)
+        {
+            if (Model.Settings.toSendDatas.Count < id || id <= 0)
+                return "";
+            else
+                return Model.Settings.toSendDatas[id-1];
+        }
     }
 }

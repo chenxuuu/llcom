@@ -67,6 +67,19 @@ apiSendUartData = function (s)
     return oldapiSendUartData(str)
 end
 
+--重写获取快捷发送区数据接口
+local oldapiQuickSendList = apiQuickSendList
+apiQuickSendList = function (id)
+    local s = oldapiQuickSendList(id)
+    if s:sub(1,1) == "S" then
+        return s:sub(2)
+    elseif s:sub(1,1) == "H" then
+        return s:sub(2):fromHex()
+    else
+        return
+    end
+end
+
 --协程外部触发
 tiggerCB = function (id,type,data)
     --log.debug("tigger",id,type,data:toHex())

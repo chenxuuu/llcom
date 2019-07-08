@@ -35,6 +35,7 @@ namespace llcom.Tools
                 Properties.Settings.Default.Save();
             }
             setting = new Model.Settings();
+            Model.Settings.UpdateQuickSend();
 
             Logger.InitUartLog();
             uart.Init();
