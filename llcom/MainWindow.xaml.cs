@@ -768,6 +768,18 @@ namespace llcom
         {
             refreshPortList();
         }
+
+        private void ImportSSCOMButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("请选择SSCOM所在目录的“sscom.ini”文件。");
+            System.Windows.Forms.OpenFileDialog OpenFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            OpenFileDialog1.Filter = "SSCOM配置文件|sscom51.ini;sscom.ini";
+            if (OpenFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string path = OpenFileDialog1.FileName;
+                FileStream fs = new FileStream(path, FileMode.Open);
+            }
+        }
     }
 
     public class ToSendData
