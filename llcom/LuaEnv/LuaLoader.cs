@@ -21,8 +21,12 @@ namespace llcom.LuaEnv
             lua.reg("apiUtf8ToHex", new Func<string,string>(LuaApis.Utf8ToAsciiHex));
             //获取软件目录路径
             lua.reg("apiGetPath", new Func<string>(LuaApis.GetPath));
-            
-            if(t != "send")
+            //输出日志
+            lua.reg("apiPrintLog", new Action<string>(LuaApis.PrintLog));
+            //获取快捷发送区数据
+            lua.reg("apiQuickSendList", new Func<int,string>(LuaApis.QuickSendList));
+
+            if (t != "send")
             {
                 //发送串口数据
                 lua.reg("apiSendUartData", new Func<string,bool>(LuaApis.SendUartData));
@@ -30,8 +34,6 @@ namespace llcom.LuaEnv
                 lua.reg("apiStartTimer", new Func<int,int,int>(LuaRunEnv.StartTimer));
                 lua.reg("apiStopTimer", new Action<int>(LuaRunEnv.StopTimer));
             }
-            //输出日志
-            lua.reg("apiPrintLog", new Action<string>(LuaApis.PrintLog));
 
             //运行初始化文件
             lua.load("core_script/head.lua");

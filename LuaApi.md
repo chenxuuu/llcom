@@ -89,6 +89,28 @@ local str = apiUtf8ToHex("中文"):fromHex()
 
 此功能仅用来兼容中文目录加载错误的问题，具体请见`head.lua`里的用法
 
+### apiQuickSendList(id)
+
+获取快捷发送区中的数据
+
+* 参数
+
+|传入值类型|释义|
+|-|-|
+|id|number，需要获取的快捷发送区数据的序号|
+
+* 返回值
+
+string，快捷发送区数据内容
+
+序号不存在时为nil
+
+* 例子
+
+```lua
+local str = apiQuickSendList(1)
+```
+
 ## Lua层增加的接口
 
 ## string附加接口

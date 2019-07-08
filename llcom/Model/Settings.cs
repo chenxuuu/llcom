@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
@@ -23,6 +25,22 @@ namespace llcom.Model
         private string _runScript = Properties.Settings.Default.runScript;
         private bool _topmost = Properties.Settings.Default.topmost;
         private string _quickData = Properties.Settings.Default.quickData;
+        public static List<string> toSendDatas = new List<string>();
+
+        public static void UpdateQuickSend()
+        {
+            toSendDatas.Clear();
+            JObject jo = (JObject)JsonConvert.DeserializeObject(Tools.Global.setting.quickData);
+            foreach (var i in jo["data"])
+            {
+                if (i["commit"] == null)
+                    i["commit"] = "发送";
+                if ((bool)i["hex"])
+                    toSendDatas.Add("H" + (string)i["text"]);
+                else
+                    toSendDatas.Add("S" + (string)i["text"]);
+            }
+        }
 
         public string quickData
         {
@@ -35,6 +53,9 @@ namespace llcom.Model
                 _quickData = value;
                 Properties.Settings.Default.quickData = value;
                 Properties.Settings.Default.Save();
+
+                //更新快捷发送区参数
+                UpdateQuickSend();
             }
         }
 
