@@ -225,6 +225,7 @@
                             <Button Name="deleteSendListButton" Content="删除最后一项" Grid.Column="1" Margin="3" Click="DeleteSendListButton_Click"/>
                         </Grid>
                         <TextBlock Text="发送处理的lua脚本，同样对此处发送的数据生效。" TextWrapping="Wrap" FontWeight="Bold"/>
+                        <Button Name="importSSCOMButton" Content="一键导入SSCOM数据" Grid.Column="1" Margin="3" Click="ImportSSCOMButton_Click"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
