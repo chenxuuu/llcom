@@ -3,6 +3,7 @@ using LibUsbDotNet.Main;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Management;
@@ -129,10 +130,33 @@ namespace llcom.Tools
         }
 
 
-
         public static string Byte2Hex(byte[] d, string s = "")
         {
             return BitConverter.ToString(d).Replace("-", s);
+        }
+
+
+        /// <summary>
+        /// 导入SSCOM配置文件数据
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static List<Model.ToSendData> ImportFromSSCOM(string path)
+        {
+            var lines = File.ReadAllLines(path);
+            var r = new List<Model.ToSendData>();
+            for (int i = 0; i < lines.Length; i++)
+            {
+                try
+                {
+
+                }
+                catch
+                {
+                    //先不处理
+                }
+            }
+            return r;
         }
     }
 }
