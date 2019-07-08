@@ -26,6 +26,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+using llcom.Model;
 
 namespace llcom
 {
@@ -102,7 +103,6 @@ namespace llcom
                 Tools.Global.setting.quickData = "{\"data\":[{\"id\":1,\"text\":\"example string\",\"hex\":false},{\"id\":2,\"text\":\"中文默认utf8编码\",\"hex\":false},{\"id\":3,\"text\":\"aa 01 02 0d 0a\",\"hex\":true},{\"id\":4,\"text\":\"此处数据会被lua处理\",\"hex\":false}]}";
             }
             canSaveSendList = true;
-
 
             //快速搜索
             SearchPanel.Install(textEditor.TextArea);
@@ -781,63 +781,4 @@ namespace llcom
             }
         }
     }
-
-    public class ToSendData
-    {
-        public static event EventHandler DataChanged;
-        private int _id;
-        private string _text;
-        private bool _hex;
-        private string _commit;
-        public int id
-        {
-            get
-            {
-                return _id;
-            }
-            set
-            {
-                _id = value;
-                DataChanged(0, EventArgs.Empty);
-            }
-        }
-        public string text
-        {
-            get
-            {
-                return _text;
-            }
-            set
-            {
-                _text = value;
-                DataChanged(0, EventArgs.Empty);
-            }
-        }
-        public bool hex
-        {
-            get
-            {
-                return _hex;
-            }
-            set
-            {
-                _hex = value;
-                DataChanged(0, EventArgs.Empty);
-            }
-        }
-
-        public string commit
-        {
-            get
-            {
-                return _commit;
-            }
-            set
-            {
-                _commit = value;
-                DataChanged(0, EventArgs.Empty);
-            }
-        }
-    }
-
 }
