@@ -147,7 +147,7 @@ namespace llcom
             {
                 HttpClient client = new HttpClient();
                 client.DefaultRequestHeaders.Add("user-agent", "llcom");
-                string data = await client.GetStringAsync("https://gitee.com/api/v5/repos/chenxuuu/llcom/releases/latest");
+                string data = await client.GetStringAsync(url);
                 JObject jo = (JObject)JsonConvert.DeserializeObject(data);
                 if (int.Parse(((string)jo["tag_name"]).Replace(".", "")) >
                     int.Parse(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString().Replace(".", "")))
@@ -158,7 +158,7 @@ namespace llcom
                         MessageBoxButton.YesNo);
                     if (result == MessageBoxResult.Yes)
                     {
-                        System.Diagnostics.Process.Start("https://gitee.com/chenxuuu/llcom/releases");
+                        System.Diagnostics.Process.Start(download);
                     }
                 }
                 return true;
