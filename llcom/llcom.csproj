@@ -137,6 +137,7 @@
     <Compile Include="LuaEnv\LuaLoader.cs" />
     <Compile Include="LuaEnv\LuaRunEnv.cs" />
     <Compile Include="Model\Settings.cs" />
+    <Compile Include="Model\ToSendData.cs" />
     <Compile Include="Model\Uart.cs" />
     <Compile Include="SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
