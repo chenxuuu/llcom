@@ -47,6 +47,24 @@ namespace llcom.Tools
             uart.UartDataRecived += Uart_UartDataRecived;
             uart.UartDataSent += Uart_UartDataSent;
             LuaEnv.LuaRunEnv.init();
+
+            if (File.Exists("core_script/last_path"))
+            {
+                if(File.ReadAllText("core_script/last_path") != AppDomain.CurrentDomain.SetupInformation.ApplicationBase)
+                {
+                    System.Windows.MessageBox.Show(
+                        "检测到软件被移动到其他路径！\r\n" +
+                        "请注意，移动该软件后，配置文件将会被改为默认\r\n" +
+                        "如需读取之前的配置文件，请将软件移动回之前的目录\r\n" +
+                        AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "\r\n" +
+                        "然后进入更多设置--导入/导出配置文件来手动备份之前的配置信息");
+                    File.WriteAllText("core_script/last_path", AppDomain.CurrentDomain.SetupInformation.ApplicationBase);
+                }
+            }
+            else
+            {
+                File.WriteAllText("core_script/last_path", AppDomain.CurrentDomain.SetupInformation.ApplicationBase);
+            }
         }
 
 
