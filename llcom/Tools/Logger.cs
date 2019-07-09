@@ -18,7 +18,7 @@ namespace llcom.Tools
         public static void InitUartLog()
         {
             uartLogFile = "logs/" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".log";
-            //File.Create(uartLogFile);
+            AddUartLog("Logs by LLCOM. https://github.com/chenxuuu/llcom");
         }
 
         /// <summary>

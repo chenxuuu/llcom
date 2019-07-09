@@ -208,9 +208,7 @@
     </ItemGroup>
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>xcopy /e /r /y "$(ProjectDir)DefaultFiles" "$(SolutionDir)llcom\$(OutDir)"
-del *.xml
-del *.pdb</PostBuildEvent>
+    <PostBuildEvent>xcopy /e /r /y "$(ProjectDir)DefaultFiles" "$(SolutionDir)llcom\$(OutDir)"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Fody.5.0.0\build\Fody.targets" Condition="Exists('..\packages\Fody.5.0.0\build\Fody.targets')" />
 </Project>
