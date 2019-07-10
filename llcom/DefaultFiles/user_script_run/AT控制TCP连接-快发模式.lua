@@ -1,6 +1,11 @@
 --适用于合宙Air202/Air720 AT TCP连接测试
 local server,ip = "180.97.80.55","12415"
 
+--每次发送的数据内容
+local data = string.rep("123",20)
+--服务器信息
+local server,ip = "180.97.80.55","12415"
+
 local torev = "OK"
 --注册串口接收函数
 uartReceive = function (data)
@@ -69,11 +74,11 @@ sys.taskInit(function ()
     while true do
         --发送数据请求
         log.info("start send data")
-        rollRun("AT+CIPSEND=10",">",1000)
+        rollRun("AT+CIPSEND="..tostring(data:len()),">",1000)
 
         --数据内容
         log.info("data content")
-        rollRun("1234567890","DATA ACCEPT",1000)
+        rollRun(data,"DATA ACCEPT",1000)
 
         sys.wait(5000)
     end

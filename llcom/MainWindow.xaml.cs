@@ -771,7 +771,7 @@ namespace llcom
 
         private void ImportSSCOMButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("请选择SSCOM所在目录的“sscom.ini”文件。");
+            MessageBox.Show("请选择SSCOM所在目录的“sscom51.ini”文件。");
             System.Windows.Forms.OpenFileDialog OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             OpenFileDialog.Filter = "SSCOM配置文件|sscom51.ini;sscom.ini";
             if (OpenFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -780,13 +780,16 @@ namespace llcom
                     canSaveSendList = false;
                     foreach (var i in Tools.Global.ImportFromSSCOM(OpenFileDialog.FileName))
                     {
-                        toSendListItems.Add(new ToSendData()
+                        this.Dispatcher.Invoke(new Action(delegate
                         {
-                            id = toSendListItems.Count + 1,
-                            text = i.text,
-                            hex = i.hex,
-                            commit = i.commit
-                        });
+                            toSendListItems.Add(new ToSendData()
+                            {
+                                id = toSendListItems.Count + 1,
+                                text = i.text,
+                                hex = i.hex,
+                                commit = i.commit
+                            });
+                        }));
                     }
                     canSaveSendList = true;
                     SaveSendList(0, EventArgs.Empty);//保存并刷新数据列表

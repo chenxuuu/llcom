@@ -40,6 +40,10 @@ namespace llcom
 
         public static void SendReport(Exception exception, string developerMessage = "", bool silent = true)
         {
+            MessageBox.Show("软件报错，如果持续这样，请前往GitHub反馈\r\n" +
+                "https://github.com/chenxuuu/llcom\r\n" +
+                "错误原因：\r\n" +
+                exception.ToString());
             var reportCrash = new ReportCrash("lolicon@papapoi.com")
             {
                 DeveloperMessage = developerMessage
