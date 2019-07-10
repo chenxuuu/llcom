@@ -134,7 +134,7 @@ namespace llcom
             //检查更新
             Task.Run(async() =>
             {
-                if(!await CheckUpdate("httaps://api.github.com/repos/chenxuuu/llcom/releases/latest", "httaps://github.com/chenxuuu/llcom/releases/latest"))
+                if(!await CheckUpdate("https://api.github.com/repos/chenxuuu/llcom/releases/latest", "https://github.com/chenxuuu/llcom/releases/latest"))
                 {
                     await CheckUpdate("https://gitee.com/api/v5/repos/chenxuuu/llcom/releases/latest", "https://gitee.com/chenxuuu/llcom/releases");
                 }
@@ -464,7 +464,7 @@ namespace llcom
         {
             if (baudRateComboBox.SelectedItem != null)
             {
-                Tools.Global.setting.baudRate = 
+                Tools.Global.setting.baudRate =
                     int.Parse((baudRateComboBox.SelectedItem as ComboBoxItem).Content.ToString());
             }
         }
