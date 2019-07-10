@@ -161,13 +161,34 @@ namespace llcom.Tools
         /// <returns></returns>
         public static List<Model.ToSendData> ImportFromSSCOM(string path)
         {
-            var lines = File.ReadAllLines(path);
+            var lines = File.ReadAllLines(path, Encoding.GetEncoding("GB2312"));
             var r = new List<Model.ToSendData>();
+            Regex title = new Regex(@"N1\d\d=\d*,");
             for (int i = 0; i < lines.Length; i++)
             {
                 try
                 {
+                    var temp = new Model.ToSendData();
+                    //Console.WriteLine(lines[i]);
+                    if (title.IsMatch(lines[i]))//匹配上了
+                    {
+                        var strs = lines[i].Split(",".ToCharArray()[0]);
+                        temp.commit = strs[1].Replace(((char)2).ToString(), ",");
+                        if (string.IsNullOrWhiteSpace(temp.commit))
+                            temp.commit = "发送";
+                        //Console.WriteLine(temp.commit);
 
+                        int dot = lines[i + 1].IndexOf(",");
+                        temp.hex = lines[i + 1].Substring(dot - 1, dot - 1) == "H";
+                        //Console.WriteLine(strs[0].Substring(strs[0].Length - 1));
+
+                        string text = lines[i + 1].Substring(dot + 1);
+                        if (!string.IsNullOrWhiteSpace(text))
+                        {
+                            temp.text = text.Replace(((char)2).ToString(), ",");
+                            r.Add(temp);
+                        }
+                    }
                 }
                 catch
                 {

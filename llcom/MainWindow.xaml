@@ -32,7 +32,7 @@
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <!-- 收发数据显示 -->
-        <FlowDocumentScrollViewer Name="uartDataFlowDocument" VerticalScrollBarVisibility="Visible">
+        <FlowDocumentScrollViewer Name="uartDataFlowDocument" VerticalScrollBarVisibility="Visible" MinZoom="50">
             <!-- 更改段落间距 -->
             <FlowDocumentScrollViewer.Resources>
                 <Style TargetType="{x:Type Paragraph}">
@@ -40,7 +40,7 @@
                 </Style>
             </FlowDocumentScrollViewer.Resources>
             <!-- 更改段落间距END -->
-            <FlowDocument FontSize="12" FontFamily="Consolas" >
+            <FlowDocument FontSize="12" FontFamily="Consolas" IsOptimalParagraphEnabled="True" TextAlignment="Left">
             </FlowDocument>
         </FlowDocumentScrollViewer>
 
