@@ -1,0 +1,5 @@
+GitHub反馈：
+https://github.com/chenxuuu/llcom/issues/new/choose
+
+如果打不开上面的网址，可以去开源中国Git反馈：
+https://gitee.com/chenxuuu/llcom/issues/new
