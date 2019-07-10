@@ -179,7 +179,7 @@ namespace llcom.Tools
                         //Console.WriteLine(temp.commit);
 
                         int dot = lines[i + 1].IndexOf(",");
-                        temp.hex = lines[i + 1].Substring(dot - 1, dot - 1) == "H";
+                        temp.hex = lines[i + 1].Substring(dot - 1, 1) == "H";
                         //Console.WriteLine(strs[0].Substring(strs[0].Length - 1));
 
                         string text = lines[i + 1].Substring(dot + 1);
