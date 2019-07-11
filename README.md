@@ -11,7 +11,7 @@
 
 ## 下载
 
-release页面稳定版：[GitHub](https://github.com/chenxuuu/llcom/releases/latest) | [开源中国Gitee（国内）](https://gitee.com/chenxuuu/llcom/releases)
+release页面稳定版：[GitHub](https://github.com/chenxuuu/llcom/releases/latest)
 
 CI自动构建，快照版：[Appveyor Artifacts](https://ci.appveyor.com/project/chenxuuu/llcom/build/artifacts)
 
