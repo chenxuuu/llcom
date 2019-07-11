@@ -132,42 +132,8 @@ namespace llcom
             this.Title += " - " + versionTextBlock.Text;
 
             //检查更新
-            Task.Run(async() =>
-            {
-                if(!await CheckUpdate("https://api.github.com/repos/chenxuuu/llcom/releases/latest", "https://github.com/chenxuuu/llcom/releases/latest"))
-                {
-                    await CheckUpdate("https://gitee.com/api/v5/repos/chenxuuu/llcom/releases/latest", "https://gitee.com/chenxuuu/llcom/releases");
-                }
-            });
-        }
-
-        private async Task<bool> CheckUpdate(string url, string download)
-        {
-            try
-            {
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Add("user-agent", "llcom");
-                string data = await client.GetStringAsync(url);
-                JObject jo = (JObject)JsonConvert.DeserializeObject(data);
-                if (int.Parse(((string)jo["tag_name"]).Replace(".", "")) >
-                    int.Parse(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString().Replace(".", "")))
-                {
-                    var result = MessageBox.Show($"发现新版本{(string)jo["tag_name"]}，是否前往官网进行更新？\r\n" +
-                        $"更新内容：{(string)jo["body"]}",
-                        "更新检查",
-                        MessageBoxButton.YesNo);
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        System.Diagnostics.Process.Start(download);
-                    }
-                }
-                return true;
-            }
-            catch
-            {
-                //MessageBox.Show(ex.ToString());
-                return false;
-            }
+            Random r = new Random();//加上随机参数，确保获取的是最新数据
+            AutoUpdaterDotNET.AutoUpdater.Start("https://llcom.papapoi.com/autoUpdate.xml?" + r.Next());
         }
 
         private void Uart_UartDataSent(object sender, EventArgs e)
