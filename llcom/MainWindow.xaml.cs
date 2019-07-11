@@ -133,7 +133,11 @@ namespace llcom
 
             //检查更新
             Random r = new Random();//加上随机参数，确保获取的是最新数据
-            AutoUpdaterDotNET.AutoUpdater.Start("https://llcom.papapoi.com/autoUpdate.xml?" + r.Next());
+            try
+            {
+                AutoUpdaterDotNET.AutoUpdater.Start("https://llcom.papapoi.com/autoUpdate.xml?" + r.Next());
+            }
+            catch { }
         }
 
         private void Uart_UartDataSent(object sender, EventArgs e)
