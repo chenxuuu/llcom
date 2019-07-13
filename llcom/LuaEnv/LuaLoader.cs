@@ -15,28 +15,28 @@ namespace llcom.LuaEnv
         /// 初始化lua对象
         /// </summary>
         /// <param name="lua"></param>
-        public static void Initial(vJine.Lua.LuaContext lua, string t = "script")
+        public static void Initial(XLua.LuaEnv lua, string t = "script")
         {
             //utf8转gbk编码的hex值
-            lua.reg("apiUtf8ToHex", new Func<string,string>(LuaApis.Utf8ToAsciiHex));
+            lua.DoString("apiUtf8ToHex = CS.llcom.LuaEnv.LuaApis.Utf8ToAsciiHex");
             //获取软件目录路径
-            lua.reg("apiGetPath", new Func<string>(LuaApis.GetPath));
+            lua.DoString("apiGetPath = CS.llcom.LuaEnv.LuaApis.GetPath");
             //输出日志
-            lua.reg("apiPrintLog", new Action<string>(LuaApis.PrintLog));
+            lua.DoString("apiPrintLog = CS.llcom.LuaEnv.LuaApis.PrintLog");
             //获取快捷发送区数据
-            lua.reg("apiQuickSendList", new Func<int,string>(LuaApis.QuickSendList));
+            lua.DoString("apiQuickSendList = CS.llcom.LuaEnv.LuaApis.QuickSendList");
 
             if (t != "send")
             {
                 //发送串口数据
-                lua.reg("apiSendUartData", new Func<string,bool>(LuaApis.SendUartData));
+                lua.DoString("apiSendUartData = CS.llcom.LuaEnv.LuaApis.SendUartData");
                 //定时器
-                lua.reg("apiStartTimer", new Func<int,int,int>(LuaRunEnv.StartTimer));
-                lua.reg("apiStopTimer", new Action<int>(LuaRunEnv.StopTimer));
+                lua.DoString("apiStartTimer = CS.llcom.LuaEnv.LuaRunEnv.StartTimer");
+                lua.DoString("apiStopTimer = CS.llcom.LuaEnv.LuaRunEnv.StopTimer");
             }
 
             //运行初始化文件
-            lua.load("core_script/head.lua");
+            lua.DoString("require 'core_script.head'");
         }
 
         /// <summary>
@@ -51,19 +51,19 @@ namespace llcom.LuaEnv
             if (!File.Exists("user_script_send_convert/" + file))
                 return "";
 
-            using (var lua = new vJine.Lua.LuaContext())
+            using (var lua = new XLua.LuaEnv())
             {
                 try
                 {
-                    lua.set("runType", "send");//一次性处理标志
-                    lua.set("file", file);
+                    lua.Global.SetInPath("runType", "send");//一次性处理标志
+                    lua.Global.SetInPath("file", file);
                     Initial(lua, "send");
                     if (args != null)
                         for (int i = 0; i < args.Count; i += 2)
                         {
-                            lua.set((string)args[i], args[i + 1].ToString());
+                            lua.Global.SetInPath((string)args[i], args[i + 1].ToString());
                         }
-                    return lua.load("core_script/once.lua")[0].ToString();
+                    return lua.DoString("return require'core_script.once'")[0].ToString();
                 }
                 catch (Exception e)
                 {
