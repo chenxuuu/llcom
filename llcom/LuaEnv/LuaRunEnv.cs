@@ -12,7 +12,7 @@ namespace llcom.LuaEnv
     class LuaRunEnv
     {
         public static event EventHandler LuaRunError;//报错的回调
-        private static vJine.Lua.LuaContext lua = null;
+        private static XLua.LuaEnv lua = null;
         private static CancellationTokenSource tokenSource = null;
         private static Dictionary<int, CancellationTokenSource> pool = 
             new Dictionary<int, CancellationTokenSource>();//timer回调池子
@@ -68,7 +68,7 @@ namespace llcom.LuaEnv
                     {
                         try
                         {
-                            lua.exec("tiggerCB", toRun[0].id, toRun[0].type, toRun[0].data);
+                            lua.Global.Get<XLua.LuaFunction>("tiggerCB").Call(toRun[0].id, toRun[0].type, toRun[0].data);
                         }
                         catch(Exception le)
                         {
@@ -155,16 +155,16 @@ namespace llcom.LuaEnv
             //文件不存在
             if (!File.Exists(file))
                 return;
-            lua = new vJine.Lua.LuaContext();
+            lua = new XLua.LuaEnv();
             Task.Run(() =>
             {
                 while(!canRun)
                     Task.Delay(100).Wait();
                 try
                 {
-                    lua.set("runType", "script");//一次性处理标志
+                    lua.Global.SetInPath("runType", "script");//一次性处理标志
                     LuaLoader.Initial(lua);
-                    lua.load(file);
+                    lua.DoString($"require '{file.Replace("/",".").Substring(0,file.Length-4)}'");
                 }
                 catch (Exception ex)
                 {
