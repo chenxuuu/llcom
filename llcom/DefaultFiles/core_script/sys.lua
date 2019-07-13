@@ -84,7 +84,7 @@ end
 function sys.taskInit(fun, ...)
     arg = { ... }
     local co = coroutine.create(fun)
-    coroutine.resume(co, table.unpack(arg))
+    assert(coroutine.resume(co, table.unpack(arg)))
     return co
 end
 
@@ -271,7 +271,7 @@ function dispatch()
                 if type(callback) == "function" then
                     callback(table.unpack(message, 2, #message))
                 elseif type(callback) == "thread" then
-                    coroutine.resume(callback, table.unpack(message))
+                    assert(coroutine.resume(callback, table.unpack(message)))
                 end
             end
         end
@@ -284,7 +284,7 @@ function sys.tigger(param)
         timerPool[param] = nil
         if taskTimerPool[taskId] == param then
             taskTimerPool[taskId] = nil
-            coroutine.resume(taskId)
+            assert(coroutine.resume(taskId))
         end
     else
         local cb = timerPool[param]
