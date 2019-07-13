@@ -28,6 +28,21 @@ namespace llcom.Tools
         /// </summary>
         public static void Initial()
         {
+            if (!Directory.Exists("core_script"))
+            {
+                System.Windows.MessageBox.Show("core_script文件夹丢失！请确保没有乱删文件！如无法恢复，请去官网重新下载该软件。");
+                Environment.Exit(1);
+            }
+            if (!Directory.Exists("logs"))
+                Directory.CreateDirectory("logs");
+            if (!Directory.Exists("user_script_run"))
+                Directory.CreateDirectory("user_script_run");
+            if (!Directory.Exists("user_script_send_convert"))
+                Directory.CreateDirectory("user_script_send_convert");
+            if (!Directory.Exists("user_script_run\\logs"))
+                Directory.CreateDirectory("user_script_run\\logs");
+
+
             //导入之前的配置文件
             if (Properties.Settings.Default.UpgradeRequired)
             {
