@@ -38,6 +38,11 @@ loadfile = function (s)
     local s = apiUtf8ToHex(s):fromHex()
     return oldloadfile(s)
 end
+local oldioopen = io.open
+io.open = function (s,p)
+    local s = apiUtf8ToHex(s):fromHex()
+    return oldioopen(s,p)
+end
 
 --下面的代码一次性的处理函数用不着
 if runType == "send" then return end
