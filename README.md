@@ -96,6 +96,24 @@ end)
 sys.timerLoopStart(log.info,1000,"timer test")
 ```
 
+甚至你可以利用xlua框架的特性，调用C#接口完成任何你想做的事情
+
+```lua
+request = CS.System.Net.WebRequest.Create("http://example.com")
+request.ContentType = "text/html;charset=UTF-8";
+request.Timeout = 5000;--超时时间
+request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36 Vivaldi/2.2.1388.37";
+
+response = request:GetResponse():GetResponseStream()
+
+myStreamReader = CS.System.IO.StreamReader(response, CS.System.Text.Encoding.UTF8);
+
+print(myStreamReader:ReadToEnd())--打印获取的body内容
+
+myStreamReader:Close()
+response:Close()
+```
+
 使用此功能，你可以完成大部分的自动化串口调试操作。
 
 ## 接口文档
