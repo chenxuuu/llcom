@@ -132,10 +132,10 @@ namespace llcom
             this.Title += " - " + versionTextBlock.Text;
 
             //检查更新
-            Random r = new Random();//加上随机参数，确保获取的是最新数据
             try
             {
-                AutoUpdaterDotNET.AutoUpdater.Start("https://llcom.papapoi.com/autoUpdate.xml?" + r.Next());
+                Random r = new Random();//加上随机参数，确保获取的是最新数据
+                AutoUpdaterDotNET.AutoUpdater.Start("https://llcom.papapoi.com/autoUpdate.xml?" + r);
             }
             catch { }
         }
