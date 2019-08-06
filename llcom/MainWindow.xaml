@@ -340,6 +340,9 @@
                         <TextBlock Text="作者：晨旭" 
                                    FontSize="15"
                                    Margin="10,20,0,0"/>
+                        <TextBlock Text="交流群：906307487" 
+                                   FontSize="15"
+                                   Margin="10,0,0,0"/>
 
                         <TextBlock Text="如需反馈，请点击下面的按钮" 
                                    FontSize="15"

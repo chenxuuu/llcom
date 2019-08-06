@@ -31,7 +31,8 @@ namespace llcom.LuaEnv
 
         private static void addTigger(int id, string type = "timer", string data = "")
         {
-            toRun.Add(new LuaPool { id = id, type = type, data = data });
+            if(isRunning)
+                toRun.Add(new LuaPool { id = id, type = type, data = data });
         }
 
 
