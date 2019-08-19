@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -95,6 +95,15 @@ namespace llcom.LuaEnv
         public static int StartTimer(int id,int time)
         {
             CancellationTokenSource timerToken = new CancellationTokenSource();
+            if (pool.ContainsKey(id))
+            {
+                try
+                {
+                    pool[id].Cancel();
+                    pool.Remove(id);
+                }
+                catch { }
+            }
             pool.Add(id, timerToken);
             Task.Run(() => 
             {
