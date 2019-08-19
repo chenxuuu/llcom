@@ -115,10 +115,14 @@ namespace llcom.LuaEnv
         /// <param name="id">编号</param>
         public static void StopTimer(int id)
         {
-            if(pool[id] != null)
+            if(pool.ContainsKey(id))
             {
-                pool[id].Cancel();
-                pool.Remove(id);
+                try
+                {
+                    pool[id].Cancel();
+                    pool.Remove(id);
+                }
+                catch { }
             }
         }
 
