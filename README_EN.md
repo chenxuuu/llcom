@@ -9,7 +9,7 @@
 
 A serial port debugger tool, with lua script.
 
-> this tools is only Chinese now, you can help me to translate, thanks!
+> this tool is only Chinese now, you can help me to translate, thanks!
 
 ## Download
 
