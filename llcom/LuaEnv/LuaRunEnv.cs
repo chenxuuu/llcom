@@ -69,7 +69,9 @@ namespace llcom.LuaEnv
                     {
                         try
                         {
-                            lua.Global.Get<XLua.LuaFunction>("tiggerCB").Call(toRun[0].id, toRun[0].type, toRun[0].data);
+                            var temp = toRun[0];
+                            toRun.RemoveAt(0);
+                            lua.Global.Get<XLua.LuaFunction>("tiggerCB").Call(temp.id, temp.type, temp.data);
                         }
                         catch(Exception le)
                         {
@@ -77,7 +79,6 @@ namespace llcom.LuaEnv
                         }
                         if (tokenSource.IsCancellationRequested)
                             return;
-                        toRun.RemoveAt(0);
                     }
                 }
             }
