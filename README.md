@@ -1,5 +1,7 @@
 # LLCOM
 
+[English readme click here](/README_EN.md)
+
 ![icon](/llcom/llcom.ico)
 
 [![Build Status](https://chenxuuu.visualstudio.com/llcom/_apis/build/status/chenxuuu.llcom?branchName=master&jobName=Job)](https://chenxuuu.visualstudio.com/llcom/_build/latest?definitionId=1&branchName=master)
@@ -122,10 +124,7 @@ response:Close()
 
 ## 已知问题与待添加的功能（请大家反馈，谢谢！）
 
-- [x] ~~bug：快速大量lua任务回调会有概率性报错（主分支）~~
-- [x] ~~bug：使用nlua作为框架时，会在调用协程代码时报错（nlua分支代码）~~
-- [x] ~~bug：使用vJine.Lua作为框架时，会出现加载失败的情况，原因不明（主分支）~~
-- [ ] bug：某些条件下（比如Air720重启），COM口消失后不会被释放，导致无法再次开启该COM口，只能重启软件
+- [ ] bug：某些条件下（比如Air720重启），COM口消失后不会被释放，导致无法再次开启该COM口，只能重启软件（[.net 框架的bug，微软的人在看了](https://github.com/dotnet/corefx/issues/39464)）
 
 ## 常见问题
 
