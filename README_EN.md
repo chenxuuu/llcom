@@ -31,7 +31,7 @@ Appveyor snapshot version: [Appveyor Artifacts](https://ci.appveyor.com/project/
 ![screen2](/screen2.jpg)
 ![screen3](/screen3.png)
 
-## features' exemplary
+## features' exemples
 
 ### Use Lua script process data you want to send
 
