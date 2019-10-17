@@ -271,7 +271,9 @@ function dispatch()
                 if type(callback) == "function" then
                     callback(table.unpack(message, 2, #message))
                 elseif type(callback) == "thread" then
-                    assert(coroutine.resume(callback, table.unpack(message)))
+                    local r,i = coroutine.resume(callback, table.unpack(message))
+                    i= DEBUGHEX and i:toHex() or i--当DEBUGHEX打开时，输出hex报错信息，防止因乱码看不出原因
+                    assert(r,i)
                 end
             end
         end
@@ -284,7 +286,9 @@ function sys.tigger(param)
         timerPool[param] = nil
         if taskTimerPool[taskId] == param then
             taskTimerPool[taskId] = nil
-            assert(coroutine.resume(taskId))
+            local r,i = coroutine.resume(taskId)
+            i= DEBUGHEX and i:toHex() or i--当DEBUGHEX打开时，输出hex报错信息，防止因乱码看不出原因
+            assert(r,i)
         end
     else
         local cb = timerPool[param]
