@@ -1,4 +1,4 @@
-﻿using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Search;
 using System;
@@ -259,6 +259,11 @@ namespace llcom
             MessageBox.Show("请在关闭软件后，再进行复制或覆盖操作，否则配置文件可能不生效。");
             string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
             System.Diagnostics.Process.Start("explorer.exe", path.Substring(0,path.Length-11));
+        }
+
+        private void OpenLogButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("explorer.exe", "logs");
         }
     }
 }

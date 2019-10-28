@@ -1,4 +1,4 @@
-﻿using LibUsbDotNet;
+using LibUsbDotNet;
 using LibUsbDotNet.Main;
 using System;
 using System.Collections.Generic;
@@ -53,7 +53,6 @@ namespace llcom.Tools
             setting = new Model.Settings();
             Model.Settings.UpdateQuickSend();
 
-            Logger.InitUartLog();
             uart.Init();
             uart.serial.BaudRate = setting.baudRate;
             uart.serial.Parity = (Parity)setting.parity;
