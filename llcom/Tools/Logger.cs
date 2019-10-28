@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -27,6 +27,8 @@ namespace llcom.Tools
         /// <param name="l"></param>
         public static void AddUartLog(string l)
         {
+            if (uartLogFile == "")
+                InitUartLog();
             try
             {
                 File.AppendAllText(uartLogFile, DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss:ffff]") + l + "\r\n");

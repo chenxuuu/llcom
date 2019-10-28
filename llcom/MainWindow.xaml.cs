@@ -1,4 +1,4 @@
-﻿using FontAwesome.WPF;
+using FontAwesome.WPF;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Search;
@@ -313,8 +313,13 @@ namespace llcom
             text.Foreground = Brushes.Black;
             text.FontWeight = FontWeights.Bold;
             p.Inlines.Add(text);
+            
+            if (data.Length > 2000)
+                text = new Span(new Run(Tools.Global.Byte2String(data.Skip(0).Take(2000).ToArray())
+                    +"\r\n数据过长，剩余部分请去日志文件查看"));
+            else
+                text = new Span(new Run(Tools.Global.Byte2String(data)));
 
-            text = new Span(new Run(Tools.Global.Byte2String(data)));
             if (send)
                 text.Foreground = Brushes.DarkRed;
             else
@@ -328,13 +333,25 @@ namespace llcom
 
             if (Tools.Global.setting.showHex)
             {
-                p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(data," ")));
+                if (data.Length > 600)
+                    p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(data.Skip(0).Take(600).ToArray(), " ")
+                    + "\r\n数据过长，剩余部分请去日志文件查看"));
+                else
+                    p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(data, " ")));
+
                 if (send)
                     p.Foreground = Brushes.LightPink;
                 else
                     p.Foreground = Brushes.LightGreen;
                 p.Margin = new Thickness(0, 0, 0, 8);
                 uartDataFlowDocument.Document.Blocks.Add(p);
+            }
+            
+            //条目过多，自动清空
+            if(uartDataFlowDocument.Document.Blocks.Count > 500)
+            {
+                uartDataFlowDocument.Document.Blocks.Clear();
+                addUartLog(Tools.Global.Hex2Byte(Tools.Global.String2Hex("数据量过大，自动清理，请去日志文件查看历史数据","")), true);
             }
 
             sv.ScrollToBottom();

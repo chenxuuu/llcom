@@ -1,4 +1,4 @@
-﻿<Window x:Class="llcom.SettingWindow"
+<Window x:Class="llcom.SettingWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -16,7 +16,8 @@
             <TabItem Header="串口基本设置">
                 <StackPanel Margin="10,5,0,0" >
                     <CheckBox Content="自动恢复被断开的串口连接" Margin="5" IsChecked="{Binding autoReconnect}"/>
-                    <CheckBox Content="自动保存串口收发日志" Margin="5" IsChecked="{Binding autoSaveLog}"/>
+                    <!--<CheckBox Content="自动保存串口收发日志" Margin="5" IsChecked="{Binding autoSaveLog}"/>-->
+                    <Button Name="OpenLogButton" Content="打开串口收发日志目录" Click="OpenLogButton_Click" Margin="5"/>
                     <CheckBox Content="串口数据窗口显示HEX值" Margin="5" IsChecked="{Binding showHex}"/>
                     <CheckBox Content="窗口保持置顶显示" Margin="5" IsChecked="{Binding topmost}"/>
                     <WrapPanel Margin="5">
