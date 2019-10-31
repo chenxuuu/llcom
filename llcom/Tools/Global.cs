@@ -30,18 +30,42 @@ namespace llcom.Tools
         {
             if (!Directory.Exists("core_script"))
             {
-                System.Windows.MessageBox.Show("core_script文件夹丢失！请确保没有乱删文件！如无法恢复，请去官网重新下载该软件。");
-                Environment.Exit(1);
+                Directory.CreateDirectory("core_script");
             }
+            CreateFile("DefaultFiles/core_script/head.lua", "core_script/head.lua",false);
+            CreateFile("DefaultFiles/core_script/JSON.lua", "core_script/JSON.lua", false);
+            CreateFile("DefaultFiles/core_script/log.lua", "core_script/log.lua", false);
+            CreateFile("DefaultFiles/core_script/once.lua", "core_script/once.lua", false);
+            CreateFile("DefaultFiles/core_script/strings.lua", "core_script/strings.lua", false);
+            CreateFile("DefaultFiles/core_script/sys.lua", "core_script/sys.lua", false);
+
             if (!Directory.Exists("logs"))
                 Directory.CreateDirectory("logs");
             if (!Directory.Exists("user_script_run"))
+            {
                 Directory.CreateDirectory("user_script_run");
-            if (!Directory.Exists("user_script_send_convert"))
-                Directory.CreateDirectory("user_script_send_convert");
-            if (!Directory.Exists("user_script_run\\logs"))
-                Directory.CreateDirectory("user_script_run\\logs");
+                CreateFile("DefaultFiles/user_script_run/AT控制TCP连接-快发模式.lua", "user_script_run/AT控制TCP连接-快发模式.lua");
+                CreateFile("DefaultFiles/user_script_run/AT控制TCP连接-慢发模式.lua", "user_script_run/AT控制TCP连接-慢发模式.lua");
+                CreateFile("DefaultFiles/user_script_run/example.lua", "user_script_run/example.lua");
+                CreateFile("DefaultFiles/user_script_run/循环发送快捷发送区数据.lua", "user_script_run/循环发送快捷发送区数据.lua");
+            }
+            if (!Directory.Exists("user_script_run/requires"))
+                Directory.CreateDirectory("user_script_run/requires");
+            if (!Directory.Exists("user_script_run/logs"))
+                Directory.CreateDirectory("user_script_run/logs");
 
+            if (!Directory.Exists("user_script_send_convert"))
+            {
+                Directory.CreateDirectory("user_script_send_convert");
+                CreateFile("DefaultFiles/user_script_send_convert/16进制数据.lua", "user_script_send_convert/16进制数据.lua");
+                CreateFile("DefaultFiles/user_script_send_convert/GPS NMEA.lua", "user_script_send_convert/GPS NMEA.lua");
+                CreateFile("DefaultFiles/user_script_send_convert/加上换行回车.lua", "user_script_send_convert/加上换行回车.lua");
+                CreateFile("DefaultFiles/user_script_send_convert/解析换行回车的转义字符.lua", "user_script_send_convert/解析换行回车的转义字符.lua");
+                CreateFile("DefaultFiles/user_script_send_convert/默认.lua", "user_script_send_convert/默认.lua");
+            }
+
+            CreateFile("DefaultFiles/LICENSE", "LICENSE",false);
+            CreateFile("DefaultFiles/反馈网址.txt", "反馈网址.txt", false);
 
             //导入之前的配置文件
             if (Properties.Settings.Default.UpgradeRequired)
@@ -211,5 +235,32 @@ namespace llcom.Tools
             }
             return r;
         }
+
+        /// <summary>
+        /// 读取软件资源文件内容
+        /// </summary>
+        /// <param name="path">路径</param>
+        /// <returns>内容字节数组</returns>
+        public static byte[] GetAssetsFileContent(string path)
+        {
+            Uri uri = new Uri(path, UriKind.Relative);
+            var source = System.Windows.Application.GetResourceStream(uri).Stream;
+            byte[] f = new byte[source.Length];
+            source.Read(f, 0, (int)source.Length);
+            return f;
+        }
+
+        /// <summary>
+        /// 取出文件
+        /// </summary>
+        /// <param name="insidePath">软件内部的路径</param>
+        /// <param name="outPath">需要释放到的路径</param>
+        /// <param name="d">是否覆盖</param>
+        public static void CreateFile(string insidePath, string outPath, bool d = true)
+        {
+            if(!File.Exists(outPath) || d)
+                File.WriteAllBytes(outPath, GetAssetsFileContent(insidePath));
+        }
+
     }
 }

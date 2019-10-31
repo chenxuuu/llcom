@@ -182,6 +182,22 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Lua.xshd" />
+    <Resource Include="DefaultFiles\core_script\head.lua" />
+    <Resource Include="DefaultFiles\core_script\JSON.lua" />
+    <Resource Include="DefaultFiles\core_script\log.lua" />
+    <Resource Include="DefaultFiles\core_script\once.lua" />
+    <Resource Include="DefaultFiles\core_script\strings.lua" />
+    <Resource Include="DefaultFiles\core_script\sys.lua" />
+    <Resource Include="DefaultFiles\LICENSE" />
+    <Resource Include="DefaultFiles\user_script_run\AT控制TCP连接-快发模式.lua" />
+    <Resource Include="DefaultFiles\user_script_run\AT控制TCP连接-慢发模式.lua" />
+    <Resource Include="DefaultFiles\user_script_run\example.lua" />
+    <Resource Include="DefaultFiles\user_script_run\循环发送快捷发送区数据.lua" />
+    <Resource Include="DefaultFiles\user_script_send_convert\16进制数据.lua" />
+    <Resource Include="DefaultFiles\user_script_send_convert\GPS NMEA.lua" />
+    <Resource Include="DefaultFiles\user_script_send_convert\加上换行回车.lua" />
+    <Resource Include="DefaultFiles\user_script_send_convert\解析换行回车的转义字符.lua" />
+    <Resource Include="DefaultFiles\user_script_send_convert\默认.lua" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
@@ -200,6 +216,9 @@
   <ItemGroup>
     <EmbeddedResource Include="costura32\xlua.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="DefaultFiles\反馈网址.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
     <ItemGroup>
@@ -207,7 +226,8 @@
     </ItemGroup>
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>xcopy /e /r /y "$(ProjectDir)DefaultFiles" "$(SolutionDir)llcom\$(OutDir)"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
