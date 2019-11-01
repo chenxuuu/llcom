@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -25,6 +25,8 @@ namespace llcom.LuaEnv
             lua.DoString("apiPrintLog = CS.llcom.LuaEnv.LuaApis.PrintLog");
             //获取快捷发送区数据
             lua.DoString("apiQuickSendList = CS.llcom.LuaEnv.LuaApis.QuickSendList");
+            //输入框
+            lua.DoString("apiInputBox = CS.llcom.LuaEnv.LuaApis.InputBox");
 
             if (t != "send")
             {

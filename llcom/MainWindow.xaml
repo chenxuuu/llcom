@@ -57,10 +57,7 @@
                 <ColumnDefinition Width="0"/>
                 <ColumnDefinition Width="45"/>
                 <ColumnDefinition Width="75"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="45"/>
             </Grid.ColumnDefinitions>
             <Button Name="openClosePortButton" Grid.Column="3" Grid.RowSpan="2" Margin="2" Click="OpenClosePortButton_Click">
@@ -71,9 +68,9 @@
             </Button>
             <Button Name="clearLogButton" Content="清空日志" Grid.Column="4" Margin="2" Click="ClearLogButton_Click"/>
             <Button Name="MoreSettingButton" Content="更多设置" Grid.Column="4" Grid.Row="1" Margin="2" ToolTip="可设置串口校验位停止位等信息、设置发送前的自动处理脚本。" Click="MoreSettingButton_Click"/>
-            <TextBox Name="toSendDataTextBox" Text="{Binding dataToSend}" Grid.Column="5" Grid.RowSpan="2" Grid.ColumnSpan="4" Height="50" VerticalContentAlignment="Top"
+            <TextBox Name="toSendDataTextBox" Text="{Binding dataToSend}" Grid.Column="5" Grid.RowSpan="2" Height="50" VerticalContentAlignment="Top"
                      TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2,2,2,4" FontFamily="Consolas"/>
-            <Button Name="sendDataButton" Content="发送" Grid.Column="9" Grid.RowSpan="2" Margin="2" ToolTip="按Ctrl+Enter同样也可以发送数据。" Command="{StaticResource SendUartData}"/>
+            <Button Name="sendDataButton" Content="发送" Grid.Column="6" Grid.RowSpan="2" Margin="2" ToolTip="按Ctrl+Enter同样也可以发送数据。" Command="{StaticResource SendUartData}"/>
         </Grid>
         
         
