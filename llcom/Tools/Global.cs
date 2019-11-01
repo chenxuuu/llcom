@@ -122,7 +122,8 @@ namespace llcom.Tools
         /// <param name="e"></param>
         private static void Uart_UartDataSent(object sender, EventArgs e)
         {
-            Logger.AddUartLog($"sent:\t{Byte2String((byte[])sender)}\r\nhex: {Byte2Hex((byte[])sender, " ")}");
+            Logger.AddUartLog($"[INFO]==>{Byte2String((byte[])sender)}");
+            Logger.AddUartLog($"[DEBUG][HEX]\"{Byte2Hex((byte[])sender, " ")}\"");
         }
 
         /// <summary>
@@ -132,7 +133,8 @@ namespace llcom.Tools
         /// <param name="e"></param>
         private static void Uart_UartDataRecived(object sender, EventArgs e)
         {
-            Logger.AddUartLog($"received:\t{Byte2String((byte[])sender)}\r\nhex: {Byte2Hex((byte[])sender, " ")}");
+            Logger.AddUartLog($"[INFO]<=={Byte2String((byte[])sender)}");
+            Logger.AddUartLog($"[DEBUG][HEX]\"{Byte2Hex((byte[])sender, " ")}\"");
         }
 
         /// <summary>
