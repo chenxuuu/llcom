@@ -173,7 +173,10 @@ namespace llcom.Tools
         /// <returns></returns>
         public static string Byte2String(byte[] vBytes)
         {
-            return Encoding.Default.GetString(vBytes);
+            var br = from e in vBytes
+                     where e != 0
+                     select e;
+            return Encoding.Default.GetString(br.ToArray());
         }
 
         /// <summary>
