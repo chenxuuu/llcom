@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -70,6 +70,15 @@ namespace llcom.LuaEnv
                 return "";
             else
                 return Model.Settings.toSendDatas[id-1];
+        }
+
+        /// <summary>
+        /// 输入框
+        /// </summary>
+        /// <returns></returns>
+        public static string InputBox(string Prompt, string Title = "", string DefaultResponse = "", int XPos = -1, int YPos = -1)
+        {
+            return Microsoft.VisualBasic.Interaction.InputBox(Prompt, Title, DefaultResponse, XPos, YPos);
         }
     }
 }
