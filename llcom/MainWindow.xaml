@@ -31,19 +31,9 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
+        
         <!-- 收发数据显示 -->
-        <FlowDocumentScrollViewer Name="uartDataFlowDocument" VerticalScrollBarVisibility="Visible" MinZoom="50">
-            <!-- 更改段落间距 -->
-            <FlowDocumentScrollViewer.Resources>
-                <Style TargetType="{x:Type Paragraph}">
-                    <Setter Property="Margin" Value="0" />
-                </Style>
-            </FlowDocumentScrollViewer.Resources>
-            <!-- 更改段落间距END -->
-            <FlowDocument FontSize="12" FontFamily="Consolas" IsOptimalParagraphEnabled="True" TextAlignment="Left">
-            </FlowDocument>
-        </FlowDocumentScrollViewer>
-
+        <Frame Name="dataShowFrame" NavigationUIVisibility="Hidden"/>
 
         <!-- 发送数据区 -->
         <Grid Grid.Row="1" Margin="2">

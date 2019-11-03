@@ -41,7 +41,6 @@ namespace llcom
         }
         ObservableCollection<ToSendData> toSendListItems = new ObservableCollection<ToSendData>();
         private static IDeviceNotifier usbDeviceNotifier = DeviceNotifier.OpenDeviceNotifier();
-        ScrollViewer sv;
         private bool forcusClosePort = true;
         private bool canSaveSendList = true;
         private bool isOpeningPort = false;
@@ -64,8 +63,8 @@ namespace llcom
             Tools.Global.uart.UartDataRecived += Uart_UartDataRecived;
             Tools.Global.uart.UartDataSent += Uart_UartDataSent;
 
-            //使日志富文本区域滚动可控制
-            sv = uartDataFlowDocument.Template.FindName("PART_ContentHost", uartDataFlowDocument) as ScrollViewer;
+            //收发数据显示页面
+            dataShowFrame.Navigate(new Uri("Pages/DataShowPage.xaml", UriKind.Relative));
 
             //加载初始波特率
             baudRateComboBox.Text = Tools.Global.setting.baudRate.ToString();
@@ -142,7 +141,7 @@ namespace llcom
         private void Uart_UartDataSent(object sender, EventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate {
-                addUartLog(sender as byte[], true);
+                Tools.Logger.ShowData(sender as byte[], true);
                 sentCountTextBlock.Text = (int.Parse(sentCountTextBlock.Text) + (sender as byte[]).Length).ToString();
             }));
         }
@@ -150,7 +149,7 @@ namespace llcom
         private void Uart_UartDataRecived(object sender, EventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate {
-                addUartLog(sender as byte[], false);
+                Tools.Logger.ShowData(sender as byte[], false);
                 receivedCountTextBlock.Text = (int.Parse(receivedCountTextBlock.Text) + (sender as byte[]).Length).ToString();
             }));
         }
@@ -292,69 +291,7 @@ namespace llcom
             e.Cancel = false;//正常关闭
         }
 
-        /// <summary>
-        /// 添加串口日志数据
-        /// </summary>
-        /// <param name="data">数据</param>
-        /// <param name="send">true为发送，false为接收</param>
-        private void addUartLog(byte[] data, bool send)
-        {
-            Paragraph p = new Paragraph(new Run(""));
 
-            Span text = new Span(new Run(DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss.ffff]")));
-            text.Foreground = Brushes.DarkSlateGray;
-            p.Inlines.Add(text);
-
-            if(send)
-                text = new Span(new Run(" ← "));
-            else
-                text = new Span(new Run(" → "));
-            text.Foreground = Brushes.Black;
-            text.FontWeight = FontWeights.Bold;
-            p.Inlines.Add(text);
-            
-            if (data.Length > 2000)
-                text = new Span(new Run(Tools.Global.Byte2String(data.Skip(0).Take(2000).ToArray())
-                    +"\r\n数据过长，剩余部分请去日志文件查看"));
-            else
-                text = new Span(new Run(Tools.Global.Byte2String(data)));
-
-            if (send)
-                text.Foreground = Brushes.DarkRed;
-            else
-                text.Foreground = Brushes.DarkGreen;
-            text.FontSize = 15;
-            p.Inlines.Add(text);
-
-            if (!Tools.Global.setting.showHex)
-                p.Margin = new Thickness(0,0,0,8);
-            uartDataFlowDocument.Document.Blocks.Add(p);
-
-            if (Tools.Global.setting.showHex)
-            {
-                if (data.Length > 600)
-                    p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(data.Skip(0).Take(600).ToArray(), " ")
-                    + "\r\n数据过长，剩余部分请去日志文件查看"));
-                else
-                    p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(data, " ")));
-
-                if (send)
-                    p.Foreground = Brushes.LightPink;
-                else
-                    p.Foreground = Brushes.LightGreen;
-                p.Margin = new Thickness(0, 0, 0, 8);
-                uartDataFlowDocument.Document.Blocks.Add(p);
-            }
-            
-            //条目过多，自动清空
-            if(uartDataFlowDocument.Document.Blocks.Count > 500)
-            {
-                uartDataFlowDocument.Document.Blocks.Clear();
-                addUartLog(Tools.Global.Hex2Byte(Tools.Global.String2Hex("数据量过大，自动清理，请去日志文件查看历史数据","")), true);
-            }
-
-            sv.ScrollToBottom();
-        }
 
         Window settingPage = new SettingWindow();
         private void MoreSettingButton_Click(object sender, RoutedEventArgs e)
@@ -443,7 +380,7 @@ namespace llcom
 
         private void ClearLogButton_Click(object sender, RoutedEventArgs e)
         {
-            uartDataFlowDocument.Document.Blocks.Clear();
+            Tools.Logger.ClearData();
         }
 
         private void BaudRateComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

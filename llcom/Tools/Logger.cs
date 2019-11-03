@@ -9,6 +9,26 @@ namespace llcom.Tools
 {
     class Logger
     {
+        //显示日志数据的回调函数
+        public static event EventHandler<DataShowPara> DataShowEvent;
+        //清空显示的回调函数
+        public static event EventHandler DataClearEvent;
+        //清空日志显示
+        public static void ClearData()
+        {
+            DataClearEvent?.Invoke(null,null);
+        }
+        //显示日志数据
+        public static void ShowData(byte[] data, bool send)
+        {
+            DataShowEvent?.Invoke(null, new DataShowPara
+            {
+                data = data,
+                send = send
+            });
+        }
+
+
         private static string uartLogFile = "";
         private static string luaLogFile = "";
 
@@ -59,5 +79,14 @@ namespace llcom.Tools
             }
             catch { }
         }
+    }
+
+    /// <summary>
+    /// 显示到日志显示页面的类
+    /// </summary>
+    class DataShowPara
+    {
+        public byte[] data;
+        public bool send;
     }
 }
