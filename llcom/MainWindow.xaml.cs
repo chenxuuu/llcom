@@ -126,10 +126,9 @@ namespace llcom
             LuaEnv.LuaRunEnv.LuaRunError += LuaRunEnv_LuaRunError;
 
             //关于页面
-            aboutScrollViewer.ScrollToTop();
-            versionTextBlock.Text = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            aboutFrame.Navigate(new Uri("Pages/AboutPage.xaml", UriKind.Relative));
 
-            this.Title += " - " + versionTextBlock.Text;
+            this.Title += $" - {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
 
             //检查更新
             try
@@ -734,16 +733,6 @@ namespace llcom
         {
             if(e.Key == Key.Enter)
                 LuaEnv.LuaRunEnv.RunCommand(runOneLineLuaTextBox.Text);
-        }
-
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-            System.Diagnostics.Process.Start(e.Uri.AbsoluteUri);
-        }
-
-        private void NewissueButton_Click(object sender, RoutedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://github.com/chenxuuu/llcom/issues/new/choose");
         }
 
         private void ScriptShareButton_Click(object sender, RoutedEventArgs e)
