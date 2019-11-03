@@ -311,64 +311,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="关于与反馈">
-                <ScrollViewer Name="aboutScrollViewer">
-                    <StackPanel>
-                        <Image Source="pack://application:,,,/llcom.ico" Width="80" Height="80" HorizontalAlignment="Center"/>
-                        <TextBlock Text="LLCOM" 
-                                   HorizontalAlignment="Center" 
-                                   Margin="0,10,0,0"
-                                   FontSize="28"
-                                   FontWeight="Bold"/>
-                        <TextBlock HorizontalAlignment="Center"
-                                   FontSize="15">
-                            <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://github.com/chenxuuu/llcom" Foreground="Black" TextDecorations="{x:Null}">能跑Lua脚本的串口调试工具</Hyperlink>
-                        </TextBlock>
-
-                        <TextBlock
-                                   FontSize="15"
-                                   Margin="10,20,10,0"
-                                   TextWrapping="Wrap">
-                            LLCOM是一款串口调试工具，工具连接可靠，断线后可自动重连，同时右侧具有快捷发送区的功能。
-                            <LineBreak/>
-                            本工具除了具有与其他同类工具，所包含的数据收发功能外，还添加了Lua运行环境。
-                            用户可自行使用Lua，完成几乎所有可以想象到的自动化操作，大大提高了串口工具的可用性。
-                        </TextBlock>
-
-                        <TextBlock Text="作者：晨旭" 
-                                   FontSize="15"
-                                   Margin="10,20,0,0"/>
-                        <TextBlock Text="交流群：906307487" 
-                                   FontSize="15"
-                                   Margin="10,0,0,0"/>
-
-                        <TextBlock Text="如需反馈，请点击下面的按钮" 
-                                   FontSize="15"
-                                   Margin="10,20,0,0" 
-                                   HorizontalAlignment="Center"/>
-                        <Button Name="newissueButton" Content="提交建议或上报Bug" Width="auto" HorizontalAlignment="Center" Click="NewissueButton_Click"/>
-
-                        <TextBlock
-                                   FontSize="15"
-                                   Margin="10,20,10,0"
-                                   TextWrapping="Wrap">
-                            感谢以下开源项目：
-                            <LineBreak/>
-                            xLua
-                            <LineBreak/>
-                            AdonisUI
-                            <LineBreak/>
-                            AvalonEdit
-                            <LineBreak/>
-                            LibUsbDotNet
-                            <LineBreak/>
-                            Costura.Fody
-                            <LineBreak/>
-                            <LineBreak/>
-                        </TextBlock>
-                        <TextBlock Text="软件版本"/>
-                        <TextBlock Name="versionTextBlock"/>
-                    </StackPanel>
-                </ScrollViewer>
+                <Frame Name="aboutFrame" NavigationUIVisibility="Hidden"/>
             </TabItem>
         </TabControl>
         
