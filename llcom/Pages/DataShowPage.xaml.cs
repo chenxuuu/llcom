@@ -87,9 +87,9 @@ namespace llcom.Pages
                     p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(data, " ")));
 
                 if (send)
-                    p.Foreground = Brushes.LightPink;
+                    p.Foreground = Brushes.IndianRed;
                 else
-                    p.Foreground = Brushes.LightGreen;
+                    p.Foreground = Brushes.ForestGreen;
                 p.Margin = new Thickness(0, 0, 0, 8);
                 uartDataFlowDocument.Document.Blocks.Add(p);
             }
