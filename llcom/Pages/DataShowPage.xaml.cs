@@ -99,7 +99,7 @@ namespace llcom.Pages
             {
                 uartDataFlowDocument.Document.Blocks.Clear();
                 addUartLog(null,new Tools.DataShowPara {
-                    data = Tools.Global.Hex2Byte(Tools.Global.String2Hex("数据量过大，自动清理，请去日志文件查看历史数据", "")),
+                    data = Encoding.UTF8.GetBytes("数据量过大，自动清理，请去日志文件查看历史数据"),
                     send = true
                 });
             }
