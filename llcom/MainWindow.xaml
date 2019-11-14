@@ -226,7 +226,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <WrapPanel Orientation="Horizontal" Margin="0,0,0,5">
-                            <ComboBox Name="luaFileList" Width="100" SelectionChanged="LuaFileList_SelectionChanged">
+                            <ComboBox Name="luaFileList" Width="150" SelectionChanged="LuaFileList_SelectionChanged">
                             </ComboBox>
                             <Button Name="newScriptButton" Margin="3,0,0,0" ToolTip="新建脚本" Click="NewScriptButton_Click">
                                 <Grid>
