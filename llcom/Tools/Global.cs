@@ -28,6 +28,13 @@ namespace llcom.Tools
         /// </summary>
         public static void Initial()
         {
+            //C:\Users\chenx\AppData\Local\Temp\7zO05433053\user_script_run
+            if(AppDomain.CurrentDomain.BaseDirectory.IndexOf(@"C:\Users\") == 0 &&
+                AppDomain.CurrentDomain.BaseDirectory.Contains(@"\AppData\Local\Temp\"))
+            {
+                System.Windows.MessageBox.Show("请勿在压缩包内直接打开本软件。");
+                Environment.Exit(1);
+            }
             try
             {
                 if (!Directory.Exists("core_script"))
