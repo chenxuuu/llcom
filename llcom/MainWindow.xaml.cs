@@ -183,7 +183,7 @@ namespace llcom
                     }
                     catch
                     {
-                        Task.Delay(500).Wait();
+                        System.Threading.Thread.Sleep(500);
                     }
                     //MessageBox.Show("fail了");
                 }

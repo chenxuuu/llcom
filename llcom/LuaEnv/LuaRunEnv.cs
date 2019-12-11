@@ -62,7 +62,7 @@ namespace llcom.LuaEnv
             {
                 while (true)
                 {
-                    Task.Delay(1).Wait();
+                    System.Threading.Thread.Sleep(1);
                     if (tokenSource.IsCancellationRequested)
                         return;
                     if (toRun.Count > 0)
@@ -108,7 +108,7 @@ namespace llcom.LuaEnv
             pool.Add(id, timerToken);
             Task.Run(() => 
             {
-                Task.Delay(time).Wait();
+                System.Threading.Thread.Sleep(time);
                 if (timerToken == null || timerToken.IsCancellationRequested)
                     return;
                 if (tokenSource.IsCancellationRequested)
@@ -174,7 +174,7 @@ namespace llcom.LuaEnv
             Task.Run(() =>
             {
                 while(!canRun)
-                    Task.Delay(100).Wait();
+                    System.Threading.Thread.Sleep(100);
                 try
                 {
                     lua.Global.SetInPath("runType", "script");//一次性处理标志
