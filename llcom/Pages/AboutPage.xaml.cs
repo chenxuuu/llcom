@@ -40,5 +40,10 @@ namespace llcom.Pages
         {
             System.Diagnostics.Process.Start(e.Uri.AbsoluteUri);
         }
+
+        private void OpenSourceButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/chenxuuu/llcom");
+        }
     }
 }
