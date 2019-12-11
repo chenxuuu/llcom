@@ -19,7 +19,7 @@
                                    FontWeight="Bold"/>
             <TextBlock HorizontalAlignment="Center"
                                    FontSize="15">
-                            <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://github.com/chenxuuu/llcom" Foreground="Black" TextDecorations="{x:Null}">能跑Lua脚本的串口调试工具</Hyperlink>
+                            能跑Lua脚本的串口调试工具
             </TextBlock>
 
             <TextBlock
@@ -38,6 +38,9 @@
             <TextBlock Text="交流群：906307487" 
                                    FontSize="15"
                                    Margin="10,0,0,0"/>
+
+            <TextBlock Text="开源项目，欢迎star" FontSize="15" Margin="10,20,0,0" HorizontalAlignment="Center"/>
+            <Button Name="OpenSourceButton" Content="GitHub开源地址" Width="auto" HorizontalAlignment="Center" Click="OpenSourceButton_Click"/>
 
             <TextBlock Text="如需反馈，请点击下面的按钮" 
                                    FontSize="15"
