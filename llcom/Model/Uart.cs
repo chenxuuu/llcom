@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
@@ -15,10 +15,12 @@ namespace llcom.Model
         public event EventHandler UartDataRecived;
         public event EventHandler UartDataSent;
 
+        private static readonly object objLock = new object();
+        
         /// <summary>
         /// 初始化串口各个触发函数
         /// </summary>
-        public void Init()
+        public Uart()
         {
             //声明接收到事件
             serial.DataReceived += Serial_DataReceived;
@@ -39,15 +41,24 @@ namespace llcom.Model
         //接收到事件
         private void Serial_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            Task.Delay(Tools.Global.setting.timeout).Wait();//等待时间
-            if (!serial.IsOpen)//串口被关了，不读了
-                return;
-            int length = ((SerialPort)sender).BytesToRead;
-            byte[] rev = new byte[length];
-            ((SerialPort)sender).Read(rev, 0, length);
-            if (rev.Length == 0)
-                return;
-            UartDataRecived(rev, EventArgs.Empty);//回调事件
+            lock (objLock)
+            {
+                System.Threading.Thread.Sleep(Tools.Global.setting.timeout);//等待时间
+                while (true)
+                {
+                    if (!serial.IsOpen)//串口被关了，不读了
+                        break;
+                    int length = ((SerialPort)sender).BytesToRead;
+                    if (length == 0)
+                        break;
+                    byte[] rev = new byte[length];
+                    ((SerialPort)sender).Read(rev, 0, length);
+                    if (rev.Length == 0)
+                        break;
+                    UartDataRecived(rev, EventArgs.Empty);//回调事件
+                }
+                System.Diagnostics.Debug.WriteLine("end");
+            }
         }
     }
 }

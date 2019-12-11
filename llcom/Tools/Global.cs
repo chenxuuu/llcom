@@ -93,7 +93,6 @@ namespace llcom.Tools
             setting = new Model.Settings();
             Model.Settings.UpdateQuickSend();
 
-            uart.Init();
             uart.serial.BaudRate = setting.baudRate;
             uart.serial.Parity = (Parity)setting.parity;
             uart.serial.DataBits = setting.dataBits;
