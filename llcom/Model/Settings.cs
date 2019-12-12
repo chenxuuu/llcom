@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace llcom.Model
 {
+    [PropertyChanged.AddINotifyPropertyChangedInterface]
     class Settings
     {
         public event EventHandler MainWindowTop;
@@ -29,6 +30,9 @@ namespace llcom.Model
         private bool _autoUpdate = Properties.Settings.Default.autoUpdate; 
         private uint _maxLength = Properties.Settings.Default.maxLength; 
         public static List<string> toSendDatas = new List<string>();
+
+        public int SentCount { get; set; } = 0;
+        public int ReceivedCount { get; set; } = 0;
 
         public static void UpdateQuickSend()
         {

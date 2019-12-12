@@ -35,6 +35,7 @@ namespace llcom.Model
             if (data.Length == 0)
                 return;
             serial.Write(data, 0, data.Length);
+            Tools.Global.setting.SentCount += data.Length;
             UartDataSent(data, EventArgs.Empty);//回调
         }
 
@@ -64,6 +65,7 @@ namespace llcom.Model
                         System.Threading.Thread.Sleep(Tools.Global.setting.timeout);//等待时间
                     }
                 }
+                Tools.Global.setting.ReceivedCount += result.Count;
                 UartDataRecived(result.ToArray(), EventArgs.Empty);//回调事件
                 System.Diagnostics.Debug.WriteLine("end");
             }

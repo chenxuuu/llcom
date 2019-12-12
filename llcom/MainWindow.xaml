@@ -153,7 +153,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="14" />
                 <StatusBarItem Grid.Column="15">
-                    <TextBlock Name="sentCountTextBlock" Text="0" />
+                    <TextBlock Name="sentCountTextBlock" Text="{Binding SentCount}" ToolTip="右键可清空此计数" MouseRightButtonDown="sentCountTextBlock_MouseRightButtonDown"/>
                 </StatusBarItem>
                 <Separator Grid.Column="16" />
                 <StatusBarItem Grid.Column="17">
@@ -161,7 +161,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="18" />
                 <StatusBarItem Grid.Column="19">
-                    <TextBlock Name="receivedCountTextBlock" Text="0" />
+                    <TextBlock Name="receivedCountTextBlock" Text="{Binding ReceivedCount}" ToolTip="右键可清空此计数" MouseRightButtonDown="receivedCountTextBlock_MouseRightButtonDown"/>
                 </StatusBarItem>
             </StatusBar>
         </DockPanel>

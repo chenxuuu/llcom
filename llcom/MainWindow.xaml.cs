@@ -145,7 +145,6 @@ namespace llcom
         {
             this.Dispatcher.Invoke(new Action(delegate {
                 Tools.Logger.ShowData(sender as byte[], true);
-                sentCountTextBlock.Text = (int.Parse(sentCountTextBlock.Text) + (sender as byte[]).Length).ToString();
             }));
         }
 
@@ -153,7 +152,6 @@ namespace llcom
         {
             this.Dispatcher.Invoke(new Action(delegate {
                 Tools.Logger.ShowData(sender as byte[], false);
-                receivedCountTextBlock.Text = (int.Parse(receivedCountTextBlock.Text) + (sender as byte[]).Length).ToString();
             }));
         }
 
@@ -339,7 +337,7 @@ namespace llcom
             RefreshScriptList();
         }
 
-
+        private byte[] toSendData = null;//待发送的数据
         private void openPort()
         {
             if (isOpeningPort)
@@ -372,6 +370,11 @@ namespace llcom
                                 serialPortsListComboBox.IsEnabled = false;
                                 statusTextBlock.Text = "开启";
                             }));
+                            if(toSendData != null)
+                            {
+                                sendUartData(toSendData);
+                                toSendData = null;
+                            }
                         }
                         catch
                         {
@@ -428,7 +431,11 @@ namespace llcom
         private void sendUartData(byte[] data)
         {
             if (!Tools.Global.uart.serial.IsOpen)
+            {
                 openPort();
+                toSendData = (byte[])data.Clone();//带发送数据缓存起来，连上串口后发出去
+            }
+                
             if (Tools.Global.uart.serial.IsOpen)
             {
                 string dataConvert;
@@ -726,6 +733,16 @@ namespace llcom
                     SaveSendList(0, EventArgs.Empty);//保存并刷新数据列表
                 });
             }
+        }
+
+        private void sentCountTextBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Tools.Global.setting.SentCount = 0;
+        }
+
+        private void receivedCountTextBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Tools.Global.setting.ReceivedCount = 0;
         }
     }
 }
