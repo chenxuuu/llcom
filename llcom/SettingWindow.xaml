@@ -20,12 +20,17 @@
                     <Button Name="OpenLogButton" Content="打开串口收发日志目录" Click="OpenLogButton_Click" Margin="5"/>
                     <CheckBox Content="串口数据窗口显示HEX值" Margin="5" IsChecked="{Binding showHex}"/>
                     <CheckBox Content="窗口保持置顶显示" Margin="5" IsChecked="{Binding topmost}"/>
-                    <WrapPanel Margin="5">
+                    <StackPanel Orientation="Horizontal" Margin="5">
                         <TextBlock Text="分包数据超时时间：" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding timeout,UpdateSourceTrigger=PropertyChanged}" Width="50"/>
+                        <TextBox Text="{Binding timeout,UpdateSourceTrigger=PropertyChanged}" MinWidth="50"/>
                         <TextBlock Text="毫秒" VerticalAlignment="Center" Margin="3,0"/>
-                    </WrapPanel>
-                    <CheckBox Content="超时时间从第一个字节开始算（不勾选表示为空白间隔，最大一包10k）" Margin="5" IsChecked="{Binding bitDelay}"/>
+                    </StackPanel>
+                    <CheckBox Content="超时时间表示空白间隔（不勾选表示从第一个字节开始算超时时间）" Margin="5" IsChecked="{Binding bitDelay}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,10">
+                        <TextBlock Text="串口数据每包最大" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding maxLength,UpdateSourceTrigger=PropertyChanged}" MinWidth="60"/>
+                        <TextBlock Text="字节）" VerticalAlignment="Center"/>
+                    </StackPanel>
                     <WrapPanel Margin="5">
                         <TextBlock Text="数据位长度：" VerticalAlignment="Center"/>
                         <ComboBox Name="dataBitsComboBox" Width="50" SelectionChanged="DataBitsComboBox_SelectionChanged">

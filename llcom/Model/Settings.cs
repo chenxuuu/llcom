@@ -26,6 +26,7 @@ namespace llcom.Model
         private bool _topmost = Properties.Settings.Default.topmost;
         private string _quickData = Properties.Settings.Default.quickData;
         private bool _bitDelay = Properties.Settings.Default.bitDelay; 
+        private uint _maxLength = Properties.Settings.Default.maxLength; 
         public static List<string> toSendDatas = new List<string>();
 
         public static void UpdateQuickSend()
@@ -40,6 +41,23 @@ namespace llcom.Model
                     toSendDatas.Add("H" + (string)i["text"]);
                 else
                     toSendDatas.Add("S" + (string)i["text"]);
+            }
+        }
+
+        public uint maxLength
+        {
+            get
+            {
+                return _maxLength;
+            }
+            set
+            {
+                _maxLength = value;
+                Properties.Settings.Default.maxLength = value;
+                Properties.Settings.Default.Save();
+
+                //更新快捷发送区参数
+                UpdateQuickSend();
             }
         }
 
