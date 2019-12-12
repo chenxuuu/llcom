@@ -192,5 +192,17 @@ namespace llcom.Properties {
                 this["UpgradeRequired"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool bitDelay {
+            get {
+                return ((bool)(this["bitDelay"]));
+            }
+            set {
+                this["bitDelay"] = value;
+            }
+        }
     }
 }
