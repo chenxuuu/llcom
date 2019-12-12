@@ -113,24 +113,28 @@ string，快捷发送区数据内容
 local str = apiQuickSendList(1)
 ```
 
-### apiInputBox(string Prompt, string Title = "", string DefaultResponse = "", int XPos = -1, int YPos = -1)
+### apiInputBox(string Prompt, string DefaultResponse = "", string Title = nil)
 
-vb的输入框接口
+输入框接口
 
 * 参数
 
 |传入值类型|释义|
 |-|-|
-|参数|请参考vb的inputbox接口定义|
+|Prompt|提示文本|
+|DefaultResponse|输入默认值|
+|Title|输入框标题（为nil则使用默认标题）|
 
 * 返回值
 
-string，输入后返回的结果
+boolean，用户单击了确认还是取消
+
+string，返回的结果
 
 * 例子
 
 ```lua
-local str = apiInputBox("请输入你要发送的tcp数据")
+local ok, result = apiInputBox("请输入你要发送的tcp数据")
 ```
 
 ## Lua层增加的接口
