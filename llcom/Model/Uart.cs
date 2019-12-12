@@ -35,11 +35,10 @@ namespace llcom.Model
             if (data.Length == 0)
                 return;
             serial.Write(data, 0, data.Length);
+            Tools.Global.setting.SentCount += data.Length;
             UartDataSent(data, EventArgs.Empty);//回调
         }
 
-        //最大长度
-        private uint maxLength = 1024 * 100;
         //接收到事件
         private void Serial_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
@@ -59,10 +58,14 @@ namespace llcom.Model
                     if (rev.Length == 0)
                         break;
                     result.AddRange(rev);//加到list末尾
-                    if (result.Count > maxLength)//长度超了
+                    if (result.Count > Tools.Global.setting.maxLength)//长度超了
                         break;
-                    //todo：两种超时逻辑
+                    if (Tools.Global.setting.bitDelay)//如果是设置了等待间隔时间
+                    {
+                        System.Threading.Thread.Sleep(Tools.Global.setting.timeout);//等待时间
+                    }
                 }
+                Tools.Global.setting.ReceivedCount += result.Count;
                 UartDataRecived(result.ToArray(), EventArgs.Empty);//回调事件
                 System.Diagnostics.Debug.WriteLine("end");
             }
