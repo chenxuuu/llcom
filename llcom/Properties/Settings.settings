@@ -50,5 +50,8 @@
     <Setting Name="maxLength" Type="System.UInt32" Scope="User">
       <Value Profile="(Default)">10240</Value>
     </Setting>
+    <Setting Name="autoUpdate" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
