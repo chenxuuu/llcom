@@ -197,7 +197,7 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="{Binding id}" Grid.Column="0" HorizontalAlignment="Center" Margin="2"/>
                                         <TextBox Text="{Binding text,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,0,2,0"/>
-                                        <Button Content="{Binding commit}" Tag="{Binding}" Grid.Column="2" HorizontalAlignment="Stretch" ToolTip="回车键可快速发送。左击任意空白区域，再右击该按键，可将待发送内容，设置为该按键内容。" Click="knowSendDataButton_click" MouseRightButtonDown="Button_MouseDoubleClick"/>
+                                        <Button Content="{Binding commit}" Tag="{Binding}" Grid.Column="2" HorizontalAlignment="Stretch" ToolTip="右击此按键，设置显示内容。" Click="knowSendDataButton_click" MouseRightButtonDown="Button_MouseDoubleClick"/>
                                         <CheckBox IsChecked="{Binding hex}"  Grid.Column="3" HorizontalAlignment="Center" Margin="2"/>
                                     </Grid>
                                 </DataTemplate>

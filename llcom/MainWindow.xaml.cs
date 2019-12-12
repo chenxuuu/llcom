@@ -485,8 +485,12 @@ namespace llcom
 
         private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ToSendData data = ((Button)sender).Tag as ToSendData;
-            ((Button)sender).Content = data.commit = data.text;
+            string text = Microsoft.VisualBasic.Interaction.InputBox("输入你想显示的内容", "更改发送按键显示内容");
+            if(text.Length > 0)
+            {
+                ToSendData data = ((Button)sender).Tag as ToSendData;
+                ((Button)sender).Content = data.commit = text;
+            }
         }
 
         public void SaveSendList(object sender, EventArgs e)
