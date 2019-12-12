@@ -30,6 +30,65 @@ namespace llcom.Pages
             this.DataContext = Tools.Global.setting;
             aboutScrollViewer.ScrollToTop();
             versionTextBlock.Text = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+
+                //设置为手动检查
+            AutoUpdaterDotNET.AutoUpdater.CheckForUpdateEvent += checkUpdateEvent;
+            checkUpdate();
+        }
+
+        private void checkUpdateEvent(AutoUpdaterDotNET.UpdateInfoEventArgs args)
+        {
+            if (args != null)
+            {
+                if (args.IsUpdateAvailable)
+                {
+                    if (Tools.Global.setting.autoUpdate)
+                    {
+                        this.Dispatcher.Invoke(new Action(delegate {
+                            CheckUpdateButton.Content = "检测到有更新，获取中";
+                            AutoUpdaterDotNET.AutoUpdater.ShowUpdateForm();
+                        }));
+                    }
+                    else
+                    {
+                        this.Dispatcher.Invoke(new Action(delegate {
+                            CheckUpdateButton.IsEnabled = true;
+                            CheckUpdateButton.Content = "检测到有更新，立即更新";
+                        }));
+                    }
+                }
+                else
+                {
+                    this.Dispatcher.Invoke(new Action(delegate {
+                        CheckUpdateButton.Content = "已是最新版，无需更新";
+                    }));
+                }
+            }
+            else
+            {
+                this.Dispatcher.Invoke(new Action(delegate {
+                    CheckUpdateButton.Content = "检查更新失败，请检查网络";
+                }));
+            }
+        }
+
+        private void checkUpdate()
+        {
+            try
+            {
+                Random r = new Random();//加上随机参数，确保获取的是最新数据
+                this.Dispatcher.Invoke(new Action(delegate
+                {
+                    AutoUpdaterDotNET.AutoUpdater.Start("https://llcom.papapoi.com/autoUpdate.xml?" + r);
+                }));
+            }
+            catch 
+            {
+                this.Dispatcher.Invoke(new Action(delegate {
+                    CheckUpdateButton.Content = "检查更新失败，请检查网络";
+                }));
+            }
         }
 
         private void NewissueButton_Click(object sender, RoutedEventArgs e)
@@ -49,13 +108,9 @@ namespace llcom.Pages
 
         private void CheckUpdateButton_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                Random r = new Random();//加上随机参数，确保获取的是最新数据
-                AutoUpdaterDotNET.AutoUpdater.Start("https://llcom.papapoi.com/autoUpdate.xml?" + r);
-            }
-            catch { }
-            CheckUpdateButton.Content = "已进行过更新检查";
+            CheckUpdateButton.IsEnabled = false;
+            CheckUpdateButton.Content = "获取更新信息中";
+            AutoUpdaterDotNET.AutoUpdater.ShowUpdateForm();
         }
     }
 }

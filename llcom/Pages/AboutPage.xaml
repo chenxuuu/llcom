@@ -34,7 +34,7 @@
 
 
             <CheckBox Content="开启软件后，自动检查是否需要更新" IsChecked="{Binding autoUpdate}" Margin="0,20,0,0" HorizontalAlignment="Center"/>
-            <Button Name="CheckUpdateButton" Content="立即检查更新" Width="auto" HorizontalAlignment="Center" Click="CheckUpdateButton_Click"/>
+            <Button Name="CheckUpdateButton" Content="更新数据加载中" Width="auto" HorizontalAlignment="Center" IsEnabled="False" Click="CheckUpdateButton_Click"/>
 
             <TextBlock Text="作者：晨旭" 
                                    FontSize="15"

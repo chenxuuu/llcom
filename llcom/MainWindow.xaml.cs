@@ -128,17 +128,6 @@ namespace llcom
             aboutFrame.Navigate(new Uri("Pages/AboutPage.xaml", UriKind.Relative));
 
             this.Title += $" - {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
-
-            //检查更新
-            if (Tools.Global.setting.autoUpdate)
-            {
-                try
-                {
-                    Random r = new Random();//加上随机参数，确保获取的是最新数据
-                    AutoUpdaterDotNET.AutoUpdater.Start("https://llcom.papapoi.com/autoUpdate.xml?" + r);
-                }
-                catch { }
-            }
         }
 
         private void Uart_UartDataSent(object sender, EventArgs e)
