@@ -120,7 +120,6 @@ namespace llcom.Tools
             }
         }
 
-
         /// <summary>
         /// 已发送记录到日志
         /// </summary>

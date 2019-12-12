@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace llcom.Model
 {
+    [PropertyChanged.AddINotifyPropertyChangedInterface]
     class Settings
     {
         public event EventHandler MainWindowTop;
@@ -26,7 +27,12 @@ namespace llcom.Model
         private bool _topmost = Properties.Settings.Default.topmost;
         private string _quickData = Properties.Settings.Default.quickData;
         private bool _bitDelay = Properties.Settings.Default.bitDelay; 
+        private bool _autoUpdate = Properties.Settings.Default.autoUpdate; 
+        private uint _maxLength = Properties.Settings.Default.maxLength; 
         public static List<string> toSendDatas = new List<string>();
+
+        public int SentCount { get; set; } = 0;
+        public int ReceivedCount { get; set; } = 0;
 
         public static void UpdateQuickSend()
         {
@@ -40,6 +46,20 @@ namespace llcom.Model
                     toSendDatas.Add("H" + (string)i["text"]);
                 else
                     toSendDatas.Add("S" + (string)i["text"]);
+            }
+        }
+
+        public uint maxLength
+        {
+            get
+            {
+                return _maxLength;
+            }
+            set
+            {
+                _maxLength = value;
+                Properties.Settings.Default.maxLength = value;
+                Properties.Settings.Default.Save();
             }
         }
 
@@ -60,6 +80,20 @@ namespace llcom.Model
             }
         }
 
+        public bool autoUpdate
+        {
+            get
+            {
+                return _autoUpdate;
+            }
+            set
+            {
+                _autoUpdate = value;
+                Properties.Settings.Default.autoUpdate = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
         public bool bitDelay
         {
             get
@@ -71,9 +105,6 @@ namespace llcom.Model
                 _bitDelay = value;
                 Properties.Settings.Default.bitDelay = value;
                 Properties.Settings.Default.Save();
-
-                //更新快捷发送区参数
-                UpdateQuickSend();
             }
         }
 

@@ -32,6 +32,10 @@
                             用户可自行使用Lua，完成几乎所有可以想象到的自动化操作，大大提高了串口工具的可用性。
             </TextBlock>
 
+
+            <CheckBox Content="开启软件后，自动检查是否需要更新" IsChecked="{Binding autoUpdate}" Margin="0,20,0,0" HorizontalAlignment="Center"/>
+            <Button Name="CheckUpdateButton" Content="更新数据加载中" Width="auto" HorizontalAlignment="Center" IsEnabled="False" Click="CheckUpdateButton_Click"/>
+
             <TextBlock Text="作者：晨旭" 
                                    FontSize="15"
                                    Margin="10,20,0,0"/>
