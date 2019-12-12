@@ -25,6 +25,7 @@
                         <TextBox Text="{Binding timeout,UpdateSourceTrigger=PropertyChanged}" Width="50"/>
                         <TextBlock Text="毫秒" VerticalAlignment="Center" Margin="3,0"/>
                     </WrapPanel>
+                    <CheckBox Content="超时时间从第一个字节开始算（不勾选表示为空白间隔，最大一包10k）" Margin="5" IsChecked="{Binding bitDelay}"/>
                     <WrapPanel Margin="5">
                         <TextBlock Text="数据位长度：" VerticalAlignment="Center"/>
                         <ComboBox Name="dataBitsComboBox" Width="50" SelectionChanged="DataBitsComboBox_SelectionChanged">

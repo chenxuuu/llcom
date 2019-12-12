@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -25,6 +25,7 @@ namespace llcom.Model
         private string _runScript = Properties.Settings.Default.runScript;
         private bool _topmost = Properties.Settings.Default.topmost;
         private string _quickData = Properties.Settings.Default.quickData;
+        private bool _bitDelay = Properties.Settings.Default.bitDelay; 
         public static List<string> toSendDatas = new List<string>();
 
         public static void UpdateQuickSend()
@@ -52,6 +53,23 @@ namespace llcom.Model
             {
                 _quickData = value;
                 Properties.Settings.Default.quickData = value;
+                Properties.Settings.Default.Save();
+
+                //更新快捷发送区参数
+                UpdateQuickSend();
+            }
+        }
+
+        public bool bitDelay
+        {
+            get
+            {
+                return _bitDelay;
+            }
+            set
+            {
+                _bitDelay = value;
+                Properties.Settings.Default.bitDelay = value;
                 Properties.Settings.Default.Save();
 
                 //更新快捷发送区参数
