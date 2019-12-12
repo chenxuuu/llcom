@@ -130,12 +130,15 @@ namespace llcom
             this.Title += $" - {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
 
             //检查更新
-            try
+            if (Tools.Global.setting.autoUpdate)
             {
-                Random r = new Random();//加上随机参数，确保获取的是最新数据
-                AutoUpdaterDotNET.AutoUpdater.Start("https://llcom.papapoi.com/autoUpdate.xml?" + r);
+                try
+                {
+                    Random r = new Random();//加上随机参数，确保获取的是最新数据
+                    AutoUpdaterDotNET.AutoUpdater.Start("https://llcom.papapoi.com/autoUpdate.xml?" + r);
+                }
+                catch { }
             }
-            catch { }
         }
 
         private void Uart_UartDataSent(object sender, EventArgs e)
