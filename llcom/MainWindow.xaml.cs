@@ -249,7 +249,7 @@ namespace llcom
             {
                 FileInfo file = luaFiles[i] as FileInfo;
                 //是文件
-                if (file != null && file.Name.IndexOf(".lua") == file.Name.Length - (".lua").Length)
+                if (file != null && file.Name.ToLower().EndsWith(".lua"))
                 {
                     luaFileList.Items.Add(file.Name.Substring(0, file.Name.Length - 4));
                 }
