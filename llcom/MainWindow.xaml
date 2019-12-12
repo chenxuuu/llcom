@@ -149,7 +149,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="12" />
                 <StatusBarItem Grid.Column="13">
-                    <TextBlock Text="已发送字节：" />
+                    <TextBlock Text="已发送字节："  ToolTip="右键可清空此计数" MouseRightButtonDown="sentCountTextBlock_MouseRightButtonDown"/>
                 </StatusBarItem>
                 <Separator Grid.Column="14" />
                 <StatusBarItem Grid.Column="15">
@@ -157,7 +157,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="16" />
                 <StatusBarItem Grid.Column="17">
-                    <TextBlock Text="已接收字节：" />
+                    <TextBlock Text="已接收字节："  ToolTip="右键可清空此计数" MouseRightButtonDown="receivedCountTextBlock_MouseRightButtonDown"/>
                 </StatusBarItem>
                 <Separator Grid.Column="18" />
                 <StatusBarItem Grid.Column="19">
