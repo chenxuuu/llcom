@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:llcom"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="LLCOM - 能跑Lua脚本的串口调试工具" Height="500" Width="950"
+        Title="LLCOM - 能跑Lua脚本的串口调试工具" Height="500" Width="900"
         Loaded="Window_Loaded">
     <Window.Style>
         <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
@@ -27,9 +27,9 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="11*"/>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="7*"/>
         </Grid.ColumnDefinitions>
         
         <!-- 收发数据显示 -->
@@ -244,9 +244,7 @@
                                 </Grid>
                             </Button>
                             <Button Name="refreshScriptListButton" Margin="2,0,0,0" ToolTip="刷新脚本列表" Click="RefreshScriptListButton_Click">
-                                <Grid>
-                                    <fa:FontAwesome Icon="Refresh" Foreground="Green"/>
-                                </Grid>
+                                <fa:FontAwesome Icon="Refresh" Foreground="Green"/>
                             </Button>
                             <Button Name="apiDocumentButton" Margin="2,0,0,0" ToolTip="查看接口文档" Click="ApiDocumentButton_Click">
                                 <fa:FontAwesome Icon="Book" Foreground="DarkSlateGray"/>

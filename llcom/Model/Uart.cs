@@ -38,25 +38,32 @@ namespace llcom.Model
             UartDataSent(data, EventArgs.Empty);//回调
         }
 
+        //最大长度
+        private uint maxLength = 1024 * 100;
         //接收到事件
         private void Serial_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             lock (objLock)
             {
                 System.Threading.Thread.Sleep(Tools.Global.setting.timeout);//等待时间
-                while (true)
+                List<byte> result = new List<byte>();
+                while (true)//循环读
                 {
                     if (!serial.IsOpen)//串口被关了，不读了
                         break;
                     int length = ((SerialPort)sender).BytesToRead;
-                    if (length == 0)
+                    if (length == 0)//没数据，退出去
                         break;
                     byte[] rev = new byte[length];
-                    ((SerialPort)sender).Read(rev, 0, length);
+                    ((SerialPort)sender).Read(rev, 0, length);//读数据
                     if (rev.Length == 0)
                         break;
-                    UartDataRecived(rev, EventArgs.Empty);//回调事件
+                    result.AddRange(rev);//加到list末尾
+                    if (result.Count > maxLength)//长度超了
+                        break;
+                    //todo：两种超时逻辑
                 }
+                UartDataRecived(result.ToArray(), EventArgs.Empty);//回调事件
                 System.Diagnostics.Debug.WriteLine("end");
             }
         }
