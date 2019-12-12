@@ -237,6 +237,27 @@ namespace llcom
                 }));
             });
         }
+
+        private void RefreshScriptList()
+        {
+            //刷新文件列表
+            DirectoryInfo luaFileDir = new DirectoryInfo("user_script_run/");
+            FileSystemInfo[] luaFiles = luaFileDir.GetFileSystemInfos();
+            fileLoading = true;
+            luaFileList.Items.Clear();
+            for (int i = 0; i < luaFiles.Length; i++)
+            {
+                FileInfo file = luaFiles[i] as FileInfo;
+                //是文件
+                if (file != null && file.Name.ToLower().EndsWith(".lua"))
+                {
+                    luaFileList.Items.Add(file.Name.Substring(0, file.Name.Length - 4));
+                }
+            }
+            luaFileList.Text = lastLuaFile = Tools.Global.setting.runScript;
+            fileLoading = false;
+        }
+
         private void UsbDeviceNotifier_OnDeviceNotify(object sender, DeviceNotifyEventArgs e)
         {
             if (Tools.Global.uart.serial.IsOpen)
@@ -308,6 +329,11 @@ namespace llcom
         private void OpenScriptFolderButton_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("explorer.exe", "user_script_run");
+        }
+
+        private void RefreshScriptListButton_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshScriptList();
         }
 
 
@@ -555,22 +581,7 @@ namespace llcom
             //文件内容显示出来
             textEditor.Text = File.ReadAllText($"user_script_run/{Tools.Global.setting.runScript}.lua");
 
-            //刷新文件列表
-            DirectoryInfo luaFileDir = new DirectoryInfo("user_script_run/");
-            FileSystemInfo[] luaFiles = luaFileDir.GetFileSystemInfos();
-            fileLoading = true;
-            luaFileList.Items.Clear();
-            for (int i = 0; i < luaFiles.Length; i++)
-            {
-                FileInfo file = luaFiles[i] as FileInfo;
-                //是文件
-                if (file != null && file.Name.IndexOf(".lua") == file.Name.Length - (".lua").Length)
-                {
-                    luaFileList.Items.Add(file.Name.Substring(0, file.Name.Length - 4));
-                }
-            }
-            luaFileList.Text = lastLuaFile = Tools.Global.setting.runScript;
-            fileLoading = false;
+            RefreshScriptList();
         }
 
         /// <summary>
