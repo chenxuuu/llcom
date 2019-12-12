@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "whc2001",
+      "name": "whc2001",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/16266909?v=4",
+      "profile": "https://github.com/whc2001",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "llcom",
+  "projectOwner": "chenxuuu",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
