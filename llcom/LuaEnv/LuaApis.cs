@@ -76,9 +76,13 @@ namespace llcom.LuaEnv
         /// 输入框
         /// </summary>
         /// <returns></returns>
-        public static string InputBox(string Prompt, string Title = "", string DefaultResponse = "", int XPos = -1, int YPos = -1)
+        public static bool InputBox(string prompt, out string returnValue, string defaultInput = "", string title = null)
         {
-            return Microsoft.VisualBasic.Interaction.InputBox(Prompt, Title, DefaultResponse, XPos, YPos);
+            Tuple<bool, string> ret = App.Current.Dispatcher.Invoke(() => {
+                return Tools.InputDialog.OpenDialog(prompt, defaultInput, title);
+            });
+            returnValue = ret.Item2;
+            return ret.Item1;
         }
     }
 }
