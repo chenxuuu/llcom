@@ -32,6 +32,7 @@ namespace llcom
         }
 
         //重载锁，防止逻辑卡死
+        private static bool fileLoading = false;
         //上次打开文件名
         private static string lastLuaFile = "";
         /// <summary>
