@@ -481,10 +481,10 @@ namespace llcom
 
         private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Tuple<bool, string> ret = Tools.InputDialog.OpenDialog("输入你想显示的内容", "", "更改发送按键显示内容");
+            ToSendData data = ((Button)sender).Tag as ToSendData;
+            Tuple<bool, string> ret = Tools.InputDialog.OpenDialog("输入你想显示的内容", data.commit, "更改发送按键显示内容");
             if(ret.Item1)
             {
-                ToSendData data = ((Button)sender).Tag as ToSendData;
                 ((Button)sender).Content = data.commit = ret.Item2;
             }
         }
