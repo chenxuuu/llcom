@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="dataToSend" Type="System.String" Scope="User">
-      <Value Profile="(Default)">uart data</Value>
+      <Value Profile="(Default)">uart dataplVIzj85gvLDrDqtVxftzTb78</Value>
     </Setting>
     <Setting Name="BaudRate" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">115200</Value>

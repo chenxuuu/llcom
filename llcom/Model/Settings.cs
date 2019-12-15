@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
@@ -13,31 +14,31 @@ namespace llcom.Model
     class Settings
     {
         public event EventHandler MainWindowTop;
-        private string _dataToSend = Properties.Settings.Default.dataToSend;
-        private int _baudRate = Properties.Settings.Default.BaudRate;
-        private bool _autoReconnect = Properties.Settings.Default.autoReconnect;
-        private bool _autoSaveLog = Properties.Settings.Default.autoSaveLog;
-        private bool _showHex = Properties.Settings.Default.showHex;
-        private int _parity = Properties.Settings.Default.parity;
-        private int _timeout = Properties.Settings.Default.timeout;
-        private int _dataBits = Properties.Settings.Default.dataBits;
-        private int _stopBit = Properties.Settings.Default.stopBit;
-        private string _sendScript = Properties.Settings.Default.sendScript;
-        private string _runScript = Properties.Settings.Default.runScript;
-        private bool _topmost = Properties.Settings.Default.topmost;
-        private string _quickData = Properties.Settings.Default.quickData;
-        private bool _bitDelay = Properties.Settings.Default.bitDelay; 
-        private bool _autoUpdate = Properties.Settings.Default.autoUpdate; 
-        private uint _maxLength = Properties.Settings.Default.maxLength; 
+        private string _dataToSend = "uart data";
+        private int _baudRate = 115200;
+        private bool _autoReconnect = true;
+        private bool _autoSaveLog = true;
+        private bool _showHex = true;
+        private int _parity = 0;
+        private int _timeout = 50;
+        private int _dataBits = 8;
+        private int _stopBit = 1;
+        private string _sendScript = "默认";
+        private string _runScript = "example";
+        private bool _topmost = false;
+        private string _quickData = "{\"data\":[{\"id\":1,\"text\":\"example string\",\"hex\":false},{\"id\":2,\"text\":\"lua可通过接口获取此处数据\",\"hex\":false},{\"id\":3,\"text\":\"aa 01 02 0d 0a\",\"hex\":true},{\"id\":4,\"text\":\"此处数据会被lua处理\",\"hex\":false}]}";
+        private bool _bitDelay = true; 
+        private bool _autoUpdate = true; 
+        private uint _maxLength = 10240; 
         public static List<string> toSendDatas = new List<string>();
 
         public int SentCount { get; set; } = 0;
         public int ReceivedCount { get; set; } = 0;
 
-        public static void UpdateQuickSend()
+        public void UpdateQuickSend()
         {
             toSendDatas.Clear();
-            JObject jo = (JObject)JsonConvert.DeserializeObject(Tools.Global.setting.quickData);
+            JObject jo = (JObject)JsonConvert.DeserializeObject(_quickData);
             foreach (var i in jo["data"])
             {
                 if (i["commit"] == null)
@@ -49,6 +50,14 @@ namespace llcom.Model
             }
         }
 
+        /// <summary>
+        /// 保存配置
+        /// </summary>
+        private void Save()
+        {
+            File.WriteAllText("settings.json", JsonConvert.SerializeObject(this));
+        }
+
         public uint maxLength
         {
             get
@@ -58,8 +67,7 @@ namespace llcom.Model
             set
             {
                 _maxLength = value;
-                Properties.Settings.Default.maxLength = value;
-                Properties.Settings.Default.Save();
+                Save();
             }
         }
 
@@ -72,8 +80,7 @@ namespace llcom.Model
             set
             {
                 _quickData = value;
-                Properties.Settings.Default.quickData = value;
-                Properties.Settings.Default.Save();
+                Save();
 
                 //更新快捷发送区参数
                 UpdateQuickSend();
@@ -89,8 +96,7 @@ namespace llcom.Model
             set
             {
                 _autoUpdate = value;
-                Properties.Settings.Default.autoUpdate = value;
-                Properties.Settings.Default.Save();
+                Save();
             }
         }
 
@@ -103,8 +109,7 @@ namespace llcom.Model
             set
             {
                 _bitDelay = value;
-                Properties.Settings.Default.bitDelay = value;
-                Properties.Settings.Default.Save();
+                Save();
             }
         }
 
@@ -117,8 +122,7 @@ namespace llcom.Model
             set
             {
                 _dataToSend = value;
-                Properties.Settings.Default.dataToSend = value;
-                Properties.Settings.Default.Save();
+                Save();
             }
         }
         public int baudRate
@@ -130,9 +134,8 @@ namespace llcom.Model
             set
             {
                 _baudRate = value;
-                Properties.Settings.Default.BaudRate = value;
                 Tools.Global.uart.serial.BaudRate = value;
-                Properties.Settings.Default.Save();
+                Save();
             }
         }
 
@@ -145,8 +148,7 @@ namespace llcom.Model
             set
             {
                 _autoReconnect = value;
-                Properties.Settings.Default.autoReconnect = value;
-                Properties.Settings.Default.Save();
+                Save();
             }
         }
 
@@ -159,8 +161,7 @@ namespace llcom.Model
             set
             {
                 _autoSaveLog = value;
-                Properties.Settings.Default.autoSaveLog = value;
-                Properties.Settings.Default.Save();
+                Save();
             }
         }
 
@@ -173,8 +174,7 @@ namespace llcom.Model
             set
             {
                 _showHex = value;
-                Properties.Settings.Default.showHex = value;
-                Properties.Settings.Default.Save();
+                Save();
             }
         }
 
@@ -187,9 +187,8 @@ namespace llcom.Model
             set
             {
                 _parity = value;
-                Properties.Settings.Default.parity = value;
                 Tools.Global.uart.serial.Parity = (Parity)value;
-                Properties.Settings.Default.Save();
+                Save();
             }
         }
 
@@ -197,13 +196,14 @@ namespace llcom.Model
         {
             get
             {
+                if (_timeout < 0)//防止出现负数超时时间
+                    return 0;
                 return _timeout;
             }
             set
             {
                 _timeout = value;
-                Properties.Settings.Default.timeout = value;
-                Properties.Settings.Default.Save();
+                Save();
             }
         }
 
@@ -216,9 +216,8 @@ namespace llcom.Model
             set
             {
                 _dataBits = value;
-                Properties.Settings.Default.dataBits = value;
                 Tools.Global.uart.serial.DataBits = value;
-                Properties.Settings.Default.Save();
+                Save();
             }
         }
 
@@ -231,9 +230,8 @@ namespace llcom.Model
             set
             {
                 _stopBit = value;
-                Properties.Settings.Default.stopBit = value;
                 Tools.Global.uart.serial.StopBits = (StopBits)value;
-                Properties.Settings.Default.Save();
+                Save();
             }
         }
 
@@ -246,8 +244,7 @@ namespace llcom.Model
             set
             {
                 _sendScript = value;
-                Properties.Settings.Default.sendScript = value;
-                Properties.Settings.Default.Save();
+                Save();
             }
         }
 
@@ -260,8 +257,7 @@ namespace llcom.Model
             set
             {
                 _runScript = value;
-                Properties.Settings.Default.runScript = value;
-                Properties.Settings.Default.Save();
+                Save();
             }
         }
 
@@ -274,9 +270,8 @@ namespace llcom.Model
             set
             {
                 _topmost = value;
-                Properties.Settings.Default.topmost = value;
                 MainWindowTop(value, EventArgs.Empty);
-                Properties.Settings.Default.Save();
+                Save();
             }
         }
     }

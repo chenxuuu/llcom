@@ -25,7 +25,7 @@ namespace llcom.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("uart data")]
+        [global::System.Configuration.DefaultSettingValueAttribute("uart dataplVIzj85gvLDrDqtVxftzTb78")]
         public string dataToSend {
             get {
                 return ((string)(this["dataToSend"]));
