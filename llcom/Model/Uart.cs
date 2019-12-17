@@ -66,7 +66,8 @@ namespace llcom.Model
                     }
                 }
                 Tools.Global.setting.ReceivedCount += result.Count;
-                UartDataRecived(result.ToArray(), EventArgs.Empty);//回调事件
+                if(result.Count > 0)
+                    UartDataRecived(result.ToArray(), EventArgs.Empty);//回调事件
                 System.Diagnostics.Debug.WriteLine("end");
             }
         }
