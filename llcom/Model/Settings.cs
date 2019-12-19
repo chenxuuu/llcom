@@ -270,7 +270,11 @@ namespace llcom.Model
             set
             {
                 _topmost = value;
-                MainWindowTop(value, EventArgs.Empty);
+                try
+                {
+                    MainWindowTop(value, EventArgs.Empty);
+                }
+                catch { }
                 Save();
             }
         }
