@@ -50,14 +50,18 @@ namespace llcom.Model
                 {
                     if (!serial.IsOpen)//串口被关了，不读了
                         break;
-                    int length = ((SerialPort)sender).BytesToRead;
-                    if (length == 0)//没数据，退出去
-                        break;
-                    byte[] rev = new byte[length];
-                    ((SerialPort)sender).Read(rev, 0, length);//读数据
-                    if (rev.Length == 0)
-                        break;
-                    result.AddRange(rev);//加到list末尾
+                    try
+                    {
+                        int length = ((SerialPort)sender).BytesToRead;
+                        if (length == 0)//没数据，退出去
+                            break;
+                        byte[] rev = new byte[length];
+                        ((SerialPort)sender).Read(rev, 0, length);//读数据
+                        if (rev.Length == 0)
+                            break;
+                        result.AddRange(rev);//加到list末尾
+                    }catch { break; }//崩了？
+
                     if (result.Count > Tools.Global.setting.maxLength)//长度超了
                         break;
                     if (Tools.Global.setting.bitDelay)//如果是设置了等待间隔时间
