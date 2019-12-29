@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,9 +15,9 @@ namespace llcom.LuaEnv
         public static event EventHandler LuaRunError;//报错的回调
         private static XLua.LuaEnv lua = null;
         private static CancellationTokenSource tokenSource = null;
-        private static Dictionary<int, CancellationTokenSource> pool = 
-            new Dictionary<int, CancellationTokenSource>();//timer回调池子
-        private static List<LuaPool> toRun = new List<LuaPool>();//待运行的池子
+        private static ConcurrentDictionary<int, CancellationTokenSource> pool = 
+            new ConcurrentDictionary<int, CancellationTokenSource>();//timer回调池子
+        private static ConcurrentBag<LuaPool> toRun = new ConcurrentBag<LuaPool>();//待运行的池子
 
         public static bool isRunning = false;
         public static bool canRun = false;
@@ -65,12 +66,12 @@ namespace llcom.LuaEnv
                     System.Threading.Thread.Sleep(1);
                     if (tokenSource.IsCancellationRequested)
                         return;
-                    if (toRun.Count > 0)
+                    while (toRun.Count > 0)
                     {
                         try
                         {
-                            var temp = toRun[0];
-                            toRun.RemoveAt(0);
+                            LuaPool temp;
+                            toRun.TryTake(out temp);
                             lua.Global.Get<XLua.LuaFunction>("tiggerCB").Call(temp.id, temp.type, temp.data);
                         }
                         catch(Exception le)
@@ -100,12 +101,13 @@ namespace llcom.LuaEnv
             {
                 try
                 {
-                    pool[id].Cancel();
-                    pool.Remove(id);
+                    CancellationTokenSource tc;
+                    pool.TryRemove(id,out tc);
+                    tc.Cancel();
                 }
                 catch { }
             }
-            pool.Add(id, timerToken);
+            pool.TryAdd(id, timerToken);
             Task.Run(() => 
             {
                 System.Threading.Thread.Sleep(time);
@@ -114,7 +116,8 @@ namespace llcom.LuaEnv
                 if (tokenSource.IsCancellationRequested)
                     return;
                 addTigger(id);
-                pool.Remove(id);
+                CancellationTokenSource tc;
+                pool.TryRemove(id,out tc);
             }, timerToken.Token);
             return 1;
         }
@@ -129,8 +132,9 @@ namespace llcom.LuaEnv
             {
                 try
                 {
-                    pool[id].Cancel();
-                    pool.Remove(id);
+                    CancellationTokenSource tc;
+                    pool.TryRemove(id, out tc);
+                    tc.Cancel();
                 }
                 catch { }
             }
