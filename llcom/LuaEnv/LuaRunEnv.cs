@@ -108,17 +108,19 @@ namespace llcom.LuaEnv
                 catch { }
             }
             pool.TryAdd(id, timerToken);
-            Task.Run(() => 
+            var timer = new System.Timers.Timer(time);
+            timer.Elapsed += (sender, e) =>
             {
-                System.Threading.Thread.Sleep(time);
                 if (timerToken == null || timerToken.IsCancellationRequested)
                     return;
-                if (tokenSource.IsCancellationRequested)
+                if (!isRunning)
                     return;
+                pool.TryRemove(id, out _);
                 addTigger(id);
-                CancellationTokenSource tc;
-                pool.TryRemove(id,out tc);
-            }, timerToken.Token);
+                ((System.Timers.Timer)sender).Dispose();
+            };
+            timer.AutoReset = false;
+            timer.Start();
             return 1;
         }
 
