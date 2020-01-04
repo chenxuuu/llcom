@@ -63,7 +63,7 @@ namespace llcom.Pages
 
             if (data.Length > 2000)
                 text = new Span(new Run(Tools.Global.Byte2String(data.Skip(0).Take(2000).ToArray())
-                    + "\r\n数据过长，剩余部分请去日志文件查看"));
+                    + "\r\nData too long, check log folder for remaining data."));
             else
                 text = new Span(new Run(Tools.Global.Byte2String(data)));
 
@@ -82,7 +82,7 @@ namespace llcom.Pages
             {
                 if (data.Length > 600)
                     p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(data.Skip(0).Take(600).ToArray(), " ")
-                    + "\r\n数据过长，剩余部分请去日志文件查看"));
+                    + "\r\nData too long, check log folder for remaining data."));
                 else
                     p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(data, " ")));
 
@@ -99,7 +99,7 @@ namespace llcom.Pages
             {
                 uartDataFlowDocument.Document.Blocks.Clear();
                 addUartLog(null,new Tools.DataShowPara {
-                    data = Encoding.UTF8.GetBytes("数据量过大，自动清理，请去日志文件查看历史数据"),
+                    data = Encoding.Default.GetBytes("Data too big, please check your log folder for log data."),
                     send = true
                 });
             }

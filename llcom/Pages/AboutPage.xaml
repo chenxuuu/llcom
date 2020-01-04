@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:llcom.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="950" d:DesignWidth="800"
       Title="AboutPage"
       Loaded="Page_Loaded">
 
@@ -18,46 +18,42 @@
                                    FontSize="28"
                                    FontWeight="Bold"/>
             <TextBlock HorizontalAlignment="Center"
-                                   FontSize="15">
-                            能跑Lua脚本的串口调试工具
-            </TextBlock>
+                       FontSize="15"
+                       Text="{DynamicResource AboutSubTitle}"/>
 
-            <TextBlock
-                                   FontSize="15"
-                                   Margin="10,20,10,0"
-                                   TextWrapping="Wrap">
-                            LLCOM是一款串口调试工具，工具连接可靠，断线后可自动重连，同时右侧具有快捷发送区的功能。
-                            <LineBreak/>
-                            本工具除了具有与其他同类工具，所包含的数据收发功能外，还添加了Lua运行环境。
-                            用户可自行使用Lua，完成几乎所有可以想象到的自动化操作，大大提高了串口工具的可用性。
-            </TextBlock>
+            <TextBlock FontSize="15" Margin="10,20,0,0" TextWrapping="Wrap"
+                       Text="{DynamicResource AboutDiscriptionMain}"/>
+
+            <TextBlock FontSize="15" Margin="10,0,10,0" TextWrapping="Wrap"
+                       Text="{DynamicResource AboutDiscriptionMore}"/>
 
 
-            <CheckBox Content="开启软件后，自动检查是否需要更新" IsChecked="{Binding autoUpdate}" Margin="0,20,0,0" HorizontalAlignment="Center"/>
-            <Button Name="CheckUpdateButton" Content="更新数据加载中" Width="auto" HorizontalAlignment="Center" IsEnabled="False" Click="CheckUpdateButton_Click"/>
 
-            <TextBlock Text="作者：晨旭" 
+            <CheckBox Content="{DynamicResource AboutAutoUpdate}" IsChecked="{Binding autoUpdate}" Margin="0,20,0,0" HorizontalAlignment="Center"/>
+            <Button Name="CheckUpdateButton" Content="{DynamicResource AboutLoadingUpdate}" Width="auto" HorizontalAlignment="Center" IsEnabled="False" Click="CheckUpdateButton_Click"/>
+
+            <TextBlock Text="{DynamicResource AboutDevelopers}" 
                                    FontSize="15"
                                    Margin="10,20,0,0"/>
-            <TextBlock Text="交流群：906307487" 
+            <TextBlock Text="{DynamicResource AboutQQGroup}" 
                                    FontSize="15"
                                    Margin="10,0,0,0"/>
 
-            <TextBlock Text="开源项目，欢迎star" FontSize="15" Margin="10,20,0,0" HorizontalAlignment="Center"/>
-            <Button Name="OpenSourceButton" Content="GitHub开源地址" Width="auto" HorizontalAlignment="Center" Click="OpenSourceButton_Click"/>
+            <TextBlock Text="{DynamicResource AboutGitHubText}" FontSize="15" Margin="10,20,0,0" HorizontalAlignment="Center"/>
+            <Button Name="OpenSourceButton" Content="{DynamicResource AboutGitHubButton}" Width="auto" HorizontalAlignment="Center" Click="OpenSourceButton_Click"/>
 
-            <TextBlock Text="如需反馈，请点击下面的按钮" 
+            <TextBlock Text="{DynamicResource AboutFeedBack}" 
                                    FontSize="15"
                                    Margin="10,20,0,0" 
                                    HorizontalAlignment="Center"/>
-            <Button Name="newissueButton" Content="提交建议或上报Bug" Width="auto" HorizontalAlignment="Center" Click="NewissueButton_Click"/>
+            <Button Name="newissueButton" Content="{DynamicResource AboutFeedBackButton}" Width="auto" HorizontalAlignment="Center" Click="NewissueButton_Click"/>
 
+
+            <TextBlock FontSize="15" Margin="10,20,0,0" Text="{DynamicResource AboutThanksProjects}"/>
             <TextBlock
                                    FontSize="15"
-                                   Margin="10,20,10,0"
+                                   Margin="10,0,10,0"
                                    TextWrapping="Wrap">
-                            感谢以下开源项目：
-                            <LineBreak/>
                             xLua
                             <LineBreak/>
                             AdonisUI
@@ -70,7 +66,7 @@
                             <LineBreak/>
                             <LineBreak/>
             </TextBlock>
-            <TextBlock Text="软件版本"/>
+            <TextBlock Text="{DynamicResource AboutVersion}"/>
             <TextBlock Name="versionTextBlock"/>
         </StackPanel>
     </ScrollViewer>
