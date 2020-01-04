@@ -87,7 +87,7 @@ namespace llcom
                 foreach(var i in jo["data"])
                 {
                     if (i["commit"] == null)
-                        i["commit"] = "发送";
+                        i["commit"] = FindResource("QuickSendButton") as string;
                     toSendListItems.Add(new ToSendData() {
                         id = (int)i["id"],
                         text = (string)i["text"],
@@ -98,7 +98,7 @@ namespace llcom
             }
             catch(Exception ex)
             {
-                MessageBox.Show("待发送列表，数据损坏，全部清空\r\n" + ex.ToString() + "\r\n" + Tools.Global.setting.quickData);
+                MessageBox.Show($"{FindResource("QuickSendLoadError") as string}\r\n" + ex.ToString() + "\r\n" + Tools.Global.setting.quickData);
                 Tools.Global.setting.quickData = "{\"data\":[{\"id\":1,\"text\":\"example string\",\"hex\":false},{\"id\":2,\"text\":\"lua可通过接口获取此处数据\",\"hex\":false},{\"id\":3,\"text\":\"aa 01 02 0d 0a\",\"hex\":true},{\"id\":4,\"text\":\"此处数据会被lua处理\",\"hex\":false}]}";
             }
             canSaveSendList = true;
@@ -209,9 +209,9 @@ namespace llcom
                                         Tools.Global.uart.serial.Open();
                                         Dispatcher.Invoke(new Action(delegate
                                         {
-                                            openClosePortTextBlock.Text = "关闭";
+                                            openClosePortTextBlock.Text = (FindResource("OpenPort_close") as string);
                                             serialPortsListComboBox.IsEnabled = false;
-                                            statusTextBlock.Text = "开启";
+                                            statusTextBlock.Text = (FindResource("OpenPort_open") as string);
                                         }));
                                     }
                                     catch
@@ -264,9 +264,9 @@ namespace llcom
             }
             else
             {
-                openClosePortTextBlock.Text = "打开";
+                openClosePortTextBlock.Text = (FindResource("OpenPort_open") as string);
                 serialPortsListComboBox.IsEnabled = true;
-                statusTextBlock.Text = "关闭";
+                statusTextBlock.Text = (FindResource("OpenPort_close") as string);
                 refreshPortList();
             }
         }
@@ -355,9 +355,9 @@ namespace llcom
                             Tools.Global.uart.serial.Open();
                             this.Dispatcher.Invoke(new Action(delegate
                             {
-                                openClosePortTextBlock.Text = "关闭";
+                                openClosePortTextBlock.Text = (FindResource("OpenPort_close") as string);
                                 serialPortsListComboBox.IsEnabled = false;
-                                statusTextBlock.Text = "开启";
+                                statusTextBlock.Text = (FindResource("OpenPort_open") as string);
                             }));
                             if(toSendData != null)
                             {
@@ -367,7 +367,8 @@ namespace llcom
                         }
                         catch
                         {
-                            MessageBox.Show("串口打开失败！");
+                            //串口打开失败！
+                            MessageBox.Show(FindResource("ErrorOpenPort") as string);
                         }
                         isOpeningPort = false;
                     });
@@ -377,7 +378,7 @@ namespace llcom
         }
         private void OpenClosePortButton_Click(object sender, RoutedEventArgs e)
         {
-            if(openClosePortTextBlock.Text == "打开")//打开串口逻辑
+            if(!Tools.Global.uart.serial.IsOpen)//打开串口逻辑
             {
                 openPort();
             }
@@ -390,17 +391,19 @@ namespace llcom
                 }
                 catch
                 {
-                    MessageBox.Show("串口关闭失败！");
+                    //串口关闭失败！
+                    MessageBox.Show(FindResource("ErrorClosePort") as string);
                 }
-                openClosePortTextBlock.Text = "打开";
+                openClosePortTextBlock.Text = (FindResource("OpenPort_open") as string);
                 serialPortsListComboBox.IsEnabled = true;
-                statusTextBlock.Text = "关闭";
+                statusTextBlock.Text = (FindResource("OpenPort_close") as string);
             }
 
         }
 
         private void ClearLogButton_Click(object sender, RoutedEventArgs e)
         {
+            Tools.Global.LoadLanguageFile("pack://application:,,,/languages/en-US.xaml");
             Tools.Logger.ClearData();
         }
 
@@ -436,7 +439,7 @@ namespace llcom
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("处理发送数据的脚本运行错误，请检查发送脚本后再试：\r\n" + ex.ToString());
+                    MessageBox.Show($"{FindResource("ErrorScript") as string}\r\n" + ex.ToString());
                     return;
                 }
                 try
@@ -445,7 +448,7 @@ namespace llcom
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show("串口数据发送失败！请检查连接！\r\n"+ex.ToString());
+                    MessageBox.Show($"{FindResource("ErrorSendFail") as string}\r\n"+ex.ToString());
                     return;
                 }
             }
@@ -458,7 +461,7 @@ namespace llcom
 
         private void AddSendListButton_Click(object sender, RoutedEventArgs e)
         {
-            toSendListItems.Add(new ToSendData() { id = toSendListItems.Count + 1, text = "", hex = false , commit = "发送"});
+            toSendListItems.Add(new ToSendData() { id = toSendListItems.Count + 1, text = "", hex = false , commit = FindResource("QuickSendButton") as string });
         }
 
         private void DeleteSendListButton_Click(object sender, RoutedEventArgs e)
@@ -482,7 +485,8 @@ namespace llcom
         private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ToSendData data = ((Button)sender).Tag as ToSendData;
-            Tuple<bool, string> ret = Tools.InputDialog.OpenDialog("输入你想显示的内容", data.commit, "更改发送按键显示内容");
+            Tuple<bool, string> ret = Tools.InputDialog.OpenDialog(FindResource("QuickSendSetButton") as string,
+                data.commit, FindResource("QuickSendChangeButton") as string);
             if(ret.Item1)
             {
                 ((Button)sender).Content = data.commit = ret.Item2;
@@ -530,12 +534,12 @@ namespace llcom
         {
             if (string.IsNullOrWhiteSpace(newLuaFileNameTextBox.Text))
             {
-                MessageBox.Show("请输入文件名！");
+                MessageBox.Show(FindResource("LuaNoName") as string);
                 return;
             }
             if (File.Exists($"user_script_run/{newLuaFileNameTextBox.Text}.lua"))
             {
-                MessageBox.Show("该文件已存在！");
+                MessageBox.Show(FindResource("LuaExist") as string);
                 return;
             }
 
@@ -546,7 +550,7 @@ namespace llcom
             }
             catch
             {
-                MessageBox.Show("新建失败，请检查！");
+                MessageBox.Show(FindResource("LuaCreateFail") as string);
                 return;
             }
             newLuaFileWrapPanel.Visibility = Visibility.Collapsed;
@@ -627,12 +631,12 @@ namespace llcom
                 {
                     if (value)
                     {
-                        pauseLuaPrintButton.ToolTip = "暂停打印";
+                        pauseLuaPrintButton.ToolTip = FindResource("LuaPause") as string;
                         pauseLuaPrintIcon.Icon = FontAwesomeIcon.Pause;
                     }
                     else
                     {
-                        pauseLuaPrintButton.ToolTip = "继续打印";
+                        pauseLuaPrintButton.ToolTip = FindResource("LuaContinue") as string;
                         pauseLuaPrintIcon.Icon = FontAwesomeIcon.Play;
                     }
                 }));
@@ -698,9 +702,8 @@ namespace llcom
 
         private void ImportSSCOMButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("请选择SSCOM所在目录的“sscom51.ini”文件。");
             System.Windows.Forms.OpenFileDialog OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
-            OpenFileDialog.Filter = "SSCOM配置文件|sscom51.ini;sscom.ini";
+            OpenFileDialog.Filter = FindResource("QuickSendSSCOMFile") as string;
             if (OpenFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 Task.Run(() => {

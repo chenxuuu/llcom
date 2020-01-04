@@ -29,7 +29,8 @@ namespace llcom.Model
         private string _quickData = "{\"data\":[{\"id\":1,\"text\":\"example string\",\"commit\":\"右击更改此处文字\",\"hex\":false},{\"id\":2,\"text\":\"lua可通过接口获取此处数据\",\"hex\":false},{\"id\":3,\"text\":\"aa 01 02 0d 0a\",\"hex\":true},{\"id\":4,\"text\":\"此处数据会被lua处理\",\"hex\":false}]}";
         private bool _bitDelay = true; 
         private bool _autoUpdate = true; 
-        private uint _maxLength = 10240; 
+        private uint _maxLength = 10240;
+        private string _language = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
         public static List<string> toSendDatas = new List<string>();
 
         public int SentCount { get; set; } = 0;
@@ -275,6 +276,20 @@ namespace llcom.Model
                     MainWindowTop(value, EventArgs.Empty);
                 }
                 catch { }
+                Save();
+            }
+        }
+
+        public string language
+        {
+            get
+            {
+                return _language;
+            }
+            set
+            {
+                _language = value;
+                //todo
                 Save();
             }
         }

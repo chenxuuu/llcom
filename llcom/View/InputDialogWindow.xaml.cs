@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +27,7 @@ namespace llcom
             InitializeComponent();
             this.DataContext = this;
             this.Value = defaultInput;
-            this.Title = title ?? "输入";
+            this.Title = title ?? FindResource("InputDialogTitle") as string;
             PromptLabel.Text = prompt;
         }
 

@@ -23,8 +23,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="OkButton" Grid.Column="0" Margin="0,5,3,0" IsDefault="True" Content="确定" Click="OkButton_Click"/>
-            <Button x:Name="CancelButton" Grid.Column="1" Margin="3,5,0,0" IsCancel="True" Content="取消" Click="CancelButton_Click"/>
+            <Button x:Name="OkButton" Grid.Column="0" Margin="0,5,3,0" IsDefault="True" Content="{DynamicResource InputDialogConfirm}" Click="OkButton_Click"/>
+            <Button x:Name="CancelButton" Grid.Column="1" Margin="3,5,0,0" IsCancel="True" Content="{DynamicResource InputDialogCancel}" Click="CancelButton_Click"/>
         </Grid>
         <TextBox x:Name="InputText" Width="{Binding ElementName=PromptLabel, Path=ActualWidth}" Margin="5" Text="{Binding Value}" TextWrapping="Wrap" HorizontalContentAlignment="Left" VerticalContentAlignment="Top"/>
     </DockPanel>

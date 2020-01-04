@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:llcom"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="LLCOM - 能跑Lua脚本的串口调试工具" Height="500" Width="900"
+        Title="{DynamicResource AppTitle}" Height="500" Width="900"
         Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen">
     <Window.Style>
@@ -53,15 +53,15 @@
             </Grid.ColumnDefinitions>
             <Button Name="openClosePortButton" Grid.Column="3" Grid.RowSpan="2" Margin="2" Click="OpenClosePortButton_Click">
                 <WrapPanel>
-                    <TextBlock Name="openClosePortTextBlock" Text="打开"/>
-                    <TextBlock Text="串口"/>
+                    <TextBlock Name="openClosePortTextBlock" Text="{DynamicResource OpenPort_open}"/>
+                    <TextBlock Text="{DynamicResource OpenPort_port}"/>
                 </WrapPanel>
             </Button>
-            <Button Name="clearLogButton" Content="清空日志" Grid.Column="4" Margin="2" Click="ClearLogButton_Click"/>
-            <Button Name="MoreSettingButton" Content="更多设置" Grid.Column="4" Grid.Row="1" Margin="2" ToolTip="可设置串口校验位停止位等信息、设置发送前的自动处理脚本。" Click="MoreSettingButton_Click"/>
+            <Button Name="clearLogButton" Content="{DynamicResource ClearLog}" Grid.Column="4" Margin="2" Click="ClearLogButton_Click"/>
+            <Button Name="MoreSettingButton" Content="{DynamicResource MoreSettings}" Grid.Column="4" Grid.Row="1" Margin="2" ToolTip="{DynamicResource MoreSettingsTip}" Click="MoreSettingButton_Click"/>
             <TextBox Name="toSendDataTextBox" Text="{Binding dataToSend}" Grid.Column="5" Grid.RowSpan="2" Height="50" VerticalContentAlignment="Top"
                      TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2,2,2,4" FontFamily="Consolas"/>
-            <Button Name="sendDataButton" Content="发送" Grid.Column="6" Grid.RowSpan="2" Margin="2" ToolTip="按Ctrl+Enter同样也可以发送数据。" Command="{StaticResource SendUartData}"/>
+            <Button Name="sendDataButton" Content="{DynamicResource SendDataButton}" Grid.Column="6" Grid.RowSpan="2" Margin="2" ToolTip="{DynamicResource SendDataButtonTip}" Command="{StaticResource SendUartData}"/>
         </Grid>
         
         
@@ -96,9 +96,9 @@
                         </Grid>
                     </ItemsPanelTemplate>
                 </StatusBar.ItemsPanel>
-                <Button Grid.Column="0" Name="refreshPortButton" Content="刷新串口" Click="RefreshPortButton_Click"/>
+                <Button Grid.Column="0" Name="refreshPortButton" Content="{DynamicResource RefreshPortButton}" Click="RefreshPortButton_Click"/>
                 <StatusBarItem Grid.Column="1">
-                    <TextBlock Text="端口：" />
+                    <TextBlock Text="{DynamicResource ShowPorts}" />
                 </StatusBarItem>
                 <Separator Grid.Column="2" />
                 <StatusBarItem Grid.Column="3">
@@ -107,7 +107,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="4" />
                 <StatusBarItem Grid.Column="5">
-                    <TextBlock Text="波特率：" />
+                    <TextBlock Text="{DynamicResource ShowBaudRate}" />
                 </StatusBarItem>
                 <Separator Grid.Column="6" />
                 <StatusBarItem Grid.Column="7">
@@ -142,27 +142,27 @@
                 </StatusBarItem>
                 <Separator Grid.Column="8" />
                 <StatusBarItem Grid.Column="9">
-                    <TextBlock Text="状态：" />
+                    <TextBlock Text="{DynamicResource ShowStatus}"/>
                 </StatusBarItem>
                 <Separator Grid.Column="10" />
                 <StatusBarItem Grid.Column="11">
-                    <TextBlock Name="statusTextBlock" Text="已关闭" />
+                    <TextBlock Name="statusTextBlock" Text="{DynamicResource OpenPort_open}" />
                 </StatusBarItem>
                 <Separator Grid.Column="12" />
                 <StatusBarItem Grid.Column="13">
-                    <TextBlock Text="已发送字节："  ToolTip="右键可清空此计数" MouseRightButtonDown="sentCountTextBlock_MouseRightButtonDown"/>
+                    <TextBlock Text="{DynamicResource SentCount}"  ToolTip="{DynamicResource ClearCountTip}" MouseRightButtonDown="sentCountTextBlock_MouseRightButtonDown"/>
                 </StatusBarItem>
                 <Separator Grid.Column="14" />
                 <StatusBarItem Grid.Column="15">
-                    <TextBlock Name="sentCountTextBlock" Text="{Binding SentCount}" ToolTip="右键可清空此计数" MouseRightButtonDown="sentCountTextBlock_MouseRightButtonDown"/>
+                    <TextBlock Name="sentCountTextBlock" Text="{Binding SentCount}" ToolTip="{DynamicResource ClearCountTip}" MouseRightButtonDown="sentCountTextBlock_MouseRightButtonDown"/>
                 </StatusBarItem>
                 <Separator Grid.Column="16" />
                 <StatusBarItem Grid.Column="17">
-                    <TextBlock Text="已接收字节："  ToolTip="右键可清空此计数" MouseRightButtonDown="receivedCountTextBlock_MouseRightButtonDown"/>
+                    <TextBlock Text="{DynamicResource ReceivedCount}"  ToolTip="{DynamicResource ClearCountTip}" MouseRightButtonDown="receivedCountTextBlock_MouseRightButtonDown"/>
                 </StatusBarItem>
                 <Separator Grid.Column="18" />
                 <StatusBarItem Grid.Column="19">
-                    <TextBlock Name="receivedCountTextBlock" Text="{Binding ReceivedCount}" ToolTip="右键可清空此计数" MouseRightButtonDown="receivedCountTextBlock_MouseRightButtonDown"/>
+                    <TextBlock Name="receivedCountTextBlock" Text="{Binding ReceivedCount}" ToolTip="{DynamicResource ClearCountTip}" MouseRightButtonDown="receivedCountTextBlock_MouseRightButtonDown"/>
                 </StatusBarItem>
             </StatusBar>
         </DockPanel>
@@ -172,7 +172,7 @@
         
         <!-- 右侧脚本、快捷发送 -->
         <TabControl Grid.Column="3" Grid.RowSpan="2">
-            <TabItem Header="快捷发送列表">
+            <TabItem Header="{DynamicResource QuickSendCard}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <Grid>
@@ -182,9 +182,9 @@
                                 <ColumnDefinition Width="40"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="编号" Grid.Column="0" HorizontalAlignment="Center"/>
-                            <TextBlock Text="内容" Grid.Column="1" HorizontalAlignment="Center"/>
-                            <TextBlock Text="HEX" Grid.Column="3" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource QuickSendId}" Grid.Column="0" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource QuickSendContent}" Grid.Column="1" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource QuickSendHex}" Grid.Column="3" HorizontalAlignment="Center"/>
                         </Grid>
                         <ItemsControl Name="toSendList">
                             <ItemsControl.ItemTemplate>
@@ -198,7 +198,7 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="{Binding id}" Grid.Column="0" HorizontalAlignment="Center" Margin="2"/>
                                         <TextBox Text="{Binding text,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,0,2,0"/>
-                                        <Button Content="{Binding commit}" Tag="{Binding}" Grid.Column="2" HorizontalAlignment="Stretch" ToolTip="右击此按键，设置显示内容。" Click="knowSendDataButton_click" MouseRightButtonDown="Button_MouseDoubleClick"/>
+                                        <Button Content="{Binding commit}" Tag="{Binding}" Grid.Column="2" HorizontalAlignment="Stretch" ToolTip="{DynamicResource QuickSendButtonTip}" Click="knowSendDataButton_click" MouseRightButtonDown="Button_MouseDoubleClick"/>
                                         <CheckBox IsChecked="{Binding hex}"  Grid.Column="3" HorizontalAlignment="Center" Margin="2"/>
                                     </Grid>
                                 </DataTemplate>
@@ -209,15 +209,15 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Button Name="addSendListButton" Content="添加新项目" Margin="3" Click="AddSendListButton_Click"/>
-                            <Button Name="deleteSendListButton" Content="删除最后一项" Grid.Column="1" Margin="3" Click="DeleteSendListButton_Click"/>
+                            <Button Name="addSendListButton" Content="{DynamicResource QuickSendAdd}" Margin="3" Click="AddSendListButton_Click"/>
+                            <Button Name="deleteSendListButton" Content="{DynamicResource QuickSendRemoveLast}" Grid.Column="1" Margin="3" Click="DeleteSendListButton_Click"/>
                         </Grid>
-                        <TextBlock Text="发送处理的lua脚本，同样对此处发送的数据生效。" TextWrapping="Wrap" FontWeight="Bold"/>
-                        <Button Name="importSSCOMButton" Content="一键导入SSCOM数据" Grid.Column="1" Margin="3,3,3,5" Click="ImportSSCOMButton_Click"/>
+                        <TextBlock Text="{DynamicResource QuickSendTip}" TextWrapping="Wrap" FontWeight="Bold"/>
+                        <Button Name="importSSCOMButton" Content="{DynamicResource QuickSendImportSSCOM}" Grid.Column="1" Margin="3,3,3,5" Click="ImportSSCOMButton_Click"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="运行lua脚本">
+            <TabItem Header="{DynamicResource LuaCard}">
                 <Grid>
                     <!-- 脚本编辑界面 -->
                     <Grid Name="luaScriptEditorGrid" Visibility="Visible">
@@ -229,38 +229,38 @@
                         <WrapPanel Orientation="Horizontal" Margin="0,0,0,5">
                             <ComboBox Name="luaFileList" Width="150" SelectionChanged="LuaFileList_SelectionChanged">
                             </ComboBox>
-                            <Button Name="newScriptButton" Margin="3,0,0,0" ToolTip="新建脚本" Click="NewScriptButton_Click">
+                            <Button Name="newScriptButton" Margin="3,0,0,0" ToolTip="{DynamicResource LuaNewScript}" Click="NewScriptButton_Click">
                                 <Grid>
                                     <fa:FontAwesome Icon="File" Foreground="LightSkyBlue"/>
                                     <fa:FontAwesome Icon="FileCodeOutline"/>
                                 </Grid>
                             </Button>
-                            <Button Name="runScriptButton" Margin="2,0,0,0" ToolTip="运行脚本" Click="RunScriptButton_Click">
+                            <Button Name="runScriptButton" Margin="2,0,0,0" ToolTip="{DynamicResource LuaRunScript}" Click="RunScriptButton_Click">
                                 <fa:FontAwesome Icon="Play" Foreground="DarkGreen"/>
                             </Button>
-                            <Button Name="openScriptFolderButton" Margin="2,0,0,0" ToolTip="打开脚本与日志目录" Click="OpenScriptFolderButton_Click">
+                            <Button Name="openScriptFolderButton" Margin="2,0,0,0" ToolTip="{DynamicResource LuaOpenFolder}" Click="OpenScriptFolderButton_Click">
                                 <Grid>
                                     <fa:FontAwesome Icon="FolderOpen" Foreground="Yellow"/>
                                     <fa:FontAwesome Icon="FolderOutlinepenOutline"/>
                                 </Grid>
                             </Button>
-                            <Button Name="refreshScriptListButton" Margin="2,0,0,0" ToolTip="刷新脚本列表" Click="RefreshScriptListButton_Click">
+                            <Button Name="refreshScriptListButton" Margin="2,0,0,0" ToolTip="{DynamicResource LuaRefreshList}" Click="RefreshScriptListButton_Click">
                                 <fa:FontAwesome Icon="Refresh" Foreground="Green"/>
                             </Button>
-                            <Button Name="apiDocumentButton" Margin="2,0,0,0" ToolTip="查看接口文档" Click="ApiDocumentButton_Click">
+                            <Button Name="apiDocumentButton" Margin="2,0,0,0" ToolTip="{DynamicResource LuaApiReference}" Click="ApiDocumentButton_Click">
                                 <fa:FontAwesome Icon="Book" Foreground="DarkSlateGray"/>
                             </Button>
-                            <Button Name="scriptShareButton" Margin="2,0,0,0" ToolTip="获取社区上分享的脚本，或把脚本分享给大家" Click="ScriptShareButton_Click">
+                            <Button Name="scriptShareButton" Margin="2,0,0,0" ToolTip="{DynamicResource LuaGetShare}" Click="ScriptShareButton_Click">
                                 <fa:FontAwesome Icon="ShareAlt" Foreground="DarkCyan"/>
                             </Button>
                         </WrapPanel>
                         <WrapPanel Grid.Row="1" Name="newLuaFileWrapPanel" Visibility="Collapsed" Margin="3">
-                            <TextBlock Text="文件名：" VerticalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource LuaFileName}" VerticalAlignment="Center"/>
                             <TextBox Name="newLuaFileNameTextBox" Width="90" Text="new script"/>
-                            <Button Name="newLuaFilebutton" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="确认新建文件" Click="NewLuaFilebutton_Click">
+                            <Button Name="newLuaFilebutton" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="{DynamicResource LuaConfirmCreate}" Click="NewLuaFilebutton_Click">
                                 <fa:FontAwesome Icon="Check" Foreground="Green"/>
                             </Button>
-                            <Button Name="newLuaFileCancelbutton" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="取消" Click="NewLuaFileCancelbutton_Click">
+                            <Button Name="newLuaFileCancelbutton" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="{DynamicResource LuaCancel}" Click="NewLuaFileCancelbutton_Click">
                                 <fa:FontAwesome Icon="Ban" Foreground="Red"/>
                             </Button>
                         </WrapPanel>
@@ -289,14 +289,14 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <Button Name="stopLuaButton" Margin="0,3,3,3" ToolTip="停止运行，停止之后再点一下就是关闭" Foreground="DarkRed" Click="StopLuaButton_Click">
+                            <Button Name="stopLuaButton" Margin="0,3,3,3" ToolTip="{DynamicResource LuaStop}" Foreground="DarkRed" Click="StopLuaButton_Click">
                                 <fa:FontAwesome Icon="Stop"/>
                             </Button>
-                            <Button Name="pauseLuaPrintButton" Margin="0,3,3,3" ToolTip="暂停打印" Grid.Column="1" Foreground="ForestGreen" Click="PauseLuaPrintButton_Click">
+                            <Button Name="pauseLuaPrintButton" Margin="0,3,3,3" ToolTip="{DynamicResource LuaPause}" Grid.Column="1" Foreground="ForestGreen" Click="PauseLuaPrintButton_Click">
                                 <fa:FontAwesome Name="pauseLuaPrintIcon" Icon="Pause"/>
                             </Button>
                             <TextBox Name="runOneLineLuaTextBox" Grid.Column="2" Margin="0,3" KeyDown="RunOneLineLuaTextBox_KeyDown"/>
-                            <Button Name="sendLuaScriptButton" Margin="3,3,0,3" ToolTip="实时执行lua语句 - [Enter]" Grid.Column="3" Foreground="DeepSkyBlue" Click="SendLuaScriptButton_Click">
+                            <Button Name="sendLuaScriptButton" Margin="3,3,0,3" ToolTip="{DynamicResource LuaSendScript}" Grid.Column="3" Foreground="DeepSkyBlue" Click="SendLuaScriptButton_Click">
                                 <fa:FontAwesome Icon="ArrowUp"/>
                             </Button>
                         </Grid>
@@ -304,7 +304,7 @@
                     <!-- 脚本运行日志界面END -->
                 </Grid>
             </TabItem>
-            <TabItem Header="关于与反馈">
+            <TabItem Header="{DynamicResource AboutCard}">
                 <Frame Name="aboutFrame" NavigationUIVisibility="Hidden"/>
             </TabItem>
         </TabControl>

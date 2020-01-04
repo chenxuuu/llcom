@@ -297,5 +297,17 @@ namespace llcom.Tools
                 File.WriteAllBytes(outPath, GetAssetsFileContent(insidePath));
         }
 
+        /// <summary>
+        /// 更换语言文件
+        /// </summary>
+        /// <param name="languagefileName"></param>
+        public static void LoadLanguageFile(string languagefileName)
+        {
+            System.Windows.Application.Current.Resources.MergedDictionaries[0] = new System.Windows.ResourceDictionary()
+            {
+                Source = new Uri(languagefileName, UriKind.RelativeOrAbsolute)
+            };
+        }
+
     }
 }

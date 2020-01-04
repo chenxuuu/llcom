@@ -200,12 +200,12 @@ namespace llcom
         {
             if (string.IsNullOrWhiteSpace(newLuaFileNameTextBox.Text))
             {
-                MessageBox.Show("请输入文件名！");
+                MessageBox.Show(FindResource("LuaNoName") as string);
                 return;
             }
             if (File.Exists($"user_script_send_convert/{newLuaFileNameTextBox.Text}.lua"))
             {
-                MessageBox.Show("该文件已存在！");
+                MessageBox.Show(FindResource("LuaExist") as string);
                 return;
             }
 
@@ -216,7 +216,7 @@ namespace llcom
             }
             catch
             {
-                MessageBox.Show("新建失败，请检查！");
+                MessageBox.Show(FindResource("LuaCreateFail") as string);
                 return;
             }
             newLuaFileWrapPanel.Visibility = Visibility.Collapsed;
@@ -231,12 +231,12 @@ namespace llcom
                     string r = LuaEnv.LuaLoader.Run($"{luaFileList.SelectedItem as string}.lua",
                                         new System.Collections.ArrayList{"uartData",
                                            Tools.Global.String2Hex(luaTestTextBox.Text,"")});
-                    MessageBox.Show("运行结果\r\nHEX值：" + r +
-                        "\r\n原始字符串：" + Tools.Global.Hex2String(r));
+                    MessageBox.Show($"{FindResource("SettingLuaRunResult") as string}\r\nHEX：" + r +
+                        $"\r\n{FindResource("SettingLuaRawText") as string}" + Tools.Global.Hex2String(r));
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show("脚本运行错误：\r\n" + ex.ToString());
+                    MessageBox.Show($"{FindResource("ErrorScript") as string}\r\n" + ex.ToString());
                 }
 
             }

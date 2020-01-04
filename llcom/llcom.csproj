@@ -163,6 +163,14 @@
     </Compile>
     <Compile Include="Tools\Global.cs" />
     <Compile Include="Tools\Logger.cs" />
+    <Page Include="languages\en-US.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="languages\zh-CN.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\InputDialogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
