@@ -308,7 +308,18 @@
                 <Frame Name="aboutFrame" NavigationUIVisibility="Hidden"/>
             </TabItem>
         </TabControl>
-        
+
+        <Menu Grid.Column="3" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <MenuItem ToolTip="{DynamicResource ChangeLanguage}">
+                <MenuItem.Header>
+                    <fa:FontAwesome Icon="Globe" Foreground="Blue"/>
+                </MenuItem.Header>
+                <MenuItem Header="zh-CN" Click="MenuItem_Click"/>
+                <MenuItem Header="en-US" Click="MenuItem_Click"/>
+            </MenuItem>
+        </Menu>
+
+
         <!--统计-->
         <WebBrowser Source="https://llcom.papapoi.com/bdtj.html" Visibility="Collapsed"/>
     </Grid>
