@@ -403,7 +403,6 @@ namespace llcom
 
         private void ClearLogButton_Click(object sender, RoutedEventArgs e)
         {
-            Tools.Global.LoadLanguageFile("pack://application:,,,/languages/en-US.xaml");
             Tools.Logger.ClearData();
         }
 
