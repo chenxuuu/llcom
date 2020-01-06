@@ -736,5 +736,10 @@ namespace llcom
         {
             Tools.Global.setting.ReceivedCount = 0;
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Tools.Global.setting.language = ((MenuItem)sender).Header.ToString();
+        }
     }
 }

@@ -123,6 +123,7 @@ namespace llcom.Tools
                     Properties.Settings.Default.quickData = "done";
                 }
             }
+
             setting.UpdateQuickSend();
 
 
@@ -303,10 +304,21 @@ namespace llcom.Tools
         /// <param name="languagefileName"></param>
         public static void LoadLanguageFile(string languagefileName)
         {
-            System.Windows.Application.Current.Resources.MergedDictionaries[0] = new System.Windows.ResourceDictionary()
+            try
             {
-                Source = new Uri(languagefileName, UriKind.RelativeOrAbsolute)
-            };
+                System.Windows.Application.Current.Resources.MergedDictionaries[0] = new System.Windows.ResourceDictionary()
+                {
+                    Source = new Uri($"pack://application:,,,/languages/{languagefileName}.xaml", UriKind.RelativeOrAbsolute)
+                };
+            }
+            catch
+            {
+                System.Windows.Application.Current.Resources.MergedDictionaries[0] = new System.Windows.ResourceDictionary()
+                {
+                    Source = new Uri("pack://application:,,,/languages/en-US.xaml", UriKind.RelativeOrAbsolute)
+                };
+            }
+
         }
 
     }

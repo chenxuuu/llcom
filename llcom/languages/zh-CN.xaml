@@ -97,5 +97,6 @@
     <system:String x:Key="SettingLuaText3">查看接口文档，可点击接口文档按钮。</system:String>
     <system:String x:Key="SettingLuaRunResult">运行结果</system:String>
     <system:String x:Key="SettingLuaRawText">原始字符串：</system:String>
+    <system:String x:Key="ChangeLanguage">语言/language</system:String>
     
 </ResourceDictionary>

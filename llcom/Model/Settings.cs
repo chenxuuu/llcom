@@ -289,7 +289,7 @@ namespace llcom.Model
             set
             {
                 _language = value;
-                //todo
+                Tools.Global.LoadLanguageFile(value);
                 Save();
             }
         }
