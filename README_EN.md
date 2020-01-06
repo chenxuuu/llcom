@@ -9,7 +9,7 @@
 
 A serial port debugger tool, with lua script.
 
-> this tool is only Chinese now, you can help me to translate, thanks!
+> this tool is only Chinese and English now, you can help me to translate, thanks!
 
 ## Download
 
@@ -27,7 +27,7 @@ Appveyor snapshot version: [Appveyor Artifacts](https://ci.appveyor.com/project/
 - Quick send bar on the right.
 - Lua scripts can be run independently with timer and co-process task features.([Based on LUAT TASK](http://wiki.openluat.com/doc/luatFramework/))
 
-![screen](/screen.png)
+![screenEN](/screenEN.png)
 ![screen2](/screen2.jpg)
 ![screen3](/screen3.png)
 
