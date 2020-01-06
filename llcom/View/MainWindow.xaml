@@ -46,10 +46,10 @@
                 <ColumnDefinition Width="0"/>
                 <ColumnDefinition Width="0"/>
                 <ColumnDefinition Width="0"/>
-                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="55"/>
                 <ColumnDefinition Width="75"/>
                 <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="50"/>
             </Grid.ColumnDefinitions>
             <Button Name="openClosePortButton" Grid.Column="3" Grid.RowSpan="2" Margin="2" Click="OpenClosePortButton_Click">
                 <WrapPanel>
@@ -314,8 +314,8 @@
                 <MenuItem.Header>
                     <fa:FontAwesome Icon="Globe" Foreground="Blue"/>
                 </MenuItem.Header>
-                <MenuItem Header="zh-CN" Click="MenuItem_Click"/>
-                <MenuItem Header="en-US" Click="MenuItem_Click"/>
+                <MenuItem Header="简体中文" Tag="zh-CN" Click="MenuItem_Click"/>
+                <MenuItem Header="English" Tag="en-US" Click="MenuItem_Click"/>
             </MenuItem>
         </Menu>
 

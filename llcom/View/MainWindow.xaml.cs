@@ -739,7 +739,7 @@ namespace llcom
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Tools.Global.setting.language = ((MenuItem)sender).Header.ToString();
+            Tools.Global.setting.language = ((MenuItem)sender).Tag.ToString();
         }
     }
 }
