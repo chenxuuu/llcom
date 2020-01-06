@@ -59,6 +59,7 @@
     <system:String x:Key="AboutAutoUpdate">开启软件后，自动检查是否需要更新</system:String>
     <system:String x:Key="AboutLoadingUpdate">更新数据加载中</system:String>
     <system:String x:Key="AboutDevelopers">开发者：chenxuuu、whc2001</system:String>
+    <system:String x:Key="AboutTranslator">简体中文为原版语言</system:String>
     <system:String x:Key="AboutQQGroup">交流群：906307487</system:String>
     <system:String x:Key="AboutGitHubText">开源项目，欢迎star</system:String>
     <system:String x:Key="AboutGitHubButton">前往GitHub查看</system:String>
@@ -97,6 +98,6 @@
     <system:String x:Key="SettingLuaText3">查看接口文档，可点击接口文档按钮。</system:String>
     <system:String x:Key="SettingLuaRunResult">运行结果</system:String>
     <system:String x:Key="SettingLuaRawText">原始字符串：</system:String>
-    <system:String x:Key="ChangeLanguage">语言/language</system:String>
-    
+    <system:String x:Key="ChangeLanguage">语言/Language</system:String>
+
 </ResourceDictionary>

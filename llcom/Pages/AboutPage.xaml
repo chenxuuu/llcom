@@ -38,6 +38,9 @@
             <TextBlock Text="{DynamicResource AboutQQGroup}" 
                                    FontSize="15"
                                    Margin="10,0,0,0"/>
+            <TextBlock Text="{DynamicResource AboutTranslator}" 
+                                   FontSize="15"
+                                   Margin="10,20,0,0"/>
 
             <TextBlock Text="{DynamicResource AboutGitHubText}" FontSize="15" Margin="10,20,0,0" HorizontalAlignment="Center"/>
             <Button Name="OpenSourceButton" Content="{DynamicResource AboutGitHubButton}" Width="auto" HorizontalAlignment="Center" Click="OpenSourceButton_Click"/>
