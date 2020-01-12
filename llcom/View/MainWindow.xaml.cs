@@ -642,15 +642,32 @@ namespace llcom
                 _luaLogPrintable = value;
             }
         }
+        private int luaLogCount = 0;
         private void LuaApis_PrintLuaLog(object sender, EventArgs e)
         {
             if (luaLogPrintable)
             {
-                this.Dispatcher.Invoke(new Action(delegate
+                luaLogCount++;
+                if(luaLogCount < 1000)
                 {
-                    luaLogTextBox.AppendText((sender as string) + "\r\n");
-                    luaLogTextBox.ScrollToEnd();
-                }));
+                    this.Dispatcher.Invoke(new Action(delegate
+                    {
+                        luaLogTextBox.AppendText((sender as string) + "\r\n");
+                        luaLogTextBox.ScrollToEnd();
+                    }));
+                }
+                else
+                {
+                    luaLogCount = 0;
+                    this.Dispatcher.Invoke(new Action(delegate
+                    {
+                        luaLogTextBox.Clear();
+                        luaLogTextBox.AppendText("Lua log too long, auto clear.\r\n" +
+                            "more logs see lua log file.\r\n");
+                        luaLogTextBox.ScrollToEnd();
+                    }));
+                }
+
             }
         }
 
