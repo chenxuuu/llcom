@@ -23,6 +23,9 @@ assignees: ''
 **截图 / Screenshots**
 如果需要，请放上你的截图。 / If applicable, add screenshots to help explain your problem.
 
+**日志 / Logs**
+有，请上传日志为附件 / Upload your log files.
+
 **系统信息 / Desktop (please complete the following information):**
  - OS: [e.g. iOS]
  - Version [e.g. 22]
