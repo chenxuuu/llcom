@@ -22,6 +22,8 @@ namespace llcom.LuaEnv
         public static bool isRunning = false;
         public static bool canRun = false;
 
+        private static object tiggerLock = new object();//回调锁标志
+
         /// <summary>
         /// 刚启动的时候运行的
         /// </summary>
@@ -33,7 +35,10 @@ namespace llcom.LuaEnv
         private static void addTigger(int id, string type = "timer", string data = "")
         {
             if(isRunning)
+            {
                 toRun.Add(new LuaPool { id = id, type = type, data = data });
+                runTigger();
+            }
         }
 
 
@@ -59,33 +64,35 @@ namespace llcom.LuaEnv
 
         private static void runTigger()
         {
-            try
+            lock (tiggerLock)
             {
-                while (true)
+                try
                 {
-                    System.Threading.Thread.Sleep(1);
-                    if (tokenSource.IsCancellationRequested)
-                        return;
                     while (toRun.Count > 0)
                     {
-                        try
-                        {
-                            LuaPool temp;
-                            toRun.TryTake(out temp);
-                            lua.Global.Get<XLua.LuaFunction>("tiggerCB").Call(temp.id, temp.type, temp.data);
-                        }
-                        catch(Exception le)
-                        {
-                            LuaApis.PrintLog("回调报错：\r\n" + le.ToString());
-                        }
                         if (tokenSource.IsCancellationRequested)
                             return;
+                        while (toRun.Count > 0)
+                        {
+                            try
+                            {
+                                LuaPool temp;
+                                toRun.TryTake(out temp);
+                                lua.Global.Get<XLua.LuaFunction>("tiggerCB").Call(temp.id, temp.type, temp.data);
+                            }
+                            catch (Exception le)
+                            {
+                                LuaApis.PrintLog("回调报错：\r\n" + le.ToString());
+                            }
+                            if (tokenSource.IsCancellationRequested)
+                                return;
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                StopLua(ex.ToString());
+                catch (Exception ex)
+                {
+                    StopLua(ex.ToString());
+                }
             }
         }
 
@@ -191,7 +198,6 @@ namespace llcom.LuaEnv
                 {
                     StopLua(ex.ToString());
                 }
-                runTigger();
             }, tokenSource.Token);
         }
     }
