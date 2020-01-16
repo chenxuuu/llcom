@@ -46,6 +46,10 @@ namespace llcom
         private bool isOpeningPort = false;
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            //接收到、发送数据成功回调
+            Tools.Global.uart.UartDataRecived += Uart_UartDataRecived;
+            Tools.Global.uart.UartDataSent += Uart_UartDataSent;
+
             //初始化所有数据
             Tools.Global.Initial();
 
@@ -58,10 +62,6 @@ namespace llcom
             //usb刷新时触发
             usbDeviceNotifier.Enabled = true;
             usbDeviceNotifier.OnDeviceNotify += UsbDeviceNotifier_OnDeviceNotify; ;
-
-            //接收到、发送数据成功回调
-            Tools.Global.uart.UartDataRecived += Uart_UartDataRecived;
-            Tools.Global.uart.UartDataSent += Uart_UartDataSent;
 
             //收发数据显示页面
             dataShowFrame.Navigate(new Uri("Pages/DataShowPage.xaml", UriKind.Relative));
