@@ -186,7 +186,9 @@
                             <TextBlock Text="{DynamicResource QuickSendContent}" Grid.Column="1" HorizontalAlignment="Center"/>
                             <TextBlock Text="{DynamicResource QuickSendHex}" Grid.Column="3" HorizontalAlignment="Center"/>
                         </Grid>
-                        <ItemsControl Name="toSendList">
+                        <ItemsControl Name="toSendList" 
+                                      VirtualizingPanel.IsVirtualizing="True"
+                                      VirtualizingPanel.VirtualizationMode="Recycling">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Margin="0,3,0,0">

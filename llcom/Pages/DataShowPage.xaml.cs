@@ -30,6 +30,7 @@ namespace llcom.Pages
         {
             //使日志富文本区域滚动可控制
             sv = uartDataFlowDocument.Template.FindName("PART_ContentHost", uartDataFlowDocument) as ScrollViewer;
+            sv.CanContentScroll = true;
             Tools.Logger.DataShowEvent += addUartLog;
             Tools.Logger.DataClearEvent += (xx,x) =>
             {
