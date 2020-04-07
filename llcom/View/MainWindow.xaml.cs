@@ -652,6 +652,7 @@ namespace llcom
                 {
                     this.Dispatcher.Invoke(new Action(delegate
                     {
+                        luaLogTextBox.Select(luaLogTextBox.Text.Length, 0);//确保文字不再被选中，防止wpf卡死
                         luaLogTextBox.AppendText((sender as string) + "\r\n");
                         luaLogTextBox.ScrollToEnd();
                     }));
@@ -673,6 +674,7 @@ namespace llcom
 
         private void StopLuaButton_Click(object sender, RoutedEventArgs e)
         {
+            luaLogCount = 0;
             if (!LuaEnv.LuaRunEnv.isRunning)
             {
                 luaLogTextBox.Clear();
