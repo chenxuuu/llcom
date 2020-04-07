@@ -37,17 +37,19 @@ namespace llcom.Pages
             checkUpdate();
         }
 
+        private AutoUpdaterDotNET.UpdateInfoEventArgs G_args;
         private void checkUpdateEvent(AutoUpdaterDotNET.UpdateInfoEventArgs args)
         {
             if (args != null)
             {
+                G_args = args;
                 if (args.IsUpdateAvailable)
                 {
                     if (Tools.Global.setting.autoUpdate)
                     {
                         this.Dispatcher.Invoke(new Action(delegate {
                             CheckUpdateButton.Content = "检测到有更新，获取中";
-                            AutoUpdaterDotNET.AutoUpdater.ShowUpdateForm();
+                            AutoUpdaterDotNET.AutoUpdater.ShowUpdateForm(G_args);
                         }));
                     }
                     else
@@ -110,7 +112,7 @@ namespace llcom.Pages
         {
             CheckUpdateButton.IsEnabled = false;
             CheckUpdateButton.Content = "获取更新信息中";
-            AutoUpdaterDotNET.AutoUpdater.ShowUpdateForm();
+            AutoUpdaterDotNET.AutoUpdater.ShowUpdateForm(G_args);
         }
     }
 }
