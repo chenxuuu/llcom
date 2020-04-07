@@ -46,6 +46,7 @@ namespace llcom.Pages
         /// <param name="send">true为发送，false为接收</param>
         private void addUartLog(object e,Tools.DataShowPara input)
         {
+            uartDataFlowDocument.IsSelectionEnabled = false;
             byte[] data = input.data;
             bool send = input.send;
             Paragraph p = new Paragraph(new Run(""));
@@ -106,6 +107,7 @@ namespace llcom.Pages
             }
 
             sv.ScrollToBottom();
+            uartDataFlowDocument.IsSelectionEnabled = true;
         }
     }
 }
