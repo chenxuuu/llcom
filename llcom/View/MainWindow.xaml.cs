@@ -27,6 +27,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 using llcom.Model;
+using System.Text.RegularExpressions;
 
 namespace llcom
 {
@@ -162,9 +163,10 @@ namespace llcom
                     try
                     {
                         ManagementObjectSearcher searcher =new ManagementObjectSearcher("root\\CIMV2","SELECT * FROM Win32_PnPEntity");
+                        Regex regExp = new Regex("\\(COM\\d+\\)");
                         foreach (ManagementObject queryObj in searcher.Get())
                         {
-                            if ((queryObj["Caption"] != null) && (queryObj["Caption"].ToString().Contains("(COM")))
+                            if ((queryObj["Caption"] != null) && regExp.IsMatch(queryObj["Caption"].ToString()))
                             {
                                 strs.Add(queryObj["Caption"].ToString());
                             }
@@ -195,7 +197,7 @@ namespace llcom
                     //选定上次的com口
                     foreach (string c in serialPortsListComboBox.Items)
                     {
-                        if ((c).Contains(Tools.Global.uart.serial.PortName))
+                        if (c.Contains($"({Tools.Global.uart.serial.PortName})"))
                         {
                             serialPortsListComboBox.Text = c;
                             //自动重连，不管结果
@@ -255,7 +257,7 @@ namespace llcom
                 refreshPortList();
                 foreach(string c in serialPortsListComboBox.Items)
                 {
-                    if ((c).Contains(Tools.Global.uart.serial.PortName))
+                    if (c.Contains($"({Tools.Global.uart.serial.PortName})"))
                     {
                         serialPortsListComboBox.Text = c;
                         break;
@@ -337,7 +339,7 @@ namespace llcom
                 string port = "";//最终串口名
                 foreach (string p in ports)//循环查找符合名称串口
                 {
-                    if ((serialPortsListComboBox.SelectedItem as string).Contains(p))//如果和选中项目匹配
+                    if ((serialPortsListComboBox.SelectedItem as string).Contains($"({p})"))//如果和选中项目匹配
                     {
                         port = p;
                         break;
