@@ -474,7 +474,7 @@ namespace llcom
 
         private void SendUartData_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            sendUartData(Encoding.Default.GetBytes(toSendDataTextBox.Text));
+            sendUartData(Encoding.UTF8.GetBytes(toSendDataTextBox.Text));
         }
 
         private void AddSendListButton_Click(object sender, RoutedEventArgs e)
@@ -497,7 +497,7 @@ namespace llcom
             if (data.hex)
                 sendUartData(Tools.Global.Hex2Byte(data.text));
             else
-                sendUartData(Encoding.Default.GetBytes(data.text));
+                sendUartData(Encoding.UTF8.GetBytes(data.text));
         }
 
         private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)

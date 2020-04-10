@@ -200,7 +200,7 @@ namespace llcom.Tools
             var br = from e in vBytes
                      where e != 0
                      select e;
-            return Encoding.Default.GetString(br.ToArray());
+            return Encoding.UTF8.GetString(br.ToArray());
         }
 
         /// <summary>
