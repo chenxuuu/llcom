@@ -32,6 +32,15 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "RYLF",
+      "name": "RuoYun",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/28991981?v=4",
+      "profile": "https://github.com/RYLF",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
