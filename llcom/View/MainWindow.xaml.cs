@@ -179,6 +179,23 @@ namespace llcom
                     }
                     //MessageBox.Show("fail了");
                 }
+
+                
+                foreach (string p in SerialPort.GetPortNames())//加上缺少的com口
+                {
+                    bool notMatch = true;
+                    foreach(string n in strs)
+                    {
+                        if (n.Contains($"({p})"))//如果和选中项目匹配
+                        {
+                            notMatch = false;
+                            break;
+                        }
+                    }
+                    if(notMatch)
+                        strs.Add($"Serial Port {p} ({p})");//如果列表中没有，就自己加上
+                }
+
                 this.Dispatcher.Invoke(new Action(delegate {
                     foreach (string i in strs)
                         serialPortsListComboBox.Items.Add(i);
