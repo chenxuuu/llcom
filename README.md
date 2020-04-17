@@ -127,13 +127,7 @@ response:Close()
 
 ## 已知问题与待添加的功能（请大家反馈，谢谢！）
 
-- [ ] bug：某些条件下（比如Air720重启），COM口消失后不会被释放，导致无法再次开启该COM口，只能重启软件（[.net 框架的bug，微软的人在看了](https://github.com/dotnet/corefx/issues/39464)）
-
-## 常见问题
-
-### 升级的时候要替换哪几个文件？
-
-点升级就行了，一键升级
+- [x] ~~bug：某些条件下（比如Air720重启），COM口消失后不会被释放，导致无法再次开启该COM口，只能重启软件（[.net 框架的bug，微软的人在看了](https://github.com/dotnet/corefx/issues/39464)）~~（已解决 #2f26e68）
 
 ## 开源
 
