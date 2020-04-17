@@ -44,7 +44,7 @@ namespace llcom.LuaEnv
         /// <returns>是否成功</returns>
         public static bool SendUartData(string data)
         {
-            if (Tools.Global.uart.serial.IsOpen)
+            if (Tools.Global.uart.IsOpen())
             {
                 try
                 {

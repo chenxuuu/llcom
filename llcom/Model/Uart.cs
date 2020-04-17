@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Management;
@@ -14,6 +15,7 @@ namespace llcom.Model
         public SerialPort serial = new SerialPort();
         public event EventHandler UartDataRecived;
         public event EventHandler UartDataSent;
+        private Stream lastPortBaseStream = null;
 
         private static readonly object objLock = new object();
         
@@ -24,6 +26,97 @@ namespace llcom.Model
         {
             //声明接收到事件
             serial.DataReceived += Serial_DataReceived;
+        }
+
+        /// <summary>
+        /// 刷新串口对象
+        /// </summary>
+        private void refreshSerialDevice()
+        {
+            serial.Dispose();
+            serial = new SerialPort();
+            //声明接收到事件
+            serial.DataReceived += Serial_DataReceived;
+        }
+
+        /// <summary>
+        /// 获取串口设备COM名
+        /// </summary>
+        /// <returns></returns>
+        public string GetName()
+        {
+            return serial.PortName;
+        }
+
+        /// <summary>
+        /// 设置串口设备COM名
+        /// </summary>
+        /// <returns></returns>
+        public void SetName(string s)
+        {
+            serial.PortName = s;
+        }
+
+        /// <summary>
+        /// 查看串口打开状态
+        /// </summary>
+        /// <returns></returns>
+        public bool IsOpen()
+        {
+            return serial.IsOpen;
+        }
+
+        /// <summary>
+        /// 开启串口
+        /// </summary>
+        public void Open()
+        {
+            string temp = serial.PortName;
+            try
+            {
+                lastPortBaseStream?.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"portBaseStream?.Dispose error:{e.Message}");
+            }
+            try
+            {
+                serial.BaseStream.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"serial.BaseStream.Dispose error:{e.Message}");
+            }
+            refreshSerialDevice();
+            serial.PortName = temp;
+            serial.Open();
+            lastPortBaseStream = serial.BaseStream;
+        }
+
+        /// <summary>
+        /// 关闭串口
+        /// </summary>
+        public void Close()
+        {
+            try
+            {
+                lastPortBaseStream?.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"portBaseStream?.Dispose error:{e.Message}");
+            }
+            try
+            {
+                serial.BaseStream.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"serial.BaseStream.Dispose error:{e.Message}");
+            }
+            refreshSerialDevice();
+            serial.Close();
         }
 
         /// <summary>
