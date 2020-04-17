@@ -124,5 +124,5 @@ you can [click here](https://github.com/chenxuuu/llcom/blob/master/LuaApi.md)
 
 ## Known bugs and functions to be added
 
-- [ ] bug：SerialPort The Requested Resource is in Use([.net's bug](https://github.com/dotnet/corefx/issues/39464))
+- [x] ~~bug: SerialPort The Requested Resource is in Use([.net's bug](https://github.com/dotnet/corefx/issues/39464))~~(fixed #2f26e68)
 
