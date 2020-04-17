@@ -214,7 +214,7 @@ namespace llcom
                     //选定上次的com口
                     foreach (string c in serialPortsListComboBox.Items)
                     {
-                        if (c.Contains($"({Tools.Global.uart.serial.PortName})"))
+                        if (c.Contains($"({Tools.Global.uart.GetName()})"))
                         {
                             serialPortsListComboBox.Text = c;
                             //自动重连，不管结果
@@ -225,7 +225,7 @@ namespace llcom
                                     isOpeningPort = true;
                                     try
                                     {
-                                        Tools.Global.uart.serial.Open();
+                                        Tools.Global.uart.Open();
                                         Dispatcher.Invoke(new Action(delegate
                                         {
                                             openClosePortTextBlock.Text = (FindResource("OpenPort_close") as string);
@@ -269,12 +269,12 @@ namespace llcom
 
         private void UsbDeviceNotifier_OnDeviceNotify(object sender, DeviceNotifyEventArgs e)
         {
-            if (Tools.Global.uart.serial.IsOpen)
+            if (Tools.Global.uart.IsOpen())
             {
                 refreshPortList();
                 foreach(string c in serialPortsListComboBox.Items)
                 {
-                    if (c.Contains($"({Tools.Global.uart.serial.PortName})"))
+                    if (c.Contains($"({Tools.Global.uart.GetName()})"))
                     {
                         serialPortsListComboBox.Text = c;
                         break;
@@ -370,8 +370,8 @@ namespace llcom
                         try
                         {
                             forcusClosePort = false;//不再强制关闭串口
-                            Tools.Global.uart.serial.PortName = port;
-                            Tools.Global.uart.serial.Open();
+                            Tools.Global.uart.SetName(port);
+                            Tools.Global.uart.Open();
                             this.Dispatcher.Invoke(new Action(delegate
                             {
                                 openClosePortTextBlock.Text = (FindResource("OpenPort_close") as string);
@@ -397,7 +397,7 @@ namespace llcom
         }
         private void OpenClosePortButton_Click(object sender, RoutedEventArgs e)
         {
-            if(!Tools.Global.uart.serial.IsOpen)//打开串口逻辑
+            if(!Tools.Global.uart.IsOpen())//打开串口逻辑
             {
                 openPort();
             }
@@ -406,7 +406,7 @@ namespace llcom
                 try
                 {
                     forcusClosePort = true;//不再重新开启串口
-                    Tools.Global.uart.serial.Close();
+                    Tools.Global.uart.Close();
                 }
                 catch
                 {
@@ -440,13 +440,13 @@ namespace llcom
         /// <param name="data"></param>
         private void sendUartData(byte[] data)
         {
-            if (!Tools.Global.uart.serial.IsOpen)
+            if (!Tools.Global.uart.IsOpen())
             {
                 openPort();
                 toSendData = (byte[])data.Clone();//带发送数据缓存起来，连上串口后发出去
             }
                 
-            if (Tools.Global.uart.serial.IsOpen)
+            if (Tools.Global.uart.IsOpen())
             {
                 string dataConvert;
                 try
