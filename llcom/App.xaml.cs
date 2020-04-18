@@ -40,15 +40,15 @@ namespace llcom
 
         public static void SendReport(Exception exception, string developerMessage = "", bool silent = true)
         {
-            MessageBox.Show("恭喜你触发了一个BUG！\r\n" +
-                "你获得了去GitHub反馈bug的机会！\r\n" +
-                $"报错信息：{exception.Message}\r\n" +
-                "请在关闭本对话框后耐心等待一会儿，以便自动上传错误信息");
+            if(Tools.Global.setting.language == "zh-CN")
+                MessageBox.Show("恭喜你触发了一个BUG！\r\n" +
+                    "如果条件允许，请点击“Send Report”来上报这个BUG\r\n" +
+                    $"报错信息：{exception.Message}");
             var reportCrash = new ReportCrash("lolicon@papapoi.com")
             {
                 DeveloperMessage = developerMessage
             };
-            reportCrash.Silent = silent;
+            //reportCrash.Silent = silent;
             reportCrash.CaptureScreen = true;
             reportCrash.Send(exception);
         }
