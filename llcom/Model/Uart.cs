@@ -33,10 +33,30 @@ namespace llcom.Model
         /// </summary>
         private void refreshSerialDevice()
         {
+            try
+            {
+                lastPortBaseStream?.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"portBaseStream?.Dispose error:{e.Message}");
+            }
+            try
+            {
+                serial.BaseStream.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"serial.BaseStream.Dispose error:{e.Message}");
+            }
             serial.Dispose();
             serial = new SerialPort();
             //声明接收到事件
             serial.DataReceived += Serial_DataReceived;
+            serial.BaudRate = Tools.Global.setting.baudRate;
+            serial.Parity = (Parity)Tools.Global.setting.parity;
+            serial.DataBits = Tools.Global.setting.dataBits;
+            serial.StopBits = (StopBits)Tools.Global.setting.stopBit;
         }
 
         /// <summary>
@@ -72,22 +92,6 @@ namespace llcom.Model
         public void Open()
         {
             string temp = serial.PortName;
-            try
-            {
-                lastPortBaseStream?.Dispose();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"portBaseStream?.Dispose error:{e.Message}");
-            }
-            try
-            {
-                serial.BaseStream.Dispose();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"serial.BaseStream.Dispose error:{e.Message}");
-            }
             refreshSerialDevice();
             serial.PortName = temp;
             serial.Open();
@@ -99,22 +103,6 @@ namespace llcom.Model
         /// </summary>
         public void Close()
         {
-            try
-            {
-                lastPortBaseStream?.Dispose();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"portBaseStream?.Dispose error:{e.Message}");
-            }
-            try
-            {
-                serial.BaseStream.Dispose();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"serial.BaseStream.Dispose error:{e.Message}");
-            }
             refreshSerialDevice();
             serial.Close();
         }
