@@ -39,15 +39,22 @@ namespace llcom.Model
         public void UpdateQuickSend()
         {
             toSendDatas.Clear();
-            JObject jo = (JObject)JsonConvert.DeserializeObject(_quickData);
-            foreach (var i in jo["data"])
+            try
             {
-                if (i["commit"] == null)
-                    i["commit"] = "发送";
-                if ((bool)i["hex"])
-                    toSendDatas.Add("H" + (string)i["text"]);
-                else
-                    toSendDatas.Add("S" + (string)i["text"]);
+                JObject jo = (JObject)JsonConvert.DeserializeObject(_quickData);
+                foreach (var i in jo["data"])
+                {
+                    if (i["commit"] == null)
+                        i["commit"] = "发送";
+                    if ((bool)i["hex"])
+                        toSendDatas.Add("H" + (string)i["text"]);
+                    else
+                        toSendDatas.Add("S" + (string)i["text"]);
+                }
+            }
+            catch
+            {
+                quickData = "{\"data\":[{\"id\":1,\"text\":\"example string\",\"hex\":false},{\"id\":2,\"text\":\"lua可通过接口获取此处数据\",\"hex\":false},{\"id\":3,\"text\":\"aa 01 02 0d 0a\",\"hex\":true},{\"id\":4,\"text\":\"此处数据会被lua处理\",\"hex\":false}]}";
             }
         }
 
