@@ -125,7 +125,8 @@ namespace llcom.Model
         {
             lock (objLock)
             {
-                System.Threading.Thread.Sleep(Tools.Global.setting.timeout);//等待时间
+                if(Tools.Global.setting.timeout > 0)
+                    System.Threading.Thread.Sleep(Tools.Global.setting.timeout);//等待时间
                 List<byte> result = new List<byte>();
                 while (true)//循环读
                 {
@@ -145,7 +146,7 @@ namespace llcom.Model
 
                     if (result.Count > Tools.Global.setting.maxLength)//长度超了
                         break;
-                    if (Tools.Global.setting.bitDelay)//如果是设置了等待间隔时间
+                    if (Tools.Global.setting.bitDelay && Tools.Global.setting.timeout > 0)//如果是设置了等待间隔时间
                     {
                         System.Threading.Thread.Sleep(Tools.Global.setting.timeout);//等待时间
                     }

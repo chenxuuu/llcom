@@ -83,11 +83,11 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AdonisUI, Version=1.14.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AdonisUI.1.14.0\lib\net45\AdonisUI.dll</HintPath>
+    <Reference Include="AdonisUI, Version=1.16.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AdonisUI.1.16.0\lib\net45\AdonisUI.dll</HintPath>
     </Reference>
-    <Reference Include="AdonisUI.ClassicTheme, Version=1.14.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AdonisUI.ClassicTheme.1.14.0\lib\net45\AdonisUI.ClassicTheme.dll</HintPath>
+    <Reference Include="AdonisUI.ClassicTheme, Version=1.16.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AdonisUI.ClassicTheme.1.16.0\lib\net45\AdonisUI.ClassicTheme.dll</HintPath>
     </Reference>
     <Reference Include="AutoUpdater.NET, Version=1.6.0.0, Culture=neutral, PublicKeyToken=501435c91b35f4bc, processorArchitecture=MSIL">
       <HintPath>..\packages\Autoupdater.NET.Official.1.6.0\lib\net40\AutoUpdater.NET.dll</HintPath>
@@ -271,8 +271,8 @@
       <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props'))" />
-    <Error Condition="!Exists('..\packages\Fody.6.1.1\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.1.1\build\Fody.targets'))" />
     <Error Condition="!Exists('..\packages\PropertyChanged.Fody.3.2.8\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.3.2.8\build\PropertyChanged.Fody.props'))" />
+    <Error Condition="!Exists('..\packages\Fody.6.2.4\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.2.4\build\Fody.targets'))" />
   </Target>
-  <Import Project="..\packages\Fody.6.1.1\build\Fody.targets" Condition="Exists('..\packages\Fody.6.1.1\build\Fody.targets')" />
+  <Import Project="..\packages\Fody.6.2.4\build\Fody.targets" Condition="Exists('..\packages\Fody.6.2.4\build\Fody.targets')" />
 </Project>

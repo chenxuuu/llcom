@@ -204,8 +204,6 @@ namespace llcom.Model
         {
             get
             {
-                if (_timeout < 0)//防止出现负数超时时间
-                    return 0;
                 return _timeout;
             }
             set
