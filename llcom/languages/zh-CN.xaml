@@ -77,7 +77,7 @@
     <system:String x:Key="SettingShowHex">串口数据窗口显示HEX值</system:String>
     <system:String x:Key="SettingKeepTop">窗口保持置顶显示</system:String>
     <system:String x:Key="SettingUartTimeout">分包数据超时时间：</system:String>
-    <system:String x:Key="SettingMs">毫秒</system:String>
+    <system:String x:Key="SettingMs">毫秒（负数则不分包）</system:String>
     <system:String x:Key="SettingSplitByEmpty">超时时间表示空白间隔（不勾选表示从第一个字节开始算超时时间）</system:String>
     <system:String x:Key="SettingMaxPack">串口数据每包最大</system:String>
     <system:String x:Key="SettingByte">字节</system:String>
