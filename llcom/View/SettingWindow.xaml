@@ -22,6 +22,7 @@
                     <CheckBox Content="{DynamicResource SettingAutoReconnect}" Margin="5" IsChecked="{Binding autoReconnect}"/>
                     <Button Name="OpenLogButton" Content="{DynamicResource SettingOpenLogFolder}" Click="OpenLogButton_Click" Margin="5"/>
                     <CheckBox Content="{DynamicResource SettingShowHex}" Margin="5" IsChecked="{Binding showHex}"/>
+                    <CheckBox Content="{DynamicResource SettingShowSend}" Margin="5" IsChecked="{Binding showSend}"/>
                     <CheckBox Content="{DynamicResource SettingKeepTop}" Margin="5" IsChecked="{Binding topmost}"/>
                     <StackPanel Orientation="Horizontal" Margin="5">
                         <TextBlock Text="{DynamicResource SettingUartTimeout}" VerticalAlignment="Center"/>

@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -38,7 +39,7 @@ namespace llcom.Pages
             };
         }
 
-        int maxDataLength = 100000;//最长一包数据长度，因为太长会把工具卡死机
+        int maxDataLength = (int)Tools.Global.setting.maxLength;//最长一包数据长度，因为太长会把工具卡死机
         int maxDataPack = 10000;//最大同时显示数据包数，因为太多会把工具卡死机
 
         /// <summary>
@@ -51,6 +52,8 @@ namespace llcom.Pages
             uartDataFlowDocument.IsSelectionEnabled = false;
             byte[] data = input.data;
             bool send = input.send;
+            if (!Tools.Global.setting.showSend && send)
+                return;
 
             if(Tools.Global.setting.timeout >= 0)
             {
@@ -131,7 +134,6 @@ namespace llcom.Pages
                 else
                     text.Foreground = Brushes.DarkGreen;
                 (uartDataFlowDocument.Document.Blocks.LastBlock as Paragraph).Inlines.Add(text);
-
             }
 
 
