@@ -19,6 +19,7 @@ namespace llcom.Model
         private bool _autoReconnect = true;
         private bool _autoSaveLog = true;
         private bool _showHex = true;
+        private bool _showSend = true;
         private int _parity = 0;
         private int _timeout = 50;
         private int _dataBits = 8;
@@ -182,6 +183,19 @@ namespace llcom.Model
             set
             {
                 _showHex = value;
+                Save();
+            }
+        }
+
+        public bool showSend
+        {
+            get
+            {
+                return _showSend;
+            }
+            set
+            {
+                _showSend = value;
                 Save();
             }
         }
