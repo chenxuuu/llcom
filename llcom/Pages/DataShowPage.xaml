@@ -19,7 +19,7 @@
             </Style>
         </FlowDocumentScrollViewer.Resources>
         <!-- 更改段落间距END -->
-        <FlowDocument FontSize="12" FontFamily="Consolas" IsOptimalParagraphEnabled="True" TextAlignment="Left">
+        <FlowDocument FontSize="12" FontFamily="Consolas" IsOptimalParagraphEnabled="False" TextAlignment="Left">
         </FlowDocument>
     </FlowDocumentScrollViewer>
 </Page>
