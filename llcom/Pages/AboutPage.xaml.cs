@@ -85,7 +85,7 @@ namespace llcom.Pages
                     AutoUpdaterDotNET.AutoUpdater.Start("https://llcom.papapoi.com/autoUpdate.xml?" + r);
                 }));
             }
-            catch 
+            catch
             {
                 this.Dispatcher.Invoke(new Action(delegate {
                     CheckUpdateButton.Content = "检查更新失败，请检查网络";
@@ -105,7 +105,7 @@ namespace llcom.Pages
 
         private void OpenSourceButton_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/chenxuuu/llcom");
+            System.Diagnostics.Process.Start("https://llcom.papapoi.com/");
         }
 
         private void CheckUpdateButton_Click(object sender, RoutedEventArgs e)

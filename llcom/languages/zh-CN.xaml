@@ -60,7 +60,7 @@
     <system:String x:Key="AboutLoadingUpdate">更新数据加载中</system:String>
     <system:String x:Key="AboutDevelopers">开发者：chenxuuu、whc2001</system:String>
     <system:String x:Key="AboutTranslator">简体中文为原版语言</system:String>
-    <system:String x:Key="AboutQQGroup">交流群：906307487</system:String>
+    <system:String x:Key="AboutQQGroup">交流群：931546484</system:String>
     <system:String x:Key="AboutGitHubText">开源项目，欢迎star</system:String>
     <system:String x:Key="AboutGitHubButton">前往GitHub查看</system:String>
     <system:String x:Key="AboutFeedBack">如需反馈，请点击下面的按钮</system:String>
