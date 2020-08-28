@@ -60,7 +60,7 @@
     <system:String x:Key="AboutLoadingUpdate">Checking update</system:String>
     <system:String x:Key="AboutDevelopers">developers: chenxuuu、whc2001</system:String>
     <system:String x:Key="AboutTranslator">translators: chenxuuu</system:String>
-    <system:String x:Key="AboutQQGroup">QQ group: 906307487</system:String>
+    <system:String x:Key="AboutQQGroup">QQ group: 931546484</system:String>
     <system:String x:Key="AboutGitHubText">Github project page</system:String>
     <system:String x:Key="AboutGitHubButton">Open Github</system:String>
     <system:String x:Key="AboutFeedBack">Have problem?</system:String>
