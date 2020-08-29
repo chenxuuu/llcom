@@ -90,6 +90,7 @@
     <system:String x:Key="SettingParityEven">偶校验</system:String>
     <system:String x:Key="SettingParityMark">高电平</system:String>
     <system:String x:Key="SettingParitySpace">低电平</system:String>
+    <system:String x:Key="Encoding">字符编码：</system:String>
     <system:String x:Key="SettingSendLuaScript">对发送数据处理的lua脚本</system:String>
     <system:String x:Key="SettingLuaTestScript">测试脚本</system:String>
     <system:String x:Key="SettingLuaTestInput">待测试的值：</system:String>

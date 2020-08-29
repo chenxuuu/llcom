@@ -9,7 +9,7 @@
         adonisExtensions:RippleExtension.FadeInDuration="0"
         adonisExtensions:RippleExtension.FadeOutDuration="0"
         mc:Ignorable="d"
-        Title="{DynamicResource SettingTitle}" Height="450" Width="450"
+        Title="{DynamicResource SettingTitle}" Height="480" Width="450"
         Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen">
     <Window.Style>
@@ -60,6 +60,11 @@
                             <ComboBoxItem Content="{DynamicResource SettingParityEven}"/>
                             <ComboBoxItem Content="{DynamicResource SettingParityMark}"/>
                             <ComboBoxItem Content="{DynamicResource SettingParitySpace}"/>
+                        </ComboBox>
+                    </WrapPanel>
+                    <WrapPanel Margin="5">
+                        <TextBlock Text="{DynamicResource Encoding}" VerticalAlignment="Center"/>
+                        <ComboBox Name="encodingComboBox" Width="auto" SelectionChanged="encodingComboBox_SelectionChanged">
                         </ComboBox>
                     </WrapPanel>
                 </StackPanel>
