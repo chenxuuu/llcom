@@ -16,7 +16,7 @@
 
 ## 下载
 
-最新正式版：[国内用户点我下载](https://llcom.papapoi.com/update.zip)
+最新正式版：[国内用户点我下载](https://llcom.papapoi.com/llcom.zip)
 
 CI快照版：[Appveyor Artifacts](https://ci.appveyor.com/project/chenxuuu/llcom/build/artifacts)
 
