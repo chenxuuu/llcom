@@ -114,6 +114,21 @@ namespace llcom
             }
             //加载上次打开的文件
             loadLuaFile(Tools.Global.setting.sendScript);
+
+            //加载编码
+            var el = Encoding.GetEncodings();
+            List<EncodingInfo> encodingList = new List<EncodingInfo>(el);
+            //先排个序，美观点
+            encodingList.Sort((x, y) => x.CodePage - y.CodePage);
+            foreach (var en in encodingList)
+            {
+                ComboBoxItem c = new ComboBoxItem();
+                c.Content = $"[{en.CodePage}] {en.Name}";
+                c.Tag = en.CodePage;
+                int index = encodingComboBox.Items.Add(c);
+                if (Tools.Global.setting.encoding == en.CodePage)//现在用的编码
+                    encodingComboBox.SelectedIndex = index;
+            }
         }
 
         private void SettingWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -257,6 +272,14 @@ namespace llcom
         private void OpenLogButton_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("explorer.exe", "logs");
+        }
+
+        private void encodingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox c = sender as ComboBox;
+            if ((int)((ComboBoxItem)c.SelectedItem).Tag == Tools.Global.setting.encoding)
+                return;
+            Tools.Global.setting.encoding = (int)((ComboBoxItem)c.SelectedItem).Tag;
         }
     }
 }

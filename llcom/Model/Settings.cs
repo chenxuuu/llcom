@@ -32,6 +32,7 @@ namespace llcom.Model
         private bool _autoUpdate = true; 
         private uint _maxLength = 10240;
         private string _language = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+        private int _encoding = 65001;
         private bool _terminal = true;
         public static List<string> toSendDatas = new List<string>();
 
@@ -324,6 +325,24 @@ namespace llcom.Model
                 _language = value;
                 Tools.Global.LoadLanguageFile(value);
                 Save();
+            }
+        }
+
+        public int encoding
+        {
+            get
+            {
+                return _encoding;
+            }
+            set
+            {
+                try
+                {
+                    Encoding.GetEncoding(value);
+                    _encoding = value;
+                    Save();
+                }
+                catch { }//获取出错说明编码不对
             }
         }
     }

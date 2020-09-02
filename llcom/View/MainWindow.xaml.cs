@@ -28,6 +28,7 @@ using System.Windows.Shapes;
 using System.Xml;
 using llcom.Model;
 using System.Text.RegularExpressions;
+using llcom.Tools;
 
 namespace llcom
 {
@@ -474,7 +475,7 @@ namespace llcom
 
         private void SendUartData_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            sendUartData(Encoding.UTF8.GetBytes(toSendDataTextBox.Text));
+            sendUartData(Global.GetEncoding().GetBytes(toSendDataTextBox.Text));
         }
 
         private void AddSendListButton_Click(object sender, RoutedEventArgs e)
@@ -497,7 +498,7 @@ namespace llcom
             if (data.hex)
                 sendUartData(Tools.Global.Hex2Byte(data.text));
             else
-                sendUartData(Encoding.UTF8.GetBytes(data.text));
+                sendUartData(Global.GetEncoding().GetBytes(data.text));
         }
 
         private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)

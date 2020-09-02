@@ -91,6 +91,7 @@
     <system:String x:Key="SettingParityEven">Even</system:String>
     <system:String x:Key="SettingParityMark">Mark</system:String>
     <system:String x:Key="SettingParitySpace">Space</system:String>
+    <system:String x:Key="Encoding">Encoding: </system:String>
     <system:String x:Key="SettingSendLuaScript">Lua script for data to send</system:String>
     <system:String x:Key="SettingLuaTestScript">Test script</system:String>
     <system:String x:Key="SettingLuaTestInput">Data to test:</system:String>
