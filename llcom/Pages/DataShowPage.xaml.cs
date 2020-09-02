@@ -140,5 +140,41 @@ namespace llcom.Pages
             sv.ScrollToBottom();
             uartDataFlowDocument.IsSelectionEnabled = true;
         }
+
+        private void uartDataFlowDocument_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if(Tools.Global.setting.terminal)
+                uartDataFlowDocument.BorderThickness = new Thickness(1);
+        }
+
+        private void uartDataFlowDocument_LostFocus(object sender, RoutedEventArgs e)
+        {
+            uartDataFlowDocument.BorderThickness = new Thickness(0);
+        }
+
+        private void uartDataFlowDocument_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (e.TextComposition.Text.Length < 1 || !Tools.Global.setting.terminal)
+                return;
+            if(Tools.Global.uart.IsOpen())
+                try
+                {
+                    Tools.Global.uart.SendData(Encoding.ASCII.GetBytes(e.TextComposition.Text));
+                }
+                catch { }
+        }
+
+        private void uartDataFlowDocument_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) || 
+                !Tools.Global.setting.terminal)
+                return;
+            if(e.Key >= Key.A && e.Key <= Key.Z && Tools.Global.uart.IsOpen())
+                try
+                {
+                    Tools.Global.uart.SendData(new byte[] {(byte)((int)e.Key - (int)Key.A + 1) });
+                }
+                catch { }
+        }
     }
 }

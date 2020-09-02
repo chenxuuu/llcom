@@ -9,7 +9,7 @@
         adonisExtensions:RippleExtension.FadeInDuration="0"
         adonisExtensions:RippleExtension.FadeOutDuration="0"
         mc:Ignorable="d"
-        Title="{DynamicResource SettingTitle}" Height="450" Width="450"
+        Title="{DynamicResource SettingTitle}" Height="455" Width="450"
         Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen">
     <Window.Style>
@@ -18,51 +18,54 @@
     <Grid>
         <TabControl>
             <TabItem Header="{DynamicResource SettingBasic}">
-                <StackPanel Margin="10,5,0,0" >
-                    <CheckBox Content="{DynamicResource SettingAutoReconnect}" Margin="5" IsChecked="{Binding autoReconnect}"/>
-                    <Button Name="OpenLogButton" Content="{DynamicResource SettingOpenLogFolder}" Click="OpenLogButton_Click" Margin="5"/>
-                    <CheckBox Content="{DynamicResource SettingShowHex}" Margin="5" IsChecked="{Binding showHex}"/>
-                    <CheckBox Content="{DynamicResource SettingShowSend}" Margin="5" IsChecked="{Binding showSend}"/>
-                    <CheckBox Content="{DynamicResource SettingKeepTop}" Margin="5" IsChecked="{Binding topmost}"/>
-                    <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock Text="{DynamicResource SettingUartTimeout}" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding timeout,UpdateSourceTrigger=PropertyChanged}" MinWidth="50"/>
-                        <TextBlock Text="{DynamicResource SettingMs}" VerticalAlignment="Center" Margin="3,0"/>
+                <ScrollViewer>
+                    <StackPanel Margin="10,0,0,0" >
+                        <CheckBox Content="{DynamicResource SettingAutoReconnect}" Margin="5" IsChecked="{Binding autoReconnect}"/>
+                        <Button Name="OpenLogButton" Content="{DynamicResource SettingOpenLogFolder}" Click="OpenLogButton_Click" Margin="5"/>
+                        <CheckBox Content="{DynamicResource SettingShowHex}" Margin="5" IsChecked="{Binding showHex}"/>
+                        <CheckBox Content="{DynamicResource SettingShowSend}" Margin="5" IsChecked="{Binding showSend}"/>
+                        <CheckBox Content="{DynamicResource SettingKeepTop}" Margin="5" IsChecked="{Binding topmost}"/>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock Text="{DynamicResource SettingUartTimeout}" VerticalAlignment="Center"/>
+                            <TextBox Text="{Binding timeout,UpdateSourceTrigger=PropertyChanged}" MinWidth="50"/>
+                            <TextBlock Text="{DynamicResource SettingMs}" VerticalAlignment="Center" Margin="3,0"/>
+                        </StackPanel>
+                        <CheckBox Content="{DynamicResource SettingSplitByEmpty}" Margin="5" IsChecked="{Binding bitDelay}"/>
+                        <CheckBox Content="{DynamicResource SettingTerminal}" Margin="5" IsChecked="{Binding terminal}"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,10">
+                            <TextBlock Text="{DynamicResource SettingMaxPack}" VerticalAlignment="Center"/>
+                            <TextBox Text="{Binding maxLength,UpdateSourceTrigger=PropertyChanged}" MinWidth="60"/>
+                            <TextBlock Text="{DynamicResource SettingByte}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <WrapPanel Margin="5">
+                            <TextBlock Text="{DynamicResource SettingDataBits}" VerticalAlignment="Center"/>
+                            <ComboBox Name="dataBitsComboBox" Width="50" SelectionChanged="DataBitsComboBox_SelectionChanged">
+                                <ComboBoxItem Tag="5" Content="5"/>
+                                <ComboBoxItem Tag="6" Content="6"/>
+                                <ComboBoxItem Tag="7" Content="7"/>
+                                <ComboBoxItem Tag="8" Content="8"/>
+                            </ComboBox>
+                        </WrapPanel>
+                        <WrapPanel Margin="5">
+                            <TextBlock Text="{DynamicResource SettingStopBit}" VerticalAlignment="Center"/>
+                            <ComboBox Name="stopBitComboBox" Width="50" SelectionChanged="StopBitComboBox_SelectionChanged">
+                                <ComboBoxItem Content="1"/>
+                                <ComboBoxItem Content="2"/>
+                                <ComboBoxItem Content="1.5"/>
+                            </ComboBox>
+                        </WrapPanel>
+                        <WrapPanel Margin="5">
+                            <TextBlock Text="{DynamicResource SettingParity}" VerticalAlignment="Center"/>
+                            <ComboBox Name="dataCheckComboBox" Width="70" SelectionChanged="DataCheckComboBox_SelectionChanged">
+                                <ComboBoxItem Content="{DynamicResource SettingParityNone}"/>
+                                <ComboBoxItem Content="{DynamicResource SettingParityOdd}"/>
+                                <ComboBoxItem Content="{DynamicResource SettingParityEven}"/>
+                                <ComboBoxItem Content="{DynamicResource SettingParityMark}"/>
+                                <ComboBoxItem Content="{DynamicResource SettingParitySpace}"/>
+                            </ComboBox>
+                        </WrapPanel>
                     </StackPanel>
-                    <CheckBox Content="{DynamicResource SettingSplitByEmpty}" Margin="5" IsChecked="{Binding bitDelay}"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,10">
-                        <TextBlock Text="{DynamicResource SettingMaxPack}" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding maxLength,UpdateSourceTrigger=PropertyChanged}" MinWidth="60"/>
-                        <TextBlock Text="{DynamicResource SettingByte}" VerticalAlignment="Center"/>
-                    </StackPanel>
-                    <WrapPanel Margin="5">
-                        <TextBlock Text="{DynamicResource SettingDataBits}" VerticalAlignment="Center"/>
-                        <ComboBox Name="dataBitsComboBox" Width="50" SelectionChanged="DataBitsComboBox_SelectionChanged">
-                            <ComboBoxItem Tag="5" Content="5"/>
-                            <ComboBoxItem Tag="6" Content="6"/>
-                            <ComboBoxItem Tag="7" Content="7"/>
-                            <ComboBoxItem Tag="8" Content="8"/>
-                        </ComboBox>
-                    </WrapPanel>
-                    <WrapPanel Margin="5">
-                        <TextBlock Text="{DynamicResource SettingStopBit}" VerticalAlignment="Center"/>
-                        <ComboBox Name="stopBitComboBox" Width="50" SelectionChanged="StopBitComboBox_SelectionChanged">
-                            <ComboBoxItem Content="1"/>
-                            <ComboBoxItem Content="2"/>
-                            <ComboBoxItem Content="1.5"/>
-                        </ComboBox>
-                    </WrapPanel>
-                    <WrapPanel Margin="5">
-                        <TextBlock Text="{DynamicResource SettingParity}" VerticalAlignment="Center"/>
-                        <ComboBox Name="dataCheckComboBox" Width="70" SelectionChanged="DataCheckComboBox_SelectionChanged">
-                            <ComboBoxItem Content="{DynamicResource SettingParityNone}"/>
-                            <ComboBoxItem Content="{DynamicResource SettingParityOdd}"/>
-                            <ComboBoxItem Content="{DynamicResource SettingParityEven}"/>
-                            <ComboBoxItem Content="{DynamicResource SettingParityMark}"/>
-                            <ComboBoxItem Content="{DynamicResource SettingParitySpace}"/>
-                        </ComboBox>
-                    </WrapPanel>
-                </StackPanel>
+                </ScrollViewer>
             </TabItem>
 
 

@@ -11,7 +11,11 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="DataShowPage"
       Loaded="Page_Loaded">
-    <FlowDocumentScrollViewer Name="uartDataFlowDocument" VerticalScrollBarVisibility="Visible" MinZoom="50">
+    <FlowDocumentScrollViewer Name="uartDataFlowDocument" VerticalScrollBarVisibility="Visible" MinZoom="50" 
+                              BorderBrush="#FF009400" BorderThickness="0" 
+                              GotFocus="uartDataFlowDocument_GotFocus" LostFocus="uartDataFlowDocument_LostFocus"
+                              PreviewTextInput="uartDataFlowDocument_PreviewTextInput"
+                              PreviewKeyDown="uartDataFlowDocument_PreviewKeyDown">
         <!-- 更改段落间距 -->
         <FlowDocumentScrollViewer.Resources>
             <Style TargetType="{x:Type Paragraph}">
