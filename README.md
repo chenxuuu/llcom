@@ -16,19 +16,24 @@
 
 ## 下载
 
-release页面稳定版：[GitHub](https://github.com/chenxuuu/llcom/releases/latest)
+最新正式版：[国内用户点我下载](https://llcom.papapoi.com/update.zip)
 
-CI自动构建，快照版：[Appveyor Artifacts](https://ci.appveyor.com/project/chenxuuu/llcom/build/artifacts)
+CI快照版：[Appveyor Artifacts](https://ci.appveyor.com/project/chenxuuu/llcom/build/artifacts)
+
+所有正式版本：[GitHub Releases](https://github.com/chenxuuu/llcom/releases/latest)
 
 ## 功能列表
 
 - 其他串口调试功能具有的功能
-- 收发日志清晰明了，同时显示HEX值与实际字符串
+- 收发日志清晰明了，可同时显示HEX值与实际字符串
 - 自动保存串口与Lua脚本日志，并附带时间
 - 串口断开后，如果再次连接，会自动重连
 - 发送的数据可被用户自定义的Lua脚本提前处理
 - 右侧快捷发送栏，快捷发送条目数量不限制
 - 可独立运行Lua脚本，并拥有定时器与协程任务特性（移植自[合宙Luat Task架构](http://wiki.openluat.com/doc/luatFramework/)）
+- 可选文字编码格式
+- 终端功能，直接敲键盘发送数据（包含ctrl+字母键）
+- 可单独隐藏发送数据
 
 ![screen](/screen.png)
 ![screen2](/screen2.jpg)
