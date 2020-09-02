@@ -80,6 +80,7 @@
     <system:String x:Key="SettingUartTimeout">分包数据超时时间：</system:String>
     <system:String x:Key="SettingMs">毫秒（负数为不分包模式）</system:String>
     <system:String x:Key="SettingSplitByEmpty">超时时间表示空白间隔（不勾选表示从第一个字节开始算超时时间）</system:String>
+    <system:String x:Key="SettingTerminal">终端模式（选中数据区域可直接敲键盘输出串口数据）</system:String>
     <system:String x:Key="SettingMaxPack">串口数据每包最大</system:String>
     <system:String x:Key="SettingByte">字节</system:String>
     <system:String x:Key="SettingDataBits">数据位长度：</system:String>

@@ -80,6 +80,7 @@
     <system:String x:Key="SettingUartTimeout">Data pack time:</system:String>
     <system:String x:Key="SettingMs">Ms(minus means Not Pack Mode)</system:String>
     <system:String x:Key="SettingSplitByEmpty">Split by no data time(or split by time from first time)</system:String>
+    <system:String x:Key="SettingTerminal">Terminal (select data space and send key datas)</system:String>
     <system:String x:Key="SettingMaxPack">Max length per packet</system:String>
     <system:String x:Key="SettingByte">Byte(s)</system:String>
     <system:String x:Key="SettingDataBits">Data bits:</system:String>

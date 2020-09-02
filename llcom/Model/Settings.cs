@@ -32,6 +32,7 @@ namespace llcom.Model
         private bool _autoUpdate = true; 
         private uint _maxLength = 10240;
         private string _language = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+        private bool _terminal = true;
         public static List<string> toSendDatas = new List<string>();
 
         public int SentCount { get; set; } = 0;
@@ -295,6 +296,19 @@ namespace llcom.Model
                     MainWindowTop(value, EventArgs.Empty);
                 }
                 catch { }
+                Save();
+            }
+        }
+
+        public bool terminal
+        {
+            get
+            {
+                return _terminal;
+            }
+            set
+            {
+                _terminal = value;
                 Save();
             }
         }
