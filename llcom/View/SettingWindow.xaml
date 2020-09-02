@@ -9,8 +9,7 @@
         adonisExtensions:RippleExtension.FadeInDuration="0"
         adonisExtensions:RippleExtension.FadeOutDuration="0"
         mc:Ignorable="d"
-        Title="{DynamicResource SettingTitle}" Height="455" Width="450"
-        Loaded="Window_Loaded"
+        Title="{DynamicResource SettingTitle}" Height="490" Width="450"        Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen">
     <Window.Style>
         <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
@@ -64,11 +63,14 @@
                                 <ComboBoxItem Content="{DynamicResource SettingParitySpace}"/>
                             </ComboBox>
                         </WrapPanel>
+                        <WrapPanel Margin="5">
+                            <TextBlock Text="{DynamicResource Encoding}" VerticalAlignment="Center"/>
+                            <ComboBox Name="encodingComboBox" Width="auto" SelectionChanged="encodingComboBox_SelectionChanged">
+                            </ComboBox>
+                        </WrapPanel>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
-
-
             <TabItem Header="{DynamicResource SettingSendLuaScript}">
                 <Grid>
                     <Grid.RowDefinitions>

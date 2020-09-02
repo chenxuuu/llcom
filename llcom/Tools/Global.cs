@@ -159,6 +159,8 @@ namespace llcom.Tools
             Logger.AddUartLog($"[DEBUG][HEX]\"{Byte2Hex((byte[])sender, " ")}\"");
         }
 
+        public static Encoding GetEncoding() => Encoding.GetEncoding(setting.encoding);
+
         /// <summary>
         /// 字符串转hex值
         /// </summary>
@@ -167,7 +169,7 @@ namespace llcom.Tools
         /// <returns>结果</returns>
         public static string String2Hex(string str, string space)
         {
-             return BitConverter.ToString(Encoding.UTF8.GetBytes(str)).Replace("-", space);
+             return BitConverter.ToString(GetEncoding().GetBytes(str)).Replace("-", space);
         }
 
 
@@ -186,7 +188,7 @@ namespace llcom.Tools
             for (int i = 0; i < mHex.Length; i += 2)
                 if (!byte.TryParse(mHex.Substring(i, 2), NumberStyles.HexNumber, null, out vBytes[i / 2]))
                     vBytes[i / 2] = 0;
-            return Encoding.UTF8.GetString(vBytes);
+            return GetEncoding().GetString(vBytes);
         }
 
 
@@ -200,7 +202,7 @@ namespace llcom.Tools
             var br = from e in vBytes
                      where e != 0
                      select e;
-            return Encoding.UTF8.GetString(br.ToArray());
+            return GetEncoding().GetString(br.ToArray());
         }
 
         /// <summary>
