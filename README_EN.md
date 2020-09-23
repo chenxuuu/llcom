@@ -126,3 +126,6 @@ you can [click here](https://github.com/chenxuuu/llcom/blob/master/LuaApi.md)
 
 - [x] ~~bug: SerialPort The Requested Resource is in Use([.net's bug](https://github.com/dotnet/corefx/issues/39464))~~(fixed #2f26e68)
 
+## Special Thanks
+
+[![icon-resharper](/icon-resharper.svg)](https://www.jetbrains.com/?from=LLCOM)
