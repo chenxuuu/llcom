@@ -130,6 +130,8 @@ namespace llcom
             aboutFrame.Navigate(new Uri("Pages/AboutPage.xaml", UriKind.Relative));
 
             this.Title += $" - {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
+
+
         }
 
         private void Uart_UartDataSent(object sender, EventArgs e)
@@ -163,7 +165,7 @@ namespace llcom
                 {
                     try
                     {
-                        ManagementObjectSearcher searcher =new ManagementObjectSearcher("root\\CIMV2","SELECT * FROM Win32_PnPEntity");
+                        ManagementObjectSearcher searcher =new ManagementObjectSearcher("select * from Win32_SerialPort");
                         Regex regExp = new Regex("\\(COM\\d+\\)");
                         foreach (ManagementObject queryObj in searcher.Get())
                         {
@@ -181,7 +183,7 @@ namespace llcom
                     //MessageBox.Show("fail了");
                 }
 
-                
+
                 foreach (string p in SerialPort.GetPortNames())//加上缺少的com口
                 {
                     bool notMatch = true;
@@ -446,7 +448,7 @@ namespace llcom
                 openPort();
                 toSendData = (byte[])data.Clone();//带发送数据缓存起来，连上串口后发出去
             }
-                
+
             if (Tools.Global.uart.IsOpen())
             {
                 string dataConvert;
