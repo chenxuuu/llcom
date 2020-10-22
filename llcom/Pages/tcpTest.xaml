@@ -49,8 +49,8 @@
         <CheckBox Content="Hex" Grid.Row="3" HorizontalAlignment="Right" Margin="2" VerticalAlignment="Center" IsChecked="{Binding HexMode}"/>
         <TextBox Name="toSendDataTextBox" Grid.Row="4" VerticalContentAlignment="Top"
                      TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2" FontFamily="Consolas"/>
-        <ComboBox Name="ClientList" Grid.Row="5" Width="150" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
-        <Button Name="SendDataButton" Content="{DynamicResource NetSendDataButton}" Margin="2" Grid.Row="5" HorizontalAlignment="Right" Click="SendDataButton_Click"/>
-        <Button Name="KickClientButton" Content="{DynamicResource KickClientButton}" Margin="155,2,2,2" Grid.Row="5" HorizontalAlignment="Left" Click="KickClientButton_Click"/>
+        <ComboBox Name="ClientList" Grid.Row="5" Width="150" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2" IsEnabled="{Binding IsConnected}"/>
+        <Button Name="SendDataButton" Content="{DynamicResource NetSendDataButton}" Margin="2" Grid.Row="5" HorizontalAlignment="Right" IsEnabled="{Binding IsConnected}" Click="SendDataButton_Click"/>
+        <Button Name="KickClientButton" Content="{DynamicResource KickClientButton}" Margin="155,2,2,2" Grid.Row="5" HorizontalAlignment="Left" IsEnabled="{Binding IsConnected}" Click="KickClientButton_Click"/>
     </Grid>
 </Page>
