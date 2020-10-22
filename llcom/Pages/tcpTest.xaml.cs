@@ -42,11 +42,15 @@ namespace llcom.Pages
         /// </summary>
         public bool IsConnected { get; set; } = false;
         public bool HexMode { get; set; } = false;
-        public string Address { get; set; } = "test";
-        public string ConnectionType { get; set; } = "";
+        public string Address { get; set; } = "loading...";
+        public string ConnectionType { get; set; } = "unknow";
 
+        private static bool loaded = false;
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            if (loaded)
+                return;
+            loaded = true;
             //绑定
             MainGrid.DataContext = this;
             ClientList.ItemsSource = clients;
