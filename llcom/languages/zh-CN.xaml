@@ -102,7 +102,7 @@
     <system:String x:Key="SettingLuaRunResult">运行结果</system:String>
     <system:String x:Key="SettingLuaRawText">原始字符串：</system:String>
     <system:String x:Key="ChangeLanguage">语言/Language</system:String>
-    <system:String x:Key="TcpTebTitle">TCP服务器</system:String>
+    <system:String x:Key="TcpTabTitle">TCP服务器</system:String>
     <system:String x:Key="CreateTcpButton">测试TCP</system:String>
     <system:String x:Key="CreateUdpButton">测试UDP</system:String>
     <system:String x:Key="DisconnectButton">断开</system:String>

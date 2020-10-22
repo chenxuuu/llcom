@@ -312,7 +312,7 @@
             <TabItem Header="{DynamicResource AboutCard}">
                 <Frame Name="aboutFrame" NavigationUIVisibility="Hidden"/>
             </TabItem>
-            <TabItem Header="{DynamicResource TcpTebTitle}">
+            <TabItem Header="{DynamicResource TcpTabTitle}">
                 <Frame Name="tcpTestFrame" NavigationUIVisibility="Hidden"/>
             </TabItem>
         </TabControl>
