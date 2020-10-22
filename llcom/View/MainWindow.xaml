@@ -312,6 +312,9 @@
             <TabItem Header="{DynamicResource AboutCard}">
                 <Frame Name="aboutFrame" NavigationUIVisibility="Hidden"/>
             </TabItem>
+            <TabItem Header="{DynamicResource TcpTebTitle}">
+                <Frame Name="tcpTestFrame" NavigationUIVisibility="Hidden"/>
+            </TabItem>
         </TabControl>
 
         <Menu Grid.Column="3" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top">

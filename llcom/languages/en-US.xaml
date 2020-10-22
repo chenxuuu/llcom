@@ -102,5 +102,13 @@
     <system:String x:Key="SettingLuaRunResult">Result</system:String>
     <system:String x:Key="SettingLuaRawText">Raw text:</system:String>
     <system:String x:Key="ChangeLanguage">语言/Language</system:String>
-
+    <system:String x:Key="TcpTebTitle">TCP Server</system:String>
+    <system:String x:Key="CreateTcpButton">Tset TCP</system:String>
+    <system:String x:Key="CreateUdpButton">Test UDP</system:String>
+    <system:String x:Key="DisconnectButton">Disconnect</system:String>
+    <system:String x:Key="TcpDataTextBlock">Sent and received data:</system:String>
+    <system:String x:Key="ToSendDataTextBlock">To send data:</system:String>
+    <system:String x:Key="NetSendDataButton">Send</system:String>
+    <system:String x:Key="ClearDataButton">Clear</system:String>
+    <system:String x:Key="KickClientButton">Kick Client</system:String>
 </ResourceDictionary>

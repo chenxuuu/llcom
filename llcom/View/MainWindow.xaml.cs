@@ -129,6 +129,9 @@ namespace llcom
             //关于页面
             aboutFrame.Navigate(new Uri("Pages/AboutPage.xaml", UriKind.Relative));
 
+            //tcp测试页面
+            tcpTestFrame.Navigate(new Uri("Pages/tcpTest.xaml", UriKind.Relative));
+
             this.Title += $" - {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
 
 
