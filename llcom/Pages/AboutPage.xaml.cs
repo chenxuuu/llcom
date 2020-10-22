@@ -25,8 +25,12 @@ namespace llcom.Pages
             InitializeComponent();
         }
 
+        private static bool loaded = false;
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            if (loaded)
+                return;
+            loaded = true;
             this.DataContext = Tools.Global.setting;
             aboutScrollViewer.ScrollToTop();
             versionTextBlock.Text = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
