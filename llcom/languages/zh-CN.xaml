@@ -111,4 +111,5 @@
     <system:String x:Key="NetSendDataButton">发送</system:String>
     <system:String x:Key="ClearDataButton">清空</system:String>
     <system:String x:Key="KickClientButton">断开客户端</system:String>
+    <system:String x:Key="LockLogButton">锁定视图禁止滚动</system:String>
 </ResourceDictionary>

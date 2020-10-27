@@ -19,6 +19,7 @@ namespace llcom.Pages
     /// <summary>
     /// DataShowPage.xaml 的交互逻辑
     /// </summary>
+    [PropertyChanged.AddINotifyPropertyChangedInterface]
     public partial class DataShowPage : Page
     {
         public DataShowPage()
@@ -27,6 +28,7 @@ namespace llcom.Pages
         }
 
         ScrollViewer sv;
+        public bool LockLog { get; set; } = false;
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             //使日志富文本区域滚动可控制
@@ -37,6 +39,9 @@ namespace llcom.Pages
             {
                 uartDataFlowDocument.Document.Blocks.Clear();
             };
+            LockIcon.DataContext = this;
+            UnLockIcon.DataContext = this;
+            UnLockText.DataContext = this;
         }
 
         int maxDataLength = (int)Tools.Global.setting.maxLength;//最长一包数据长度，因为太长会把工具卡死机
@@ -136,8 +141,8 @@ namespace llcom.Pages
                 (uartDataFlowDocument.Document.Blocks.LastBlock as Paragraph).Inlines.Add(text);
             }
 
-
-            sv.ScrollToBottom();
+            if(!LockLog)//如果允许拉到最下面
+                sv.ScrollToBottom();
             uartDataFlowDocument.IsSelectionEnabled = true;
         }
 
@@ -175,6 +180,11 @@ namespace llcom.Pages
                     Tools.Global.uart.SendData(new byte[] {(byte)((int)e.Key - (int)Key.A + 1) });
                 }
                 catch { }
+        }
+
+        private void LockLogButton_Click(object sender, RoutedEventArgs e)
+        {
+            LockLog = !LockLog;
         }
     }
 }

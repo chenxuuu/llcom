@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:llcom"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
-        xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+        xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI" 
+        xmlns:local_page="clr-namespace:llcom.Pages"
         adonisExtensions:RippleExtension.FadeInDuration="0"
         adonisExtensions:RippleExtension.FadeOutDuration="0"
         mc:Ignorable="d"
@@ -17,6 +18,8 @@
     </Window.Style>
     <Window.Resources>
         <RoutedUICommand x:Key="SendUartData" Text="SendUartData"/>
+        <local_page:boolVisibe x:Key="boolVisibeConverter"/>
+        <local_page:boolNotVisibe x:Key="boolNotVisibeConverter"/>
     </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Gesture="Ctrl+Return" Key="Return"  Command="{StaticResource SendUartData}"></KeyBinding>
