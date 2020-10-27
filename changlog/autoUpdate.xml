@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <item>
-    <version>1.0.3.8</version>
+    <version>1.0.3.9</version>
     <url>https://llcom.papapoi.com/llcom.zip</url>
-    <changelog>https://llcom.papapoi.com/changelog.html</changelog>    <mandatory mode="1">true</mandatory>
+    <changelog>https://llcom.papapoi.com/changelog.html</changelog>
+    <mandatory mode="1">true</mandatory>
 </item>

@@ -111,4 +111,5 @@
     <system:String x:Key="NetSendDataButton">Send</system:String>
     <system:String x:Key="ClearDataButton">Clear</system:String>
     <system:String x:Key="KickClientButton">Kick Client</system:String>
+    <system:String x:Key="LockLogButton">Lock logs and disable auto scroll</system:String>
 </ResourceDictionary>
