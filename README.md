@@ -34,6 +34,7 @@ CI快照版：[Appveyor Artifacts](https://ci.appveyor.com/project/chenxuuu/llco
 - 可选文字编码格式
 - 终端功能，直接敲键盘发送数据（包含ctrl+字母键）
 - 可单独隐藏发送数据
+- 集成socket测试服务端控制功能
 
 ![screen](/screen.png)
 ![screen2](/screen2.jpg)

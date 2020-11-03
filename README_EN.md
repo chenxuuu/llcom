@@ -26,6 +26,7 @@ Appveyor snapshot version: [Appveyor Artifacts](https://ci.appveyor.com/project/
 - Data you want to send can be processed with your own Lua scripts.
 - Quick send bar on the right.
 - Lua scripts can be run independently with timer and co-process task features.([Based on LUAT TASK](http://wiki.openluat.com/doc/luatFramework/))
+- socket test server controler
 
 ![screenEN](/screenEN.png)
 ![screen2](/screen2.jpg)
