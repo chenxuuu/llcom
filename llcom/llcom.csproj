@@ -126,6 +126,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -152,6 +153,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Pages\Convert.cs" />
+    <Compile Include="Pages\ConvertPage.xaml.cs">
+      <DependentUpon>ConvertPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\tcpTest.xaml.cs">
       <DependentUpon>tcpTest.xaml</DependentUpon>
     </Compile>
@@ -182,6 +186,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="languages\zh-CN.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ConvertPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
