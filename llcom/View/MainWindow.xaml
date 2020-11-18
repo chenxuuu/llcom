@@ -315,8 +315,15 @@
             <TabItem Header="{DynamicResource AboutCard}">
                 <Frame Name="aboutFrame" NavigationUIVisibility="Hidden"/>
             </TabItem>
-            <TabItem Header="{DynamicResource TcpTabTitle}">
-                <Frame Name="tcpTestFrame" NavigationUIVisibility="Hidden"/>
+            <TabItem Header="{DynamicResource ToolsTab}">
+                <TabControl>
+                    <TabItem Header="{DynamicResource TcpTabTitle}">
+                        <Frame Name="tcpTestFrame" NavigationUIVisibility="Hidden"/>
+                    </TabItem>
+                    <TabItem Header="{DynamicResource EncodingToolsTab}">
+                        <Frame Name="EncodingToolsFrame" NavigationUIVisibility="Hidden"/>
+                    </TabItem>
+                </TabControl>
             </TabItem>
         </TabControl>
 
