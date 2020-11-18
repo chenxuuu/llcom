@@ -58,6 +58,8 @@ namespace llcom.Pages
 
         private void ConvertClearButton_Click(object sender, RoutedEventArgs e)
         {
+            if (ConvertJobsListBox.Items.Count == 0)
+                return;
             ConvertJobsListBox.Items.RemoveAt(ConvertJobsListBox.Items.Count - 1);
             DoConvert();
         }
