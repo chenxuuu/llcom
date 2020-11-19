@@ -88,10 +88,10 @@ namespace llcom.Pages
             ["HTML decode"] = (e) => Encoding.Default.GetBytes(System.Web.HttpUtility.HtmlDecode(Encoding.Default.GetString(e))),
             ["String to Unicode"] = (e) => Encoding.Default.GetBytes(String2Unicode(Encoding.Default.GetString(e))),
             ["Unicode to String"] = (e) => Encoding.Default.GetBytes(Unicode2String(Encoding.Default.GetString(e))),
-            ["String to MD5 (bytes)"] = (e) => MD5Encrypt(e),
-            ["String to SHA-1 (bytes)"] = (e) => Sha1Encrypt(e),
-            ["String to SHA-256 (bytes)"] = (e) => Sha256Encrypt(e),
-            ["String to SHA-512 (bytes)"] = (e) => Sha512Encrypt(e),
+            ["String to MD5 (Hex)"] = (e) => Encoding.Default.GetBytes(BitConverter.ToString(MD5Encrypt(e)).Replace("-", "")),
+            ["String to SHA-1 (Hex)"] = (e) => Encoding.Default.GetBytes(BitConverter.ToString(Sha1Encrypt(e)).Replace("-", "")),
+            ["String to SHA-256 (Hex)"] = (e) => Encoding.Default.GetBytes(BitConverter.ToString(Sha256Encrypt(e)).Replace("-", "")),
+            ["String to SHA-512 (Hex)"] = (e) => Encoding.Default.GetBytes(BitConverter.ToString(Sha512Encrypt(e)).Replace("-", "")),
         };
 
         public static byte[] Hex2byte(string mHex)
