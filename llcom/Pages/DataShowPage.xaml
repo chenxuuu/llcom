@@ -38,7 +38,7 @@
             <StackPanel>
                 <fa:FontAwesome Name="LockIcon" Icon="Lock" Visibility="{Binding LockLog,Converter={StaticResource boolNotVisibeConverter}}"/>
                 <fa:FontAwesome Name="UnLockIcon" Icon="Unlock" Foreground="Green" Visibility="{Binding LockLog,Converter={StaticResource boolVisibeConverter}}"/>
-                <TextBlock Name="UnLockText" Text="已锁定" Visibility="{Binding LockLog,Converter={StaticResource boolVisibeConverter}}"/>
+                <TextBlock Name="UnLockText" Text="{DynamicResource LockLogText}" Visibility="{Binding LockLog,Converter={StaticResource boolVisibeConverter}}"/>
             </StackPanel>
         </Button>
     </Grid>

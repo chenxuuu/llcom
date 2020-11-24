@@ -112,6 +112,7 @@
     <system:String x:Key="ClearDataButton">Clear</system:String>
     <system:String x:Key="KickClientButton">Kick Client</system:String>
     <system:String x:Key="LockLogButton">Lock logs and disable auto scroll</system:String>
+    <system:String x:Key="LockLogText">Locked</system:String>
     <system:String x:Key="ToolsTab">Tools</system:String>
     <system:String x:Key="EncodingToolsTab">Encoding Converter</system:String>
     <system:String x:Key="EncodingToolsJobs">Jobs</system:String>
