@@ -323,6 +323,9 @@
                     <TabItem Header="{DynamicResource EncodingToolsTab}">
                         <Frame Name="EncodingToolsFrame" NavigationUIVisibility="Hidden"/>
                     </TabItem>
+                    <TabItem Header="MQTT">
+                        <Frame Name="MqttTestFrame" NavigationUIVisibility="Hidden"/>
+                    </TabItem>
                 </TabControl>
             </TabItem>
         </TabControl>

@@ -112,6 +112,7 @@
     <system:String x:Key="ClearDataButton">清空</system:String>
     <system:String x:Key="KickClientButton">断开客户端</system:String>
     <system:String x:Key="LockLogButton">锁定视图禁止滚动</system:String>
+    <system:String x:Key="LockLogText">已锁定</system:String>
     <system:String x:Key="ToolsTab">小工具</system:String>
     <system:String x:Key="EncodingToolsTab">编码转换工具</system:String>
     <system:String x:Key="EncodingToolsJobs">转换任务</system:String>
