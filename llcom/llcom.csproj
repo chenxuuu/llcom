@@ -204,6 +204,9 @@
     <Compile Include="Pages\ConvertPage.xaml.cs">
       <DependentUpon>ConvertPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\EncodingFixPage.xaml.cs">
+      <DependentUpon>EncodingFixPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\MqttTestPage.xaml.cs">
       <DependentUpon>MqttTestPage.xaml</DependentUpon>
     </Compile>
@@ -241,6 +244,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ConvertPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\EncodingFixPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -120,4 +120,10 @@
     <system:String x:Key="EncodingToolsDeleteJob">删除末项</system:String>
     <system:String x:Key="EncodingToolsRowData">原始数据</system:String>
     <system:String x:Key="EncodingToolsResultData">转换结果</system:String>
+    <system:String x:Key="EncodingFixHeader">乱码修复</system:String>
+    <system:String x:Key="GarbledCodeData">待处理乱码数据：</system:String>
+    <system:String x:Key="GarbledCodeDataFixed">修复尝试：</system:String>
+    <system:String x:Key="GarbledCodeDataRaw">原编码</system:String>
+    <system:String x:Key="GarbledCodeDataTarget">错当成</system:String>
+    <system:String x:Key="GarbledCodeDataResult">还原结果（右击此处，复制选中）</system:String>
 </ResourceDictionary>

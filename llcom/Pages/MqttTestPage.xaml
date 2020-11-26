@@ -10,6 +10,18 @@
       Loaded="Page_Loaded">
 
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="制作中。。。"/>
+        <Expander Header="配置信息" Grid.Row="1">
+            <StackPanel>
+                <TextBlock Text="22121"/>
+                <TextBlock Text="add3er"/>
+            </StackPanel>
+        </Expander>
     </Grid>
 </Page>
