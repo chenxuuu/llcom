@@ -120,4 +120,10 @@
     <system:String x:Key="EncodingToolsDeleteJob">Remove Last one</system:String>
     <system:String x:Key="EncodingToolsRowData">Raw data</system:String>
     <system:String x:Key="EncodingToolsResultData">Result</system:String>
+    <system:String x:Key="EncodingFixHeader">Garbled code fix</system:String>
+    <system:String x:Key="GarbledCodeData">unfixed Garbled code:</system:String>
+    <system:String x:Key="GarbledCodeDataFixed">Fixed list:</system:String>
+    <system:String x:Key="GarbledCodeDataRaw">Raw</system:String>
+    <system:String x:Key="GarbledCodeDataTarget">Wrong</system:String>
+    <system:String x:Key="GarbledCodeDataResult">Fix Result (right click here to copy selected text)</system:String>
 </ResourceDictionary>

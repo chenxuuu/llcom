@@ -138,6 +138,9 @@ namespace llcom
             //编码转换工具页面
             EncodingToolsFrame.Navigate(new Uri("Pages/ConvertPage.xaml", UriKind.Relative));
 
+            //乱码修复
+            EncodingFixFrame.Navigate(new Uri("Pages/EncodingFixPage.xaml", UriKind.Relative));
+
             this.Title += $" - {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
 
 
