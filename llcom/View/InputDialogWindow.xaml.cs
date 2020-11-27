@@ -20,7 +20,7 @@ namespace llcom
     {
         private const int WM_NCLBUTTONDBLCLK = 0xA3;
 
-        public string Value { get; private set; }
+        public string Value { get; set; }
 
         public InputDialogWindow(string prompt, string defaultInput = "", string title = null)
         {

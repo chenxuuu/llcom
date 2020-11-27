@@ -412,7 +412,7 @@ namespace llcom
         }
         private void OpenClosePortButton_Click(object sender, RoutedEventArgs e)
         {
-            if(!Tools.Global.uart.IsOpen())//打开串口逻辑
+            if (!Tools.Global.uart.IsOpen())//打开串口逻辑
             {
                 openPort();
             }
