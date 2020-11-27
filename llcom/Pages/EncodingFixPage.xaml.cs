@@ -60,18 +60,16 @@ namespace llcom.Pages
             }
         }
 
-        private void FixResultList_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (e.RightButton == MouseButtonState.Pressed)
-            {
-                //获取单元格内容
-                string copiedData = (FixResultList.SelectedItem as fixedData).result;
-                if (string.IsNullOrEmpty(copiedData)) return;
-                //复制到剪贴板
-                Clipboard.Clear();
-                Clipboard.SetData(DataFormats.Text, copiedData);
-                MessageBox.Show("copyed:\r\n" + copiedData);
-            }
+            if (FixResultList.SelectedItem == null) return;
+            //获取单元格内容
+            string copiedData = (FixResultList.SelectedItem as fixedData).result;
+            if (string.IsNullOrEmpty(copiedData)) return;
+            //复制到剪贴板
+            Clipboard.Clear();
+            Clipboard.SetData(DataFormats.Text, copiedData);
+            MessageBox.Show("copyed:\r\n" + copiedData);
         }
     }
 }
