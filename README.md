@@ -7,7 +7,6 @@
 
 ![icon](/llcom/llcom.ico)
 
-[![Build Status](https://chenxuuu.visualstudio.com/llcom/_apis/build/status/chenxuuu.llcom?branchName=master&jobName=Job)](https://chenxuuu.visualstudio.com/llcom/_build/latest?definitionId=1&branchName=master)
 [![Build status](https://ci.appveyor.com/api/projects/status/telji5j8r0v5001c?svg=true)](https://ci.appveyor.com/project/chenxuuu/llcom)
 [![MIT](https://img.shields.io/static/v1.svg?label=license&message=Apache+2&color=blue)](https://github.com/chenxuuu/llcom/blob/master/LICENSE)
 [![code-size](https://img.shields.io/github/languages/code-size/chenxuuu/llcom.svg)](https://github.com/chenxuuu/llcom/archive/master.zip)
