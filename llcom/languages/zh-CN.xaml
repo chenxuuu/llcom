@@ -125,5 +125,6 @@
     <system:String x:Key="GarbledCodeDataFixed">修复尝试：</system:String>
     <system:String x:Key="GarbledCodeDataRaw">原编码</system:String>
     <system:String x:Key="GarbledCodeDataTarget">错当成</system:String>
-    <system:String x:Key="GarbledCodeDataResult">还原结果（右击此处，复制选中）</system:String>
+    <system:String x:Key="GarbledCodeDataResult">还原结果</system:String>
+    <system:String x:Key="GarbledCodeDataCopy">复制选中数据</system:String>
 </ResourceDictionary>

@@ -125,5 +125,6 @@
     <system:String x:Key="GarbledCodeDataFixed">Fixed list:</system:String>
     <system:String x:Key="GarbledCodeDataRaw">Raw</system:String>
     <system:String x:Key="GarbledCodeDataTarget">Wrong</system:String>
-    <system:String x:Key="GarbledCodeDataResult">Fix Result (right click here to copy selected text)</system:String>
+    <system:String x:Key="GarbledCodeDataResult">Fix Result</system:String>
+    <system:String x:Key="GarbledCodeDataCopy">Copy selected data</system:String>
 </ResourceDictionary>

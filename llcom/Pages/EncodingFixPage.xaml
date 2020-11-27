@@ -11,8 +11,11 @@
         <StackPanel>
             <TextBlock Text="{DynamicResource GarbledCodeData}"/>
             <TextBox Name="RawTextBox" Height="60" VerticalContentAlignment="Top" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2" TextChanged="RawTextBox_TextChanged"/>
-            <TextBlock Text="{DynamicResource GarbledCodeDataFixed}"/>
-            <ListView Name="FixResultList" ItemsSource="{Binding}" MouseDown="FixResultList_MouseDown">
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Text="{DynamicResource GarbledCodeDataFixed}" VerticalAlignment="Center"/>
+                <Button Content="{DynamicResource GarbledCodeDataCopy}" Margin="2" Click="Button_Click"/>
+            </StackPanel>
+            <ListView Name="FixResultList" ItemsSource="{Binding}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="{DynamicResource GarbledCodeDataRaw}" DisplayMemberBinding="{Binding raw}"/>
