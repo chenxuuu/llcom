@@ -125,15 +125,15 @@ namespace llcom.Pages
             }));
         }
 
-        private void ConnectWebSocket(bool isTcp)
+        private void ConnectWebSocket(string ctype,string stype = null)
         {
             try
             {
-                ConnectionType = isTcp ? "tcp" : "udp";
+                ConnectionType = ctype;
                 ws.Connect();
                 ws.Send(JsonConvert.SerializeObject(new {
                     action = "newp",
-                    type = ConnectionType,
+                    type = stype ?? ctype,
                 }));
             }
             catch(Exception e)
@@ -144,12 +144,17 @@ namespace llcom.Pages
 
         private void CreateTcpButton_Click(object sender, RoutedEventArgs e)
         {
-            ConnectWebSocket(true);
+            ConnectWebSocket("tcp");
         }
 
         private void CreateUdpButton_Click(object sender, RoutedEventArgs e)
         {
-            ConnectWebSocket(false);
+            ConnectWebSocket("udp");
+        }
+
+        private void CreateTcpSSLButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ConnectWebSocket("ssl","ssl-tcp");
         }
 
         private void DisconnectButton_Click(object sender, RoutedEventArgs e)
@@ -207,5 +212,6 @@ namespace llcom.Pages
                 MessageBox.Show(ee.Message);
             }
         }
+
     }
 }
