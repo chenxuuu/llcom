@@ -24,14 +24,17 @@
             <RowDefinition Height="60"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Grid Name="CreateButtonGrid" Visibility="{Binding IsConnected,Converter={StaticResource boolNotVisibeConverter}}">
+        <Grid Name="CreateButtonGrid" Visibility="{Binding IsConnected,Converter={StaticResource boolNotVisibeConverter}}" ToolTip="Provide by netlab.vue2.cn">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button Name="CreateTcpButton" Content="{DynamicResource CreateTcpButton}" Grid.Column="0" 
-                        Margin="0,2,2,2" Click="CreateTcpButton_Click"/>
-            <Button Name="CreateUdpButton" Content="{DynamicResource CreateUdpButton}" Grid.Column="1" 
+                    Margin="0,2,2,2" Click="CreateTcpButton_Click"/>
+            <Button Name="CreateTcpSSLButton" Content="{DynamicResource CreateTcpSSLButton}" Grid.Column="1" 
+                    Margin="0,2,2,2" Click="CreateTcpSSLButton_OnClick"/>
+            <Button Name="CreateUdpButton" Content="{DynamicResource CreateUdpButton}" Grid.Column="2" 
                         Margin="2,2,0,2" Click="CreateUdpButton_Click"/>
         </Grid>
         <Grid Name="ConnectionAddressGrid"  Visibility="{Binding IsConnected,Converter={StaticResource boolVisibeConverter}}">
