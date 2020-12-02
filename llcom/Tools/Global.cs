@@ -25,9 +25,9 @@ namespace llcom.Tools
         public static Model.Uart uart = new Model.Uart();
 
         //软件根目录
-        public static readonly string AppPath = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName);
+        public static readonly string AppPath = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName) + "\\";
         //配置文件路径
-        public static readonly string path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\llcom\";
+        public static string ProfilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\llcom\";
 
         /// <summary>
         /// 是否为应用商店版本？
@@ -44,53 +44,64 @@ namespace llcom.Tools
         public static void Initial()
         {
             //C:\Users\chenx\AppData\Local\Temp\7zO05433053\user_script_run
-            if(AppPath.ToUpper().IndexOf(@"C:\USERS\") == 0 &&
-                AppPath.ToUpper().Contains(@"\APPDATA\LOCAL\TEMP\"))
+            if(AppPath.ToUpper().Contains(@"\APPDATA\LOCAL\TEMP\"))
             {
                 System.Windows.MessageBox.Show("请勿在压缩包内直接打开本软件。");
                 Environment.Exit(1);
             }
-            
+
+            if(IsMSIX())//商店软件的文件路径改一下
+            {
+                if (!Directory.Exists(ProfilePath))
+                {
+                    Directory.CreateDirectory(ProfilePath);
+                }
+            }
+            else
+            {
+                ProfilePath = AppPath;//普通exe时，直接用软件路径
+            }
+
             try
             {
-                if (!Directory.Exists("core_script"))
+                if (!Directory.Exists(ProfilePath+"core_script"))
                 {
-                    Directory.CreateDirectory("core_script");
+                    Directory.CreateDirectory(ProfilePath+"core_script");
                 }
-                CreateFile("DefaultFiles/core_script/head.lua", "core_script/head.lua", false);
-                CreateFile("DefaultFiles/core_script/JSON.lua", "core_script/JSON.lua", false);
-                CreateFile("DefaultFiles/core_script/log.lua", "core_script/log.lua", false);
-                CreateFile("DefaultFiles/core_script/once.lua", "core_script/once.lua", false);
-                CreateFile("DefaultFiles/core_script/strings.lua", "core_script/strings.lua", false);
-                CreateFile("DefaultFiles/core_script/sys.lua", "core_script/sys.lua", false);
+                CreateFile("DefaultFiles/core_script/head.lua", ProfilePath+"core_script/head.lua", false);
+                CreateFile("DefaultFiles/core_script/JSON.lua", ProfilePath+"core_script/JSON.lua", false);
+                CreateFile("DefaultFiles/core_script/log.lua", ProfilePath+"core_script/log.lua", false);
+                CreateFile("DefaultFiles/core_script/once.lua", ProfilePath+"core_script/once.lua", false);
+                CreateFile("DefaultFiles/core_script/strings.lua", ProfilePath+"core_script/strings.lua", false);
+                CreateFile("DefaultFiles/core_script/sys.lua", ProfilePath+"core_script/sys.lua", false);
 
-                if (!Directory.Exists("logs"))
-                    Directory.CreateDirectory("logs");
-                if (!Directory.Exists("user_script_run"))
+                if (!Directory.Exists(ProfilePath+"logs"))
+                    Directory.CreateDirectory(ProfilePath+"logs");
+                if (!Directory.Exists(ProfilePath+"user_script_run"))
                 {
-                    Directory.CreateDirectory("user_script_run");
-                    CreateFile("DefaultFiles/user_script_run/AT控制TCP连接-快发模式.lua", "user_script_run/AT控制TCP连接-快发模式.lua");
-                    CreateFile("DefaultFiles/user_script_run/AT控制TCP连接-慢发模式.lua", "user_script_run/AT控制TCP连接-慢发模式.lua");
-                    CreateFile("DefaultFiles/user_script_run/example.lua", "user_script_run/example.lua");
-                    CreateFile("DefaultFiles/user_script_run/循环发送快捷发送区数据.lua", "user_script_run/循环发送快捷发送区数据.lua");
+                    Directory.CreateDirectory(ProfilePath+"user_script_run");
+                    CreateFile("DefaultFiles/user_script_run/AT控制TCP连接-快发模式.lua", ProfilePath+"user_script_run/AT控制TCP连接-快发模式.lua");
+                    CreateFile("DefaultFiles/user_script_run/AT控制TCP连接-慢发模式.lua", ProfilePath+"user_script_run/AT控制TCP连接-慢发模式.lua");
+                    CreateFile("DefaultFiles/user_script_run/example.lua", ProfilePath+"user_script_run/example.lua");
+                    CreateFile("DefaultFiles/user_script_run/循环发送快捷发送区数据.lua", ProfilePath+"user_script_run/循环发送快捷发送区数据.lua");
                 }
-                if (!Directory.Exists("user_script_run/requires"))
-                    Directory.CreateDirectory("user_script_run/requires");
-                if (!Directory.Exists("user_script_run/logs"))
-                    Directory.CreateDirectory("user_script_run/logs");
+                if (!Directory.Exists(ProfilePath+"user_script_run/requires"))
+                    Directory.CreateDirectory(ProfilePath+"user_script_run/requires");
+                if (!Directory.Exists(ProfilePath+"user_script_run/logs"))
+                    Directory.CreateDirectory(ProfilePath+"user_script_run/logs");
 
-                if (!Directory.Exists("user_script_send_convert"))
+                if (!Directory.Exists(ProfilePath+"user_script_send_convert"))
                 {
-                    Directory.CreateDirectory("user_script_send_convert");
-                    CreateFile("DefaultFiles/user_script_send_convert/16进制数据.lua", "user_script_send_convert/16进制数据.lua");
-                    CreateFile("DefaultFiles/user_script_send_convert/GPS NMEA.lua", "user_script_send_convert/GPS NMEA.lua");
-                    CreateFile("DefaultFiles/user_script_send_convert/加上换行回车.lua", "user_script_send_convert/加上换行回车.lua");
-                    CreateFile("DefaultFiles/user_script_send_convert/解析换行回车的转义字符.lua", "user_script_send_convert/解析换行回车的转义字符.lua");
-                    CreateFile("DefaultFiles/user_script_send_convert/默认.lua", "user_script_send_convert/默认.lua");
+                    Directory.CreateDirectory(ProfilePath + "user_script_send_convert");
+                    CreateFile("DefaultFiles/user_script_send_convert/16进制数据.lua", ProfilePath+"user_script_send_convert/16进制数据.lua");
+                    CreateFile("DefaultFiles/user_script_send_convert/GPS NMEA.lua", ProfilePath+"user_script_send_convert/GPS NMEA.lua");
+                    CreateFile("DefaultFiles/user_script_send_convert/加上换行回车.lua", ProfilePath+"user_script_send_convert/加上换行回车.lua");
+                    CreateFile("DefaultFiles/user_script_send_convert/解析换行回车的转义字符.lua", ProfilePath+"user_script_send_convert/解析换行回车的转义字符.lua");
+                    CreateFile("DefaultFiles/user_script_send_convert/默认.lua", ProfilePath+"user_script_send_convert/默认.lua");
                 }
 
-                CreateFile("DefaultFiles/LICENSE", "LICENSE", false);
-                CreateFile("DefaultFiles/反馈网址.txt", "反馈网址.txt", false);
+                CreateFile("DefaultFiles/LICENSE", ProfilePath+"LICENSE", false);
+                CreateFile("DefaultFiles/反馈网址.txt", ProfilePath+"反馈网址.txt", false);
             }
             catch(Exception e)
             {
@@ -99,9 +110,9 @@ namespace llcom.Tools
             }
 
             //配置文件
-            if(File.Exists("settings.json"))
+            if(File.Exists(ProfilePath+"settings.json"))
             {
-                setting = JsonConvert.DeserializeObject<Model.Settings>(File.ReadAllText("settings.json"));
+                setting = JsonConvert.DeserializeObject<Model.Settings>(File.ReadAllText(ProfilePath+"settings.json"));
                 setting.SentCount = 0;
                 setting.ReceivedCount = 0;
             }
@@ -116,7 +127,7 @@ namespace llcom.Tools
                 }
                 setting = new Model.Settings();
                 if(Properties.Settings.Default.quickData != "done" &&
-                    Properties.Settings.Default.dataToSend != 
+                    Properties.Settings.Default.dataToSend !=
                     "uart dataplVIzj85gvLDrDqtVxftzTb78")//不是第一次用
                 {
                     setting.dataToSend = Properties.Settings.Default.dataToSend;

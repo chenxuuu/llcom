@@ -265,7 +265,7 @@ namespace llcom
         private void RefreshScriptList()
         {
             //刷新文件列表
-            DirectoryInfo luaFileDir = new DirectoryInfo("user_script_run/");
+            DirectoryInfo luaFileDir = new DirectoryInfo(Tools.Global.ProfilePath + "user_script_run/");
             FileSystemInfo[] luaFiles = luaFileDir.GetFileSystemInfos();
             fileLoading = true;
             luaFileList.Items.Clear();
@@ -352,7 +352,7 @@ namespace llcom
 
         private void OpenScriptFolderButton_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("explorer.exe", "user_script_run");
+            System.Diagnostics.Process.Start("explorer.exe", Tools.Global.ProfilePath + "user_script_run");
         }
 
         private void RefreshScriptListButton_Click(object sender, RoutedEventArgs e)
@@ -570,7 +570,7 @@ namespace llcom
                 MessageBox.Show(FindResource("LuaNoName") as string);
                 return;
             }
-            if (File.Exists($"user_script_run/{newLuaFileNameTextBox.Text}.lua"))
+            if (File.Exists(Tools.Global.ProfilePath + $"user_script_run/{newLuaFileNameTextBox.Text}.lua"))
             {
                 MessageBox.Show(FindResource("LuaExist") as string);
                 return;
@@ -578,7 +578,7 @@ namespace llcom
 
             try
             {
-                File.Create($"user_script_run/{newLuaFileNameTextBox.Text}.lua").Close();
+                File.Create(Tools.Global.ProfilePath + $"user_script_run/{newLuaFileNameTextBox.Text}.lua").Close();
                 loadLuaFile(newLuaFileNameTextBox.Text);
             }
             catch
@@ -605,12 +605,12 @@ namespace llcom
         private void loadLuaFile(string fileName)
         {
             //检查文件是否存在
-            if (!File.Exists($"user_script_run/{fileName}.lua"))
+            if (!File.Exists(Tools.Global.ProfilePath + $"user_script_run/{fileName}.lua"))
             {
                 Tools.Global.setting.runScript = "example";
-                if (!File.Exists($"user_script_run/{Tools.Global.setting.runScript}.lua"))
+                if (!File.Exists(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua"))
                 {
-                    File.Create($"user_script_run/{Tools.Global.setting.runScript}.lua").Close();
+                    File.Create(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua").Close();
                 }
             }
             else
@@ -619,7 +619,7 @@ namespace llcom
             }
 
             //文件内容显示出来
-            textEditor.Text = File.ReadAllText($"user_script_run/{Tools.Global.setting.runScript}.lua");
+            textEditor.Text = File.ReadAllText(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua");
 
             RefreshScriptList();
         }
@@ -630,7 +630,7 @@ namespace llcom
         /// <param name="fileName">文件名，不带.lua</param>
         private void saveLuaFile(string fileName)
         {
-            File.WriteAllText($"user_script_run/{fileName}.lua", textEditor.Text);
+            File.WriteAllText(Tools.Global.ProfilePath + $"user_script_run/{fileName}.lua", textEditor.Text);
         }
 
         private void LuaFileList_SelectionChanged(object sender, SelectionChangedEventArgs e)

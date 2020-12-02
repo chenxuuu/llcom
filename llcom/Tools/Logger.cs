@@ -37,7 +37,7 @@ namespace llcom.Tools
         /// </summary>
         public static void InitUartLog()
         {
-            uartLogFile = "logs/" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".log";
+            uartLogFile = Tools.Global.ProfilePath + "logs/" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".log";
             AddUartLog("[INFO]Logs by LLCOM. https://github.com/chenxuuu/llcom");
         }
 
@@ -62,7 +62,7 @@ namespace llcom.Tools
         /// </summary>
         public static void InitLuaLog()
         {
-            luaLogFile = "user_script_run/logs/" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".log";
+            luaLogFile = Tools.Global.ProfilePath + "user_script_run/logs/" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".log";
         }
 
         /// <summary>

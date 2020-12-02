@@ -32,10 +32,10 @@ namespace llcom.LuaEnv
         /// <summary>
         /// 获取程序运行目录
         /// </summary>
-        /// <returns>主程序运行目录</returns>
+        /// <returns>主程序运行目录（win10商店时返回appdata路径）</returns>
         public static string GetPath()
         {
-            return AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+            return Tools.Global.ProfilePath;
         }
 
         /// <summary>

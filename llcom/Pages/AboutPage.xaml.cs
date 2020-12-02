@@ -36,7 +36,7 @@ namespace llcom.Pages
             versionTextBlock.Text = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
 
-                //设置为手动检查
+            //设置为手动检查
             AutoUpdaterDotNET.AutoUpdater.CheckForUpdateEvent += checkUpdateEvent;
             checkUpdate();
         }
@@ -49,7 +49,13 @@ namespace llcom.Pages
                 G_args = args;
                 if (args.IsUpdateAvailable)
                 {
-                    if (Tools.Global.setting.autoUpdate)
+                    if(Tools.Global.IsMSIX())
+                    {
+                        this.Dispatcher.Invoke(new Action(delegate {
+                            CheckUpdateButton.Content = "检测到有更新，请前往微软商店更新";
+                        }));
+                    }
+                    else if (Tools.Global.setting.autoUpdate)
                     {
                         this.Dispatcher.Invoke(new Action(delegate {
                             CheckUpdateButton.Content = "检测到有更新，获取中";

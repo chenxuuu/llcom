@@ -181,7 +181,7 @@ namespace llcom.LuaEnv
             tokenSource = new CancellationTokenSource();//task取消指示
             
             //文件不存在
-            if (!File.Exists(file))
+            if (!File.Exists(Tools.Global.ProfilePath + file))
                 return;
             lua = new XLua.LuaEnv();
             Task.Run(() =>

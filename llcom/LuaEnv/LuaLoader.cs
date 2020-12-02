@@ -37,6 +37,19 @@ namespace llcom.LuaEnv
                 lua.DoString("apiStopTimer = CS.llcom.LuaEnv.LuaRunEnv.StopTimer");
             }
 
+            //加上需要require的路径
+            lua.DoString(@"
+local rootPath = '"+ LuaApis.Utf8ToAsciiHex(LuaApis.GetPath()) + @"'
+rootPath = rootPath:gsub('[%s%p]', ''):upper()
+rootPath = rootPath:gsub('%x%x', function(c)
+                                    return string.char(tonumber(c, 16))
+                                end)
+package.path = package.path..
+';'..rootPath..'core_script/?.lua'..
+';'..rootPath..'?.lua'..
+';'..rootPath..'user_script_run/requires/?.lua'
+");
+
             //运行初始化文件
             lua.DoString("require 'core_script.head'");
         }
@@ -50,7 +63,7 @@ namespace llcom.LuaEnv
         public static string Run(string file, ArrayList args = null)
         {
             //文件不存在
-            if (!File.Exists("user_script_send_convert/" + file))
+            if (!File.Exists(Tools.Global.ProfilePath + "user_script_send_convert/" + file))
                 return "";
 
             using (var lua = new XLua.LuaEnv())

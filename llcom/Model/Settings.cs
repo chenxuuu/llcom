@@ -28,8 +28,8 @@ namespace llcom.Model
         private string _runScript = "example";
         private bool _topmost = false;
         private string _quickData = "{\"data\":[{\"id\":1,\"text\":\"example string\",\"commit\":\"右击更改此处文字\",\"hex\":false},{\"id\":2,\"text\":\"lua可通过接口获取此处数据\",\"hex\":false},{\"id\":3,\"text\":\"aa 01 02 0d 0a\",\"hex\":true},{\"id\":4,\"text\":\"此处数据会被lua处理\",\"hex\":false}]}";
-        private bool _bitDelay = true; 
-        private bool _autoUpdate = true; 
+        private bool _bitDelay = true;
+        private bool _autoUpdate = true;
         private uint _maxLength = 10240;
         private string _language = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
         private int _encoding = 65001;
@@ -66,7 +66,7 @@ namespace llcom.Model
         /// </summary>
         private void Save()
         {
-            File.WriteAllText("settings.json", JsonConvert.SerializeObject(this));
+            File.WriteAllText(Tools.Global.ProfilePath+"settings.json", JsonConvert.SerializeObject(this));
         }
 
         public uint maxLength
