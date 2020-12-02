@@ -42,12 +42,12 @@ namespace llcom
         private void loadLuaFile(string fileName)
         {
             //检查文件是否存在
-            if (!File.Exists($"user_script_send_convert/{fileName}.lua"))
+            if (!File.Exists(Tools.Global.ProfilePath + $"user_script_send_convert/{fileName}.lua"))
             {
                 Tools.Global.setting.sendScript = "默认";
-                if (!File.Exists($"user_script_send_convert/{Tools.Global.setting.sendScript}.lua"))
+                if (!File.Exists(Tools.Global.ProfilePath + $"user_script_send_convert/{Tools.Global.setting.sendScript}.lua"))
                 {
-                    File.Create($"user_script_send_convert/{Tools.Global.setting.sendScript}.lua").Close();
+                    File.Create(Tools.Global.ProfilePath + $"user_script_send_convert/{Tools.Global.setting.sendScript}.lua").Close();
                 }
             }
             else
@@ -56,10 +56,10 @@ namespace llcom
             }
 
             //文件内容显示出来
-            textEditor.Text = File.ReadAllText($"user_script_send_convert/{Tools.Global.setting.sendScript}.lua");
+            textEditor.Text = File.ReadAllText(Tools.Global.ProfilePath + $"user_script_send_convert/{Tools.Global.setting.sendScript}.lua");
 
             //刷新文件列表
-            DirectoryInfo luaFileDir = new DirectoryInfo("user_script_send_convert/");
+            DirectoryInfo luaFileDir = new DirectoryInfo(Tools.Global.ProfilePath + "user_script_send_convert/");
             FileSystemInfo[] luaFiles = luaFileDir.GetFileSystemInfos();
             fileLoading = true;
             luaFileList.Items.Clear();
@@ -82,7 +82,7 @@ namespace llcom
         /// <param name="fileName">文件名，不带.lua</param>
         private void saveLuaFile(string fileName)
         {
-            File.WriteAllText($"user_script_send_convert/{fileName}.lua", textEditor.Text);
+            File.WriteAllText(Tools.Global.ProfilePath + $"user_script_send_convert/{fileName}.lua", textEditor.Text);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -155,7 +155,7 @@ namespace llcom
 
         private void OpenScriptFolderButton_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("explorer.exe", "user_script_send_convert");
+            System.Diagnostics.Process.Start("explorer.exe", Tools.Global.ProfilePath + "user_script_send_convert");
         }
 
         private void DataBitsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -218,7 +218,7 @@ namespace llcom
                 MessageBox.Show(FindResource("LuaNoName") as string);
                 return;
             }
-            if (File.Exists($"user_script_send_convert/{newLuaFileNameTextBox.Text}.lua"))
+            if (File.Exists(Tools.Global.ProfilePath + $"user_script_send_convert/{newLuaFileNameTextBox.Text}.lua"))
             {
                 MessageBox.Show(FindResource("LuaExist") as string);
                 return;
@@ -226,7 +226,7 @@ namespace llcom
 
             try
             {
-                File.Create($"user_script_send_convert/{newLuaFileNameTextBox.Text}.lua").Close();
+                File.Create(Tools.Global.ProfilePath + $"user_script_send_convert/{newLuaFileNameTextBox.Text}.lua").Close();
                 loadLuaFile(newLuaFileNameTextBox.Text);
             }
             catch
@@ -271,7 +271,7 @@ namespace llcom
 
         private void OpenLogButton_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("explorer.exe", "logs");
+            System.Diagnostics.Process.Start("explorer.exe", Tools.Global.ProfilePath + "logs");
         }
 
         private void encodingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
