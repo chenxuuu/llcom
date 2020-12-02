@@ -24,18 +24,33 @@ namespace llcom.Tools
         public static Model.Settings setting;
         public static Model.Uart uart = new Model.Uart();
 
+        //软件根目录
+        public static readonly string AppPath = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName);
+        //配置文件路径
+        public static readonly string path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\llcom\";
+
+        /// <summary>
+        /// 是否为应用商店版本？
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsMSIX()
+        {
+            return AppPath.ToUpper().Contains(@"C:\PROGRAM FILES\WINDOWSAPPS");
+        }
+
         /// <summary>
         /// 软件打开后，所有东西的初始化流程
         /// </summary>
         public static void Initial()
         {
             //C:\Users\chenx\AppData\Local\Temp\7zO05433053\user_script_run
-            if(AppDomain.CurrentDomain.BaseDirectory.IndexOf(@"C:\Users\") == 0 &&
-                AppDomain.CurrentDomain.BaseDirectory.Contains(@"\AppData\Local\Temp\"))
+            if(AppPath.ToUpper().IndexOf(@"C:\USERS\") == 0 &&
+                AppPath.ToUpper().Contains(@"\APPDATA\LOCAL\TEMP\"))
             {
                 System.Windows.MessageBox.Show("请勿在压缩包内直接打开本软件。");
                 Environment.Exit(1);
             }
+            
             try
             {
                 if (!Directory.Exists("core_script"))
