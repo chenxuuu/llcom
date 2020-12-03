@@ -155,7 +155,7 @@ namespace llcom
 
         private void OpenScriptFolderButton_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("explorer.exe", Tools.Global.ProfilePath + "user_script_send_convert");
+            System.Diagnostics.Process.Start("explorer.exe", Tools.Global.GetTrueProfilePath() + "user_script_send_convert");
         }
 
         private void DataBitsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -271,7 +271,7 @@ namespace llcom
 
         private void OpenLogButton_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("explorer.exe", Tools.Global.ProfilePath + "logs");
+            System.Diagnostics.Process.Start("explorer.exe", Tools.Global.GetTrueProfilePath() + "logs");
         }
 
         private void encodingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

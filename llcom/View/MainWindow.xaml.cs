@@ -352,7 +352,7 @@ namespace llcom
 
         private void OpenScriptFolderButton_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("explorer.exe", Tools.Global.ProfilePath + "user_script_run");
+            System.Diagnostics.Process.Start("explorer.exe", Tools.Global.GetTrueProfilePath() + "user_script_run");
         }
 
         private void RefreshScriptListButton_Click(object sender, RoutedEventArgs e)
