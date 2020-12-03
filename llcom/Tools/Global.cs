@@ -30,12 +30,34 @@ namespace llcom.Tools
         public static string ProfilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\llcom\";
 
         /// <summary>
+        /// 获取实际的ProfilePath路径（商店软件里用）
+        /// </summary>
+        /// <returns></returns>
+        public static string GetTrueProfilePath()
+        {
+            if(IsMSIX())
+            {
+                //C:\Program Files\WindowsApps\800948F61A16.llcom_1.0.44.0_x86__bd8bdx79914mr\llcom\
+                string pkgPath = AppPath.Substring(0,AppPath.LastIndexOf(@"\llcom\"));
+                pkgPath = pkgPath.Substring(pkgPath.LastIndexOf("\\") + 1);
+                pkgPath = pkgPath.Substring(0, pkgPath.IndexOf("_")) + pkgPath.Substring(pkgPath.LastIndexOf("_"));
+                //C:\Users\chenx\AppData\Local\Packages\800948F61A16.llcom_bd8bdx79914mr\LocalCache\Local\llcom
+                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
+                    @"\Packages\" + pkgPath + @"\LocalCache\Local\llcom\";
+            }
+            else
+            {
+                return ProfilePath;
+            }
+        }
+
+        /// <summary>
         /// 是否为应用商店版本？
         /// </summary>
         /// <returns></returns>
         public static bool IsMSIX()
         {
-            return AppPath.ToUpper().Contains(@"C:\PROGRAM FILES\WINDOWSAPPS");
+            return AppPath.ToUpper().Contains(@"C:\PROGRAM FILES\WINDOWSAPPS\");
         }
 
         /// <summary>
