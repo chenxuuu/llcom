@@ -104,18 +104,6 @@
     <Prefer32Bit>true</Prefer32Bit>
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
-  <PropertyGroup>
-    <ManifestCertificateThumbprint>254E782564277F6A98D3DD6D013DF1F783881841</ManifestCertificateThumbprint>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestKeyFile>llcom_TemporaryKey.pfx</ManifestKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignManifests>true</SignManifests>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AdonisUI, Version=1.16.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AdonisUI.1.16.0\lib\net45\AdonisUI.dll</HintPath>
