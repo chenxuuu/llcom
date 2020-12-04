@@ -14,7 +14,7 @@ A serial port debugger tool, with lua script.
 
 Get it from Microsoft store:
 
-<a href='//www.microsoft.com/store/apps/9PMPB0233S0S?cid=storebadge&ocid=badge'><img src='https://developer.microsoft.com/store/badges/images/English_get-it-from-MS.png' alt='English badge' style='width: 142px; height: 52px;'/></a>
+<a href='//www.microsoft.com/store/apps/9PMPB0233S0S?cid=storebadge&ocid=badge'><img src='https://developer.microsoft.com/store/badges/images/English_get-it-from-MS.png' alt='English badge' width='160'/></a>
 
 Portable exe version: [GitHub](https://github.com/chenxuuu/llcom/releases/latest)
 
