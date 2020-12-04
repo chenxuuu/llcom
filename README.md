@@ -15,7 +15,11 @@
 
 ## 下载
 
-最新正式版：[国内用户点我下载](https://llcom.papapoi.com/llcom.zip)
+从微软商店安装：
+
+<a href='//www.microsoft.com/store/apps/9PMPB0233S0S?cid=storebadge&ocid=badge'><img src='https://developer.microsoft.com/store/badges/images/Chinese_Simplified_get-it-from-MS.png' alt='Chinese badge' style='width: 142px; height: 52px;'/></a>
+
+exe便携版：[国内用户点我下载](https://llcom.papapoi.com/llcom.zip)
 
 CI快照版：[Appveyor Artifacts](https://ci.appveyor.com/project/chenxuuu/llcom/build/artifacts)
 
