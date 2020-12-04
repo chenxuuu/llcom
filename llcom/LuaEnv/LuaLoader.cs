@@ -48,6 +48,10 @@ package.path = package.path..
 ';'..rootPath..'core_script/?.lua'..
 ';'..rootPath..'?.lua'..
 ';'..rootPath..'user_script_run/requires/?.lua'
+package.cpath = package.cpath..
+';'..rootPath..'core_script/?.lua'..
+';'..rootPath..'?.lua'..
+';'..rootPath..'user_script_run/requires/?.lua'
 ");
 
             //运行初始化文件
