@@ -7,6 +7,9 @@ assignees: ''
 
 ---
 
+
+# 如果不按该格式填写，开发者可能会直接忽略该issue
+
 **描述一下这个bug / Describe the bug**
 请使用简介并详细的语句，来描述这个bug。 / A clear and concise description of what the bug is.
 
