@@ -177,7 +177,7 @@ namespace llcom
                 {
                     try
                     {
-                        ManagementObjectSearcher searcher =new ManagementObjectSearcher("select * from Win32_SerialPort");
+                        ManagementObjectSearcher searcher =new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PnPEntity");
                         Regex regExp = new Regex("\\(COM\\d+\\)");
                         foreach (ManagementObject queryObj in searcher.Get())
                         {

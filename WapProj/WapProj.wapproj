@@ -58,7 +58,7 @@
     <EntryPointProjectUniqueName>..\llcom\llcom.csproj</EntryPointProjectUniqueName>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <GenerateTestArtifacts>False</GenerateTestArtifacts>
     <AppxBundlePlatforms>x86</AppxBundlePlatforms>
     <PackageCertificateThumbprint>82FA1B24E778143D06284C8D400231CBF173B8EC</PackageCertificateThumbprint>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
