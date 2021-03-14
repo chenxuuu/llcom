@@ -54,13 +54,15 @@ namespace llcom.Pages
         /// <param name="send">true为发送，false为接收</param>
         private void addUartLog(object e,Tools.DataShowPara input)
         {
-            uartDataFlowDocument.IsSelectionEnabled = false;
             byte[] data = input.data;
+            if (data.Length == 0)
+                return;
             bool send = input.send;
             if (!Tools.Global.setting.showSend && send)
                 return;
 
-            if(Tools.Global.setting.timeout >= 0)
+            uartDataFlowDocument.IsSelectionEnabled = false;
+            if (Tools.Global.setting.timeout >= 0)
             {
                 Paragraph p = new Paragraph(new Run(""));
 
