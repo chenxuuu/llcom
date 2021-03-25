@@ -139,42 +139,6 @@ namespace llcom.Tools
                 setting.SentCount = 0;
                 setting.ReceivedCount = 0;
             }
-            else
-            {
-                //导入之前的配置文件
-                if (Properties.Settings.Default.UpgradeRequired)
-                {
-                    Properties.Settings.Default.Upgrade();
-                    //Properties.Settings.Default.UpgradeRequired = false;
-                    //Properties.Settings.Default.Save();
-                }
-                setting = new Model.Settings();
-                if(Properties.Settings.Default.quickData != "done" &&
-                    Properties.Settings.Default.dataToSend !=
-                    "uart dataplVIzj85gvLDrDqtVxftzTb78")//不是第一次用
-                {
-                    setting.dataToSend = Properties.Settings.Default.dataToSend;
-                    setting.baudRate = Properties.Settings.Default.BaudRate;
-                    setting.autoReconnect = Properties.Settings.Default.autoReconnect;
-                    setting.autoSaveLog = Properties.Settings.Default.autoSaveLog;
-                    setting.showHex = Properties.Settings.Default.showHex;
-                    setting.parity = Properties.Settings.Default.parity;
-                    setting.timeout = Properties.Settings.Default.timeout;
-                    setting.dataBits = Properties.Settings.Default.dataBits;
-                    setting.stopBit = Properties.Settings.Default.stopBit;
-                    setting.sendScript = Properties.Settings.Default.sendScript;
-                    setting.runScript = Properties.Settings.Default.runScript;
-                    setting.topmost = Properties.Settings.Default.topmost;
-                    setting.quickData = Properties.Settings.Default.quickData;
-                    setting.bitDelay = Properties.Settings.Default.bitDelay;
-                    setting.autoUpdate = Properties.Settings.Default.autoUpdate;
-                    setting.maxLength = Properties.Settings.Default.maxLength;
-                    Properties.Settings.Default.quickData = "done";
-                }
-            }
-
-            setting.UpdateQuickSend();
-
 
 
             uart.serial.BaudRate = setting.baudRate;

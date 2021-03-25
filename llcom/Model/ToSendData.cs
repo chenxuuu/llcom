@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +22,7 @@ namespace llcom.Model
             set
             {
                 _id = value;
-                DataChanged(0, EventArgs.Empty);
+                DataChanged?.Invoke(0, EventArgs.Empty);
             }
         }
         public string text
@@ -34,7 +34,7 @@ namespace llcom.Model
             set
             {
                 _text = value;
-                DataChanged(0, EventArgs.Empty);
+                DataChanged?.Invoke(0, EventArgs.Empty);
             }
         }
         public bool hex
@@ -46,7 +46,7 @@ namespace llcom.Model
             set
             {
                 _hex = value;
-                DataChanged(0, EventArgs.Empty);
+                DataChanged?.Invoke(0, EventArgs.Empty);
             }
         }
 
@@ -59,7 +59,7 @@ namespace llcom.Model
             set
             {
                 _commit = value;
-                DataChanged(0, EventArgs.Empty);
+                DataChanged?.Invoke(0, EventArgs.Empty);
             }
         }
     }

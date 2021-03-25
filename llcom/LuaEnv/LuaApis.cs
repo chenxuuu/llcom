@@ -66,10 +66,10 @@ namespace llcom.LuaEnv
         /// <returns>内容，如果不存在则为空字符串</returns>
         public static string QuickSendList(int id)
         {
-            if (Model.Settings.toSendDatas.Count < id || id <= 0)
+            if (Tools.Global.setting.quickSend.Count < id || id <= 0)
                 return "";
             else
-                return Model.Settings.toSendDatas[id-1];
+                return Tools.Global.setting.quickSend[id-1].text;
         }
 
         /// <summary>

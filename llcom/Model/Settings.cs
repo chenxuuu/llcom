@@ -27,39 +27,16 @@ namespace llcom.Model
         private string _sendScript = "默认";
         private string _runScript = "example";
         private bool _topmost = false;
-        private string _quickData = "{\"data\":[{\"id\":1,\"text\":\"example string\",\"commit\":\"右击更改此处文字\",\"hex\":false},{\"id\":2,\"text\":\"lua可通过接口获取此处数据\",\"hex\":false},{\"id\":3,\"text\":\"aa 01 02 0d 0a\",\"hex\":true},{\"id\":4,\"text\":\"此处数据会被lua处理\",\"hex\":false}]}";
+        private List<ToSendData> _quickSend = new List<ToSendData>();
         private bool _bitDelay = true;
         private bool _autoUpdate = true;
         private uint _maxLength = 10240;
         private string _language = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
         private int _encoding = 65001;
         private bool _terminal = true;
-        public static List<string> toSendDatas = new List<string>();
 
         public int SentCount { get; set; } = 0;
         public int ReceivedCount { get; set; } = 0;
-
-        public void UpdateQuickSend()
-        {
-            toSendDatas.Clear();
-            try
-            {
-                JObject jo = (JObject)JsonConvert.DeserializeObject(_quickData);
-                foreach (var i in jo["data"])
-                {
-                    if (i["commit"] == null)
-                        i["commit"] = "发送";
-                    if ((bool)i["hex"])
-                        toSendDatas.Add("H" + (string)i["text"]);
-                    else
-                        toSendDatas.Add("S" + (string)i["text"]);
-                }
-            }
-            catch
-            {
-                quickData = "{\"data\":[{\"id\":1,\"text\":\"example string\",\"hex\":false},{\"id\":2,\"text\":\"lua可通过接口获取此处数据\",\"hex\":false},{\"id\":3,\"text\":\"aa 01 02 0d 0a\",\"hex\":true},{\"id\":4,\"text\":\"此处数据会被lua处理\",\"hex\":false}]}";
-            }
-        }
 
         /// <summary>
         /// 保存配置
@@ -82,19 +59,16 @@ namespace llcom.Model
             }
         }
 
-        public string quickData
+        public List<ToSendData> quickSend
         {
             get
             {
-                return _quickData;
+                return _quickSend;
             }
             set
             {
-                _quickData = value;
+                _quickSend = value;
                 Save();
-
-                //更新快捷发送区参数
-                UpdateQuickSend();
             }
         }
 

@@ -87,27 +87,23 @@ namespace llcom
                     //初始化快捷发送栏的数据
                     canSaveSendList = false;
                     ToSendData.DataChanged += SaveSendList;
-                    try
+                    if (Tools.Global.setting.quickSend.Count == 0)
                     {
-                        JObject jo = (JObject)JsonConvert.DeserializeObject(Tools.Global.setting.quickData);
-                        foreach (var i in jo["data"])
+                        Tools.Global.setting.quickSend = new List<ToSendData>
                         {
-                            if (i["commit"] == null)
-                                i["commit"] = FindResource("QuickSendButton") as string;
-                            toSendListItems.Add(new ToSendData()
-                            {
-                                id = (int)i["id"],
-                                text = (string)i["text"],
-                                hex = (bool)i["hex"],
-                                commit = (string)i["commit"]
-                            });
-                        }
+                            new ToSendData{id = 1,text="example string",commit="右击更改此处文字",hex=false},
+                            new ToSendData{id = 2,text="lua可通过接口获取此处数据",hex=false},
+                            new ToSendData{id = 3,text="aa 01 02 0d 0a",commit="Hex数据也能发",hex=true},
+                            new ToSendData{id = 4,text="此处数据会被lua处理",hex=false},
+                        };
                     }
-                    catch (Exception ex)
+                    foreach (var i in Tools.Global.setting.quickSend)
                     {
-                        MessageBox.Show($"{FindResource("QuickSendLoadError") as string}\r\n" + ex.ToString() + "\r\n" + Tools.Global.setting.quickData);
-                        Tools.Global.setting.quickData = "{\"data\":[{\"id\":1,\"text\":\"example string\",\"hex\":false},{\"id\":2,\"text\":\"lua可通过接口获取此处数据\",\"hex\":false},{\"id\":3,\"text\":\"aa 01 02 0d 0a\",\"hex\":true},{\"id\":4,\"text\":\"此处数据会被lua处理\",\"hex\":false}]}";
+                        if (i.commit == null)
+                            i.commit = FindResource("QuickSendButton") as string;
+                        toSendListItems.Add(i);
                     }
+
                     canSaveSendList = true;
 
 
@@ -536,19 +532,12 @@ namespace llcom
         {
             if (!canSaveSendList)
                 return;
-            var data = new JObject();
-            var list = new JArray();
+            var newList = new List<ToSendData>();
             foreach (ToSendData i in toSendListItems)
             {
-                list.Add(new JObject {
-                    { "id", i.id },
-                    { "text", i.text },
-                    { "hex", i.hex },
-                    { "commit", i.commit }
-                });
+                newList.Add(i);
             }
-            data.Add("data", list);
-            Tools.Global.setting.quickData = data.ToString();
+            Tools.Global.setting.quickSend = newList;
         }
 
         private void NewScriptButton_Click(object sender, RoutedEventArgs e)
@@ -625,7 +614,7 @@ namespace llcom
             }
 
             //文件内容显示出来
-            //textEditor.Text = File.ReadAllText(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua");
+            textEditor.Text = File.ReadAllText(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua");
 
             RefreshScriptList();
         }
