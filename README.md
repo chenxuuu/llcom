@@ -39,9 +39,9 @@ CI快照版：[Appveyor Artifacts](https://ci.appveyor.com/project/chenxuuu/llco
 - 可单独隐藏发送数据
 - 集成socket测试服务端控制功能
 
-![screen](/screen.png)
-![screen2](/screen2.jpg)
-![screen3](/screen3.png)
+![screen](/image/screen.png)
+![screen2](/image/screen2.jpg)
+![screen3](/image/screen3.png)
 
 ## 特色功能示范
 
@@ -171,4 +171,4 @@ This project follows the [all-contributors](htts://github.com/all-contributors/a
 
 ## 特别感谢
 
-[![icon-resharper](/icon-resharper.svg)](https://www.jetbrains.com/?from=LLCOM)
+[![icon-resharper](/image/icon-resharper.svg)](https://www.jetbrains.com/?from=LLCOM)
