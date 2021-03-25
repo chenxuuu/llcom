@@ -34,7 +34,7 @@ namespace llcom.Pages
             InitializeComponent();
         }
 
-        public WebSocket ws = new WebSocket("ws://netlab.vue2.cn/ws/netlab");
+        public WebSocket ws = new WebSocket("ws://netlab.luatos.com/ws/netlab");
         ObservableCollection<string> clients = new ObservableCollection<string>();
 
         /// <summary>
