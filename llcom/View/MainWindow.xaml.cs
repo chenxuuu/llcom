@@ -827,12 +827,8 @@ namespace llcom
             else
             {
                 int index = -1;
-                try
-                {
-                    index = int.Parse(ret.Item2) - 1;
-                }
-                catch { }
-                if (index < 0 || index >= toSendListItems.Count - 1) return;
+                int.TryParse(ret.Item2, out index);
+                if (index == data.id - 1 || index < 0 || index > toSendListItems.Count - 1) return;
                 //移动到指定位置
                 var item = toSendListItems[data.id-1];
                 toSendListItems.RemoveAt(data.id-1);
