@@ -95,6 +95,7 @@ namespace llcom
                             new ToSendData{id = 2,text="lua可通过接口获取此处数据",hex=false},
                             new ToSendData{id = 3,text="aa 01 02 0d 0a",commit="Hex数据也能发",hex=true},
                             new ToSendData{id = 4,text="此处数据会被lua处理",hex=false},
+                            new ToSendData{id = 5,text="右击序号可以更改这一行的位置",hex=false},
                         };
                     }
                     foreach (var i in Tools.Global.setting.quickSend)
@@ -103,7 +104,7 @@ namespace llcom
                             i.commit = FindResource("QuickSendButton") as string;
                         toSendListItems.Add(i);
                     }
-
+                    CheckToSendListId();
                     canSaveSendList = true;
 
 
@@ -528,10 +529,30 @@ namespace llcom
             }
         }
 
+        /// <summary>
+        /// 检查并更正快捷发送区序号
+        /// </summary>
+        public void CheckToSendListId()
+        {
+            //当序号不对时，更正序号
+            for (int i = 0; i < toSendListItems.Count; i++)
+            {
+                if (toSendListItems[i].id != i + 1)
+                {
+                    var item = toSendListItems[i];
+                    toSendListItems.RemoveAt(i);//元素删掉重新加进去
+                    item.id = i + 1;
+                    toSendListItems.Insert(i, item);
+                }
+            }
+        }
+
         public void SaveSendList(object sender, EventArgs e)
         {
             if (!canSaveSendList)
                 return;
+            CheckToSendListId();
+            //保存当前的所有数据
             var newList = new List<ToSendData>();
             foreach (ToSendData i in toSendListItems)
             {
@@ -787,6 +808,37 @@ namespace llcom
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             Tools.Global.setting.language = ((MenuItem)sender).Tag.ToString();
+        }
+
+        //id序号右击事件
+        private void TextBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ToSendData data = ((TextBlock)sender).Tag as ToSendData;
+            Tuple<bool, string> ret = Tools.InputDialog.OpenDialog(FindResource("QuickSendChangeIdButton") as string,
+                data.id.ToString(), (FindResource("QuickSendChangeIdTitle") as string) + data.id.ToString());
+
+            if (!ret.Item1)
+                return;
+            CheckToSendListId();
+            if (ret.Item2.Trim().Length == 0)//留空删除该项目
+            {
+                toSendListItems.RemoveAt(data.id-1);
+            }
+            else
+            {
+                int index = -1;
+                try
+                {
+                    index = int.Parse(ret.Item2) - 1;
+                }
+                catch { }
+                if (index < 0 || index >= toSendListItems.Count - 1) return;
+                //移动到指定位置
+                var item = toSendListItems[data.id-1];
+                toSendListItems.RemoveAt(data.id-1);
+                toSendListItems.Insert(index, item);
+            }
+            SaveSendList(null, EventArgs.Empty);
         }
     }
 }

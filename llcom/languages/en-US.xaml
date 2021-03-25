@@ -27,6 +27,7 @@
     <system:String x:Key="QuickSendContent">Content</system:String>
     <system:String x:Key="QuickSendHex">HEX</system:String>
     <system:String x:Key="QuickSendButtonTip">Right click to set Button Content.</system:String>
+    <system:String x:Key="QuickSendIdTip">Right click id to set the index of this line.</system:String>
     <system:String x:Key="QuickSendButton">Send</system:String>
     <system:String x:Key="QuickSendAdd">Add new</system:String>
     <system:String x:Key="QuickSendRemoveLast">Remove last one</system:String>
@@ -35,6 +36,8 @@
     <system:String x:Key="QuickSendSSCOMFile">SSCOM|sscom51.ini;sscom.ini</system:String>
     <system:String x:Key="QuickSendSetButton">Enter you want to show</system:String>
     <system:String x:Key="QuickSendChangeButton">Change content of send button</system:String>
+    <system:String x:Key="QuickSendChangeIdButton">Enter where you want to insert(empty means delete this line)</system:String>
+    <system:String x:Key="QuickSendChangeIdTitle">Change index of this line</system:String>
     <system:String x:Key="LuaCard">Run Lua script</system:String>
     <system:String x:Key="LuaNewScript">New script</system:String>
     <system:String x:Key="LuaRunScript">Run script</system:String>

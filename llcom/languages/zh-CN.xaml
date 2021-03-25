@@ -27,6 +27,7 @@
     <system:String x:Key="QuickSendContent">内容</system:String>
     <system:String x:Key="QuickSendHex">HEX</system:String>
     <system:String x:Key="QuickSendButtonTip">右击此按键，设置显示内容。</system:String>
+    <system:String x:Key="QuickSendIdTip">右击序号，可更改改条目位置。</system:String>
     <system:String x:Key="QuickSendButton">发送</system:String>
     <system:String x:Key="QuickSendAdd">添加新项目</system:String>
     <system:String x:Key="QuickSendRemoveLast">删除最后一项</system:String>
@@ -35,6 +36,8 @@
     <system:String x:Key="QuickSendSSCOMFile">SSCOM配置文件|sscom51.ini;sscom.ini</system:String>
     <system:String x:Key="QuickSendSetButton">输入你想显示的内容</system:String>
     <system:String x:Key="QuickSendChangeButton">更改发送按键显示内容</system:String>
+    <system:String x:Key="QuickSendChangeIdButton">输入你想改到哪个序号的位置（留空表示删除该项目）</system:String>
+    <system:String x:Key="QuickSendChangeIdTitle">更改这个条目的序号</system:String>
     <system:String x:Key="LuaCard">运行lua脚本</system:String>
     <system:String x:Key="LuaNewScript">新建脚本</system:String>
     <system:String x:Key="LuaRunScript">运行脚本</system:String>

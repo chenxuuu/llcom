@@ -204,7 +204,7 @@
                                             <ColumnDefinition Width="auto"/>
                                             <ColumnDefinition Width="20"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding id}" Grid.Column="0" HorizontalAlignment="Center" Margin="2"/>
+                                        <TextBlock Text="{Binding id}" Tag="{Binding}" Grid.Column="0" HorizontalAlignment="Center" Margin="2" ToolTip="{DynamicResource QuickSendIdTip}" MouseRightButtonDown="TextBlock_MouseRightButtonDown"/>
                                         <TextBox Text="{Binding text,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,0,2,0"/>
                                         <Button Content="{Binding commit}" Tag="{Binding}" Grid.Column="2" HorizontalAlignment="Stretch" ToolTip="{DynamicResource QuickSendButtonTip}" Click="knowSendDataButton_click" MouseRightButtonDown="Button_MouseDoubleClick"/>
                                         <CheckBox IsChecked="{Binding hex}"  Grid.Column="3" HorizontalAlignment="Center" Margin="2"/>

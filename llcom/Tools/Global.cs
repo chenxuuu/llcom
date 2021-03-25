@@ -139,6 +139,10 @@ namespace llcom.Tools
                 setting.SentCount = 0;
                 setting.ReceivedCount = 0;
             }
+            else
+            {
+                setting = new Model.Settings();
+            }
 
 
             uart.serial.BaudRate = setting.baudRate;

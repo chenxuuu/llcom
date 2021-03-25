@@ -22,7 +22,7 @@ namespace llcom.Model
             set
             {
                 _id = value;
-                DataChanged?.Invoke(0, EventArgs.Empty);
+                //DataChanged?.Invoke(0, EventArgs.Empty);
             }
         }
         public string text
