@@ -33,6 +33,7 @@ CI快照版：[Appveyor Artifacts](https://ci.appveyor.com/project/chenxuuu/llco
 - 串口断开后，如果再次连接，会自动重连
 - 发送的数据可被用户自定义的Lua脚本提前处理
 - 右侧快捷发送栏，快捷发送条目数量不限制
+- 右侧快捷发送栏，支持10页数据，互相独立
 - 可独立运行Lua脚本，并拥有定时器与协程任务特性（移植自[合宙Luat Task架构](http://wiki.openluat.com/doc/luatFramework/)）
 - 可选文字编码格式
 - 终端功能，直接敲键盘发送数据（包含ctrl+字母键）
