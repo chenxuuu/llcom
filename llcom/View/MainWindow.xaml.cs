@@ -85,7 +85,10 @@ namespace llcom
                     this.receivedCountTextBlock.DataContext = Tools.Global.setting;
 
                     //初始化快捷发送栏的数据
+                    this.QuickListPage.DataContext = Tools.Global.setting;
                     canSaveSendList = false;
+                    if (Global.setting.quickSendSelect == -1)
+                        Global.setting.quickSendSelect = 0;
                     ToSendData.DataChanged += SaveSendList;
                     LoadQuickSendList();
                     canSaveSendList = true;
@@ -146,6 +149,7 @@ namespace llcom
                             new ToSendData{id = 3,text="aa 01 02 0d 0a",commit="Hex数据也能发",hex=true},
                             new ToSendData{id = 4,text="此处数据会被lua处理",hex=false},
                             new ToSendData{id = 5,text="右击序号可以更改这一行的位置",hex=false},
+                            new ToSendData{id = 6,text="",hex=false},
                         };
             }
             foreach (var i in Tools.Global.setting.quickSend)
@@ -836,21 +840,23 @@ namespace llcom
             {
                 int index = -1;
                 int.TryParse(ret.Item2, out index);
-                if (index == data.id - 1 || index < 0 || index > toSendListItems.Count - 1) return;
+                if (index == data.id || index <= 0 || index > toSendListItems.Count) return;
                 //移动到指定位置
                 var item = toSendListItems[data.id-1];
                 toSendListItems.RemoveAt(data.id-1);
-                toSendListItems.Insert(index, item);
+                toSendListItems.Insert(index - 1, item);
             }
             SaveSendList(null, EventArgs.Empty);
         }
 
         private void MenuItem_Click_QuickSendList(object sender, RoutedEventArgs e)
         {
+            canSaveSendList = false;
             int select = int.Parse((string)((MenuItem)sender).Tag);
             toSendListItems.Clear();
             Global.setting.quickSendSelect = select;
             LoadQuickSendList();
+            canSaveSendList = true;
         }
     }
 }

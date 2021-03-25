@@ -213,6 +213,11 @@
                                 <ColumnDefinition Width="40"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Left" Orientation="Horizontal">
+                                <TextBlock Text="("/>
+                                <TextBlock Name="QuickListPage" Text="{Binding quickSendSelect}"/>
+                                <TextBlock Text=")"/>
+                            </StackPanel>
                             <TextBlock Text="{DynamicResource QuickSendId}" Grid.Column="0" HorizontalAlignment="Center"/>
                             <TextBlock Text="{DynamicResource QuickSendContent}" Grid.Column="1" HorizontalAlignment="Center"/>
                             <TextBlock Text="{DynamicResource QuickSendHex}" Grid.Column="3" HorizontalAlignment="Center"/>
