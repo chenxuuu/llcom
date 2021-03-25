@@ -178,7 +178,32 @@
         
         <!-- 右侧脚本、快捷发送 -->
         <TabControl Grid.Column="3" Grid.RowSpan="2">
-            <TabItem Header="{DynamicResource QuickSendCard}">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{DynamicResource QuickSendCard}"/>
+                        <Menu Grid.Column="1" HorizontalAlignment="Left">
+                            <MenuItem ToolTip="{DynamicResource QuickSendChangeList}">
+                                <MenuItem.Header>
+                                    <Grid>
+                                        <fa:FontAwesome Icon="StickyNote" Foreground="LightYellow"/>
+                                        <fa:FontAwesome Icon="StickyNoteOutline" Foreground="Black"/>
+                                    </Grid>
+                                </MenuItem.Header>
+                                <MenuItem Header="0" Tag="0" Click="MenuItem_Click_QuickSendList"/>
+                                <MenuItem Header="1" Tag="1" Click="MenuItem_Click_QuickSendList"/>
+                                <MenuItem Header="2" Tag="2" Click="MenuItem_Click_QuickSendList"/>
+                                <MenuItem Header="3" Tag="3" Click="MenuItem_Click_QuickSendList"/>
+                                <MenuItem Header="4" Tag="4" Click="MenuItem_Click_QuickSendList"/>
+                                <MenuItem Header="5" Tag="5" Click="MenuItem_Click_QuickSendList"/>
+                                <MenuItem Header="6" Tag="6" Click="MenuItem_Click_QuickSendList"/>
+                                <MenuItem Header="7" Tag="7" Click="MenuItem_Click_QuickSendList"/>
+                                <MenuItem Header="8" Tag="8" Click="MenuItem_Click_QuickSendList"/>
+                                <MenuItem Header="9" Tag="9" Click="MenuItem_Click_QuickSendList"/>
+                            </MenuItem>
+                        </Menu>
+                    </StackPanel>
+                </TabItem.Header>
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <Grid>
@@ -188,26 +213,6 @@
                                 <ColumnDefinition Width="40"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <Menu Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top">
-                                <MenuItem ToolTip="{DynamicResource QuickSendChangeList}">
-                                    <MenuItem.Header>
-                                        <Grid>
-                                            <fa:FontAwesome Icon="StickyNote" Foreground="LightYellow"/>
-                                            <fa:FontAwesome Icon="StickyNoteOutline" Foreground="Black"/>
-                                        </Grid>
-                                    </MenuItem.Header>
-                                    <MenuItem Header="0" Tag="0" Click="MenuItem_Click_QuickSendList"/>
-                                    <MenuItem Header="1" Tag="1" Click="MenuItem_Click_QuickSendList"/>
-                                    <MenuItem Header="2" Tag="2" Click="MenuItem_Click_QuickSendList"/>
-                                    <MenuItem Header="3" Tag="3" Click="MenuItem_Click_QuickSendList"/>
-                                    <MenuItem Header="4" Tag="4" Click="MenuItem_Click_QuickSendList"/>
-                                    <MenuItem Header="5" Tag="5" Click="MenuItem_Click_QuickSendList"/>
-                                    <MenuItem Header="6" Tag="6" Click="MenuItem_Click_QuickSendList"/>
-                                    <MenuItem Header="7" Tag="7" Click="MenuItem_Click_QuickSendList"/>
-                                    <MenuItem Header="8" Tag="8" Click="MenuItem_Click_QuickSendList"/>
-                                    <MenuItem Header="9" Tag="9" Click="MenuItem_Click_QuickSendList"/>
-                                </MenuItem>
-                            </Menu>
                             <TextBlock Text="{DynamicResource QuickSendId}" Grid.Column="0" HorizontalAlignment="Center"/>
                             <TextBlock Text="{DynamicResource QuickSendContent}" Grid.Column="1" HorizontalAlignment="Center"/>
                             <TextBlock Text="{DynamicResource QuickSendHex}" Grid.Column="3" HorizontalAlignment="Center"/>
