@@ -87,24 +87,7 @@ namespace llcom
                     //初始化快捷发送栏的数据
                     canSaveSendList = false;
                     ToSendData.DataChanged += SaveSendList;
-                    if (Tools.Global.setting.quickSend.Count == 0)
-                    {
-                        Tools.Global.setting.quickSend = new List<ToSendData>
-                        {
-                            new ToSendData{id = 1,text="example string",commit="右击更改此处文字",hex=false},
-                            new ToSendData{id = 2,text="lua可通过接口获取此处数据",hex=false},
-                            new ToSendData{id = 3,text="aa 01 02 0d 0a",commit="Hex数据也能发",hex=true},
-                            new ToSendData{id = 4,text="此处数据会被lua处理",hex=false},
-                            new ToSendData{id = 5,text="右击序号可以更改这一行的位置",hex=false},
-                        };
-                    }
-                    foreach (var i in Tools.Global.setting.quickSend)
-                    {
-                        if (i.commit == null)
-                            i.commit = FindResource("QuickSendButton") as string;
-                        toSendListItems.Add(i);
-                    }
-                    CheckToSendListId();
+                    LoadQuickSendList();
                     canSaveSendList = true;
 
 
@@ -147,6 +130,31 @@ namespace llcom
                     this.Title += $" - {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
                 }));
             });
+        }
+
+        /// <summary>
+        /// 加载快捷发送区数据
+        /// </summary>
+        private void LoadQuickSendList()
+        {
+            if (Tools.Global.setting.quickSend.Count == 0)
+            {
+                Tools.Global.setting.quickSend = new List<ToSendData>
+                        {
+                            new ToSendData{id = 1,text="example string",commit="右击更改此处文字",hex=false},
+                            new ToSendData{id = 2,text="lua可通过接口获取此处数据",hex=false},
+                            new ToSendData{id = 3,text="aa 01 02 0d 0a",commit="Hex数据也能发",hex=true},
+                            new ToSendData{id = 4,text="此处数据会被lua处理",hex=false},
+                            new ToSendData{id = 5,text="右击序号可以更改这一行的位置",hex=false},
+                        };
+            }
+            foreach (var i in Tools.Global.setting.quickSend)
+            {
+                if (i.commit == null)
+                    i.commit = FindResource("QuickSendButton") as string;
+                toSendListItems.Add(i);
+            }
+            CheckToSendListId();
         }
 
         private void Uart_UartDataSent(object sender, EventArgs e)
@@ -835,6 +843,14 @@ namespace llcom
                 toSendListItems.Insert(index, item);
             }
             SaveSendList(null, EventArgs.Empty);
+        }
+
+        private void MenuItem_Click_QuickSendList(object sender, RoutedEventArgs e)
+        {
+            int select = int.Parse((string)((MenuItem)sender).Tag);
+            toSendListItems.Clear();
+            Global.setting.quickSendSelect = select;
+            LoadQuickSendList();
         }
     }
 }

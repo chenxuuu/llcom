@@ -38,6 +38,7 @@
     <system:String x:Key="QuickSendChangeButton">更改发送按键显示内容</system:String>
     <system:String x:Key="QuickSendChangeIdButton">输入你想改到哪个序号的位置（留空表示删除该项目）</system:String>
     <system:String x:Key="QuickSendChangeIdTitle">更改这个条目的序号</system:String>
+    <system:String x:Key="QuickSendChangeList">切换到其他快捷发送数据列表</system:String>
     <system:String x:Key="LuaCard">运行lua脚本</system:String>
     <system:String x:Key="LuaNewScript">新建脚本</system:String>
     <system:String x:Key="LuaRunScript">运行脚本</system:String>

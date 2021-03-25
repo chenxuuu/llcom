@@ -38,6 +38,7 @@
     <system:String x:Key="QuickSendChangeButton">Change content of send button</system:String>
     <system:String x:Key="QuickSendChangeIdButton">Enter where you want to insert(empty means delete this line)</system:String>
     <system:String x:Key="QuickSendChangeIdTitle">Change index of this line</system:String>
+    <system:String x:Key="QuickSendChangeList">Change to another quick send list</system:String>
     <system:String x:Key="LuaCard">Run Lua script</system:String>
     <system:String x:Key="LuaNewScript">New script</system:String>
     <system:String x:Key="LuaRunScript">Run script</system:String>

@@ -27,7 +27,8 @@ namespace llcom.Model
         private string _sendScript = "默认";
         private string _runScript = "example";
         private bool _topmost = false;
-        private List<ToSendData> _quickSend = new List<ToSendData>();
+        public List<List<ToSendData>> quickSendList = new List<List<ToSendData>>();
+        private int _quickSendSelect = -1;
         private bool _bitDelay = true;
         private bool _autoUpdate = true;
         private uint _maxLength = 10240;
@@ -46,6 +47,9 @@ namespace llcom.Model
             File.WriteAllText(Tools.Global.ProfilePath+"settings.json", JsonConvert.SerializeObject(this));
         }
 
+        /// <summary>
+        /// 串口接收每包最大长度
+        /// </summary>
         public uint maxLength
         {
             get
@@ -59,19 +63,55 @@ namespace llcom.Model
             }
         }
 
+        /// <summary>
+        /// 当前选中的快捷发送列表数据
+        /// </summary>
         public List<ToSendData> quickSend
         {
             get
             {
-                return _quickSend;
+                if (_quickSendSelect == -1)
+                    return new List<ToSendData>();
+                if (quickSendList.Count == 0)
+                {
+                    for (var i = 0; i < 10; i++)
+                        quickSendList.Add(new List<ToSendData>());
+                }
+                return quickSendList[_quickSendSelect];
             }
             set
             {
-                _quickSend = value;
+                if (_quickSendSelect == -1)
+                    return;
+                if (quickSendList.Count == 0)
+                {
+                    for (var i = 0; i < 10; i++)
+                        quickSendList.Add(new List<ToSendData>());
+                }
+                quickSendList[_quickSendSelect] = value;
                 Save();
             }
         }
 
+        /// <summary>
+        /// 当前选中的快速发送列表编号
+        /// </summary>
+        public int quickSendSelect
+        {
+            get
+            {
+                return _quickSendSelect;
+            }
+            set
+            {
+                _quickSendSelect = value;
+                Save();
+            }
+        }
+
+        /// <summary>
+        /// 是否开启自动升级
+        /// </summary>
         public bool autoUpdate
         {
             get
