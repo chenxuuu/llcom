@@ -48,102 +48,108 @@ namespace llcom
         private bool isOpeningPort = false;
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //接收到、发送数据成功回调
-            Tools.Global.uart.UartDataRecived += Uart_UartDataRecived;
-            Tools.Global.uart.UartDataSent += Uart_UartDataSent;
-
-            //初始化所有数据
-            Tools.Global.Initial();
-
-            //重写关闭窗口代码
-            this.Closing += MainWindow_Closing;
-
-            //窗口置顶事件
-            Tools.Global.setting.MainWindowTop += new EventHandler(topEvent);
-
-            //usb刷新时触发
-            usbDeviceNotifier.Enabled = true;
-            usbDeviceNotifier.OnDeviceNotify += UsbDeviceNotifier_OnDeviceNotify; ;
-
-            //收发数据显示页面
-            dataShowFrame.Navigate(new Uri("Pages/DataShowPage.xaml", UriKind.Relative));
-
-            //加载初始波特率
-            baudRateComboBox.Text = Tools.Global.setting.baudRate.ToString();
-
-            //刷新设备列表
-            refreshPortList();
-
-            //绑定数据
-            this.toSendDataTextBox.DataContext = Tools.Global.setting;
-            toSendList.ItemsSource = toSendListItems;
-            this.sentCountTextBlock.DataContext = Tools.Global.setting;
-            this.receivedCountTextBlock.DataContext = Tools.Global.setting;
-
-            //初始化快捷发送栏的数据
-            canSaveSendList = false;
-            ToSendData.DataChanged += SaveSendList;
-            try
+            //延迟启动，加快软件第一屏出现速度
+            Task.Run(() =>
             {
-                JObject jo = (JObject)JsonConvert.DeserializeObject(Tools.Global.setting.quickData);
-                foreach(var i in jo["data"])
-                {
-                    if (i["commit"] == null)
-                        i["commit"] = FindResource("QuickSendButton") as string;
-                    toSendListItems.Add(new ToSendData() {
-                        id = (int)i["id"],
-                        text = (string)i["text"],
-                        hex = (bool)i["hex"],
-                        commit = (string)i["commit"]
-                    });
-                }
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show($"{FindResource("QuickSendLoadError") as string}\r\n" + ex.ToString() + "\r\n" + Tools.Global.setting.quickData);
-                Tools.Global.setting.quickData = "{\"data\":[{\"id\":1,\"text\":\"example string\",\"hex\":false},{\"id\":2,\"text\":\"lua可通过接口获取此处数据\",\"hex\":false},{\"id\":3,\"text\":\"aa 01 02 0d 0a\",\"hex\":true},{\"id\":4,\"text\":\"此处数据会被lua处理\",\"hex\":false}]}";
-            }
-            canSaveSendList = true;
+                this.Dispatcher.Invoke(new Action(delegate {
+                    //接收到、发送数据成功回调
+                    Tools.Global.uart.UartDataRecived += Uart_UartDataRecived;
+                    Tools.Global.uart.UartDataSent += Uart_UartDataSent;
 
-            //快速搜索
-            SearchPanel.Install(textEditor.TextArea);
-            string name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name + ".Lua.xshd";
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            using (System.IO.Stream s = assembly.GetManifestResourceStream(name))
-            {
-                using (XmlTextReader reader = new XmlTextReader(s))
-                {
-                    var xshd = HighlightingLoader.LoadXshd(reader);
-                    textEditor.SyntaxHighlighting = HighlightingLoader.Load(xshd, HighlightingManager.Instance);
-                }
-            }
+                    //初始化所有数据
+                    Tools.Global.Initial();//cost 299ms
 
-            //加载上次打开的文件
-            loadLuaFile(Tools.Global.setting.runScript);
+                    //重写关闭窗口代码
+                    this.Closing += MainWindow_Closing;
 
-            //加载lua日志打印事件
-            LuaEnv.LuaApis.PrintLuaLog += LuaApis_PrintLuaLog;
-            //lua代码出错/结束运行事件
-            LuaEnv.LuaRunEnv.LuaRunError += LuaRunEnv_LuaRunError;
+                    //窗口置顶事件
+                    Tools.Global.setting.MainWindowTop += new EventHandler(topEvent);
 
-            //关于页面
-            aboutFrame.Navigate(new Uri("Pages/AboutPage.xaml", UriKind.Relative));
+                    //usb刷新时触发
+                    usbDeviceNotifier.Enabled = true;
+                    usbDeviceNotifier.OnDeviceNotify += UsbDeviceNotifier_OnDeviceNotify; ;
 
-            //tcp测试页面
-            tcpTestFrame.Navigate(new Uri("Pages/tcpTest.xaml", UriKind.Relative));
+                    //收发数据显示页面
+                    dataShowFrame.Navigate(new Uri("Pages/DataShowPage.xaml", UriKind.Relative));
 
-            //mqtt测试页面
-            MqttTestFrame.Navigate(new Uri("Pages/MqttTestPage.xaml", UriKind.Relative));
+                    //加载初始波特率
+                    baudRateComboBox.Text = Tools.Global.setting.baudRate.ToString();
 
-            //编码转换工具页面
-            EncodingToolsFrame.Navigate(new Uri("Pages/ConvertPage.xaml", UriKind.Relative));
+                    //刷新设备列表
+                    refreshPortList();
 
-            //乱码修复
-            EncodingFixFrame.Navigate(new Uri("Pages/EncodingFixPage.xaml", UriKind.Relative));
+                    //绑定数据
+                    this.toSendDataTextBox.DataContext = Tools.Global.setting;
+                    toSendList.ItemsSource = toSendListItems;
+                    this.sentCountTextBlock.DataContext = Tools.Global.setting;
+                    this.receivedCountTextBlock.DataContext = Tools.Global.setting;
 
-            this.Title += $" - {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
+                    //初始化快捷发送栏的数据
+                    canSaveSendList = false;
+                    ToSendData.DataChanged += SaveSendList;
+                    try
+                    {
+                        JObject jo = (JObject)JsonConvert.DeserializeObject(Tools.Global.setting.quickData);
+                        foreach (var i in jo["data"])
+                        {
+                            if (i["commit"] == null)
+                                i["commit"] = FindResource("QuickSendButton") as string;
+                            toSendListItems.Add(new ToSendData()
+                            {
+                                id = (int)i["id"],
+                                text = (string)i["text"],
+                                hex = (bool)i["hex"],
+                                commit = (string)i["commit"]
+                            });
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"{FindResource("QuickSendLoadError") as string}\r\n" + ex.ToString() + "\r\n" + Tools.Global.setting.quickData);
+                        Tools.Global.setting.quickData = "{\"data\":[{\"id\":1,\"text\":\"example string\",\"hex\":false},{\"id\":2,\"text\":\"lua可通过接口获取此处数据\",\"hex\":false},{\"id\":3,\"text\":\"aa 01 02 0d 0a\",\"hex\":true},{\"id\":4,\"text\":\"此处数据会被lua处理\",\"hex\":false}]}";
+                    }
+                    canSaveSendList = true;
 
 
+                    //快速搜索
+                    SearchPanel.Install(textEditor.TextArea);
+                    string name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name + ".Lua.xshd";
+                    System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                    using (System.IO.Stream s = assembly.GetManifestResourceStream(name))
+                    {
+                        using (XmlTextReader reader = new XmlTextReader(s))
+                        {
+                            var xshd = HighlightingLoader.LoadXshd(reader);
+                            textEditor.SyntaxHighlighting = HighlightingLoader.Load(xshd, HighlightingManager.Instance);
+                        }
+                    }
+
+                    //加载上次打开的文件
+                    loadLuaFile(Tools.Global.setting.runScript);
+
+                    //加载lua日志打印事件
+                    LuaEnv.LuaApis.PrintLuaLog += LuaApis_PrintLuaLog;
+                    //lua代码出错/结束运行事件
+                    LuaEnv.LuaRunEnv.LuaRunError += LuaRunEnv_LuaRunError;
+
+                    //关于页面
+                    aboutFrame.Navigate(new Uri("Pages/AboutPage.xaml", UriKind.Relative));
+
+                    //tcp测试页面
+                    tcpTestFrame.Navigate(new Uri("Pages/tcpTest.xaml", UriKind.Relative));
+
+                    //mqtt测试页面
+                    MqttTestFrame.Navigate(new Uri("Pages/MqttTestPage.xaml", UriKind.Relative));
+
+                    //编码转换工具页面
+                    EncodingToolsFrame.Navigate(new Uri("Pages/ConvertPage.xaml", UriKind.Relative));
+
+                    //乱码修复
+                    EncodingFixFrame.Navigate(new Uri("Pages/EncodingFixPage.xaml", UriKind.Relative));
+
+                    this.Title += $" - {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
+                }));
+            });
         }
 
         private void Uart_UartDataSent(object sender, EventArgs e)
@@ -619,7 +625,7 @@ namespace llcom
             }
 
             //文件内容显示出来
-            textEditor.Text = File.ReadAllText(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua");
+            //textEditor.Text = File.ReadAllText(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua");
 
             RefreshScriptList();
         }

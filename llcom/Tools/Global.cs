@@ -134,6 +134,7 @@ namespace llcom.Tools
             //配置文件
             if(File.Exists(ProfilePath+"settings.json"))
             {
+                //cost 309ms
                 setting = JsonConvert.DeserializeObject<Model.Settings>(File.ReadAllText(ProfilePath+"settings.json"));
                 setting.SentCount = 0;
                 setting.ReceivedCount = 0;
