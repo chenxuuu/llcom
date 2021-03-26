@@ -68,8 +68,10 @@ namespace llcom.LuaEnv
         {
             if (Tools.Global.setting.quickSend.Count < id || id <= 0)
                 return "";
+            else if (Tools.Global.setting.quickSend[id - 1].hex)
+                return "H" + Tools.Global.setting.quickSend[id - 1].text;
             else
-                return Tools.Global.setting.quickSend[id-1].text;
+                return "S" + Tools.Global.setting.quickSend[id - 1].text;
         }
 
         /// <summary>
