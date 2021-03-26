@@ -786,24 +786,22 @@ namespace llcom
             OpenFileDialog.Filter = FindResource("QuickSendSSCOMFile") as string;
             if (OpenFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                Task.Run(() => {
+                this.Dispatcher.Invoke(new Action(delegate
+                {
                     canSaveSendList = false;
                     foreach (var i in Tools.Global.ImportFromSSCOM(OpenFileDialog.FileName))
                     {
-                        this.Dispatcher.Invoke(new Action(delegate
+                        toSendListItems.Add(new ToSendData()
                         {
-                            toSendListItems.Add(new ToSendData()
-                            {
-                                id = toSendListItems.Count + 1,
-                                text = i.text,
-                                hex = i.hex,
-                                commit = i.commit
-                            });
-                        }));
+                            id = toSendListItems.Count + 1,
+                            text = i.text,
+                            hex = i.hex,
+                            commit = i.commit
+                        });
                     }
                     canSaveSendList = true;
                     SaveSendList(0, EventArgs.Empty);//保存并刷新数据列表
-                });
+                }));
             }
         }
 
@@ -857,6 +855,54 @@ namespace llcom
             Global.setting.quickSendSelect = select;
             LoadQuickSendList();
             canSaveSendList = true;
+        }
+
+        private void QuickSendImportButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.OpenFileDialog OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            OpenFileDialog.Filter = FindResource("QuickSendLLCOMFile") as string;
+            if (OpenFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                List<ToSendData> data = null;
+                try
+                {
+                    data = JsonConvert.DeserializeObject<List<ToSendData>>(
+                        File.ReadAllText(OpenFileDialog.FileName));
+                }
+                catch (Exception err)
+                {
+                    MessageBox.Show(err.Message);
+                    return;
+                }
+                this.Dispatcher.Invoke(new Action(delegate
+                {
+                    canSaveSendList = false;
+                    foreach(var d in data)
+                    {
+                        toSendListItems.Add(d);
+                    }
+                    canSaveSendList = true;
+                    SaveSendList(0, EventArgs.Empty);//保存并刷新数据列表
+                }));
+            }
+        }
+
+        private void QuickSendExportButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.SaveFileDialog SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            SaveFileDialog.Filter = FindResource("QuickSendLLCOMFile") as string;
+            if (SaveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                try
+                {
+                    File.WriteAllText(SaveFileDialog.FileName, JsonConvert.SerializeObject(toSendListItems));
+                    MessageBox.Show(FindResource("QuickSendSaveFileDone") as string);
+                }
+                catch(Exception err)
+                {
+                    MessageBox.Show(err.Message);
+                }
+            }
         }
     }
 }

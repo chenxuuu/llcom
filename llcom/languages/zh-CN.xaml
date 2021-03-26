@@ -32,8 +32,12 @@
     <system:String x:Key="QuickSendAdd">添加新项目</system:String>
     <system:String x:Key="QuickSendRemoveLast">删除最后一项</system:String>
     <system:String x:Key="QuickSendTip">发送处理的lua脚本，同样对此处发送的数据生效。</system:String>
+    <system:String x:Key="QuickSendImport">导入数据到该页</system:String>
+    <system:String x:Key="QuickSendExport">导出该页数据</system:String>
     <system:String x:Key="QuickSendImportSSCOM">一键导入SSCOM数据</system:String>
     <system:String x:Key="QuickSendSSCOMFile">SSCOM配置文件|sscom51.ini;sscom.ini</system:String>
+    <system:String x:Key="QuickSendLLCOMFile">LLCOM列表文件|*.lclst</system:String>
+    <system:String x:Key="QuickSendSaveFileDone">数据导出成功！</system:String>
     <system:String x:Key="QuickSendSetButton">输入你想显示的内容</system:String>
     <system:String x:Key="QuickSendChangeButton">更改发送按键显示内容</system:String>
     <system:String x:Key="QuickSendChangeIdButton">输入你想改到哪个序号的位置（留空表示删除该项目）</system:String>

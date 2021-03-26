@@ -251,7 +251,15 @@
                             <Button Name="deleteSendListButton" Content="{DynamicResource QuickSendRemoveLast}" Grid.Column="1" Margin="3" Click="DeleteSendListButton_Click"/>
                         </Grid>
                         <TextBlock Text="{DynamicResource QuickSendTip}" TextWrapping="Wrap" FontWeight="Bold"/>
-                        <Button Name="importSSCOMButton" Content="{DynamicResource QuickSendImportSSCOM}" Grid.Column="1" Margin="3,3,3,5" Click="ImportSSCOMButton_Click"/>
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Name="QuickSendImportButton" Content="{DynamicResource QuickSendImport}" Margin="3" Click="QuickSendImportButton_Click"/>
+                            <Button Name="QuickSendExportButton" Content="{DynamicResource QuickSendExport}" Grid.Column="1" Margin="3" Click="QuickSendExportButton_Click"/>
+                        </Grid>
+                        <Button Name="importSSCOMButton" Content="{DynamicResource QuickSendImportSSCOM}" Margin="3,3,3,5" Click="ImportSSCOMButton_Click"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
