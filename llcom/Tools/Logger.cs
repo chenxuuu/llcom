@@ -29,16 +29,26 @@ namespace llcom.Tools
         }
 
 
-        private static string uartLogFile = "";
-        private static string luaLogFile = "";
+        private static FileStream uartLogFile = null;
+        private static FileStream luaLogFile = null;
 
         /// <summary>
         /// 初始化串口日志文件
         /// </summary>
         public static void InitUartLog()
         {
-            uartLogFile = Tools.Global.ProfilePath + "logs/" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".log";
+            string uartLog = Tools.Global.ProfilePath + "logs/" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".log";
+            uartLogFile = File.Open(uartLog, FileMode.Append);
             AddUartLog("[INFO]Logs by LLCOM. https://github.com/chenxuuu/llcom");
+        }
+
+        public static void CloseUartLog()
+        {
+            if (uartLogFile == null)
+                return;
+            lock (uartLogFile)
+                uartLogFile.Close();
+            uartLogFile = null;
         }
 
         /// <summary>
@@ -47,11 +57,14 @@ namespace llcom.Tools
         /// <param name="l"></param>
         public static void AddUartLog(string l)
         {
-            if (uartLogFile == "")
+            if (uartLogFile == null)
                 InitUartLog();
             try
             {
-                File.AppendAllText(uartLogFile, DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss:ffff]") + l + "\r\n");
+                byte[] log = Tools.Global.GetEncoding().GetBytes(
+                    DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss:ffff]") + l + "\r\n");
+                lock (uartLogFile)
+                    uartLogFile.Write(log, 0, log.Length);
             }
             catch { }
         }
@@ -62,7 +75,17 @@ namespace llcom.Tools
         /// </summary>
         public static void InitLuaLog()
         {
-            luaLogFile = Tools.Global.ProfilePath + "user_script_run/logs/" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".log";
+            string luaLog = Tools.Global.ProfilePath + "user_script_run/logs/" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".log";
+            luaLogFile = File.Open(luaLog, FileMode.Append);
+        }
+
+        public static void CloseLuaLog()
+        {
+            if (luaLogFile == null)
+                return;
+            lock (luaLogFile)
+                luaLogFile.Close();
+            luaLogFile = null;
         }
 
         /// <summary>
@@ -71,11 +94,14 @@ namespace llcom.Tools
         /// <param name="l"></param>
         public static void AddLuaLog(string l)
         {
-            if (luaLogFile == "")
+            if (luaLogFile == null)
                 InitLuaLog();
             try
             {
-                File.AppendAllText(luaLogFile, DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss:ffff]") + l + "\r\n");
+                byte[] log = Tools.Global.GetEncoding().GetBytes(
+                    DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss:ffff]") + l + "\r\n");
+                lock(luaLogFile)
+                    luaLogFile.Write(log, 0, log.Length);
             }
             catch { }
         }

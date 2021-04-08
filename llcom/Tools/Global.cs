@@ -19,7 +19,23 @@ namespace llcom.Tools
         //api接口文档网址
         public static string apiDocumentUrl = "https://github.com/chenxuuu/llcom/blob/master/LuaApi.md";
         //主窗口是否被关闭？
-        public static bool isMainWindowsClosed = false;
+        private static bool _isMainWindowsClosed = false;
+        public static bool isMainWindowsClosed
+        {
+            get
+            {
+                return _isMainWindowsClosed;
+            }
+            set
+            {
+                _isMainWindowsClosed = value;
+                if (value)
+                {
+                    Logger.CloseUartLog();
+                    Logger.CloseLuaLog();
+                }
+            }
+        }
         //给全局使用的设置参数项
         public static Model.Settings setting;
         public static Model.Uart uart = new Model.Uart();

@@ -152,7 +152,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="10" />
                 <StatusBarItem Grid.Column="11">
-                    <TextBlock Name="statusTextBlock" Text="{DynamicResource OpenPort_open}" />
+                    <TextBlock Name="statusTextBlock" Text="{DynamicResource OpenPort_close}" />
                 </StatusBarItem>
                 <Separator Grid.Column="12" />
                 <StatusBarItem Grid.Column="13">
