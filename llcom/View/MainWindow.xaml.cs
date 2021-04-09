@@ -823,7 +823,15 @@ namespace llcom
         //id序号右击事件
         private void TextBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ToSendData data = ((TextBlock)sender).Tag as ToSendData;
+            ToSendData data;
+            try
+            {
+                data = ((TextBlock)sender).Tag as ToSendData;
+            }
+            catch
+            {
+                data = ((Grid)sender).Tag as ToSendData;
+            }
             Tuple<bool, string> ret = Tools.InputDialog.OpenDialog(FindResource("QuickSendChangeIdButton") as string,
                 data.id.ToString(), (FindResource("QuickSendChangeIdTitle") as string) + data.id.ToString());
 

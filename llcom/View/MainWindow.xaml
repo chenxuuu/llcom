@@ -156,19 +156,19 @@
                 </StatusBarItem>
                 <Separator Grid.Column="12" />
                 <StatusBarItem Grid.Column="13">
-                    <TextBlock Text="{DynamicResource SentCount}"  ToolTip="{DynamicResource ClearCountTip}" MouseRightButtonDown="sentCountTextBlock_MouseRightButtonDown"/>
+                    <TextBlock Text="{DynamicResource SentCount}"  ToolTip="{DynamicResource ClearCountTip}" MouseRightButtonDown="sentCountTextBlock_MouseRightButtonDown" Cursor="Cross"/>
                 </StatusBarItem>
                 <Separator Grid.Column="14" />
                 <StatusBarItem Grid.Column="15">
-                    <TextBlock Name="sentCountTextBlock" Text="{Binding SentCount}" ToolTip="{DynamicResource ClearCountTip}" MouseRightButtonDown="sentCountTextBlock_MouseRightButtonDown"/>
+                    <TextBlock Name="sentCountTextBlock" Text="{Binding SentCount}" ToolTip="{DynamicResource ClearCountTip}" MouseRightButtonDown="sentCountTextBlock_MouseRightButtonDown" Cursor="Cross"/>
                 </StatusBarItem>
                 <Separator Grid.Column="16" />
                 <StatusBarItem Grid.Column="17">
-                    <TextBlock Text="{DynamicResource ReceivedCount}"  ToolTip="{DynamicResource ClearCountTip}" MouseRightButtonDown="receivedCountTextBlock_MouseRightButtonDown"/>
+                    <TextBlock Text="{DynamicResource ReceivedCount}"  ToolTip="{DynamicResource ClearCountTip}" MouseRightButtonDown="receivedCountTextBlock_MouseRightButtonDown" Cursor="Cross"/>
                 </StatusBarItem>
                 <Separator Grid.Column="18" />
                 <StatusBarItem Grid.Column="19">
-                    <TextBlock Name="receivedCountTextBlock" Text="{Binding ReceivedCount}" ToolTip="{DynamicResource ClearCountTip}" MouseRightButtonDown="receivedCountTextBlock_MouseRightButtonDown"/>
+                    <TextBlock Name="receivedCountTextBlock" Text="{Binding ReceivedCount}" ToolTip="{DynamicResource ClearCountTip}" MouseRightButtonDown="receivedCountTextBlock_MouseRightButtonDown" Cursor="Cross"/>
                 </StatusBarItem>
             </StatusBar>
         </DockPanel>
@@ -234,9 +234,10 @@
                                             <ColumnDefinition Width="auto"/>
                                             <ColumnDefinition Width="20"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding id}" Tag="{Binding}" Grid.Column="0" HorizontalAlignment="Center" Margin="2" ToolTip="{DynamicResource QuickSendIdTip}" MouseRightButtonDown="TextBlock_MouseRightButtonDown"/>
+                                        <Grid Background="#F6F6F6" Tag="{Binding}" Margin="1" MouseRightButtonDown="TextBlock_MouseRightButtonDown" Cursor="Cross"/>
+                                        <TextBlock Text="{Binding id}" Tag="{Binding}" Grid.Column="0" HorizontalAlignment="Center" Margin="2" ToolTip="{DynamicResource QuickSendIdTip}" MouseRightButtonDown="TextBlock_MouseRightButtonDown" Cursor="Cross"/>
                                         <TextBox Text="{Binding text,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,0,2,0"/>
-                                        <Button Content="{Binding commit}" Tag="{Binding}" Grid.Column="2" HorizontalAlignment="Stretch" ToolTip="{DynamicResource QuickSendButtonTip}" Click="knowSendDataButton_click" MouseRightButtonDown="Button_MouseDoubleClick"/>
+                                        <Button Content="{Binding commit}" Tag="{Binding}" Grid.Column="2" HorizontalAlignment="Stretch" ToolTip="{DynamicResource QuickSendButtonTip}" Click="knowSendDataButton_click" MouseRightButtonDown="Button_MouseDoubleClick" Cursor="Cross"/>
                                         <CheckBox IsChecked="{Binding hex}"  Grid.Column="3" HorizontalAlignment="Center" Margin="2"/>
                                     </Grid>
                                 </DataTemplate>
