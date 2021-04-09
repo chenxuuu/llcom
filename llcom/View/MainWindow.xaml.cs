@@ -492,6 +492,8 @@ namespace llcom
                 }
                 try
                 {
+                    if (Tools.Global.setting.extraEnter)
+                        dataConvert += "0D0A";
                     Tools.Global.uart.SendData(Tools.Global.Hex2Byte(dataConvert));
                 }
                 catch(Exception ex)

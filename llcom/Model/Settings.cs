@@ -35,6 +35,7 @@ namespace llcom.Model
         private string _language = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
         private int _encoding = 65001;
         private bool _terminal = true;
+        private bool _extraEnter = false;
 
         public int SentCount { get; set; } = 0;
         public int ReceivedCount { get; set; } = 0;
@@ -357,6 +358,19 @@ namespace llcom.Model
                     Save();
                 }
                 catch { }//获取出错说明编码不对
+            }
+        }
+
+        public bool extraEnter
+        {
+            get
+            {
+                return _extraEnter;
+            }
+            set
+            {
+                _extraEnter = value;
+                Save();
             }
         }
     }

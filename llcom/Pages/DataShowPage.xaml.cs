@@ -42,6 +42,7 @@ namespace llcom.Pages
             LockIcon.DataContext = this;
             UnLockIcon.DataContext = this;
             UnLockText.DataContext = this;
+            this.ExtraEnterCheckBox.DataContext = Tools.Global.setting;
         }
 
         int maxDataLength = (int)Tools.Global.setting.maxLength;//最长一包数据长度，因为太长会把工具卡死机
