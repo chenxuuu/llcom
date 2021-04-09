@@ -24,7 +24,7 @@
             <RowDefinition Height="60"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Grid Name="CreateButtonGrid" Visibility="{Binding IsConnected,Converter={StaticResource boolNotVisibeConverter}}" ToolTip="Provide by netlab.vue2.cn">
+        <Grid Name="CreateButtonGrid" Visibility="{Binding IsConnected,Converter={StaticResource boolNotVisibeConverter}}" ToolTip="Provide by netlab.luatos.com">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
