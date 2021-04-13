@@ -94,6 +94,8 @@ package.cpath = package.cpath..
                 }
                 catch (Exception e)
                 {
+                    luaRunner.Dispose();
+                    luaRunner = null;
                     throw new Exception(e.ToString());
                 }
             }
