@@ -27,7 +27,7 @@ namespace llcom
             InitializeComponent();
             this.DataContext = this;
             this.Value = defaultInput;
-            this.Title = title ?? FindResource("InputDialogTitle") as string;
+            this.Title = title ?? TryFindResource("InputDialogTitle") as string ?? "?!";
             PromptLabel.Text = prompt;
         }
 

@@ -155,7 +155,7 @@ namespace llcom
             foreach (var i in Tools.Global.setting.quickSend)
             {
                 if (i.commit == null)
-                    i.commit = FindResource("QuickSendButton") as string;
+                    i.commit = TryFindResource("QuickSendButton") as string ?? "?!";
                 toSendListItems.Add(i);
             }
             CheckToSendListId();
@@ -258,9 +258,9 @@ namespace llcom
                                         Tools.Global.uart.Open();
                                         Dispatcher.Invoke(new Action(delegate
                                         {
-                                            openClosePortTextBlock.Text = (FindResource("OpenPort_close") as string);
+                                            openClosePortTextBlock.Text = (TryFindResource("OpenPort_close") as string ?? "?!");
                                             serialPortsListComboBox.IsEnabled = false;
-                                            statusTextBlock.Text = (FindResource("OpenPort_open") as string);
+                                            statusTextBlock.Text = (TryFindResource("OpenPort_open") as string ?? "?!");
                                         }));
                                     }
                                     catch
@@ -313,9 +313,9 @@ namespace llcom
             }
             else
             {
-                openClosePortTextBlock.Text = (FindResource("OpenPort_open") as string);
+                openClosePortTextBlock.Text = (TryFindResource("OpenPort_open") as string ?? "?!");
                 serialPortsListComboBox.IsEnabled = true;
-                statusTextBlock.Text = (FindResource("OpenPort_close") as string);
+                statusTextBlock.Text = (TryFindResource("OpenPort_close") as string ?? "?!");
                 refreshPortList();
             }
         }
@@ -404,9 +404,9 @@ namespace llcom
                             Tools.Global.uart.Open();
                             this.Dispatcher.Invoke(new Action(delegate
                             {
-                                openClosePortTextBlock.Text = (FindResource("OpenPort_close") as string);
+                                openClosePortTextBlock.Text = (TryFindResource("OpenPort_close") as string ?? "?!");
                                 serialPortsListComboBox.IsEnabled = false;
-                                statusTextBlock.Text = (FindResource("OpenPort_open") as string);
+                                statusTextBlock.Text = (TryFindResource("OpenPort_open") as string ?? "?!");
                             }));
                             if(toSendData != null)
                             {
@@ -417,7 +417,7 @@ namespace llcom
                         catch
                         {
                             //串口打开失败！
-                            MessageBox.Show(FindResource("ErrorOpenPort") as string);
+                            MessageBox.Show(TryFindResource("ErrorOpenPort") as string ?? "?!");
                         }
                         isOpeningPort = false;
                     });
@@ -441,11 +441,11 @@ namespace llcom
                 catch
                 {
                     //串口关闭失败！
-                    MessageBox.Show(FindResource("ErrorClosePort") as string);
+                    MessageBox.Show(TryFindResource("ErrorClosePort") as string ?? "?!");
                 }
-                openClosePortTextBlock.Text = (FindResource("OpenPort_open") as string);
+                openClosePortTextBlock.Text = (TryFindResource("OpenPort_open") as string ?? "?!");
                 serialPortsListComboBox.IsEnabled = true;
-                statusTextBlock.Text = (FindResource("OpenPort_close") as string);
+                statusTextBlock.Text = (TryFindResource("OpenPort_close") as string ?? "?!");
             }
 
         }
@@ -487,7 +487,7 @@ namespace llcom
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"{FindResource("ErrorScript") as string}\r\n" + ex.ToString());
+                    MessageBox.Show($"{TryFindResource("ErrorScript") as string ?? "?!"}\r\n" + ex.ToString());
                     return;
                 }
                 try
@@ -498,7 +498,7 @@ namespace llcom
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show($"{FindResource("ErrorSendFail") as string}\r\n"+ex.ToString());
+                    MessageBox.Show($"{TryFindResource("ErrorSendFail") as string ?? "?!"}\r\n"+ex.ToString());
                     return;
                 }
             }
@@ -511,7 +511,7 @@ namespace llcom
 
         private void AddSendListButton_Click(object sender, RoutedEventArgs e)
         {
-            toSendListItems.Add(new ToSendData() { id = toSendListItems.Count + 1, text = "", hex = false , commit = FindResource("QuickSendButton") as string });
+            toSendListItems.Add(new ToSendData() { id = toSendListItems.Count + 1, text = "", hex = false , commit = TryFindResource("QuickSendButton") as string ?? "?!" });
         }
 
         private void DeleteSendListButton_Click(object sender, RoutedEventArgs e)
@@ -535,8 +535,8 @@ namespace llcom
         private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ToSendData data = ((Button)sender).Tag as ToSendData;
-            Tuple<bool, string> ret = Tools.InputDialog.OpenDialog(FindResource("QuickSendSetButton") as string,
-                data.commit, FindResource("QuickSendChangeButton") as string);
+            Tuple<bool, string> ret = Tools.InputDialog.OpenDialog(TryFindResource("QuickSendSetButton") as string ?? "?!",
+                data.commit, TryFindResource("QuickSendChangeButton") as string ?? "?!");
             if(ret.Item1)
             {
                 ((Button)sender).Content = data.commit = ret.Item2;
@@ -597,12 +597,12 @@ namespace llcom
         {
             if (string.IsNullOrWhiteSpace(newLuaFileNameTextBox.Text))
             {
-                MessageBox.Show(FindResource("LuaNoName") as string);
+                MessageBox.Show(TryFindResource("LuaNoName") as string ?? "?!");
                 return;
             }
             if (File.Exists(Tools.Global.ProfilePath + $"user_script_run/{newLuaFileNameTextBox.Text}.lua"))
             {
-                MessageBox.Show(FindResource("LuaExist") as string);
+                MessageBox.Show(TryFindResource("LuaExist") as string ?? "?!");
                 return;
             }
 
@@ -613,7 +613,7 @@ namespace llcom
             }
             catch
             {
-                MessageBox.Show(FindResource("LuaCreateFail") as string);
+                MessageBox.Show(TryFindResource("LuaCreateFail") as string ?? "?!");
                 return;
             }
             newLuaFileWrapPanel.Visibility = Visibility.Collapsed;
@@ -694,12 +694,12 @@ namespace llcom
                 {
                     if (value)
                     {
-                        pauseLuaPrintButton.ToolTip = FindResource("LuaPause") as string;
+                        pauseLuaPrintButton.ToolTip = TryFindResource("LuaPause") as string ?? "?!";
                         pauseLuaPrintIcon.Icon = FontAwesomeIcon.Pause;
                     }
                     else
                     {
-                        pauseLuaPrintButton.ToolTip = FindResource("LuaContinue") as string;
+                        pauseLuaPrintButton.ToolTip = TryFindResource("LuaContinue") as string ?? "?!";
                         pauseLuaPrintIcon.Icon = FontAwesomeIcon.Play;
                     }
                 }));
@@ -785,7 +785,7 @@ namespace llcom
         private void ImportSSCOMButton_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.OpenFileDialog OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
-            OpenFileDialog.Filter = FindResource("QuickSendSSCOMFile") as string;
+            OpenFileDialog.Filter = TryFindResource("QuickSendSSCOMFile") as string ?? "?!";
             if (OpenFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 this.Dispatcher.Invoke(new Action(delegate
@@ -834,8 +834,8 @@ namespace llcom
             {
                 data = ((Grid)sender).Tag as ToSendData;
             }
-            Tuple<bool, string> ret = Tools.InputDialog.OpenDialog(FindResource("QuickSendChangeIdButton") as string,
-                data.id.ToString(), (FindResource("QuickSendChangeIdTitle") as string) + data.id.ToString());
+            Tuple<bool, string> ret = Tools.InputDialog.OpenDialog(TryFindResource("QuickSendChangeIdButton") as string ?? "?!",
+                data.id.ToString(), (TryFindResource("QuickSendChangeIdTitle") as string ?? "?!") + data.id.ToString());
 
             if (!ret.Item1)
                 return;
@@ -870,7 +870,7 @@ namespace llcom
         private void QuickSendImportButton_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.OpenFileDialog OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
-            OpenFileDialog.Filter = FindResource("QuickSendLLCOMFile") as string;
+            OpenFileDialog.Filter = TryFindResource("QuickSendLLCOMFile") as string ?? "?!";
             if (OpenFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 List<ToSendData> data = null;
@@ -900,13 +900,13 @@ namespace llcom
         private void QuickSendExportButton_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.SaveFileDialog SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            SaveFileDialog.Filter = FindResource("QuickSendLLCOMFile") as string;
+            SaveFileDialog.Filter = TryFindResource("QuickSendLLCOMFile") as string ?? "?!";
             if (SaveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 try
                 {
                     File.WriteAllText(SaveFileDialog.FileName, JsonConvert.SerializeObject(toSendListItems));
-                    MessageBox.Show(FindResource("QuickSendSaveFileDone") as string);
+                    MessageBox.Show(TryFindResource("QuickSendSaveFileDone") as string ?? "?!");
                 }
                 catch(Exception err)
                 {

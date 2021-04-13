@@ -215,12 +215,12 @@ namespace llcom
         {
             if (string.IsNullOrWhiteSpace(newLuaFileNameTextBox.Text))
             {
-                MessageBox.Show(FindResource("LuaNoName") as string);
+                MessageBox.Show(TryFindResource("LuaNoName") as string ?? "?!");
                 return;
             }
             if (File.Exists(Tools.Global.ProfilePath + $"user_script_send_convert/{newLuaFileNameTextBox.Text}.lua"))
             {
-                MessageBox.Show(FindResource("LuaExist") as string);
+                MessageBox.Show(TryFindResource("LuaExist") as string ?? "?!");
                 return;
             }
 
@@ -231,7 +231,7 @@ namespace llcom
             }
             catch
             {
-                MessageBox.Show(FindResource("LuaCreateFail") as string);
+                MessageBox.Show(TryFindResource("LuaCreateFail") as string ?? "?!");
                 return;
             }
             newLuaFileWrapPanel.Visibility = Visibility.Collapsed;
@@ -246,12 +246,12 @@ namespace llcom
                     string r = LuaEnv.LuaLoader.Run($"{luaFileList.SelectedItem as string}.lua",
                                         new System.Collections.ArrayList{"uartData",
                                            Tools.Global.String2Hex(luaTestTextBox.Text,"")});
-                    MessageBox.Show($"{FindResource("SettingLuaRunResult") as string}\r\nHEX：" + r +
-                        $"\r\n{FindResource("SettingLuaRawText") as string}" + Tools.Global.Hex2String(r));
+                    MessageBox.Show($"{TryFindResource("SettingLuaRunResult") as string ?? "?!"}\r\nHEX：" + r +
+                        $"\r\n{TryFindResource("SettingLuaRawText") as string ?? "?!"}" + Tools.Global.Hex2String(r));
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show($"{FindResource("ErrorScript") as string}\r\n" + ex.ToString());
+                    MessageBox.Show($"{TryFindResource("ErrorScript") as string ?? "?!"}\r\n" + ex.ToString());
                 }
 
             }
