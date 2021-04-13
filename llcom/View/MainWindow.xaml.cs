@@ -210,21 +210,25 @@ namespace llcom
                     //MessageBox.Show("fail了");
                 }
 
-
-                foreach (string p in SerialPort.GetPortNames())//加上缺少的com口
+                try
                 {
-                    bool notMatch = true;
-                    foreach(string n in strs)
+                    foreach (string p in SerialPort.GetPortNames())//加上缺少的com口
                     {
-                        if (n.Contains($"({p})"))//如果和选中项目匹配
+                        bool notMatch = true;
+                        foreach (string n in strs)
                         {
-                            notMatch = false;
-                            break;
+                            if (n.Contains($"({p})"))//如果和选中项目匹配
+                            {
+                                notMatch = false;
+                                break;
+                            }
                         }
+                        if (notMatch)
+                            strs.Add($"Serial Port {p} ({p})");//如果列表中没有，就自己加上
                     }
-                    if(notMatch)
-                        strs.Add($"Serial Port {p} ({p})");//如果列表中没有，就自己加上
                 }
+                catch{ }
+
 
                 this.Dispatcher.Invoke(new Action(delegate {
                     foreach (string i in strs)
@@ -382,7 +386,15 @@ namespace llcom
                 return;
             if (serialPortsListComboBox.SelectedItem != null)
             {
-                string[] ports = SerialPort.GetPortNames();//获取所有串口列表
+                string[] ports;//获取所有串口列表
+                try
+                {
+                    ports = SerialPort.GetPortNames();
+                }
+                catch
+                {
+                    ports = new string[0];
+                }
                 string port = "";//最终串口名
                 foreach (string p in ports)//循环查找符合名称串口
                 {
@@ -660,7 +672,11 @@ namespace llcom
         /// <param name="fileName">文件名，不带.lua</param>
         private void saveLuaFile(string fileName)
         {
-            File.WriteAllText(Tools.Global.ProfilePath + $"user_script_run/{fileName}.lua", textEditor.Text);
+            try
+            {
+                File.WriteAllText(Tools.Global.ProfilePath + $"user_script_run/{fileName}.lua", textEditor.Text);
+            }
+            catch { }
         }
 
         private void LuaFileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
