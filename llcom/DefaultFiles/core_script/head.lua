@@ -7,6 +7,13 @@ math.randomseed(tostring(os.time()):reverse():sub(1, 6))
 --防止跑死循环，超时设置秒数自动结束，-1表示禁用
 runMaxSeconds = runType == "send" and 3 or -1
 local start = os.time()
+function runLimitStart(s)
+    start = os.time()
+    runMaxSeconds = s
+end
+function runLimitStop()
+    runMaxSeconds = -1
+end
 function trace (event, line)
     if runMaxSeconds > 0 and os.time() - start >=runMaxSeconds then
         error("代码运行超时")

@@ -94,6 +94,9 @@ namespace llcom.Tools
                 {
                     Directory.CreateDirectory(ProfilePath);
                 }
+                //升级的时候不会自动升级核心脚本，所以先强制删掉再释放，确保是最新的
+                if (Directory.Exists(ProfilePath + "core_script"))
+                    Directory.Delete(ProfilePath + "core_script", true);
             }
             else
             {

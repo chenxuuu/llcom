@@ -58,6 +58,8 @@ package.cpath = package.cpath..
             lua.DoString("require 'core_script.head'");
         }
 
+
+        private static XLua.LuaEnv luaRunner = null;
         /// <summary>
         /// 运行lua文件并获取结果
         /// </summary>
@@ -70,19 +72,25 @@ package.cpath = package.cpath..
             if (!File.Exists(Tools.Global.ProfilePath + "user_script_send_convert/" + file))
                 return "";
 
-            using (var lua = new XLua.LuaEnv())
+            if (luaRunner == null)
             {
+                luaRunner = new XLua.LuaEnv();
+                luaRunner.Global.SetInPath("runType", "send");//一次性处理标志
+                Initial(luaRunner, "send");
+            }
+            lock (luaRunner)
+            {
+                luaRunner.Global.SetInPath("file", file);
+
                 try
                 {
-                    lua.Global.SetInPath("runType", "send");//一次性处理标志
-                    lua.Global.SetInPath("file", file);
-                    Initial(lua, "send");
                     if (args != null)
                         for (int i = 0; i < args.Count; i += 2)
                         {
-                            lua.Global.SetInPath((string)args[i], args[i + 1].ToString());
+                            luaRunner.Global.SetInPath((string)args[i], args[i + 1].ToString());
+                            System.Diagnostics.Debug.WriteLine($"{(string)args[i]},{args[i + 1]}");
                         }
-                    return lua.DoString("return require'core_script.once'")[0].ToString();
+                    return luaRunner.DoString("return require('core_script.once')()")[0].ToString();
                 }
                 catch (Exception e)
                 {
