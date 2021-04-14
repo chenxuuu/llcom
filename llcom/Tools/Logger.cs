@@ -11,6 +11,7 @@ namespace llcom.Tools
     {
         //显示日志数据的回调函数
         public static event EventHandler<DataShowPara> DataShowEvent;
+        public static event EventHandler<string> DataShowRawEvent;
         //清空显示的回调函数
         public static event EventHandler DataClearEvent;
         //清空日志显示
@@ -26,6 +27,11 @@ namespace llcom.Tools
                 data = data,
                 send = send
             });
+        }
+        //显示日志数据
+        public static void ShowDataRaw(string s)
+        {
+            DataShowRawEvent?.Invoke(null, s);
         }
 
 

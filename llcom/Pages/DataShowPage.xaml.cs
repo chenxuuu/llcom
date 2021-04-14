@@ -35,6 +35,7 @@ namespace llcom.Pages
             sv = uartDataFlowDocument.Template.FindName("PART_ContentHost", uartDataFlowDocument) as ScrollViewer;
             sv.CanContentScroll = true;
             Tools.Logger.DataShowEvent += addUartLog;
+            Tools.Logger.DataShowRawEvent += Logger_DataShowRawEvent;
             Tools.Logger.DataClearEvent += (xx,x) =>
             {
                 uartDataFlowDocument.Document.Blocks.Clear();
@@ -43,6 +44,29 @@ namespace llcom.Pages
             UnLockIcon.DataContext = this;
             UnLockText.DataContext = this;
             this.ExtraEnterCheckBox.DataContext = Tools.Global.setting;
+        }
+
+        private void Logger_DataShowRawEvent(object sender, string e)
+        {
+            if (e.Length == 0)
+                return;
+            uartDataFlowDocument.IsSelectionEnabled = false;
+
+            Paragraph p = new Paragraph(new Run(""));
+            Span text = new Span(new Run(DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss.ffff]")));
+            text.Foreground = Brushes.DarkSlateGray;
+            p.Inlines.Add(text);
+            text = new Span(new Run(" MQTT "));
+            text.Foreground = Brushes.Black;
+            text.FontWeight = FontWeights.Bold;
+            p.Inlines.Add(text);
+            text = new Span(new Run(e)); 
+            text.Foreground = Brushes.DarkGreen;
+            text.FontSize = 15;
+            p.Inlines.Add(text);
+            uartDataFlowDocument.Document.Blocks.Add(p);
+
+            uartDataFlowDocument.IsSelectionEnabled = true;
         }
 
         int maxDataLength = (int)Tools.Global.setting.maxLength;//最长一包数据长度，因为太长会把工具卡死机

@@ -8,20 +8,87 @@
       d:DesignHeight="440" d:DesignWidth="400"
       Title="MqttTestPage"
       Loaded="Page_Loaded">
+    <Page.Resources>
+        <local:boolConnected x:Key="boolConnectedConverter"/>
+        <local:boolNot x:Key="boolNotConverter"/>
+    </Page.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <TextBlock Text="制作中。。。"/>
-        <Expander Header="配置信息" Grid.Row="1">
-            <StackPanel>
-                <TextBlock Text="22121"/>
-                <TextBlock Text="add3er"/>
-            </StackPanel>
-        </Expander>
+        <TabControl>
+            <TabItem Header="Send and subscribe">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Name="subcribeTextBox" Text="your/subcribe/topic"/>
+                        <Button Name="subcribeButton" Content="subcribe" Grid.Column="1" Click="subcribeButton_Click"/>
+                        <TextBlock Text="QOS:" Grid.Column="2" VerticalAlignment="Center"/>
+                        <ComboBox Name="subQOSComboBox" Grid.Column="3">
+                            <ComboBoxItem Content="0" IsSelected="True"/>
+                            <ComboBoxItem Content="1"/>
+                            <ComboBoxItem Content="2"/>
+                        </ComboBox>
+                    </Grid>
+                    <TextBlock Text="Subscribes:" Grid.Row="1"/>
+                    <ListBox Name="subListBox" Grid.Row="2" Background="LightGray">
+                        <ListBoxItem Content="not connect to server"/>
+                    </ListBox>
+                    <TextBox Name="PublishTextBox" Grid.Row="3" VerticalContentAlignment="Top" TextWrapping="Wrap" 
+                             AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2" FontFamily="Consolas"/>
+                    <Grid Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Name="publishTopicTextBox" Text="your/publish/topic"/>
+                        <Button Name="publishButton" Content="publish" Grid.Column="1" Click="publishButton_Click"/>
+                        <TextBlock Text="QOS:" Grid.Column="2" VerticalAlignment="Center"/>
+                        <ComboBox Name="publishQOSComboBox" Grid.Column="3">
+                            <ComboBoxItem Content="0" IsSelected="True"/>
+                            <ComboBoxItem Content="1"/>
+                            <ComboBoxItem Content="2"/>
+                        </ComboBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Settings">
+                <ScrollViewer>
+                    <StackPanel Name="MainStackPanel">
+                        <Button Name="ConnectButton" Click="ConnectButton_Click"
+                                Content="{Binding MqttIsConnected,Converter={StaticResource boolConnectedConverter}}"/>
+                        <StackPanel Name="SettingStackPanel" 
+                                    IsEnabled="{Binding MqttIsConnected,Converter={StaticResource boolNotConverter}}">
+                            <TextBlock Text="Broker Address"/>
+                            <TextBox Name="BrokerTextBox" Text="{Binding mqttServer}"/>
+                            <TextBlock Text="Broker Port"/>
+                            <TextBox Name="PortTextBox" Text="{Binding mqttPort}"/>
+                            <TextBlock Text="Client ID"/>
+                            <TextBox Name="ClientTextBox" Text="{Binding mqttClientID}"/>
+                            <CheckBox Name="TLSCheckBox" Content="Enable TLS" IsChecked="{Binding mqttTLS}"/>
+                            <TextBlock Text="User name"/>
+                            <TextBox Name="UserTextBox" Text="{Binding mqttUser}"/>
+                            <TextBlock Text="Password"/>
+                            <TextBox Name="PasswordTextBox" Text="{Binding mqttPassword}"/>
+                            <TextBlock Text="Keep alive interval"/>
+                            <TextBox Name="KeepAliveTextBox" Text="{Binding mqttKeepAlive}"/>
+                            <CheckBox Name="CleanTextBox" Content="Clean session" IsChecked="{Binding mqttCleanSession}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Page>

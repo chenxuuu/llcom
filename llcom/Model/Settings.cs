@@ -373,5 +373,23 @@ namespace llcom.Model
                 Save();
             }
         }
+
+
+        private string _mqttServer = "broker.emqx.io";
+        private int _mqttPort = 1883;
+        private string _mqttClientID = Guid.NewGuid().ToString();
+        private bool _mqttTLS = false;
+        private string _mqttUser = "user";
+        private string _mqttPassword = "password";
+        private int _mqttKeepAlive = 120;
+        private bool _mqttCleanSession = false;
+        public string mqttServer { get { return _mqttServer; } set { _mqttServer = value; Save(); } }
+        public int mqttPort { get { return _mqttPort; } set { _mqttPort = value; Save(); } }
+        public string mqttClientID { get { return _mqttClientID; } set { _mqttClientID = value; Save(); } }
+        public bool mqttTLS { get { return _mqttTLS; } set { _mqttTLS = value; Save(); } }
+        public string mqttUser { get { return _mqttUser; } set { _mqttUser = value; Save(); } }
+        public string mqttPassword { get { return _mqttPassword; } set { _mqttPassword = value; Save(); } }
+        public int mqttKeepAlive { get { return _mqttKeepAlive; } set { _mqttKeepAlive = value; Save(); } }
+        public bool mqttCleanSession { get { return _mqttCleanSession; } set { _mqttCleanSession = value; Save(); } }
     }
 }
