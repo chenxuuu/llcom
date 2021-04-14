@@ -48,6 +48,7 @@ namespace llcom.Pages
             PasswordTextBox.DataContext = Tools.Global.setting;
             KeepAliveTextBox.DataContext = Tools.Global.setting;
             CleanTextBox.DataContext = Tools.Global.setting;
+            HexCheckBox.DataContext = Tools.Global.setting;
             ConnectButton.DataContext = this;
             SettingStackPanel.DataContext = this;
 
@@ -71,11 +72,13 @@ namespace llcom.Pages
             //
             mqttClient.UseApplicationMessageReceivedHandler(e =>
             {
-                var s = $"Topic:{e.ApplicationMessage.Topic},QOS:{e.ApplicationMessage.QualityOfServiceLevel}\r\n" +
-                $"{Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}";
                 this.Dispatcher.Invoke(new Action(delegate
                 {
-                    Tools.Logger.ShowDataRaw(s);
+                    Tools.Logger.ShowDataRaw(new Tools.DataShowRaw {
+                        title = $"MQTT → {e.ApplicationMessage.Topic}({(int)e.ApplicationMessage.QualityOfServiceLevel})",
+                        data = e.ApplicationMessage.Payload,
+                        color = Brushes.DarkGreen
+                    });
                 }));
             });
 
@@ -160,7 +163,9 @@ namespace llcom.Pages
             {
                 var message = new MqttApplicationMessageBuilder()
                     .WithTopic(publishTopicTextBox.Text)
-                    .WithPayload(PublishTextBox.Text)
+                    .WithPayload(HexCheckBox.IsChecked ?? false ? 
+                    Tools.Global.GetEncoding().GetString(Tools.Global.Hex2Byte(PublishTextBox.Text)) : 
+                    PublishTextBox.Text)
                     .WithQualityOfServiceLevel(int.Parse(publishQOSComboBox.Text))
                     .WithRetainFlag()
                     .Build();
@@ -169,6 +174,15 @@ namespace llcom.Pages
                     try
                     {
                         await mqttClient.PublishAsync(message, CancellationToken.None);
+                        this.Dispatcher.Invoke(new Action(delegate
+                        {
+                            Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
+                            {
+                                title = $"MQTT ← {message.Topic}({(int)message.QualityOfServiceLevel})",
+                                data = message.Payload ?? new byte[0],
+                                color = Brushes.DarkRed
+                            });
+                        }));
                     }
                     catch { }
                 });

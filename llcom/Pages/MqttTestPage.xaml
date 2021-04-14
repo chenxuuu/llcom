@@ -23,6 +23,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -46,9 +47,10 @@
                     </ListBox>
                     <TextBox Name="PublishTextBox" Grid.Row="3" VerticalContentAlignment="Top" TextWrapping="Wrap" 
                              AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2" FontFamily="Consolas"/>
-                    <Grid Grid.Row="4">
+                    <Grid Grid.Row="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -61,6 +63,7 @@
                             <ComboBoxItem Content="1"/>
                             <ComboBoxItem Content="2"/>
                         </ComboBox>
+                        <CheckBox Name="HexCheckBox" Content="Hex" Grid.Column="4"/>
                     </Grid>
                 </Grid>
             </TabItem>

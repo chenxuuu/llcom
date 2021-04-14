@@ -46,26 +46,38 @@ namespace llcom.Pages
             this.ExtraEnterCheckBox.DataContext = Tools.Global.setting;
         }
 
-        private void Logger_DataShowRawEvent(object sender, string e)
+        private void Logger_DataShowRawEvent(object sender, Tools.DataShowRaw e)
         {
-            if (e.Length == 0)
-                return;
             uartDataFlowDocument.IsSelectionEnabled = false;
 
             Paragraph p = new Paragraph(new Run(""));
             Span text = new Span(new Run(DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss.ffff]")));
             text.Foreground = Brushes.DarkSlateGray;
             p.Inlines.Add(text);
-            text = new Span(new Run(" MQTT "));
+            text = new Span(new Run(e.title));
             text.Foreground = Brushes.Black;
             text.FontWeight = FontWeights.Bold;
             p.Inlines.Add(text);
-            text = new Span(new Run(e)); 
-            text.Foreground = Brushes.DarkGreen;
+            uartDataFlowDocument.Document.Blocks.Add(p);
+            p = new Paragraph(new Run(""));
+            text = new Span(new Run(Tools.Global.Byte2String(e.data))); 
+            text.Foreground = e.color;
             text.FontSize = 15;
             p.Inlines.Add(text);
             uartDataFlowDocument.Document.Blocks.Add(p);
-
+            if (Tools.Global.setting.showHex)
+            {
+                if (e.data.Length > maxDataLength)
+                    p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(e.data.Skip(0).Take(maxDataLength).ToArray(), " ")
+                    + "\r\nData too long, check log folder for remaining data."));
+                else
+                    p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(e.data, " ")));
+                p.Foreground = e.color;
+                p.Margin = new Thickness(0, 0, 0, 8);
+                uartDataFlowDocument.Document.Blocks.Add(p);
+            }
+            if (!LockLog)//如果允许拉到最下面
+                sv.ScrollToBottom();
             uartDataFlowDocument.IsSelectionEnabled = true;
         }
 

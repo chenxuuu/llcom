@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace llcom.Tools
 {
@@ -11,7 +12,7 @@ namespace llcom.Tools
     {
         //显示日志数据的回调函数
         public static event EventHandler<DataShowPara> DataShowEvent;
-        public static event EventHandler<string> DataShowRawEvent;
+        public static event EventHandler<DataShowRaw> DataShowRawEvent;
         //清空显示的回调函数
         public static event EventHandler DataClearEvent;
         //清空日志显示
@@ -29,7 +30,7 @@ namespace llcom.Tools
             });
         }
         //显示日志数据
-        public static void ShowDataRaw(string s)
+        public static void ShowDataRaw(DataShowRaw s)
         {
             DataShowRawEvent?.Invoke(null, s);
         }
@@ -120,5 +121,12 @@ namespace llcom.Tools
     {
         public byte[] data;
         public bool send;
+    }
+
+    class DataShowRaw
+    {
+        public string title;
+        public byte[] data;
+        public SolidColorBrush color;
     }
 }
