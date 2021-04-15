@@ -66,7 +66,7 @@ namespace llcom.Pages
                 {
                     MqttIsConnected = mqttClient.IsConnected;
                     subListBox.Items.Clear();
-                    subListBox.Items.Add("not connect to server");
+                    subListBox.Items.Add(TryFindResource("MQTTNotConnect") as string ?? "?!");
                 }));
             });
             //
@@ -140,7 +140,7 @@ namespace llcom.Pages
                             .Build());
                         this.Dispatcher.Invoke(new Action(delegate
                         {
-                            foreach(string i in subListBox.Items)
+                            foreach (string i in subListBox.Items)
                             {
                                 if (i == topic)
                                     return;
@@ -148,11 +148,7 @@ namespace llcom.Pages
                             subListBox.Items.Add(topic);
                         }));
                     }
-                    catch (Exception ee)
-                    {
-                        if(mqttClient.IsConnected)
-                            MessageBox.Show($"订阅失败：{ee}");
-                    }
+                    catch { }
                 });
             }
         }
@@ -167,7 +163,6 @@ namespace llcom.Pages
                     Tools.Global.GetEncoding().GetString(Tools.Global.Hex2Byte(PublishTextBox.Text)) : 
                     PublishTextBox.Text)
                     .WithQualityOfServiceLevel(int.Parse(publishQOSComboBox.Text))
-                    .WithRetainFlag()
                     .Build();
                 Task.Run(async () =>
                 {

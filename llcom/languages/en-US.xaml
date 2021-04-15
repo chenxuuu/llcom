@@ -138,4 +138,18 @@
     <system:String x:Key="GarbledCodeDataTarget">Wrong</system:String>
     <system:String x:Key="GarbledCodeDataResult">Fix Result</system:String>
     <system:String x:Key="GarbledCodeDataCopy">Copy selected data</system:String>
+    <system:String x:Key="MQTTHeardr1">Subscribe/Publish</system:String>
+    <system:String x:Key="MQTTHeardr2">Settings</system:String>
+    <system:String x:Key="MQTTSubcribe">Subscribe</system:String>
+    <system:String x:Key="MQTTPublish">Publish</system:String>
+    <system:String x:Key="MQTTSubcribeList">Subscribes:</system:String>
+    <system:String x:Key="MQTTNotConnect">Not connect</system:String>
+    <system:String x:Key="MQTTServer">Broker address</system:String>
+    <system:String x:Key="MQTTPort">Broker port</system:String>
+    <system:String x:Key="MQTTClientID">Client ID</system:String>
+    <system:String x:Key="MQTTTLS">Enable TLS</system:String>
+    <system:String x:Key="MQTTUser">User name</system:String>
+    <system:String x:Key="MQTTPassword">password</system:String>
+    <system:String x:Key="MQTTKeepAlive">Keep alive period</system:String>
+    <system:String x:Key="MQTTClean">Clean session</system:String>
 </ResourceDictionary>

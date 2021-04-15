@@ -15,7 +15,7 @@
 
     <Grid>
         <TabControl>
-            <TabItem Header="Send and subscribe">
+            <TabItem Header="{DynamicResource MQTTHeardr1}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -33,7 +33,7 @@
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Name="subcribeTextBox" Text="your/subcribe/topic"/>
-                        <Button Name="subcribeButton" Content="subcribe" Grid.Column="1" Click="subcribeButton_Click"/>
+                        <Button Name="subcribeButton" Content="{DynamicResource MQTTSubcribe}" Grid.Column="1" Click="subcribeButton_Click"/>
                         <TextBlock Text="QOS:" Grid.Column="2" VerticalAlignment="Center"/>
                         <ComboBox Name="subQOSComboBox" Grid.Column="3">
                             <ComboBoxItem Content="0" IsSelected="True"/>
@@ -41,9 +41,9 @@
                             <ComboBoxItem Content="2"/>
                         </ComboBox>
                     </Grid>
-                    <TextBlock Text="Subscribes:" Grid.Row="1"/>
+                    <TextBlock Text="{DynamicResource MQTTSubcribeList}" Grid.Row="1"/>
                     <ListBox Name="subListBox" Grid.Row="2" Background="LightGray">
-                        <ListBoxItem Content="not connect to server"/>
+                        <ListBoxItem Content="{DynamicResource MQTTNotConnect}"/>
                     </ListBox>
                     <TextBox Name="PublishTextBox" Grid.Row="3" VerticalContentAlignment="Top" TextWrapping="Wrap" 
                              AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2" FontFamily="Consolas"/>
@@ -56,7 +56,7 @@
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Name="publishTopicTextBox" Text="your/publish/topic"/>
-                        <Button Name="publishButton" Content="publish" Grid.Column="1" Click="publishButton_Click"/>
+                        <Button Name="publishButton" Content="{DynamicResource MQTTPublish}" Grid.Column="1" Click="publishButton_Click"/>
                         <TextBlock Text="QOS:" Grid.Column="2" VerticalAlignment="Center"/>
                         <ComboBox Name="publishQOSComboBox" Grid.Column="3">
                             <ComboBoxItem Content="0" IsSelected="True"/>
@@ -67,27 +67,27 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Settings">
+            <TabItem Header="{DynamicResource MQTTHeardr2}">
                 <ScrollViewer>
                     <StackPanel Name="MainStackPanel">
                         <Button Name="ConnectButton" Click="ConnectButton_Click"
                                 Content="{Binding MqttIsConnected,Converter={StaticResource boolConnectedConverter}}"/>
                         <StackPanel Name="SettingStackPanel" 
                                     IsEnabled="{Binding MqttIsConnected,Converter={StaticResource boolNotConverter}}">
-                            <TextBlock Text="Broker Address"/>
+                            <TextBlock Text="{DynamicResource MQTTServer}"/>
                             <TextBox Name="BrokerTextBox" Text="{Binding mqttServer}"/>
-                            <TextBlock Text="Broker Port"/>
+                            <TextBlock Text="{DynamicResource MQTTPort}"/>
                             <TextBox Name="PortTextBox" Text="{Binding mqttPort}"/>
-                            <TextBlock Text="Client ID"/>
+                            <TextBlock Text="{DynamicResource MQTTClientID}"/>
                             <TextBox Name="ClientTextBox" Text="{Binding mqttClientID}"/>
-                            <CheckBox Name="TLSCheckBox" Content="Enable TLS" IsChecked="{Binding mqttTLS}"/>
-                            <TextBlock Text="User name"/>
+                            <CheckBox Name="TLSCheckBox" Content="{DynamicResource MQTTTLS}" IsChecked="{Binding mqttTLS}"/>
+                            <TextBlock Text="{DynamicResource MQTTUser}"/>
                             <TextBox Name="UserTextBox" Text="{Binding mqttUser}"/>
-                            <TextBlock Text="Password"/>
+                            <TextBlock Text="{DynamicResource MQTTPassword}"/>
                             <TextBox Name="PasswordTextBox" Text="{Binding mqttPassword}"/>
-                            <TextBlock Text="Keep alive interval"/>
+                            <TextBlock Text="{DynamicResource MQTTKeepAlive}"/>
                             <TextBox Name="KeepAliveTextBox" Text="{Binding mqttKeepAlive}"/>
-                            <CheckBox Name="CleanTextBox" Content="Clean session" IsChecked="{Binding mqttCleanSession}"/>
+                            <CheckBox Name="CleanTextBox" Content="{DynamicResource MQTTClean}" IsChecked="{Binding mqttCleanSession}"/>
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
