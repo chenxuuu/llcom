@@ -131,6 +131,32 @@ namespace llcom
                     EncodingFixFrame.Navigate(new Uri("Pages/EncodingFixPage.xaml", UriKind.Relative));
 
                     this.Title += $" - {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
+
+                    //检查更新
+                    if (!Tools.Global.IsMSIX() && Tools.Global.setting.autoUpdate)
+                    {
+                        Task.Run(() => {
+                            bool runed = false;
+                            AutoUpdaterDotNET.AutoUpdater.CheckForUpdateEvent += (args) =>
+                            {
+                                if (runed) return; runed = true;
+                                if (args.IsUpdateAvailable)
+                                    this.Dispatcher.Invoke(new Action(delegate
+                                    {
+                                        AutoUpdaterDotNET.AutoUpdater.ShowUpdateForm(args);
+                                    }));
+                            };
+                            Random r = new Random();//加上随机参数，确保获取的是最新数据
+                            try
+                            {
+                                AutoUpdaterDotNET.AutoUpdater.Start("https://llcom.papapoi.com/autoUpdate.xml?" + r);
+                            }
+                            catch
+                            {
+                                runed = true;
+                            }
+                        });
+                    }
                 }));
             });
         }
