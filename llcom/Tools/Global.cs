@@ -180,8 +180,8 @@ namespace llcom.Tools
         /// <param name="e"></param>
         private static void Uart_UartDataSent(object sender, EventArgs e)
         {
-            Logger.AddUartLog($"[INFO]==>{Byte2String((byte[])sender)}");
-            Logger.AddUartLog($"[DEBUG][HEX]\"{Byte2Hex((byte[])sender, " ")}\"");
+            Logger.AddUartLogInfo($"<-{Byte2String((byte[])sender)}");
+            Logger.AddUartLogDebug($"[HEX]{Byte2Hex((byte[])sender, " ")}");
         }
 
         /// <summary>
@@ -191,8 +191,8 @@ namespace llcom.Tools
         /// <param name="e"></param>
         private static void Uart_UartDataRecived(object sender, EventArgs e)
         {
-            Logger.AddUartLog($"[INFO]<=={Byte2String((byte[])sender)}");
-            Logger.AddUartLog($"[DEBUG][HEX]\"{Byte2Hex((byte[])sender, " ")}\"");
+            Logger.AddUartLogInfo($"->{Byte2String((byte[])sender)}");
+            Logger.AddUartLogDebug($"[HEX]{Byte2Hex((byte[])sender, " ")}");
         }
 
         public static Encoding GetEncoding() => Encoding.GetEncoding(setting.encoding);
