@@ -33,23 +33,30 @@ namespace llcom.Model
         /// </summary>
         private void refreshSerialDevice()
         {
+            Tools.Logger.AddUartLogDebug($"[refreshSerialDevice]start");
             try
             {
+                Tools.Logger.AddUartLogDebug($"[refreshSerialDevice]lastPortBaseStream.Dispose");
                 lastPortBaseStream?.Dispose();
             }
             catch (Exception e)
             {
+                Tools.Logger.AddUartLogDebug($"[refreshSerialDevice]lastPortBaseStream.Dispose error:{e.Message}");
                 Console.WriteLine($"portBaseStream?.Dispose error:{e.Message}");
             }
             try
             {
+                Tools.Logger.AddUartLogDebug($"[refreshSerialDevice]BaseStream.Dispose");
                 serial.BaseStream.Dispose();
             }
             catch (Exception e)
             {
+                Tools.Logger.AddUartLogDebug($"[refreshSerialDevice]BaseStream.Dispose error:{e.Message}");
                 Console.WriteLine($"serial.BaseStream.Dispose error:{e.Message}");
             }
+            Tools.Logger.AddUartLogDebug($"[refreshSerialDevice]Dispose");
             serial.Dispose();
+            Tools.Logger.AddUartLogDebug($"[refreshSerialDevice]new");
             serial = new SerialPort();
             //声明接收到事件
             serial.DataReceived += Serial_DataReceived;
@@ -57,6 +64,7 @@ namespace llcom.Model
             serial.Parity = (Parity)Tools.Global.setting.parity;
             serial.DataBits = Tools.Global.setting.dataBits;
             serial.StopBits = (StopBits)Tools.Global.setting.stopBit;
+            Tools.Logger.AddUartLogDebug($"[refreshSerialDevice]done");
         }
 
         /// <summary>
@@ -92,10 +100,13 @@ namespace llcom.Model
         public void Open()
         {
             string temp = serial.PortName;
+            Tools.Logger.AddUartLogDebug($"[UartOpen]refreshSerialDevice");
             refreshSerialDevice();
             serial.PortName = temp;
+            Tools.Logger.AddUartLogDebug($"[UartOpen]open");
             serial.Open();
             lastPortBaseStream = serial.BaseStream;
+            Tools.Logger.AddUartLogDebug($"[UartOpen]done");
         }
 
         /// <summary>
@@ -103,8 +114,11 @@ namespace llcom.Model
         /// </summary>
         public void Close()
         {
+            Tools.Logger.AddUartLogDebug($"[UartClose]refreshSerialDevice");
             refreshSerialDevice();
+            Tools.Logger.AddUartLogDebug($"[UartClose]Close");
             serial.Close();
+            Tools.Logger.AddUartLogDebug($"[UartClose]done");
         }
 
         /// <summary>

@@ -45,15 +45,16 @@ namespace llcom.Tools
         /// </summary>
         public static void InitUartLog()
         {
-            string uartLog = Tools.Global.ProfilePath + "logs/" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".log";
             uartLogFile = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.Console()
-                .WriteTo.File(uartLog,
+                .WriteTo.File(Tools.Global.ProfilePath + "logs/log.txt",
                     rollingInterval: RollingInterval.Day,
+                    retainedFileCountLimit: 30,
+                    encoding: Encoding.UTF8,
                     rollOnFileSizeLimit: true)
                 .CreateLogger();
-            AddUartLogInfo("Logs by LLCOM. https://github.com/chenxuuu/llcom");
+            AddUartLogInfo("[SRART]Logs by LLCOM. https://github.com/chenxuuu/llcom");
         }
 
         public static void CloseUartLog()
@@ -90,12 +91,13 @@ namespace llcom.Tools
         /// </summary>
         public static void InitLuaLog()
         {
-            string luaLog = Tools.Global.ProfilePath + "user_script_run/logs/" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".log";
             luaLogFile = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.Console()
-                .WriteTo.File(luaLog,
+                .WriteTo.File(Tools.Global.ProfilePath + "user_script_run/logs/log.txt",
                     rollingInterval: RollingInterval.Day,
+                    retainedFileCountLimit: 30,
+                    encoding: Encoding.UTF8,
                     rollOnFileSizeLimit: true)
                 .CreateLogger();
         }

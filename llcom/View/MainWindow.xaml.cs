@@ -408,6 +408,7 @@ namespace llcom
         private byte[] toSendData = null;//待发送的数据
         private void openPort()
         {
+            Tools.Logger.AddUartLogDebug($"[openPort]{isOpeningPort},{serialPortsListComboBox.SelectedItem}");
             if (isOpeningPort)
                 return;
             if (serialPortsListComboBox.SelectedItem != null)
@@ -415,11 +416,14 @@ namespace llcom
                 string[] ports;//获取所有串口列表
                 try
                 {
+                    Tools.Logger.AddUartLogDebug($"[openPort]GetPortNames");
                     ports = SerialPort.GetPortNames();
+                    Tools.Logger.AddUartLogDebug($"[openPort]GetPortNames{ports.Length}");
                 }
-                catch
+                catch(Exception e)
                 {
                     ports = new string[0];
+                    Tools.Logger.AddUartLogDebug($"[openPort]GetPortNames Exception:{e.Message}");
                 }
                 string port = "";//最终串口名
                 foreach (string p in ports)//循环查找符合名称串口
@@ -430,6 +434,7 @@ namespace llcom
                         break;
                     }
                 }
+                Tools.Logger.AddUartLogDebug($"[openPort]PortName:{port},isOpeningPort:{isOpeningPort}");
                 if (port != "")
                 {
                     Task.Run(() =>
@@ -438,26 +443,33 @@ namespace llcom
                         try
                         {
                             forcusClosePort = false;//不再强制关闭串口
+                            Tools.Logger.AddUartLogDebug($"[openPort]SetName");
                             Tools.Global.uart.SetName(port);
+                            Tools.Logger.AddUartLogDebug($"[openPort]open");
                             Tools.Global.uart.Open();
+                            Tools.Logger.AddUartLogDebug($"[openPort]change show");
                             this.Dispatcher.Invoke(new Action(delegate
                             {
                                 openClosePortTextBlock.Text = (TryFindResource("OpenPort_close") as string ?? "?!");
                                 serialPortsListComboBox.IsEnabled = false;
                                 statusTextBlock.Text = (TryFindResource("OpenPort_open") as string ?? "?!");
                             }));
-                            if(toSendData != null)
+                            Tools.Logger.AddUartLogDebug($"[openPort]check to send");
+                            if (toSendData != null)
                             {
                                 sendUartData(toSendData);
                                 toSendData = null;
                             }
+                            Tools.Logger.AddUartLogDebug($"[openPort]done");
                         }
-                        catch
+                        catch(Exception e)
                         {
+                            Tools.Logger.AddUartLogDebug($"[openPort]open error:{e.Message}");
                             //串口打开失败！
                             MessageBox.Show(TryFindResource("ErrorOpenPort") as string ?? "?!");
                         }
                         isOpeningPort = false;
+                        Tools.Logger.AddUartLogDebug($"[openPort]all done");
                     });
 
                 }
@@ -465,6 +477,7 @@ namespace llcom
         }
         private void OpenClosePortButton_Click(object sender, RoutedEventArgs e)
         {
+            Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]now:{Tools.Global.uart.IsOpen()}");
             if (!Tools.Global.uart.IsOpen())//打开串口逻辑
             {
                 openPort();
@@ -473,17 +486,21 @@ namespace llcom
             {
                 try
                 {
+                    Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]close");
                     forcusClosePort = true;//不再重新开启串口
                     Tools.Global.uart.Close();
+                    Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]close done");
                 }
                 catch
                 {
                     //串口关闭失败！
                     MessageBox.Show(TryFindResource("ErrorClosePort") as string ?? "?!");
                 }
+                Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]change show");
                 openClosePortTextBlock.Text = (TryFindResource("OpenPort_open") as string ?? "?!");
                 serialPortsListComboBox.IsEnabled = true;
                 statusTextBlock.Text = (TryFindResource("OpenPort_close") as string ?? "?!");
+                Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]change show done");
             }
 
         }
