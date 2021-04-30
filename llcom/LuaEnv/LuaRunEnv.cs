@@ -187,7 +187,7 @@ namespace llcom.LuaEnv
             Task.Run(() =>
             {
                 while(!canRun)
-                    System.Threading.Thread.Sleep(100);
+                    Task.Delay(100).Wait();
                 try
                 {
                     lua.Global.SetInPath("runType", "script");//一次性处理标志

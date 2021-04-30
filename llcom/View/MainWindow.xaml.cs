@@ -231,7 +231,7 @@ namespace llcom
                     }
                     catch
                     {
-                        System.Threading.Thread.Sleep(500);
+                        Task.Delay(500).Wait();
                     }
                     //MessageBox.Show("fail了");
                 }
