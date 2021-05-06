@@ -147,7 +147,7 @@ namespace llcom.Model
             lock (objLock)
             {
                 if(Tools.Global.setting.timeout > 0)
-                    Task.Delay(Tools.Global.setting.timeout).Wait();//等待时间
+                    System.Threading.Thread.Sleep(Tools.Global.setting.timeout);//等待时间
                 List<byte> result = new List<byte>();
                 while (true)//循环读
                 {
@@ -169,7 +169,7 @@ namespace llcom.Model
                         break;
                     if (Tools.Global.setting.bitDelay && Tools.Global.setting.timeout > 0)//如果是设置了等待间隔时间
                     {
-                        Task.Delay(Tools.Global.setting.timeout).Wait();//等待时间
+                        System.Threading.Thread.Sleep(Tools.Global.setting.timeout);//等待时间
                     }
                 }
                 Tools.Global.setting.ReceivedCount += result.Count;
