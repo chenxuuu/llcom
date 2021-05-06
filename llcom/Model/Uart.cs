@@ -54,7 +54,14 @@ namespace llcom.Model
             try
             {
                 Tools.Logger.AddUartLogDebug($"[refreshSerialDevice]BaseStream.Dispose");
-                serial.BaseStream.Dispose();
+                Task.Run(() =>//这行代码会卡住，我扔task里还卡吗？
+                {
+                    try
+                    {
+                        serial.BaseStream.Dispose();
+                    }
+                    catch { }
+                });
             }
             catch (Exception e)
             {
