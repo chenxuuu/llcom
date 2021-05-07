@@ -69,7 +69,14 @@ namespace llcom.Model
                 Console.WriteLine($"serial.BaseStream.Dispose error:{e.Message}");
             }
             Tools.Logger.AddUartLogDebug($"[refreshSerialDevice]Dispose");
-            serial.Dispose();
+            Task.Run(() =>//我服了
+            {
+                try
+                {
+                    serial.Dispose();
+                }
+                catch { }
+            });
             Tools.Logger.AddUartLogDebug($"[refreshSerialDevice]new");
             serial = new SerialPort();
             //声明接收到事件
