@@ -160,8 +160,8 @@ namespace llcom.Pages
                 var message = new MqttApplicationMessageBuilder()
                     .WithTopic(publishTopicTextBox.Text)
                     .WithPayload(HexCheckBox.IsChecked ?? false ? 
-                    Tools.Global.GetEncoding().GetString(Tools.Global.Hex2Byte(PublishTextBox.Text)) : 
-                    PublishTextBox.Text)
+                    Tools.Global.Hex2Byte(PublishTextBox.Text) :
+                    Tools.Global.GetEncoding().GetBytes(PublishTextBox.Text))
                     .WithQualityOfServiceLevel(int.Parse(publishQOSComboBox.Text))
                     .Build();
                 Task.Run(async () =>
