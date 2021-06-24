@@ -1,0 +1,17 @@
+<Page x:Class="llcom.Pages.SerialMonitorPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:llcom.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="440" d:DesignWidth="400"
+      Title="SerialMonitorPage"
+      Loaded="Page_Loaded">
+    <StackPanel Margin="5">
+        <Button Name="RefreshButton" Content="{DynamicResource SerialMonitorRefresh}" Margin="0,3" Click="RefreshButton_Click"/>
+        <ComboBox Name="PidComboBox" Margin="0,3"/>
+        <ComboBox Name="SerialPortComboBox" Margin="0,3"/>
+        <Button Name="MonitorButton" Content="{DynamicResource SerialMonitorStart}" Margin="0,3" Click="MonitorButton_Click"/>
+    </StackPanel>
+</Page>

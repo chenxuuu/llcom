@@ -365,6 +365,9 @@
                     <TabItem Header="{DynamicResource EncodingFixHeader}">
                         <Frame Name="EncodingFixFrame" NavigationUIVisibility="Hidden"/>
                     </TabItem>
+                    <TabItem Header="{DynamicResource SerialMonitorHeader}">
+                        <Frame Name="SerialMonitorFrame" NavigationUIVisibility="Hidden"/>
+                    </TabItem>
                 </TabControl>
             </TabItem>
             <TabItem Header="{DynamicResource AboutCard}">

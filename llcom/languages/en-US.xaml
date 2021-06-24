@@ -152,4 +152,8 @@
     <system:String x:Key="MQTTPassword">password</system:String>
     <system:String x:Key="MQTTKeepAlive">Keep alive period</system:String>
     <system:String x:Key="MQTTClean">Clean session</system:String>
+    <system:String x:Key="SerialMonitorHeader">Serial Monitor</system:String>
+    <system:String x:Key="SerialMonitorRefresh">Refresh process and serial list</system:String>
+    <system:String x:Key="SerialMonitorStart">Start monitor</system:String>
+    <system:String x:Key="SerialMonitorStop">Stop monitor</system:String>
 </ResourceDictionary>

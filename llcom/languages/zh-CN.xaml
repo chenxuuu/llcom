@@ -152,4 +152,8 @@
     <system:String x:Key="MQTTPassword">密码</system:String>
     <system:String x:Key="MQTTKeepAlive">保活时间</system:String>
     <system:String x:Key="MQTTClean">Clean session</system:String>
+    <system:String x:Key="SerialMonitorHeader">串口监听</system:String>
+    <system:String x:Key="SerialMonitorRefresh">刷新进程和串口列表</system:String>
+    <system:String x:Key="SerialMonitorStart">开始监听</system:String>
+    <system:String x:Key="SerialMonitorStop">停止监听</system:String>
 </ResourceDictionary>

@@ -130,6 +130,9 @@ namespace llcom
                     //乱码修复
                     EncodingFixFrame.Navigate(new Uri("Pages/EncodingFixPage.xaml", UriKind.Relative));
 
+                    //串口监听
+                    SerialMonitorFrame.Navigate(new Uri("Pages/SerialMonitorPage.xaml", UriKind.Relative));
+
                     this.Title += $" - {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
 
                     //检查更新
