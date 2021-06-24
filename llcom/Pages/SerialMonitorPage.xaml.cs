@@ -159,7 +159,8 @@ namespace llcom.Pages
             SerialPortComboBox.Items.Clear();
             foreach(var p in SerialPort.GetPortNames())
             {
-                SerialPortComboBox.Items.Add(p);
+                if(p.IndexOf("COM") == 0)
+                    SerialPortComboBox.Items.Add(p);
             }
             if (SerialPortComboBox.Items.Count > 0)
                 SerialPortComboBox.SelectedIndex = 0;
