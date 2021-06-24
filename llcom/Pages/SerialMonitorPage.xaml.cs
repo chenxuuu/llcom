@@ -52,11 +52,11 @@ namespace llcom.Pages
             {
                 case (byte)State.Send:
                     show = "→";
-                    c = Brushes.DarkGreen;
+                    c = Brushes.DarkRed;
                     break;
                 case (byte)State.Receive:
                     show = "←";
-                    c = Brushes.DarkRed;
+                    c = Brushes.DarkGreen;
                     break;
                 case (byte)State.Disconnect:
                     show = "❌";
