@@ -140,6 +140,7 @@ namespace llcom.Pages
 
         private void Refresh()
         {
+            string lastP = PidComboBox.Text;
             PidComboBox.Items.Clear();
             var sl = new List<string>();
             foreach (var p in Process.GetProcesses())
@@ -154,8 +155,14 @@ namespace llcom.Pages
             foreach(var i in sl)
                 PidComboBox.Items.Add(i);
             if (PidComboBox.Items.Count > 0)
-                PidComboBox.SelectedIndex = 0;
+            {
+                if (!string.IsNullOrWhiteSpace(lastP) && sl.Contains(lastP))
+                    PidComboBox.Text = lastP;
+                else
+                    PidComboBox.SelectedIndex = 0;
+            }
 
+            lastP = SerialPortComboBox.Text;
             SerialPortComboBox.Items.Clear();
             foreach(var p in SerialPort.GetPortNames())
             {
@@ -163,7 +170,12 @@ namespace llcom.Pages
                     SerialPortComboBox.Items.Add(p);
             }
             if (SerialPortComboBox.Items.Count > 0)
-                SerialPortComboBox.SelectedIndex = 0;
+            {
+                if (!string.IsNullOrWhiteSpace(lastP) && SerialPortComboBox.Items.Contains(lastP))
+                    SerialPortComboBox.Text = lastP;
+                else
+                    SerialPortComboBox.SelectedIndex = 0;
+            }
         }
     }
 }
