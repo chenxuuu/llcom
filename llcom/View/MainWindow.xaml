@@ -66,7 +66,7 @@
             <Button Name="clearLogButton" Content="{DynamicResource ClearLog}" Grid.Column="4" Margin="2" Click="ClearLogButton_Click"/>
             <Button Name="MoreSettingButton" Content="{DynamicResource MoreSettings}" Grid.Column="4" Grid.Row="1" Margin="2" ToolTip="{DynamicResource MoreSettingsTip}" Click="MoreSettingButton_Click"/>
             <TextBox Name="toSendDataTextBox" Text="{Binding dataToSend}" Grid.Column="5" Grid.RowSpan="2" Height="50" VerticalContentAlignment="Top"
-                     TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2,2,2,4" FontFamily="Consolas"/>
+                     TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2" FontFamily="Consolas"/>
             <Button Name="sendDataButton" Content="{DynamicResource SendDataButton}" Grid.Column="6" Grid.RowSpan="2" Margin="2" ToolTip="{DynamicResource SendDataButtonTip}" Command="{StaticResource SendUartData}"/>
         </Grid>
         

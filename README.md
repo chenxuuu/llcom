@@ -39,6 +39,10 @@ CI快照版：[Appveyor Artifacts](https://ci.appveyor.com/project/chenxuuu/llco
 - 终端功能，直接敲键盘发送数据（包含ctrl+字母键）
 - 可单独隐藏发送数据
 - 集成socket测试服务端控制功能
+- 集成各种编码互转功能
+- 集成乱码恢复功能
+- 集成mqtt测试功能
+- 集成串口监听功能，可监听其他软件的串口通信数据
 
 ![screen](/image/screen.png)
 ![screen2](/image/screen2.jpg)
