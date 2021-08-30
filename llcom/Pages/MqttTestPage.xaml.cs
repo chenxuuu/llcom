@@ -125,7 +125,12 @@ namespace llcom.Pages
 
         private void subcribeButton_Click(object sender, RoutedEventArgs e)
         {
-            if(mqttClient.IsConnected)
+            if (string.IsNullOrEmpty(subcribeTextBox.Text))
+            {
+                MessageBox.Show("no subcribe topic!");
+                return;
+            }
+            if (mqttClient.IsConnected)
             {
                 var topic = subcribeTextBox.Text;
                 var qos = int.Parse(subQOSComboBox.Text);
@@ -155,6 +160,11 @@ namespace llcom.Pages
 
         private void publishButton_Click(object sender, RoutedEventArgs e)
         {
+            if(string.IsNullOrEmpty(publishTopicTextBox.Text))
+            {
+                MessageBox.Show("no publish topic!");
+                return;
+            }
             if (mqttClient.IsConnected)
             {
                 var message = new MqttApplicationMessageBuilder()
