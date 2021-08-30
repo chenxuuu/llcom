@@ -159,9 +159,16 @@ namespace llcom.Model
             }
             set
             {
-                _baudRate = value;
-                Tools.Global.uart.serial.BaudRate = value;
-                Save();
+                try
+                {
+                    Tools.Global.uart.serial.BaudRate = value;
+                    _baudRate = value;
+                    Save();
+                }
+                catch(Exception e)
+                {
+                    System.Windows.Forms.MessageBox.Show(e.Message);
+                }
             }
         }
 
