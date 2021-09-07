@@ -43,6 +43,10 @@ namespace llcom.Pages
             LockIcon.DataContext = this;
             UnLockIcon.DataContext = this;
             UnLockText.DataContext = this;
+            RTSCheckBox.DataContext = this;
+            DTRCheckBox.DataContext = this;
+            Rts = false;
+            Dtr = true;
             this.ExtraEnterCheckBox.DataContext = Tools.Global.setting;
         }
 
@@ -224,6 +228,29 @@ namespace llcom.Pages
         private void LockLogButton_Click(object sender, RoutedEventArgs e)
         {
             LockLog = !LockLog;
+        }
+
+
+        public bool Rts {
+            get
+            {
+                return Tools.Global.uart.Rts;
+            }
+            set
+            {
+                Tools.Global.uart.Rts = value;
+            }
+        }
+        public bool Dtr
+        {
+            get
+            {
+                return Tools.Global.uart.Dtr;
+            }
+            set
+            {
+                Tools.Global.uart.Dtr = value;
+            }
         }
     }
 }
