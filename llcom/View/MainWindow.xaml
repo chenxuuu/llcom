@@ -145,6 +145,7 @@
                         <ComboBoxItem Content="1500000"/>
                         <ComboBoxItem Content="2000000"/>
                         <ComboBoxItem Content="3000000"/>
+                        <ComboBoxItem Content="{DynamicResource OtherRate}"/>
                     </ComboBox>
                 </StatusBarItem>
                 <Separator Grid.Column="8" />

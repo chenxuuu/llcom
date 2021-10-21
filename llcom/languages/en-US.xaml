@@ -17,6 +17,8 @@
     <system:String x:Key="RefreshPortButton">Refresh List</system:String>
     <system:String x:Key="ShowPorts">Serial Ports:</system:String>
     <system:String x:Key="ShowBaudRate">Baud Rate:</system:String>
+    <system:String x:Key="OtherRate">Custom</system:String>
+    <system:String x:Key="OtherRateFail">Custom baud rate set fail.</system:String>
     <system:String x:Key="ShowStatus">Status:</system:String>
     <system:String x:Key="SentCount">Data sent:</system:String>
     <system:String x:Key="ReceivedCount">Data received:</system:String>

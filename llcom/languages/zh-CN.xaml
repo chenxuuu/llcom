@@ -17,6 +17,8 @@
     <system:String x:Key="RefreshPortButton">刷新串口</system:String>
     <system:String x:Key="ShowPorts">串口：</system:String>
     <system:String x:Key="ShowBaudRate">波特率：</system:String>
+    <system:String x:Key="OtherRate">自定义</system:String>
+    <system:String x:Key="OtherRateFail">自定义波特率设置失败</system:String>
     <system:String x:Key="ShowStatus">状态：</system:String>
     <system:String x:Key="SentCount">已发送字节：</system:String>
     <system:String x:Key="ReceivedCount">已接收字节：</system:String>

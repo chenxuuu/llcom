@@ -529,8 +529,37 @@ namespace llcom
         {
             if (baudRateComboBox.SelectedItem != null)
             {
-                Tools.Global.setting.baudRate =
-                    int.Parse((baudRateComboBox.SelectedItem as ComboBoxItem).Content.ToString());
+                if ((baudRateComboBox.SelectedItem as ComboBoxItem).Content.ToString() ==
+                    (TryFindResource("OtherRate") as string ?? "?!"))
+                {
+                    int br = 0;
+                    Tuple<bool, string> ret = Tools.InputDialog.OpenDialog(TryFindResource("ShowBaudRate") as string ?? "?!",
+                        "115200", TryFindResource("OtherRate") as string ?? "?!");
+                    if (!ret.Item1 || !int.TryParse(ret.Item2,out br))//啥都没选
+                    {
+                        MessageBox.Show(TryFindResource("OtherRateFail") as string ?? "?!");
+                        Task.Run(() =>
+                        {
+                            this.Dispatcher.Invoke(new Action(delegate {
+                                baudRateComboBox.Text = Tools.Global.setting.baudRate.ToString();
+                            }));
+                        });
+                        return;
+                    }
+                    Tools.Global.setting.baudRate = br;
+                    if(Tools.Global.setting.baudRate != br)//说明设置失败了
+                        Task.Run(() =>
+                        {
+                            this.Dispatcher.Invoke(new Action(delegate {
+                                baudRateComboBox.Text = Tools.Global.setting.baudRate.ToString();
+                            }));
+                        });
+                }
+                else
+                {
+                    Tools.Global.setting.baudRate =
+                        int.Parse((baudRateComboBox.SelectedItem as ComboBoxItem).Content.ToString());
+                }
             }
         }
 
