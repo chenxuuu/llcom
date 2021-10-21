@@ -37,6 +37,16 @@ namespace llcom.Model
         private bool _terminal = true;
         private bool _extraEnter = false;
 
+        //窗口大小与位置
+        private double _windowTop = 0;
+        public double windowTop { get { return _windowTop; } set { _windowTop = value; Save(); } }
+        private double _windowLeft = 0;
+        public double windowLeft { get { return _windowLeft; } set { _windowLeft = value; Save(); } }
+        private double _windowWidth = 0;
+        public double windowWidth { get { return _windowWidth; } set { _windowWidth = value; Save(); } }
+        private double _windowHeight = 0;
+        public double windowHeight { get { return _windowHeight; } set { _windowHeight = value; Save(); } }
+
         public int SentCount { get; set; } = 0;
         public int ReceivedCount { get; set; } = 0;
 

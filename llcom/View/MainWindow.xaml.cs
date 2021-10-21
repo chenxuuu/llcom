@@ -62,6 +62,14 @@ namespace llcom
                     //重写关闭窗口代码
                     this.Closing += MainWindow_Closing;
 
+                    if(Tools.Global.setting.windowHeight != 0)
+                    {
+                        this.Left = Tools.Global.setting.windowLeft;
+                        this.Top = Tools.Global.setting.windowTop;
+                        this.Width = Tools.Global.setting.windowWidth;
+                        this.Height = Tools.Global.setting.windowHeight;
+                    }
+
                     //窗口置顶事件
                     Tools.Global.setting.MainWindowTop += new EventHandler(topEvent);
 
@@ -370,6 +378,10 @@ namespace llcom
         /// <param name="e"></param>
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            Tools.Global.setting.windowLeft = this.Left;
+            Tools.Global.setting.windowTop = this.Top;
+            Tools.Global.setting.windowWidth = this.Width;
+            Tools.Global.setting.windowHeight = this.Height;
             //自动保存脚本
             if (lastLuaFile != "")
                 saveLuaFile(lastLuaFile);
