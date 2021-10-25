@@ -2,6 +2,7 @@
   <Costura>
     <Unmanaged32Assemblies>
       xlua
+      serial_monitor
     </Unmanaged32Assemblies>
   </Costura>
   <PropertyChanged />

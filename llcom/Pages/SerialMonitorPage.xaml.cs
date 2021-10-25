@@ -25,9 +25,9 @@ namespace llcom.Pages
     public partial class SerialMonitorPage : Page
     {
         public delegate int CallbackDelegate(IntPtr param);
-        [DllImport("./core_script/serial_monitor.dll")]
+        [DllImport("serial_monitor.dll")]
         static extern bool UnMonitorComm();
-        [DllImport("./core_script/serial_monitor.dll")]
+        [DllImport("serial_monitor.dll")]
         static extern bool MonitorComm(uint Pid, uint ComIndex, CallbackDelegate lpCallFunc);
 
         /// <summary>

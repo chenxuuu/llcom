@@ -397,7 +397,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="DefaultFiles\core_script\serial_monitor.dll" />
+    <EmbeddedResource Include="costura32\serial_monitor.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
