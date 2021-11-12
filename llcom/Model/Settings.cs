@@ -408,5 +408,92 @@ namespace llcom.Model
         public string mqttPassword { get { return _mqttPassword; } set { _mqttPassword = value; Save(); } }
         public int mqttKeepAlive { get { return _mqttKeepAlive; } set { _mqttKeepAlive = value; Save(); } }
         public bool mqttCleanSession { get { return _mqttCleanSession; } set { _mqttCleanSession = value; Save(); } }
+
+
+        private string _quickListName0 = "未命名0";
+        public string quickListName0 { get { return _quickListName0; } set { _quickListName0 = value; Save(); } }
+
+        private string _quickListName1 = "未命名1";
+        public string quickListName1 { get { return _quickListName1; } set { _quickListName1 = value; Save(); } }
+
+        private string _quickListName2 = "未命名2";
+        public string quickListName2 { get { return _quickListName2; } set { _quickListName2 = value; Save(); } }
+
+        private string _quickListName3 = "未命名3";
+        public string quickListName3 { get { return _quickListName3; } set { _quickListName3 = value; Save(); } }
+
+        private string _quickListName4 = "未命名4";
+        public string quickListName4 { get { return _quickListName4; } set { _quickListName4 = value; Save(); } }
+
+        private string _quickListName5 = "未命名5";
+        public string quickListName5 { get { return _quickListName5; } set { _quickListName5 = value; Save(); } }
+
+        private string _quickListName6 = "未命名6";
+        public string quickListName6 { get { return _quickListName6; } set { _quickListName6 = value; Save(); } }
+
+        private string _quickListName7 = "未命名7";
+        public string quickListName7 { get { return _quickListName7; } set { _quickListName7 = value; Save(); } }
+
+        private string _quickListName8 = "未命名8";
+        public string quickListName8 { get { return _quickListName8; } set { _quickListName8 = value; Save(); } }
+
+        private string _quickListName9 = "未命名9";
+        public string quickListName9 { get { return _quickListName9; } set { _quickListName9 = value; Save(); } }
+
+        public string GetQuickListNameNow()
+        {
+            return _quickSendSelect switch
+            {
+                0 => quickListName0,
+                1 => quickListName1,
+                2 => quickListName2,
+                3 => quickListName3,
+                4 => quickListName4,
+                5 => quickListName5,
+                6 => quickListName6,
+                7 => quickListName7,
+                8 => quickListName8,
+                9 => quickListName9,
+                _ => "??",
+            };
+        }
+        public void SetQuickListNameNow(string name)
+        {
+            switch (_quickSendSelect)
+            {
+                case 0:
+                    quickListName0 = name;
+                    break;
+                case 1:
+                    quickListName1 = name;
+                    break;
+                case 2:
+                    quickListName2 = name;
+                    break;
+                case 3:
+                    quickListName3 = name;
+                    break;
+                case 4:
+                    quickListName4 = name;
+                    break;
+                case 5:
+                    quickListName5 = name;
+                    break;
+                case 6:
+                    quickListName6 = name;
+                    break;
+                case 7:
+                    quickListName7 = name;
+                    break;
+                case 8:
+                    quickListName8 = name;
+                    break;
+                case 9:
+                    quickListName9 = name;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

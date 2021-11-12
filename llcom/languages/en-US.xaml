@@ -28,8 +28,10 @@
     <system:String x:Key="QuickSendId">ID</system:String>
     <system:String x:Key="QuickSendContent">Content</system:String>
     <system:String x:Key="QuickSendHex">HEX</system:String>
-    <system:String x:Key="QuickSendButtonTip">Right click to set Button Content.</system:String>
-    <system:String x:Key="QuickSendIdTip">Right click id to set the index of this line.</system:String>
+    <system:String x:Key="QuickSendButtonTip">Right click to change Button Content.</system:String>
+    <system:String x:Key="QuickSendIdTip">Right click id to change the index of this line.</system:String>
+    <system:String x:Key="QuickSendListNameTip">Right click id to change this quick send list name</system:String>
+    <system:String x:Key="QuickSendListNameChangeTip">change this quick send list name</system:String>
     <system:String x:Key="QuickSendButton">Send</system:String>
     <system:String x:Key="QuickSendAdd">Add new</system:String>
     <system:String x:Key="QuickSendRemoveLast">Remove last one</system:String>

@@ -30,6 +30,8 @@
     <system:String x:Key="QuickSendHex">HEX</system:String>
     <system:String x:Key="QuickSendButtonTip">右击此按键，设置显示内容。</system:String>
     <system:String x:Key="QuickSendIdTip">右击序号，可更改改条目位置。</system:String>
+    <system:String x:Key="QuickSendListNameTip">右击名称，可更改当前快捷发送列表名称。</system:String>
+    <system:String x:Key="QuickSendListNameChangeTip">更改当前快捷发送列表名称</system:String>
     <system:String x:Key="QuickSendButton">发送</system:String>
     <system:String x:Key="QuickSendAdd">添加新项目</system:String>
     <system:String x:Key="QuickSendRemoveLast">删除最后一项</system:String>

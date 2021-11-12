@@ -95,9 +95,18 @@ namespace llcom
                     toSendList.ItemsSource = toSendListItems;
                     this.sentCountTextBlock.DataContext = Tools.Global.setting;
                     this.receivedCountTextBlock.DataContext = Tools.Global.setting;
+                    QuiclListName0.DataContext = Tools.Global.setting;
+                    QuiclListName1.DataContext = Tools.Global.setting;
+                    QuiclListName2.DataContext = Tools.Global.setting;
+                    QuiclListName3.DataContext = Tools.Global.setting;
+                    QuiclListName4.DataContext = Tools.Global.setting;
+                    QuiclListName5.DataContext = Tools.Global.setting;
+                    QuiclListName6.DataContext = Tools.Global.setting;
+                    QuiclListName7.DataContext = Tools.Global.setting;
+                    QuiclListName8.DataContext = Tools.Global.setting;
+                    QuiclListName9.DataContext = Tools.Global.setting;
 
                     //初始化快捷发送栏的数据
-                    this.QuickListPage.DataContext = Tools.Global.setting;
                     canSaveSendList = false;
                     if (Global.setting.quickSendSelect == -1)
                         Global.setting.quickSendSelect = 0;
@@ -200,6 +209,7 @@ namespace llcom
                 toSendListItems.Add(i);
             }
             CheckToSendListId();
+            QuickListPageTextBlock.Text = Global.setting.GetQuickListNameNow();
         }
 
         private void Uart_UartDataSent(object sender, EventArgs e)
@@ -1020,6 +1030,18 @@ namespace llcom
                     MessageBox.Show(err.Message);
                 }
             }
+        }
+
+        private void QuickListNameStackPanel_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Tuple<bool, string> ret = Tools.InputDialog.OpenDialog("↓↓↓↓↓↓",
+                Global.setting.GetQuickListNameNow(), TryFindResource("QuickSendListNameChangeTip") as string ?? "?!");
+
+            if (!ret.Item1)
+                return;
+
+            Global.setting.SetQuickListNameNow(ret.Item2);
+            QuickListPageTextBlock.Text = ret.Item2;
         }
     }
 }
