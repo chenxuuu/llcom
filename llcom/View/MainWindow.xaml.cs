@@ -62,7 +62,11 @@ namespace llcom
                     //重写关闭窗口代码
                     this.Closing += MainWindow_Closing;
 
-                    if(Tools.Global.setting.windowHeight != 0)
+                    if(Tools.Global.setting.windowHeight != 0 &&
+                        Tools.Global.setting.windowLeft > 0 &&
+                        Tools.Global.setting.windowTop > 0 &&
+                        Tools.Global.setting.windowTop < SystemParameters.FullPrimaryScreenHeight &&
+                        Tools.Global.setting.windowLeft < SystemParameters.FullPrimaryScreenWidth)
                     {
                         this.Left = Tools.Global.setting.windowLeft;
                         this.Top = Tools.Global.setting.windowTop;

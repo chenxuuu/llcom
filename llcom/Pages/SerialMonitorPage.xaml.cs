@@ -107,11 +107,6 @@ namespace llcom.Pages
         private bool connected = false;
         private void MonitorButton_Click(object sender, RoutedEventArgs e)
         {
-            if(Tools.Global.IsMSIX())
-            {
-                MessageBox.Show("商店版本不支持此功能，请打开llcom.papapoi.com，下载exe免安装版本");
-                return;
-            }
             if(!connected)
             {
                 if (PidComboBox.SelectedItem == null ||
