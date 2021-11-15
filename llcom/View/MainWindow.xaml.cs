@@ -29,6 +29,7 @@ using System.Xml;
 using llcom.Model;
 using System.Text.RegularExpressions;
 using llcom.Tools;
+using ICSharpCode.AvalonEdit.Folding;
 
 namespace llcom
 {
@@ -117,6 +118,22 @@ namespace llcom
 
                     //快速搜索
                     SearchPanel.Install(textEditor.TextArea);
+
+                    var foldingManager = FoldingManager.Install(textEditor.TextArea);
+                    var foldingStrategy = new Model.LuaFolding();
+
+                    Task.Run(() =>
+                    {
+                        while (true)
+                        {
+                            Task.Delay(1000).Wait();
+                            this.Dispatcher.Invoke(new Action(delegate
+                            {
+                                foldingStrategy.UpdateFoldings(foldingManager, textEditor.Document);
+                            }));
+                        }
+                    });
+
                     string name = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name + ".Lua.xshd";
                     System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
                     using (System.IO.Stream s = assembly.GetManifestResourceStream(name))

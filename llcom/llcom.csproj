@@ -232,6 +232,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\LuaFolding.cs" />
     <Compile Include="Pages\Convert.cs" />
     <Compile Include="Pages\ConvertPage.xaml.cs">
       <DependentUpon>ConvertPage.xaml</DependentUpon>
