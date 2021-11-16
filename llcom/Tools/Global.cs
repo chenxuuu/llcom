@@ -114,7 +114,7 @@ namespace llcom.Tools
                 CreateFile("DefaultFiles/core_script/log.lua", ProfilePath+"core_script/log.lua", false);
                 CreateFile("DefaultFiles/core_script/once.lua", ProfilePath+"core_script/once.lua", false);
                 CreateFile("DefaultFiles/core_script/strings.lua", ProfilePath+"core_script/strings.lua", false);
-                CreateFile("DefaultFiles/core_script/sys.lua", ProfilePath+"core_script/sys.lua", false);
+                CreateFile("DefaultFiles/core_script/sys.lua", ProfilePath+"core_script/sys.lua", true);
 
                 if (!Directory.Exists(ProfilePath+"logs"))
                     Directory.CreateDirectory(ProfilePath+"logs");
