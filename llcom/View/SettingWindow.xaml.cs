@@ -271,7 +271,14 @@ namespace llcom
 
         private void OpenLogButton_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("explorer.exe", Tools.Global.GetTrueProfilePath() + "logs");
+            try
+            {
+                System.Diagnostics.Process.Start("explorer.exe", Tools.Global.GetTrueProfilePath() + "logs");
+            }
+            catch
+            {
+                MessageBox.Show($"尝试打开文件夹失败，请自行打开该路径：{Tools.Global.GetTrueProfilePath()}logs");
+            }
         }
 
         private void encodingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

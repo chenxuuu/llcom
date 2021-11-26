@@ -443,7 +443,14 @@ namespace llcom
 
         private void OpenScriptFolderButton_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("explorer.exe", Tools.Global.GetTrueProfilePath() + "user_script_run");
+            try
+            {
+                System.Diagnostics.Process.Start("explorer.exe", Tools.Global.GetTrueProfilePath() + "user_script_run");
+            }
+            catch
+            {
+                MessageBox.Show($"尝试打开文件夹失败，请自行打开该路径：{Tools.Global.GetTrueProfilePath()}user_script_run");
+            }
         }
 
         private void RefreshScriptListButton_Click(object sender, RoutedEventArgs e)

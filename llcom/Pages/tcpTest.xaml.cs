@@ -108,12 +108,12 @@ namespace llcom.Pages
                         default:
                             break;
                     }
-            }
+                }
                 catch
-            {
-                //先不管错误
-            }
-        };
+                {
+                    //先不管错误
+                }
+            };
         }
 
         private void ShowData(string s)
