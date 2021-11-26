@@ -242,9 +242,16 @@ namespace llcom.Model
             }
             set
             {
-                _parity = value;
-                Tools.Global.uart.serial.Parity = (Parity)value;
-                Save();
+                try
+                {
+                    _parity = value;
+                    Tools.Global.uart.serial.Parity = (Parity)value;
+                    Save();
+                }
+                catch (Exception e)
+                {
+                    System.Windows.Forms.MessageBox.Show(e.Message);
+                }
             }
         }
 
@@ -269,9 +276,16 @@ namespace llcom.Model
             }
             set
             {
-                _dataBits = value;
-                Tools.Global.uart.serial.DataBits = value;
-                Save();
+                try
+                {
+                    _dataBits = value;
+                    Tools.Global.uart.serial.DataBits = value;
+                    Save();
+                }
+                catch (Exception e)
+                {
+                    System.Windows.Forms.MessageBox.Show(e.Message);
+                }
             }
         }
 
@@ -283,9 +297,16 @@ namespace llcom.Model
             }
             set
             {
-                _stopBit = value;
-                Tools.Global.uart.serial.StopBits = (StopBits)value;
-                Save();
+                try
+                {
+                    _stopBit = value;
+                    Tools.Global.uart.serial.StopBits = (StopBits)value;
+                    Save();
+                }
+                catch (Exception e)
+                {
+                    System.Windows.Forms.MessageBox.Show(e.Message);
+                }
             }
         }
 
