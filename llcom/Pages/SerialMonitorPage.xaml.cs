@@ -85,6 +85,15 @@ namespace llcom.Pages
             {
                 Refresh();
                 first = false;
+                try
+                {
+                    UnMonitorComm();
+                }
+                catch
+                {
+                    MonitorButton.IsEnabled = false;
+                    MessageBox.Show("插件加载失败，请尝试更新您的.net framework框架到4.6.2版本以上。");
+                }
             }
         }
 
