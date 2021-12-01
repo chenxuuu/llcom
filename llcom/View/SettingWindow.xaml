@@ -139,6 +139,75 @@
                     </WrapPanel>
                 </Grid>
             </TabItem>
+
+            <TabItem Header="{DynamicResource SettingRecvLuaScript}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <WrapPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <ComboBox Name="luaFileListRev" Width="250" SelectionChanged="luaFileListRev_SelectionChanged">
+                        </ComboBox>
+                        <Button Name="newScriptButtonRev" Margin="3,0,0,0" ToolTip="{DynamicResource LuaNewScript}" Click="newScriptButtonRev_Click">
+                            <Grid>
+                                <fa:FontAwesome Icon="File" Foreground="LightSkyBlue"/>
+                                <fa:FontAwesome Icon="FileCodeOutline"/>
+                            </Grid>
+                        </Button>
+                        <Button Name="testScriptButtonRev" Margin="3,0,0,0" ToolTip="{DynamicResource SettingLuaTestScript}" Click="testScriptButtonRev_Click">
+                            <fa:FontAwesome Icon="Play" Foreground="DarkGreen"/>
+                        </Button>
+                        <Button Name="openScriptFolderButtonRev" Margin="3,0,0,0" ToolTip="{DynamicResource LuaOpenFolder}" Click="openScriptFolderButtonRev_Click">
+                            <Grid>
+                                <fa:FontAwesome Icon="FolderOpen" Foreground="Yellow"/>
+                                <fa:FontAwesome Icon="FolderOutlinepenOutline"/>
+                            </Grid>
+                        </Button>
+                        <Button Name="apiDocumentButtonRev" Margin="3,0,0,0" ToolTip="{DynamicResource LuaApiReference}" Click="ApiDocumentButton_Click">
+                            <fa:FontAwesome Icon="Book" Foreground="DarkSlateGray"/>
+                        </Button>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="1" Name="newLuaFileWrapPanelRev" Visibility="Collapsed" Margin="3">
+                        <TextBlock Text="{DynamicResource LuaFileName}" VerticalAlignment="Center"/>
+                        <TextBox Name="newLuaFileNameTextBoxRev" Width="90" Text="new script"/>
+                        <Button Name="newLuaFilebuttonRev" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="{DynamicResource LuaConfirmCreate}" Click="newLuaFilebuttonRev_Click">
+                            <fa:FontAwesome Icon="Check" Foreground="Green"/>
+                        </Button>
+                        <Button Name="newLuaFileCancelbuttonRev" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="{DynamicResource LuaCancel}" Click="newLuaFileCancelbuttonRev_Click">
+                            <fa:FontAwesome Icon="Ban" Foreground="Red"/>
+                        </Button>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="1" Name="luaTestWrapPanelRev" Visibility="Collapsed" Margin="3">
+                        <TextBlock Text="{DynamicResource SettingLuaTestInput}" VerticalAlignment="Center"/>
+                        <TextBox Name="luaTestTextBoxRev" Width="150" Text="uart data"/>
+                        <Button Name="luaTestbuttonRev" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="{DynamicResource SettingLuaTestButton}" Click="luaTestbuttonRev_Click">
+                            <Grid>
+                                <fa:FontAwesome Icon="PaperPlane" Foreground="LightBlue"/>
+                                <fa:FontAwesome Icon="PaperPlaneOutline" Foreground="Black"/>
+                            </Grid>
+                        </Button>
+                        <Button Name="luaTestCancelbuttonRev" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="{DynamicResource LuaCancel}" Click="luaTestCancelbuttonRev_Click">
+                            <fa:FontAwesome Icon="Ban" Foreground="Red"/>
+                        </Button>
+                    </WrapPanel>
+                    <avalonEdit:TextEditor
+                        Grid.Row="2"
+                        xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                        Name="textEditorRev"
+                        FontFamily="Consolas"
+                        FontSize="10pt"
+                        ShowLineNumbers="True"
+                        LostFocus="textEditorRev_LostFocus"/>
+                    <WrapPanel Grid.Row="3" Margin="5">
+                        <TextBlock Text="{DynamicResource SettingLuaText1}" TextWrapping="Wrap"/>
+                        <TextBlock Text="{DynamicResource SettingLuaText2Recv}" TextWrapping="Wrap"/>
+                        <TextBlock Text="{DynamicResource SettingLuaText3}" TextWrapping="Wrap"/>
+                    </WrapPanel>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

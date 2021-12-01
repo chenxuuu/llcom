@@ -112,7 +112,7 @@ namespace llcom.Tools
                 CreateFile("DefaultFiles/core_script/head.lua", ProfilePath+"core_script/head.lua", false);
                 CreateFile("DefaultFiles/core_script/JSON.lua", ProfilePath+"core_script/JSON.lua", false);
                 CreateFile("DefaultFiles/core_script/log.lua", ProfilePath+"core_script/log.lua", false);
-                CreateFile("DefaultFiles/core_script/once.lua", ProfilePath+"core_script/once.lua", false);
+                CreateFile("DefaultFiles/core_script/once.lua", ProfilePath+"core_script/once.lua", true);
                 CreateFile("DefaultFiles/core_script/strings.lua", ProfilePath+"core_script/strings.lua", false);
                 CreateFile("DefaultFiles/core_script/sys.lua", ProfilePath+"core_script/sys.lua", true);
 
@@ -139,6 +139,11 @@ namespace llcom.Tools
                     CreateFile("DefaultFiles/user_script_send_convert/加上换行回车.lua", ProfilePath+"user_script_send_convert/加上换行回车.lua");
                     CreateFile("DefaultFiles/user_script_send_convert/解析换行回车的转义字符.lua", ProfilePath+"user_script_send_convert/解析换行回车的转义字符.lua");
                     CreateFile("DefaultFiles/user_script_send_convert/默认.lua", ProfilePath+"user_script_send_convert/默认.lua");
+                }
+                if (!Directory.Exists(ProfilePath + "user_script_recv_convert"))
+                {
+                    Directory.CreateDirectory(ProfilePath + "user_script_recv_convert");
+                    CreateFile("DefaultFiles/user_script_send_convert/默认.lua", ProfilePath + "user_script_recv_convert/默认.lua");
                 }
 
                 CreateFile("DefaultFiles/LICENSE", ProfilePath+"LICENSE", false);

@@ -5,7 +5,7 @@ return function ()
     runLimitStart(3)
     local file = apiUtf8ToHex(file):fromHex()
     uartData = uartData:fromHex()
-    local result = dofile(rootPath.."user_script_send_convert/"..file):toHex()
+    local result = dofile(rootPath..file):toHex()
     runLimitStop()
     return result
 end

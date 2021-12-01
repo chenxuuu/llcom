@@ -103,6 +103,24 @@ namespace llcom.Pages
                 return;
 
             uartDataFlowDocument.IsSelectionEnabled = false;
+
+            //转换下接收数据
+            if(!send)
+            {
+                try
+                {
+                    string dataConvert = LuaEnv.LuaLoader.Run(
+                        $"{Tools.Global.setting.sendScript}.lua",
+                        new System.Collections.ArrayList { "uartData", Tools.Global.Byte2Hex(data) },
+                        "user_script_recv_convert/");
+                    data = Tools.Global.Hex2Byte(dataConvert);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"{TryFindResource("ErrorScript") as string ?? "?!"}\r\n" + ex.ToString());
+                }
+            }
+
             if (Tools.Global.setting.timeout >= 0)
             {
                 Paragraph p = new Paragraph(new Run(""));

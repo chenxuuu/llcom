@@ -105,11 +105,13 @@
     <system:String x:Key="SettingParitySpace">Space</system:String>
     <system:String x:Key="Encoding">Encoding: </system:String>
     <system:String x:Key="SettingSendLuaScript">Lua script for data to send</system:String>
+    <system:String x:Key="SettingRecvLuaScript">Lua script for received data</system:String>
     <system:String x:Key="SettingLuaTestScript">Test script</system:String>
     <system:String x:Key="SettingLuaTestInput">Data to test:</system:String>
     <system:String x:Key="SettingLuaTestButton">Test data</system:String>
     <system:String x:Key="SettingLuaText1">'uartData' is received data, you can return your own result.</system:String>
     <system:String x:Key="SettingLuaText2">This script won't change your data of sent by automatic script.</system:String>
+    <system:String x:Key="SettingLuaText2Recv">This script won't change your data in your own lua script which got from data receive api.</system:String>
     <system:String x:Key="SettingLuaText3">Click api reference button to see api reference.</system:String>
     <system:String x:Key="SettingLuaRunResult">Result</system:String>
     <system:String x:Key="SettingLuaRawText">Raw text:</system:String>

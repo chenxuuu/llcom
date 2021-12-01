@@ -129,7 +129,11 @@ namespace llcom
                             Task.Delay(1000).Wait();
                             this.Dispatcher.Invoke(new Action(delegate
                             {
-                                foldingStrategy.UpdateFoldings(foldingManager, textEditor.Document);
+                                try
+                                {
+                                    foldingStrategy.UpdateFoldings(foldingManager, textEditor.Document);
+                                }
+                                catch { }
                             }));
                         }
                     });

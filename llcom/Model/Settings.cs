@@ -25,6 +25,7 @@ namespace llcom.Model
         private int _dataBits = 8;
         private int _stopBit = 1;
         private string _sendScript = "默认";
+        private string _recvScript = "默认";
         private string _runScript = "example";
         private bool _topmost = false;
         public List<List<ToSendData>> quickSendList = new List<List<ToSendData>>();
@@ -319,6 +320,19 @@ namespace llcom.Model
             set
             {
                 _sendScript = value;
+                Save();
+            }
+        }
+
+        public string recvScript
+        {
+            get
+            {
+                return _recvScript;
+            }
+            set
+            {
+                _recvScript = value;
                 Save();
             }
         }

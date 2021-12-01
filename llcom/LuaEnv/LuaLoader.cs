@@ -66,10 +66,10 @@ package.cpath = package.cpath..
         /// <param name="file"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static string Run(string file, ArrayList args = null)
+        public static string Run(string file, ArrayList args = null, string path = "user_script_send_convert/")
         {
             //文件不存在
-            if (!File.Exists(Tools.Global.ProfilePath + "user_script_send_convert/" + file))
+            if (!File.Exists(Tools.Global.ProfilePath + path + file))
                 return "";
 
             if (luaRunner == null)
@@ -80,7 +80,7 @@ package.cpath = package.cpath..
             }
             lock (luaRunner)
             {
-                luaRunner.Global.SetInPath("file", file);
+                luaRunner.Global.SetInPath("file", path + file);
 
                 try
                 {
