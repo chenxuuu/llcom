@@ -86,7 +86,10 @@
     <system:String x:Key="SettingBasic">Basic</system:String>
     <system:String x:Key="SettingAutoReconnect">Auto reconnect after disconnect</system:String>
     <system:String x:Key="SettingOpenLogFolder">Open serial port log data folder</system:String>
-    <system:String x:Key="SettingShowHex">Show Hex(Only show Hex at Not Pack Mode)</system:String>
+    <system:String x:Key="SettingShowFormat">Data show format:</system:String>
+    <system:String x:Key="SettingShowBoth">Both Text and Hex</system:String>
+    <system:String x:Key="SettingShoText">Only Text</system:String>
+    <system:String x:Key="SettingShowHexOnly">Only Hex</system:String>
     <system:String x:Key="SettingShowSend">Show data you sent</system:String>
     <system:String x:Key="SettingKeepTop">Keep Window on top</system:String>
     <system:String x:Key="SettingUartTimeout">Data pack time:</system:String>

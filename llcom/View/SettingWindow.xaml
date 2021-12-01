@@ -21,7 +21,14 @@
                     <StackPanel Margin="10,0,0,0" >
                         <CheckBox Content="{DynamicResource SettingAutoReconnect}" Margin="5" IsChecked="{Binding autoReconnect}"/>
                         <Button Name="OpenLogButton" Content="{DynamicResource SettingOpenLogFolder}" Click="OpenLogButton_Click" Margin="5"/>
-                        <CheckBox Content="{DynamicResource SettingShowHex}" Margin="5" IsChecked="{Binding showHex}"/>
+                        <WrapPanel Margin="5">
+                            <TextBlock Text="{DynamicResource SettingShowFormat}" VerticalAlignment="Center"/>
+                            <ComboBox Name="showHexComboBox" Width="170" SelectionChanged="showHexComboBox_SelectionChanged">
+                                <ComboBoxItem Content="{DynamicResource SettingShowBoth}"/>
+                                <ComboBoxItem Content="{DynamicResource SettingShoText}"/>
+                                <ComboBoxItem Content="{DynamicResource SettingShowHexOnly}"/>
+                            </ComboBox>
+                        </WrapPanel>
                         <CheckBox Content="{DynamicResource SettingShowSend}" Margin="5" IsChecked="{Binding showSend}"/>
                         <CheckBox Content="{DynamicResource SettingKeepTop}" Margin="5" IsChecked="{Binding topmost}"/>
                         <StackPanel Orientation="Horizontal" Margin="5">

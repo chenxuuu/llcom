@@ -141,6 +141,7 @@ namespace llcom
             dataBitsComboBox.SelectedIndex = Tools.Global.setting.dataBits - 5;
             stopBitComboBox.SelectedIndex = Tools.Global.setting.stopBit - 1;
             dataCheckComboBox.SelectedIndex = Tools.Global.setting.parity;
+            showHexComboBox.SelectedIndex = Tools.Global.setting.showHexFormat;
 
             //快速搜索
             SearchPanel.Install(textEditor.TextArea);
@@ -429,6 +430,14 @@ namespace llcom
             //自动保存脚本
             if (lastLuaFileRev != "")
                 saveLuaFileRev(lastLuaFileRev);
+        }
+
+        private void showHexComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (showHexComboBox.SelectedItem != null)
+            {
+                Tools.Global.setting.showHexFormat = showHexComboBox.SelectedIndex;
+            }
         }
     }
 }

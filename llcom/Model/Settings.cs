@@ -18,7 +18,7 @@ namespace llcom.Model
         private int _baudRate = 115200;
         private bool _autoReconnect = true;
         private bool _autoSaveLog = true;
-        private bool _showHex = true;
+        private int _showHexFormat = 0;
         private bool _showSend = true;
         private int _parity = 0;
         private int _timeout = 50;
@@ -209,15 +209,21 @@ namespace llcom.Model
             }
         }
 
-        public bool showHex
+        /// <summary>
+        /// 串口数据显示格式
+        /// 0 都显示
+        /// 1 只显示字符串
+        /// 2 只显示Hex
+        /// </summary>
+        public int showHexFormat
         {
             get
             {
-                return _showHex;
+                return _showHexFormat;
             }
             set
             {
-                _showHex = value;
+                _showHexFormat = value;
                 Save();
             }
         }

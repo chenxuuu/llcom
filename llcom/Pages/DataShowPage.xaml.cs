@@ -63,13 +63,22 @@ namespace llcom.Pages
             text.FontWeight = FontWeights.Bold;
             p.Inlines.Add(text);
             uartDataFlowDocument.Document.Blocks.Add(p);
+
+            //主要显示数据
+            string showData = Tools.Global.setting.showHexFormat switch
+            {
+                2 => Tools.Global.Byte2Hex(e.data, " "),
+                _ => Tools.Global.Byte2String(e.data)
+            };
             p = new Paragraph(new Run(""));
-            text = new Span(new Run(Tools.Global.Byte2String(e.data))); 
+            text = new Span(new Run(showData)); 
             text.Foreground = e.color;
             text.FontSize = 15;
             p.Inlines.Add(text);
             uartDataFlowDocument.Document.Blocks.Add(p);
-            if (Tools.Global.setting.showHex)
+
+            //同时显示模式时，才显示小字hex
+            if (Tools.Global.setting.showHexFormat == 0)
             {
                 if (e.data.Length > maxDataLength)
                     p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(e.data.Skip(0).Take(maxDataLength).ToArray(), " ")
@@ -137,11 +146,23 @@ namespace llcom.Pages
                 text.FontWeight = FontWeights.Bold;
                 p.Inlines.Add(text);
 
+                //主要显示数据
                 if (data.Length > maxDataLength)
-                    text = new Span(new Run(Tools.Global.Byte2String(data.Skip(0).Take(maxDataLength).ToArray())
-                        + "\r\nData too long, check log folder for remaining data."));
+                {
+                    text = new Span(new Run(Tools.Global.setting.showHexFormat switch
+                    {
+                        2 => Tools.Global.Byte2Hex(data.Skip(0).Take(maxDataLength).ToArray(), " "),
+                        _ => Tools.Global.Byte2String(data.Skip(0).Take(maxDataLength).ToArray())
+                    } + "\r\nData too long, check log folder for remaining data."));
+                }
                 else
-                    text = new Span(new Run(Tools.Global.Byte2String(data)));
+                {
+                    text = new Span(new Run(Tools.Global.setting.showHexFormat switch
+                    {
+                        2 => Tools.Global.Byte2Hex(data, " "),
+                        _ => Tools.Global.Byte2String(data),
+                    }));
+                }
 
                 if (send)
                     text.Foreground = Brushes.DarkRed;
@@ -150,11 +171,13 @@ namespace llcom.Pages
                 text.FontSize = 15;
                 p.Inlines.Add(text);
 
-                if (!Tools.Global.setting.showHex)
+                //同时显示模式时，才显示小字hex
+                if (Tools.Global.setting.showHexFormat != 0)
                     p.Margin = new Thickness(0, 0, 0, 8);
                 uartDataFlowDocument.Document.Blocks.Add(p);
 
-                if (Tools.Global.setting.showHex)
+                //同时显示模式时，才显示小字hex
+                if (Tools.Global.setting.showHexFormat == 0)
                 {
                     if (data.Length > maxDataLength)
                         p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(data.Skip(0).Take(maxDataLength).ToArray(), " ")
@@ -189,7 +212,7 @@ namespace llcom.Pages
 
                 //待显示的数据
                 string s;
-                if (Tools.Global.setting.showHex)
+                if (Tools.Global.setting.showHexFormat == 2)
                     s = Tools.Global.Byte2Hex(data, " ");
                 else
                     s = Tools.Global.Byte2String(data);
