@@ -110,7 +110,7 @@ namespace llcom.Pages
                 try
                 {
                     string dataConvert = LuaEnv.LuaLoader.Run(
-                        $"{Tools.Global.setting.sendScript}.lua",
+                        $"{Tools.Global.setting.recvScript}.lua",
                         new System.Collections.ArrayList { "uartData", Tools.Global.Byte2Hex(data) },
                         "user_script_recv_convert/");
                     data = Tools.Global.Hex2Byte(dataConvert);
