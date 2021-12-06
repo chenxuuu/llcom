@@ -48,7 +48,9 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/13432299?v=4",
       "profile": "http://www.diycms.com",
       "contributions": [
-        "ideas"
+        "ideas",
+        "bug",
+        "code"
       ]
     }
   ],
