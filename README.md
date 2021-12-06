@@ -164,7 +164,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://www.chenxublog.com/"><img src="https://avatars3.githubusercontent.com/u/10357394?v=4?s=100" width="100px;" alt=""/><br /><sub><b>chenxuuu</b></sub></a><br /><a href="#projectManagement-chenxuuu" title="Project Management">📆</a></td>
     <td align="center"><a href="https://github.com/neomissing"><img src="https://avatars0.githubusercontent.com/u/22003930?v=4?s=100" width="100px;" alt=""/><br /><sub><b>neomissing</b></sub></a><br /><a href="#ideas-neomissing" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/RYLF"><img src="https://avatars3.githubusercontent.com/u/28991981?v=4?s=100" width="100px;" alt=""/><br /><sub><b>RuoYun</b></sub></a><br /><a href="https://github.com/chenxuuu/llcom/issues?q=author%3ARYLF" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="http://www.diycms.com"><img src="https://avatars.githubusercontent.com/u/13432299?v=4?s=100" width="100px;" alt=""/><br /><sub><b>王龙</b></sub></a><br /><a href="#ideas-wanglong126" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="http://www.diycms.com"><img src="https://avatars.githubusercontent.com/u/13432299?v=4?s=100" width="100px;" alt=""/><br /><sub><b>王龙</b></sub></a><br /><a href="#ideas-wanglong126" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/chenxuuu/llcom/issues?q=author%3Awanglong126" title="Bug reports">🐛</a> <a href="https://github.com/chenxuuu/llcom/commits?author=wanglong126" title="Code">💻</a></td>
   </tr>
 </table>
 
