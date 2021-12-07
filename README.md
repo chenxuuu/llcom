@@ -71,7 +71,7 @@ return uartData:fromHex()
 ```lua
 json = require("JSON")
 t = uartData:split(",")
-return JSON:encode({
+return json:encode({
     key1 = t[1],
     key2 = t[2],
     key3 = t[3],

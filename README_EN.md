@@ -62,7 +62,7 @@ this script can change `30313233` to `0123`.
 ```lua
 json = require("JSON")
 t = uartData:split(",")
-return JSON:encode({
+return json:encode({
     key1 = t[1],
     key2 = t[2],
     key3 = t[3],
