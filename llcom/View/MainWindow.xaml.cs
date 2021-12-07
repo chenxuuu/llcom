@@ -769,6 +769,8 @@ namespace llcom
         private static bool fileLoading = false;
         //上次打开文件名
         private static string lastLuaFile = "";
+        //最后打开文件的时间
+        private static DateTime lastLuaFileTime = DateTime.Now;
         /// <summary>
         /// 加载lua脚本文件
         /// </summary>
@@ -788,6 +790,8 @@ namespace llcom
             {
                 Tools.Global.setting.runScript = fileName;
             }
+            //记录最后时间
+            lastLuaFileTime = File.GetLastWriteTime(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua");
 
             //文件内容显示出来
             textEditor.Text = File.ReadAllText(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua");
@@ -804,6 +808,8 @@ namespace llcom
             try
             {
                 File.WriteAllText(Tools.Global.ProfilePath + $"user_script_run/{fileName}.lua", textEditor.Text);
+                //记录最后时间
+                lastLuaFileTime = File.GetLastWriteTime(Tools.Global.ProfilePath + $"user_script_run/{fileName}.lua");
             }
             catch { }
         }
@@ -823,6 +829,24 @@ namespace llcom
             //自动保存脚本
             if (lastLuaFile != "")
                 saveLuaFile(lastLuaFile);
+        }
+        private void Window_Deactivated(object sender, EventArgs e)
+        {
+            //窗口变为后台,可能在切换编辑器,自动保存脚本
+            if (lastLuaFile != "")
+                saveLuaFile(lastLuaFile);
+        }
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            if (lastLuaFile != "")
+            {
+                //当前文件最后时间
+                DateTime fileTime = File.GetLastWriteTime(Tools.Global.ProfilePath + $"user_script_run/{lastLuaFile}.lua");
+                if (fileTime > lastLuaFileTime)//代码在外部被修改
+                {
+                    loadLuaFile(lastLuaFile);
+                }
+            }
         }
 
         //是否可打印标记

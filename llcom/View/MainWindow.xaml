@@ -12,7 +12,9 @@
         mc:Ignorable="d"
         Title="{DynamicResource AppTitle}" Height="500" Width="900"
         Loaded="Window_Loaded"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Activated="Window_Activated"
+        Deactivated="Window_Deactivated">
     <Window.Style>
         <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
     </Window.Style>
