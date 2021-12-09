@@ -49,6 +49,8 @@ namespace llcom.Pages
             KeepAliveTextBox.DataContext = Tools.Global.setting;
             CleanTextBox.DataContext = Tools.Global.setting;
             HexCheckBox.DataContext = Tools.Global.setting;
+            WsCheckBox.DataContext = Tools.Global.setting;
+            WsPathTextBox.DataContext = Tools.Global.setting;
             ConnectButton.DataContext = this;
             SettingStackPanel.DataContext = this;
 
@@ -104,11 +106,16 @@ namespace llcom.Pages
                 MqttIsConnected = true;
                 var temp = new MqttClientOptionsBuilder()
                     .WithClientId(Tools.Global.setting.mqttClientID)
-                    .WithTcpServer(Tools.Global.setting.mqttServer, Tools.Global.setting.mqttPort)
                     .WithCredentials(Tools.Global.setting.mqttUser, Tools.Global.setting.mqttPassword)
                     .WithKeepAlivePeriod(new TimeSpan(0, 0, Tools.Global.setting.mqttKeepAlive));
                 if (Tools.Global.setting.mqttTLS)
                     temp.WithTls();
+                if (Tools.Global.setting.mqttWs)
+                    temp.WithWebSocketServer(
+                        $"{Tools.Global.setting.mqttServer}:{Tools.Global.setting.mqttPort}" +
+                        $"{Tools.Global.setting.mqttWsPath}");
+                else
+                    temp.WithTcpServer(Tools.Global.setting.mqttServer, Tools.Global.setting.mqttPort);
                 if (Tools.Global.setting.mqttCleanSession)
                     temp.WithCleanSession();
                 var options = temp.Build();

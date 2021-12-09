@@ -437,6 +437,8 @@ namespace llcom.Model
         private int _mqttPort = 1883;
         private string _mqttClientID = Guid.NewGuid().ToString();
         private bool _mqttTLS = false;
+        private bool _mqttWs = false;
+        private string _mqttWsPath = "/mqtt";
         private string _mqttUser = "user";
         private string _mqttPassword = "password";
         private int _mqttKeepAlive = 120;
@@ -445,6 +447,8 @@ namespace llcom.Model
         public int mqttPort { get { return _mqttPort; } set { _mqttPort = value; Save(); } }
         public string mqttClientID { get { return _mqttClientID; } set { _mqttClientID = value; Save(); } }
         public bool mqttTLS { get { return _mqttTLS; } set { _mqttTLS = value; Save(); } }
+        public bool mqttWs { get { return _mqttWs; } set { _mqttWs = value; Save(); } }
+        public string mqttWsPath { get { return _mqttWsPath; } set { _mqttWsPath = value; Save(); } }
         public string mqttUser { get { return _mqttUser; } set { _mqttUser = value; Save(); } }
         public string mqttPassword { get { return _mqttPassword; } set { _mqttPassword = value; Save(); } }
         public int mqttKeepAlive { get { return _mqttKeepAlive; } set { _mqttKeepAlive = value; Save(); } }

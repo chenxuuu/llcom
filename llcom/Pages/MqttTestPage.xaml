@@ -11,6 +11,7 @@
     <Page.Resources>
         <local:boolConnected x:Key="boolConnectedConverter"/>
         <local:boolNot x:Key="boolNotConverter"/>
+        <local:boolVisibe x:Key="boolVisibeConverter"/>
     </Page.Resources>
 
     <Grid>
@@ -81,6 +82,9 @@
                             <TextBlock Text="{DynamicResource MQTTClientID}"/>
                             <TextBox Name="ClientTextBox" Text="{Binding mqttClientID}"/>
                             <CheckBox Name="TLSCheckBox" Content="{DynamicResource MQTTTLS}" IsChecked="{Binding mqttTLS}"/>
+                            <CheckBox Name="WsCheckBox" Content="{DynamicResource MQTTWS}" IsChecked="{Binding mqttWs}"/>
+                            <TextBlock Text="{DynamicResource MQTTWsPath}" Visibility="{Binding Path=IsChecked, ElementName=WsCheckBox,Converter={StaticResource boolVisibeConverter}}"/>
+                            <TextBox Name="WsPathTextBox" Text="{Binding mqttWsPath}" Visibility="{Binding Path=IsChecked, ElementName=WsCheckBox,Converter={StaticResource boolVisibeConverter}}"/>
                             <TextBlock Text="{DynamicResource MQTTUser}"/>
                             <TextBox Name="UserTextBox" Text="{Binding mqttUser}"/>
                             <TextBlock Text="{DynamicResource MQTTPassword}"/>
