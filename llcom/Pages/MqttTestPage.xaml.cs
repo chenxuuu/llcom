@@ -54,7 +54,7 @@ namespace llcom.Pages
             ConnectButton.DataContext = this;
             SettingStackPanel.DataContext = this;
 
-            mqttClient.UseConnectedHandler(async e =>
+            mqttClient.UseConnectedHandler(e =>
             {
                 this.Dispatcher.Invoke(new Action(delegate
                 {
@@ -62,7 +62,7 @@ namespace llcom.Pages
                     subListBox.Items.Clear();
                 }));
             });
-            mqttClient.UseDisconnectedHandler(async e =>
+            mqttClient.UseDisconnectedHandler(e =>
             {
                 this.Dispatcher.Invoke(new Action(delegate
                 {
