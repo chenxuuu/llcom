@@ -79,6 +79,8 @@ namespace llcom.Pages
                         }));
                     }
                     Thread.Sleep(100);
+                    if (Tools.Global.isMainWindowsClosed)
+                        return;
                 }
             }).Start();
 

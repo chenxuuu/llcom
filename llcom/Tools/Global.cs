@@ -143,8 +143,15 @@ namespace llcom.Tools
                 if (!Directory.Exists(ProfilePath + "user_script_recv_convert"))
                 {
                     Directory.CreateDirectory(ProfilePath + "user_script_recv_convert");
-                    CreateFile("DefaultFiles/user_script_send_convert/默认.lua", ProfilePath + "user_script_recv_convert/默认.lua");
                 }
+                if (!File.Exists(ProfilePath + "user_script_recv_convert/默认.lua"))
+                    CreateFile("DefaultFiles/user_script_recv_convert/默认.lua", ProfilePath + "user_script_recv_convert/默认.lua");
+                if (!File.Exists(ProfilePath + "user_script_recv_convert/绘制曲线.lua"))
+                    CreateFile("DefaultFiles/user_script_recv_convert/绘制曲线.lua", ProfilePath + "user_script_recv_convert/绘制曲线.lua");
+                if (!File.Exists(ProfilePath + "user_scrispt_recv_convert/绘制曲线-多条.lua"))
+                    CreateFile("DefaultFiles/user_script_recv_convert/绘制曲线-多条.lua", ProfilePath + "user_script_recv_convert/绘制曲线-多条.lua");
+                if (!File.Exists(ProfilePath + "user_script_recv_convert/绘制曲线-解析结构体.lua"))
+                    CreateFile("DefaultFiles/user_script_recv_convert/绘制曲线-解析结构体.lua", ProfilePath + "user_script_recv_convert/绘制曲线-解析结构体.lua");
 
                 CreateFile("DefaultFiles/LICENSE", ProfilePath+"LICENSE", false);
                 CreateFile("DefaultFiles/反馈网址.txt", ProfilePath+"反馈网址.txt", false);
