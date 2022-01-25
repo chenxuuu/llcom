@@ -175,6 +175,9 @@ namespace llcom
                     //串口监听
                     SerialMonitorFrame.Navigate(new Uri("Pages/SerialMonitorPage.xaml", UriKind.Relative));
 
+                    //绘制曲线
+                    PlotFrame.Navigate(new Uri("Pages/PlotPage.xaml", UriKind.Relative));
+
                     this.Title += $" - {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
 
                     //检查更新

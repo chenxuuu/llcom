@@ -167,4 +167,8 @@
     <system:String x:Key="SerialMonitorRefresh">刷新进程和串口列表</system:String>
     <system:String x:Key="SerialMonitorStart">开始监听</system:String>
     <system:String x:Key="SerialMonitorStop">停止监听</system:String>
+    <system:String x:Key="PlotHeader">曲线</system:String>
+    <system:String x:Key="PlotFit">查看全局</system:String>
+    <system:String x:Key="PlotClear">清空图像</system:String>
+    <system:String x:Key="PlotTheme">切换主题</system:String>
 </ResourceDictionary>

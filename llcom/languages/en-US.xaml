@@ -167,4 +167,8 @@
     <system:String x:Key="SerialMonitorRefresh">Refresh process and serial list</system:String>
     <system:String x:Key="SerialMonitorStart">Start monitor</system:String>
     <system:String x:Key="SerialMonitorStop">Stop monitor</system:String>
+    <system:String x:Key="PlotHeader">Chart</system:String>
+    <system:String x:Key="PlotFit">Fit</system:String>
+    <system:String x:Key="PlotClear">Clear</system:String>
+    <system:String x:Key="PlotTheme">Theme</system:String>
 </ResourceDictionary>
