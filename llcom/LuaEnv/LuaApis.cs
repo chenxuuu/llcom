@@ -86,5 +86,17 @@ namespace llcom.LuaEnv
             returnValue = ret.Item2;
             return ret.Item1;
         }
+
+
+        public static event EventHandler<Model.LinePlotPoint> LinePlotAdd;
+        /// <summary>
+        /// 画点
+        /// </summary>
+        /// <param name="n">值</param>
+        /// <param name="l">哪根线</param>
+        public static void AddPoint(double n, int l)
+        {
+            LinePlotAdd?.Invoke(null, new Model.LinePlotPoint { N = n, Line = l });
+        }
     }
 }

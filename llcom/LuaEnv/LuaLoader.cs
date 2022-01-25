@@ -27,6 +27,8 @@ namespace llcom.LuaEnv
             lua.DoString("apiQuickSendList = CS.llcom.LuaEnv.LuaApis.QuickSendList");
             //输入框
             lua.DoString("apiInputBox = CS.llcom.LuaEnv.LuaApis.InputBox");
+            //加点
+            lua.DoString("apiAddPoint = CS.llcom.LuaEnv.LuaApis.AddPoint");
 
             if (t != "send")
             {

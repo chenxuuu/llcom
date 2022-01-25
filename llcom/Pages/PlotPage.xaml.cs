@@ -61,16 +61,7 @@ namespace llcom.Pages
             ch.Color = System.Drawing.Color.LightGray;
             ch.LineWidth = 2;
 
-            new Thread(() =>
-            {
-                var r = new Random();
-                while (true)
-                {
-                    AddPoint(r.Next(-10, 10), 1);
-                    Task.Delay(10).Wait();
-                }
-            }).Start();
-
+            //定时刷吧，要不然卡
             new Thread(() =>
             {
                 while (true)
@@ -90,6 +81,8 @@ namespace llcom.Pages
                     Thread.Sleep(100);
                 }
             }).Start();
+
+            LuaEnv.LuaApis.LinePlotAdd += (s, e) => AddPoint(e.N, e.Line);
         }
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
@@ -128,6 +121,8 @@ namespace llcom.Pages
 
         private void AddPoint(double d, int line)
         {
+            if (line >= 10)
+                return;
             if(Data[line] == null)
                 Data[line] = new double[MaxPoints];
             for(int i = 0;i < MaxPoints - 1;i++)

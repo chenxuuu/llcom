@@ -137,6 +137,32 @@ string，返回的结果
 local ok, result = apiInputBox("请输入你要发送的tcp数据")
 ```
 
+### AddPoint(num,line)
+
+绘制曲线，添加点（添加的点会被加到曲线末端）
+
+* 参数
+
+|传入值类型|释义|
+|-|-|
+|num|点的值|
+|line|哪根线，可选0-9|
+
+* 返回值
+
+无
+
+* 例子
+
+```lua
+sys.taskInit(function()
+    for i=1,100 do
+        apiAddPoint(i,1)
+        sys.wait(10)
+    end
+end)
+```
+
 ## Lua层增加的接口
 
 ## string附加接口
