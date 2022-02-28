@@ -3,6 +3,7 @@ using LibUsbDotNet.Main;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.Ports;
@@ -11,6 +12,7 @@ using System.Management;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace llcom.Tools
 {
@@ -33,6 +35,8 @@ namespace llcom.Tools
                 {
                     Logger.CloseUartLog();
                     Logger.CloseLuaLog();
+                    if(File.Exists(ProfilePath + "lock"))
+                        File.Delete(ProfilePath + "lock");
                 }
             }
         }
@@ -103,6 +107,16 @@ namespace llcom.Tools
                 ProfilePath = AppPath;//普通exe时，直接用软件路径
             }
 
+            //检测多开
+            string processName = Process.GetCurrentProcess().ProcessName;
+            Process[] processes = Process.GetProcessesByName(processName);
+            //如果该数组长度大于1，说明多次运行
+            if (processes.Length > 1 && File.Exists(ProfilePath + "lock"))
+            {
+                MessageBox.Show("不支持同文件夹多开！\r\n如需多开，请在多个文件夹分别存放llcom.exe后，分别运行。");
+                Environment.Exit(1);
+            }
+            File.Create(ProfilePath + "lock").Close();
             try
             {
                 if (!Directory.Exists(ProfilePath+"core_script"))
