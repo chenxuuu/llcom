@@ -47,6 +47,10 @@ namespace llcom
                 MessageBox.Show("恭喜你触发了一个BUG！\r\n" +
                     "如果条件允许，请点击“Send Report”来上报这个BUG\r\n" +
                     $"报错信息：{exception.Message}");
+            if(!Tools.Global.ReportBug)
+            {
+                MessageBox.Show("检测到不支持的.net版本，停止上报bug逻辑");
+            }
             var reportCrash = new ReportCrash("lolicon@papapoi.com")
             {
                 DeveloperMessage = developerMessage

@@ -81,12 +81,39 @@ namespace llcom.Tools
         }
 
         /// <summary>
+        /// 是否上报bug？低版本.net框架的上报行为将被限制
+        /// </summary>
+        public static bool ReportBug { get; set; } = true;
+
+        /// <summary>
         /// 软件打开后，所有东西的初始化流程
         /// </summary>
         public static void Initial()
         {
+            //检查.net版本
+            var currentVersion = Walterlv.NdpInfo.GetCurrentVersionName();
+            try
+            {
+                if (currentVersion.StartsWith("4."))
+                {
+                    var sv = int.Parse(currentVersion.Substring(2,1));
+                    if(sv < 6)
+                        throw new Exception();
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch
+            {
+                MessageBox.Show($"本软件仅支持.net framework 4.6.2以上版本，该计算机上的最高版本为{currentVersion}\r\n" +
+                    $"你可以选择继续使用，但若运行途中遇到bug，将不会上报给开发者。\r\n" +
+                    $"建议升级到最新.net framework版本");
+                ReportBug = false;
+            }
             //C:\Users\chenx\AppData\Local\Temp\7zO05433053\user_script_run
-            if(AppPath.ToUpper().Contains(@"\APPDATA\LOCAL\TEMP\"))
+            if (AppPath.ToUpper().Contains(@"\APPDATA\LOCAL\TEMP\"))
             {
                 System.Windows.MessageBox.Show("请勿在压缩包内直接打开本软件。");
                 Environment.Exit(1);
