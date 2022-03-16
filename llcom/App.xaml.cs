@@ -49,7 +49,13 @@ namespace llcom
                     $"报错信息：{exception.Message}");
             if(!Tools.Global.ReportBug)
             {
-                MessageBox.Show("检测到不支持的.net版本，停止上报bug逻辑");
+                MessageBox.Show("检测到不支持的.net版本，禁止上报bug");
+                return;
+            }
+            if(Tools.Global.HasNewVersion)
+            {
+                MessageBox.Show("检测到该软件不是最新版，禁止上报bug\r\n请保证软件是最新版");
+                return;
             }
             var reportCrash = new ReportCrash("lolicon@papapoi.com")
             {

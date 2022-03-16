@@ -181,7 +181,7 @@ namespace llcom
                     this.Title += $" - {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
 
                     //检查更新
-                    if (!Tools.Global.IsMSIX() && Tools.Global.setting.autoUpdate)
+                    if (!Tools.Global.IsMSIX())
                     {
                         Task.Run(() => {
                             bool runed = false;
@@ -189,10 +189,16 @@ namespace llcom
                             {
                                 if (runed) return; runed = true;
                                 if (args.IsUpdateAvailable)
-                                    this.Dispatcher.Invoke(new Action(delegate
+                                {
+                                    Global.HasNewVersion = true;//有新版本
+                                    if(Tools.Global.setting.autoUpdate)//开了自动升级功能再开
                                     {
-                                        AutoUpdaterDotNET.AutoUpdater.ShowUpdateForm(args);
-                                    }));
+                                        this.Dispatcher.Invoke(new Action(delegate
+                                        {
+                                            AutoUpdaterDotNET.AutoUpdater.ShowUpdateForm(args);
+                                        }));
+                                    }
+                                }
                             };
                             Random r = new Random();//加上随机参数，确保获取的是最新数据
                             try

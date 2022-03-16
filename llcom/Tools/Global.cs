@@ -86,6 +86,11 @@ namespace llcom.Tools
         public static bool ReportBug { get; set; } = true;
 
         /// <summary>
+        /// 是否有新版本？
+        /// </summary>
+        public static bool HasNewVersion { get; set; } = false;
+
+        /// <summary>
         /// 软件打开后，所有东西的初始化流程
         /// </summary>
         public static void Initial()

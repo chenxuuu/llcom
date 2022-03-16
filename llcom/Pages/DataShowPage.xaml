@@ -34,13 +34,13 @@
         </FlowDocumentScrollViewer>
         <StackPanel VerticalAlignment="Bottom" 
                     HorizontalAlignment="Left" 
-                    Margin="10,0,0,5" Orientation="Horizontal" 
+                    Margin="10,0,0,25" Orientation="Horizontal" 
                     Visibility="{Binding Path=IsMouseOver, ElementName=mainGrid,Converter={StaticResource boolVisibeConverter}}">
             <CheckBox Name="ExtraEnterCheckBox" IsChecked="{Binding extraEnter}" Content="{DynamicResource AddExtraEnter}" ToolTip="{DynamicResource AddExtraEnterTip}"/>
             <CheckBox Name="RTSCheckBox" IsChecked="{Binding Rts}" Content="RTS" Margin="5,0,0,0"/>
             <CheckBox Name="DTRCheckBox" IsChecked="{Binding Dtr}" Content="DTR" Margin="5,0,0,0"/>
         </StackPanel>
-        <Button Name="LockLogButton" Margin="0,0,18,0" ToolTip="{DynamicResource LockLogButton}" 
+        <Button Name="LockLogButton" Margin="0,0,18,20" ToolTip="{DynamicResource LockLogButton}" 
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="LockLogButton_Click"
                 Visibility="{Binding Path=IsMouseOver, ElementName=mainGrid,Converter={StaticResource boolVisibeConverter}}">
             <StackPanel>

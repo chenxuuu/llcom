@@ -49,6 +49,7 @@ namespace llcom.Pages
                 G_args = args;
                 if (args.IsUpdateAvailable)
                 {
+                    Tools.Global.HasNewVersion = !Tools.Global.IsMSIX();
                     if(Tools.Global.IsMSIX())
                     {
                         this.Dispatcher.Invoke(new Action(delegate {
