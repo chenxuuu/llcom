@@ -16,7 +16,11 @@
         <local:boolVisibe x:Key="boolVisibeConverter"/>
         <local:boolNotVisibe x:Key="boolNotVisibeConverter"/>
     </Page.Resources>
-    <Grid x:Name="mainGrid">
+    <Grid x:Name="mainGrid" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
         <FlowDocumentScrollViewer Name="uartDataFlowDocument" VerticalScrollBarVisibility="Visible" MinZoom="50" 
                               BorderBrush="#FF009400" BorderThickness="0" 
                               GotFocus="uartDataFlowDocument_GotFocus" LostFocus="uartDataFlowDocument_LostFocus"
@@ -34,8 +38,9 @@
         </FlowDocumentScrollViewer>
         <StackPanel VerticalAlignment="Bottom" 
                     HorizontalAlignment="Left" 
-                    Margin="10,0,0,25" Orientation="Horizontal" 
-                    Visibility="{Binding Path=IsMouseOver, ElementName=mainGrid,Converter={StaticResource boolVisibeConverter}}">
+                    Margin="10,0,0,3" Orientation="Horizontal" 
+                    Visibility="{Binding Path=IsMouseOver, ElementName=mainGrid,Converter={StaticResource boolVisibeConverter}}"
+                    Grid.Row="1">
             <CheckBox Name="ExtraEnterCheckBox" IsChecked="{Binding extraEnter}" Content="{DynamicResource AddExtraEnter}" ToolTip="{DynamicResource AddExtraEnterTip}"/>
             <CheckBox Name="RTSCheckBox" IsChecked="{Binding Rts}" Content="RTS" Margin="5,0,0,0"/>
             <CheckBox Name="DTRCheckBox" IsChecked="{Binding Dtr}" Content="DTR" Margin="5,0,0,0"/>
