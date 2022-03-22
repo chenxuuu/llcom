@@ -124,7 +124,15 @@ namespace llcom.Pages
                 var start = PidComboBox.Text.IndexOf("[");
                 var pid = uint.Parse(PidComboBox.Text.Substring(start + 1, PidComboBox.Text.Length - start - 2));
                 var com = uint.Parse(SerialPortComboBox.Text.Substring(3));
-                connected = MonitorComm(pid, com, myDelegate);
+                try
+                {
+                    connected = MonitorComm(pid, com, myDelegate);
+                }
+                catch(Exception ex)
+                {
+                    MonitorButton.IsEnabled = false;
+                    MessageBox.Show("加载失败："+ex.Message);
+                }
             }
             else
             {
