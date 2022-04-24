@@ -45,8 +45,22 @@ namespace llcom.Tools
         public static Model.Uart uart = new Model.Uart();
 
         //软件根目录
-        public static readonly string AppPath = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName) + "\\";
-        //配置文件路径
+        private static string _appPath = null;
+        public static string AppPath
+        {
+            get 
+            { 
+                if(_appPath == null)
+                {
+                    _appPath = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName);
+                    if(!_appPath.EndsWith("\\"))
+                        _appPath = _appPath + "\\";
+                }
+                return _appPath; 
+            }
+        }
+
+        //配置文件路径（普通exe时，会被替换为AppPath）
         public static string ProfilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\llcom\";
 
         /// <summary>
