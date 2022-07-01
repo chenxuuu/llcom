@@ -923,9 +923,20 @@ namespace llcom
                 luaScriptEditorGrid.Visibility = Visibility.Visible;
                 luaLogShowGrid.Visibility = Visibility.Collapsed;
                 luaLogPrintable = true;
+                
+                stopLuaOrExitIcon.Icon = FontAwesomeIcon.Stop;
+                stopLuaButton.ToolTip = TryFindResource("LuaStop") as string ?? "?!";
+            }
+            else
+            {
+                stopLuaOrExitIcon.Icon = FontAwesomeIcon.SignOut;
+                stopLuaButton.ToolTip = TryFindResource("LuaQuit") as string ?? "?!";
             }
             luaLogPrintable = true;
             LuaEnv.LuaRunEnv.StopLua("");
+
+            pauseLuaPrintButton.ToolTip = TryFindResource("LuaOverload") as string ?? "?!";
+            pauseLuaPrintIcon.Icon = FontAwesomeIcon.Refresh;
         }
 
         private void LuaRunEnv_LuaRunError(object sender, EventArgs e)
@@ -935,7 +946,16 @@ namespace llcom
 
         private void PauseLuaPrintButton_Click(object sender, RoutedEventArgs e)
         {
-            luaLogPrintable = !luaLogPrintable;
+            if (!LuaEnv.LuaRunEnv.isRunning)
+            {
+                stopLuaOrExitIcon.Icon = FontAwesomeIcon.Stop;
+                stopLuaButton.ToolTip = TryFindResource("LuaStop") as string ?? "?!";
+                LuaEnv.LuaRunEnv.New($"user_script_run/{luaFileList.SelectedItem as string}.lua");
+                LuaEnv.LuaRunEnv.canRun = true;
+            }
+            else {
+                luaLogPrintable = !luaLogPrintable;
+            }
         }
 
         private void SendLuaScriptButton_Click(object sender, RoutedEventArgs e)

@@ -57,7 +57,9 @@
     <system:String x:Key="LuaFileName">文件名：</system:String>
     <system:String x:Key="LuaConfirmCreate">确认新建文件</system:String>
     <system:String x:Key="LuaCancel">取消</system:String>
-    <system:String x:Key="LuaStop">停止运行，停止之后再点一下就是关闭</system:String>
+    <system:String x:Key="LuaStop">停止运行</system:String>
+    <system:String x:Key="LuaQuit">退出</system:String>
+    <system:String x:Key="LuaOverload">重新载入代码并运行</system:String>
     <system:String x:Key="LuaPause">暂停打印</system:String>
     <system:String x:Key="LuaContinue">继续打印</system:String>
     <system:String x:Key="LuaSendScript">实时执行lua语句 - [Enter]</system:String>
