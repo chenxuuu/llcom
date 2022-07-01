@@ -57,7 +57,9 @@
     <system:String x:Key="LuaFileName">File name:</system:String>
     <system:String x:Key="LuaConfirmCreate">Confirm create file</system:String>
     <system:String x:Key="LuaCancel">Cancel</system:String>
-    <system:String x:Key="LuaStop">Stop run, close when second click.</system:String>
+    <system:String x:Key="LuaStop">Stop run</system:String>
+    <system:String x:Key="LuaQuit">Quit</system:String>
+    <system:String x:Key="LuaOverload">Reload and run</system:String>
     <system:String x:Key="LuaPause">Pause Log print</system:String>
     <system:String x:Key="LuaContinue">Continue print log</system:String>
     <system:String x:Key="LuaSendScript">Run Lua command - [Enter]</system:String>
