@@ -1124,5 +1124,10 @@ namespace llcom
             Global.setting.SetQuickListNameNow(ret.Item2);
             QuickListPageTextBlock.Text = ret.Item2;
         }
+
+        private void pauseLuaPrintButton_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            luaLogTextBox.Clear();
+        }
     }
 }
