@@ -952,6 +952,7 @@ namespace llcom
                 stopLuaButton.ToolTip = TryFindResource("LuaStop") as string ?? "?!";
                 LuaEnv.LuaRunEnv.New($"user_script_run/{luaFileList.SelectedItem as string}.lua");
                 LuaEnv.LuaRunEnv.canRun = true;
+                luaLogPrintable = true;
             }
             else {
                 luaLogPrintable = !luaLogPrintable;
