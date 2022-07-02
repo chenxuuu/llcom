@@ -60,7 +60,7 @@
     <system:String x:Key="LuaStop">Stop run</system:String>
     <system:String x:Key="LuaQuit">Quit</system:String>
     <system:String x:Key="LuaOverload">Reload and run</system:String>
-    <system:String x:Key="LuaPause">Pause Log print</system:String>
+    <system:String x:Key="LuaPause">Pause Log print,Right-click Clear Log</system:String>
     <system:String x:Key="LuaContinue">Continue print log</system:String>
     <system:String x:Key="LuaSendScript">Run Lua command - [Enter]</system:String>
     <system:String x:Key="LuaNoName">Please enter file name!</system:String>

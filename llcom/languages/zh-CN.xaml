@@ -60,7 +60,7 @@
     <system:String x:Key="LuaStop">停止运行</system:String>
     <system:String x:Key="LuaQuit">退出</system:String>
     <system:String x:Key="LuaOverload">重新载入代码并运行</system:String>
-    <system:String x:Key="LuaPause">暂停打印</system:String>
+    <system:String x:Key="LuaPause">暂停打印,右键单击清空日志</system:String>
     <system:String x:Key="LuaContinue">继续打印</system:String>
     <system:String x:Key="LuaSendScript">实时执行lua语句 - [Enter]</system:String>
     <system:String x:Key="LuaNoName">请输入文件名！</system:String>

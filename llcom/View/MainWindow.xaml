@@ -345,7 +345,7 @@
                             <Button Name="stopLuaButton" Margin="0,3,3,3" ToolTip="{DynamicResource LuaStop}" Foreground="DarkRed" Click="StopLuaButton_Click">
                                 <fa:FontAwesome Name="stopLuaOrExitIcon" Icon="Stop"/>
                             </Button>
-                            <Button Name="pauseLuaPrintButton" Margin="0,3,3,3" ToolTip="{DynamicResource LuaPause}" Grid.Column="1" Foreground="ForestGreen" Click="PauseLuaPrintButton_Click">
+                            <Button Name="pauseLuaPrintButton" Margin="0,3,3,3" ToolTip="{DynamicResource LuaPause}" Grid.Column="1" Foreground="ForestGreen" Click="PauseLuaPrintButton_Click" MouseRightButtonUp="pauseLuaPrintButton_MouseRightButtonUp">
                                 <fa:FontAwesome Name="pauseLuaPrintIcon" Icon="Pause"/>
                             </Button>
                             <TextBox Name="runOneLineLuaTextBox" Grid.Column="2" Margin="0,3" KeyDown="RunOneLineLuaTextBox_KeyDown"/>
