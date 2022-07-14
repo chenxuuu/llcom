@@ -116,7 +116,7 @@
     <system:String x:Key="SettingLuaTestButton">测试输入值</system:String>
     <system:String x:Key="SettingLuaText1">传入数据为uartData，传出数据为你脚本return的结果。</system:String>
     <system:String x:Key="SettingLuaText2">此处脚本对快捷发送区也生效，对脚本输出数据无效。</system:String>
-    <system:String x:Key="SettingLuaText2Recv">此处脚本仅对数据显示页面有效，对脚本接受接口的数据无影响。</system:String>
+    <system:String x:Key="SettingLuaText2Recv">此处脚本仅对数据显示页面有效，对脚本接收接口的数据无影响。</system:String>
     <system:String x:Key="SettingLuaText3">查看接口文档，可点击接口文档按钮。</system:String>
     <system:String x:Key="SettingLuaRunResult">运行结果</system:String>
     <system:String x:Key="SettingLuaRawText">原始字符串：</system:String>
