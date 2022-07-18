@@ -780,6 +780,8 @@ namespace llcom
         private static string lastLuaFile = "";
         //最后打开文件的时间
         private static DateTime lastLuaFileTime = DateTime.Now;
+        //最后修改文件的时间
+        private static DateTime lastLuaChangeTime = DateTime.Now;
         /// <summary>
         /// 加载lua脚本文件
         /// </summary>
@@ -799,11 +801,14 @@ namespace llcom
             {
                 Tools.Global.setting.runScript = fileName;
             }
-            //记录最后时间
-            lastLuaFileTime = File.GetLastWriteTime(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua");
 
             //文件内容显示出来
             textEditor.Text = File.ReadAllText(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua");
+            
+            //记录最后时间
+            lastLuaFileTime = File.GetLastWriteTime(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua");
+            //加载文件,修改时间使用文件时间
+            lastLuaChangeTime = lastLuaFileTime;
 
             RefreshScriptList();
         }
@@ -816,9 +821,13 @@ namespace llcom
         {
             try
             {
-                File.WriteAllText(Tools.Global.ProfilePath + $"user_script_run/{fileName}.lua", textEditor.Text);
-                //记录最后时间
-                lastLuaFileTime = File.GetLastWriteTime(Tools.Global.ProfilePath + $"user_script_run/{fileName}.lua");
+                //如果修改时间大于文件时间才执行保存操作
+                if (lastLuaChangeTime > lastLuaFileTime)
+                {
+                    File.WriteAllText(Tools.Global.ProfilePath + $"user_script_run/{fileName}.lua", textEditor.Text);
+                    //记录最后时间
+                    lastLuaFileTime = File.GetLastWriteTime(Tools.Global.ProfilePath + $"user_script_run/{fileName}.lua");
+                }
             }
             catch { }
         }
@@ -1129,6 +1138,11 @@ namespace llcom
         private void pauseLuaPrintButton_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             luaLogTextBox.Clear();
+        }
+
+        private void textEditor_TextChanged(object sender, EventArgs e)
+        {
+            lastLuaChangeTime = DateTime.Now;
         }
     }
 }
