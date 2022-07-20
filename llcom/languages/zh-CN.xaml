@@ -121,15 +121,14 @@
     <system:String x:Key="SettingLuaRunResult">运行结果</system:String>
     <system:String x:Key="SettingLuaRawText">原始字符串：</system:String>
     <system:String x:Key="ChangeLanguage">语言/Language</system:String>
-    <system:String x:Key="TcpTabTitle">TCP服务器</system:String>
+    <system:String x:Key="TcpTabTitle">socket服务端</system:String>
+    <system:String x:Key="TcpClientTitle">socket客户端</system:String>
     <system:String x:Key="CreateTcpButton">测试TCP</system:String>
     <system:String x:Key="CreateTcpSSLButton">测试TCPSSL</system:String>
     <system:String x:Key="CreateUdpButton">测试UDP</system:String>
     <system:String x:Key="DisconnectButton">断开</system:String>
-    <system:String x:Key="TcpDataTextBlock">收发数据：</system:String>
     <system:String x:Key="ToSendDataTextBlock">待发送数据：</system:String>
     <system:String x:Key="NetSendDataButton">发送</system:String>
-    <system:String x:Key="ClearDataButton">清空</system:String>
     <system:String x:Key="KickClientButton">断开客户端</system:String>
     <system:String x:Key="AddExtraEnter">发数据时末尾加个回车换行</system:String>
     <system:String x:Key="AddExtraEnterTip">加回车换行前，同样会经过脚本处理数据</system:String>

@@ -75,11 +75,11 @@ namespace llcom.Pages
                             var host = Dns.GetHostEntry("netlab.vue2.cn");
                             string ip = host.AddressList.Length > 0 ? host.AddressList[0].ToString() : "netlab.vue2.cn";
                             Address = $"{ConnectionType}://{ip}:{o["port"]}";
-                            ShowData($"Created a {ConnectionType} server.");
+                            ShowData($"📢 Created a {ConnectionType} server.");
                             break;
                         case "client":
                         case "connected":
-                            ShowData($"[{o["client"]}]{o["addr"]} connected.");
+                            ShowData($"✔ [{o["client"]}]{o["addr"]} connected.");
                             this.Dispatcher.Invoke(new Action(delegate
                             {
                                 clients.Add((string)o["client"]);
@@ -88,7 +88,7 @@ namespace llcom.Pages
                             }));
                             break;
                         case "closed":
-                            ShowData($"[{o["client"]}] disconnected.");
+                            ShowData($"❌ [{o["client"]}] disconnected.");
                             this.Dispatcher.Invoke(new Action(delegate
                             {
                                 clients.Remove((string)o["client"]);
@@ -98,12 +98,11 @@ namespace llcom.Pages
                             break;
                         case "data":
                             string data = (string)o["data"];
-                            if ((bool)o["hex"] && (!HexMode))
-                                data = Global.Hex2String(data);
-                            ShowData($"[{o["client"]}] ← {(HexMode ? "[HEX]" : "")}{data}");
+                            ShowData($"[{o["client"]}] → receive",
+                                        (bool)o["hex"] ? Global.Hex2Byte(data) : Global.GetEncoding().GetBytes(data));
                             break;
                         case "error":
-                            ShowData($"[error]{o["msg"]}");
+                            ShowData($"❔ error:{o["msg"]}");
                             break;
                         default:
                             break;
@@ -116,12 +115,16 @@ namespace llcom.Pages
             };
         }
 
-        private void ShowData(string s)
+        private void ShowData(string title, byte[] data = null, bool send = false)
         {
             this.Dispatcher.Invoke(new Action(delegate
             {
-                DataTextBox.AppendText($"[{DateTime.Now.ToString("HH:mm:ss.ffff")}]{s}\r\n");
-                DataTextBox.ScrollToEnd();
+                Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
+                {
+                    title = $"TCP: {title}",
+                    data = data ?? new byte[0],
+                    color = send ? Brushes.DarkRed : Brushes.DarkGreen,
+                });
             }));
         }
 
@@ -182,17 +185,14 @@ namespace llcom.Pages
                     hex = HexMode,
                     client = ClientList.Text,
                 }));
-                ShowData($"[{ClientList.Text}] → {(HexMode ? "[HEX]" : "")}{toSendDataTextBox.Text}");
+                ShowData($"[{ClientList.Text}] ← send", 
+                    HexMode ? Global.Hex2Byte(toSendDataTextBox.Text) : Global.GetEncoding().GetBytes(toSendDataTextBox.Text),
+                    true);
             }
             catch (Exception ee)
             {
                 MessageBox.Show(ee.Message);
             }
-        }
-
-        private void ClearDataButton_Click(object sender, RoutedEventArgs e)
-        {
-            DataTextBox.Clear();
         }
 
         private void KickClientButton_Click(object sender, RoutedEventArgs e)

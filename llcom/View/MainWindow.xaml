@@ -363,6 +363,9 @@
                     <TabItem Header="{DynamicResource TcpTabTitle}">
                         <Frame Name="tcpTestFrame" NavigationUIVisibility="Hidden"/>
                     </TabItem>
+                    <TabItem Header="{DynamicResource TcpClientTitle}">
+                        <Frame Name="tcpClientFrame" NavigationUIVisibility="Hidden"/>
+                    </TabItem>
                     <TabItem Header="{DynamicResource EncodingToolsTab}">
                         <Frame Name="EncodingToolsFrame" NavigationUIVisibility="Hidden"/>
                     </TabItem>

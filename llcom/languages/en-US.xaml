@@ -121,15 +121,14 @@
     <system:String x:Key="SettingLuaRunResult">Result</system:String>
     <system:String x:Key="SettingLuaRawText">Raw text:</system:String>
     <system:String x:Key="ChangeLanguage">语言/Language</system:String>
-    <system:String x:Key="TcpTabTitle">TCP Server</system:String>
+    <system:String x:Key="TcpTabTitle">Socket Server</system:String>
+    <system:String x:Key="TcpClientTitle">Socket Client</system:String>
     <system:String x:Key="CreateTcpButton">Tset TCP</system:String>
     <system:String x:Key="CreateTcpSSLButton">Tset TCP SSL</system:String>
     <system:String x:Key="CreateUdpButton">Test UDP</system:String>
     <system:String x:Key="DisconnectButton">Disconnect</system:String>
-    <system:String x:Key="TcpDataTextBlock">Sent and received data:</system:String>
     <system:String x:Key="ToSendDataTextBlock">To send data:</system:String>
     <system:String x:Key="NetSendDataButton">Send</system:String>
-    <system:String x:Key="ClearDataButton">Clear</system:String>
     <system:String x:Key="KickClientButton">Kick Client</system:String>
     <system:String x:Key="AddExtraEnter">add an extra enter after data to send</system:String>
     <system:String x:Key="AddExtraEnterTip">before do this, alse will use Lua script for data to send</system:String>

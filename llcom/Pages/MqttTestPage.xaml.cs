@@ -39,6 +39,7 @@ namespace llcom.Pages
         {
             if (initial)
                 return;
+            initial = true;
 
             BrokerTextBox.DataContext = Tools.Global.setting;
             PortTextBox.DataContext = Tools.Global.setting;
@@ -60,6 +61,12 @@ namespace llcom.Pages
                 {
                     MqttIsConnected = mqttClient.IsConnected;
                     subListBox.Items.Clear();
+                    Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
+                    {
+                        title = $"MQTT event: ✔ connected",
+                        data = new byte[0],
+                        color = Brushes.DarkGreen
+                    });
                 }));
             });
             mqttClient.UseDisconnectedHandler(e =>
@@ -69,6 +76,12 @@ namespace llcom.Pages
                     MqttIsConnected = mqttClient.IsConnected;
                     subListBox.Items.Clear();
                     subListBox.Items.Add(TryFindResource("MQTTNotConnect") as string ?? "?!");
+                    Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
+                    {
+                        title = $"MQTT event: ❌ disconnected",
+                        data = new byte[0],
+                        color = Brushes.DarkGreen
+                    });
                 }));
             });
             //
@@ -83,9 +96,6 @@ namespace llcom.Pages
                     });
                 }));
             });
-
-
-            initial = true;
         }
 
         private void ConnectButton_Click(object sender, RoutedEventArgs e)
