@@ -127,6 +127,10 @@
     <system:String x:Key="CreateTcpSSLButton">测试TCPSSL</system:String>
     <system:String x:Key="CreateUdpButton">测试UDP</system:String>
     <system:String x:Key="DisconnectButton">断开</system:String>
+    <system:String x:Key="ConnectButton">连接</system:String>
+    <system:String x:Key="TcpServerAddr">服务器地址</system:String>
+    <system:String x:Key="TcpServerPort">服务器端口</system:String>
+    <system:String x:Key="TcpServerProtocol">协议</system:String>
     <system:String x:Key="ToSendDataTextBlock">待发送数据：</system:String>
     <system:String x:Key="NetSendDataButton">发送</system:String>
     <system:String x:Key="KickClientButton">断开客户端</system:String>

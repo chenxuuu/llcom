@@ -18,6 +18,7 @@ namespace llcom.Pages
     /// <summary>
     /// SocketClientPage.xaml 的交互逻辑
     /// </summary>
+    [PropertyChanged.AddINotifyPropertyChangedInterface]
     public partial class SocketClientPage : Page
     {
         public SocketClientPage()
@@ -26,11 +27,35 @@ namespace llcom.Pages
         }
         private bool initial = false;
 
+        public bool IsConnected { get; set; } = false;
+        //是否可更改服务器信息
+        public bool Changeable { get; set; } = true;
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             if (initial)
                 return;
             initial = true;
+
+            this.DataContext = this;
+
+            ServerTextBox.DataContext = Tools.Global.setting;
+            PortTextBox.DataContext = Tools.Global.setting;
+            ProtocolTypeComboBox.DataContext = Tools.Global.setting;
+        }
+
+        private void ConnectButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DisconnectButton_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }

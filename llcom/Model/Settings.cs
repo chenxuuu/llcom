@@ -540,5 +540,15 @@ namespace llcom.Model
                     break;
             }
         }
+
+
+
+
+        private string _tcpClientServer = "qq.com";
+        private int _tcpClientPort = 80;
+        private int _tcpClientProtocolType = 0;
+        public string tcpClientServer { get { return _tcpClientServer; } set { _tcpClientServer = value; Save(); } }
+        public int tcpClientPort { get { return _tcpClientPort; } set { _tcpClientPort = value; Save(); } }
+        public int tcpClientProtocolType { get { return _tcpClientProtocolType; } set { _tcpClientProtocolType = value; Save(); } }
     }
 }

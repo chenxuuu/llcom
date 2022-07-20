@@ -127,6 +127,10 @@
     <system:String x:Key="CreateTcpSSLButton">Tset TCP SSL</system:String>
     <system:String x:Key="CreateUdpButton">Test UDP</system:String>
     <system:String x:Key="DisconnectButton">Disconnect</system:String>
+    <system:String x:Key="ConnectButton">Connect</system:String>
+    <system:String x:Key="TcpServerAddr">Server address</system:String>
+    <system:String x:Key="TcpServerPort">Server port</system:String>
+    <system:String x:Key="TcpServerProtocol">Protocol</system:String>
     <system:String x:Key="ToSendDataTextBlock">To send data:</system:String>
     <system:String x:Key="NetSendDataButton">Send</system:String>
     <system:String x:Key="KickClientButton">Kick Client</system:String>

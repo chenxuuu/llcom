@@ -19,8 +19,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="0"/>
-            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
@@ -45,12 +43,12 @@
             <TextBox Name="AddressTextBox" Text="{Binding Address}" Margin="2"/>
             <Button Name="DisconnectButton" Content="{DynamicResource DisconnectButton}" Margin="0,2,2,2" Grid.Column="1" Click="DisconnectButton_Click"/>
         </Grid>
-        <TextBlock Text="{DynamicResource ToSendDataTextBlock}" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
-        <CheckBox Content="Hex" Grid.Row="3" HorizontalAlignment="Right" Margin="2" VerticalAlignment="Center" IsChecked="{Binding HexMode}"/>
-        <TextBox Name="toSendDataTextBox" Grid.Row="4" VerticalContentAlignment="Top"
+        <TextBlock Text="{DynamicResource ToSendDataTextBlock}" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
+        <CheckBox Content="Hex" Grid.Row="1" HorizontalAlignment="Right" Margin="2" VerticalAlignment="Center" IsChecked="{Binding HexMode}"/>
+        <TextBox Name="toSendDataTextBox" Grid.Row="2" VerticalContentAlignment="Top"
                      TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2" FontFamily="Consolas"/>
-        <ComboBox Name="ClientList" Grid.Row="5" Width="150" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2" IsEnabled="{Binding IsConnected}"/>
-        <Button Name="SendDataButton" Content="{DynamicResource NetSendDataButton}" Margin="2" Grid.Row="5" HorizontalAlignment="Right" IsEnabled="{Binding IsConnected}" Click="SendDataButton_Click"/>
-        <Button Name="KickClientButton" Content="{DynamicResource KickClientButton}" Margin="155,2,2,2" Grid.Row="5" HorizontalAlignment="Left" IsEnabled="{Binding IsConnected}" Click="KickClientButton_Click"/>
+        <ComboBox Name="ClientList" Grid.Row="3" Width="150" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2" IsEnabled="{Binding IsConnected}"/>
+        <Button Name="SendDataButton" Content="{DynamicResource NetSendDataButton}" Margin="2" Grid.Row="3" HorizontalAlignment="Right" IsEnabled="{Binding IsConnected}" Click="SendDataButton_Click"/>
+        <Button Name="KickClientButton" Content="{DynamicResource KickClientButton}" Margin="155,2,2,2" Grid.Row="3" HorizontalAlignment="Left" IsEnabled="{Binding IsConnected}" Click="KickClientButton_Click"/>
     </Grid>
 </Page>

@@ -4,6 +4,9 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:llcom.Pages"
+      xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+      adonisExtensions:RippleExtension.FadeInDuration="0"
+      adonisExtensions:RippleExtension.FadeOutDuration="0"
       mc:Ignorable="d" 
       d:DesignHeight="440" d:DesignWidth="400"
       Title="SocketClientPage"
@@ -14,6 +17,55 @@
         <local:boolVisibe x:Key="boolVisibeConverter"/>
     </Page.Resources>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid IsEnabled="{Binding Changeable}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{DynamicResource TcpServerAddr}" VerticalAlignment="Center"/>
+                <TextBox Name="ServerTextBox" Text="{Binding tcpClientServer}" Grid.Column="1" Margin="5,0"/>
+                <TextBlock Text="{DynamicResource TcpServerPort}" Grid.Row="1" VerticalAlignment="Center"/>
+                <Grid Grid.Column="1" Grid.Row="1" Margin="0,3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Name="PortTextBox" Text="{Binding tcpClientPort}" Margin="5,0"/>
+                    <TextBlock Text="{DynamicResource TcpServerProtocol}" VerticalAlignment="Center" Grid.Column="1"/>
+                    <ComboBox Name="ProtocolTypeComboBox" Grid.Column="2" Margin="5,0" SelectedIndex="{Binding tcpClientProtocolType}">
+                        <ComboBoxItem Content="TCP"/>
+                        <ComboBoxItem Content="UDP"/>
+                    </ComboBox>
+                </Grid>
+            </Grid>
+            <Button Name="ConnectButton" Content="{DynamicResource ConnectButton}" Grid.Column="1" Click="ConnectButton_Click"/>
+            <Button Name="DisconnectButton" Content="{DynamicResource DisconnectButton}" Grid.Column="1" Click="DisconnectButton_Click"
+                     Visibility="{Binding IsConnected,Converter={StaticResource boolVisibeConverter}}"/>
+        </Grid>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="3">
+            <TextBlock Text="{DynamicResource ToSendDataTextBlock}" VerticalAlignment="Center"/>
+            <CheckBox Content="Hex" Grid.Row="2" HorizontalAlignment="Left" Margin="2" VerticalAlignment="Center"/>
+        </StackPanel>
+        <TextBox Name="ToSendTextBox" VerticalContentAlignment="Top" TextWrapping="Wrap" AcceptsReturn="True" 
+                 VerticalScrollBarVisibility="Auto" FontFamily="Consolas" Grid.Row="2" Margin="0,3,0,0"/>
+        <Button Name="SendButton" Content="{DynamicResource NetSendDataButton}" Grid.Row="3" HorizontalAlignment="Right" Margin="0,5,0,0"
+                Click="SendButton_Click"/>
     </Grid>
 </Page>

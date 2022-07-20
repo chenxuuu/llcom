@@ -165,6 +165,7 @@ namespace llcom.Pages
             try
             {
                 ws.Close();
+                ShowData($"📢 Server closed.");
             }
             catch (Exception ee)
             {
