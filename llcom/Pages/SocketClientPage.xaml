@@ -61,7 +61,8 @@
 
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="3">
             <TextBlock Text="{DynamicResource ToSendDataTextBlock}" VerticalAlignment="Center"/>
-            <CheckBox Content="Hex" Grid.Row="2" HorizontalAlignment="Left" Margin="2" VerticalAlignment="Center"/>
+            <CheckBox Content="Hex" IsChecked="{Binding HexMode}" Grid.Row="2" HorizontalAlignment="Left" Margin="2" 
+                      VerticalAlignment="Center"/>
         </StackPanel>
         <TextBox Name="ToSendTextBox" VerticalContentAlignment="Top" TextWrapping="Wrap" AcceptsReturn="True" 
                  VerticalScrollBarVisibility="Auto" FontFamily="Consolas" Grid.Row="2" Margin="0,3,0,0"/>

@@ -98,7 +98,7 @@ namespace llcom.Pages
                             break;
                         case "data":
                             string data = (string)o["data"];
-                            ShowData($"[{o["client"]}] → receive",
+                            ShowData($" → receive from [{o["client"]}]",
                                         (bool)o["hex"] ? Global.Hex2Byte(data) : Global.GetEncoding().GetBytes(data));
                             break;
                         case "error":
@@ -121,7 +121,7 @@ namespace llcom.Pages
             {
                 Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
                 {
-                    title = $"TCP: {title}",
+                    title = $"TCP server: {title}",
                     data = data ?? new byte[0],
                     color = send ? Brushes.DarkRed : Brushes.DarkGreen,
                 });
@@ -186,7 +186,7 @@ namespace llcom.Pages
                     hex = HexMode,
                     client = ClientList.Text,
                 }));
-                ShowData($"[{ClientList.Text}] ← send", 
+                ShowData($" ← send to [{ClientList.Text}]", 
                     HexMode ? Global.Hex2Byte(toSendDataTextBox.Text) : Global.GetEncoding().GetBytes(toSendDataTextBox.Text),
                     true);
             }
