@@ -38,6 +38,9 @@
     <system:String x:Key="QuickSendTip">Lua script for data to send, also influence the data here</system:String>
     <system:String x:Key="QuickSendImport">import data to here</system:String>
     <system:String x:Key="QuickSendExport">export this page's data</system:String>
+    <system:String x:Key="QuickSendRemoveAll">clear this page's data</system:String>
+    <system:String x:Key="DeleteConfirmation">delete confirmation</system:String>
+    <system:String x:Key="DeleteConfirmationMsg">it cannot be restored after being deleted. do you want to delete it?</system:String>
     <system:String x:Key="QuickSendImportSSCOM">Import SSCOM Data</system:String>
     <system:String x:Key="QuickSendSSCOMFile">SSCOM|sscom51.ini;sscom.ini</system:String>
     <system:String x:Key="QuickSendLLCOMFile">LLCOM Quick Send List|*.lclst</system:String>
