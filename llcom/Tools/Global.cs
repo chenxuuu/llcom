@@ -225,10 +225,23 @@ namespace llcom.Tools
             //配置文件
             if(File.Exists(ProfilePath+"settings.json"))
             {
-                //cost 309ms
-                setting = JsonConvert.DeserializeObject<Model.Settings>(File.ReadAllText(ProfilePath+"settings.json"));
-                setting.SentCount = 0;
-                setting.ReceivedCount = 0;
+                try
+                {
+                    //cost 309ms
+                    setting = JsonConvert.DeserializeObject<Model.Settings>(File.ReadAllText(ProfilePath + "settings.json"));
+                    setting.SentCount = 0;
+                    setting.ReceivedCount = 0;
+                    //备份一下文件好了（心理安慰）
+                    if(File.Exists(ProfilePath + "settings.json.bakup"))
+                        File.Delete(ProfilePath + "settings.json.bakup");
+                    File.Copy(ProfilePath + "settings.json", ProfilePath + "settings.json.bakup");
+                }
+                catch
+                {
+                    MessageBox.Show($"配置文件加载失败！\r\n" +
+                        $"如果是配置文件损坏，可前往{ProfilePath}settings.json.bakup查找备份文件\r\n" +
+                        $"并使用该文件替换{ProfilePath}settings.json文件恢复配置");
+                }
             }
             else
             {
