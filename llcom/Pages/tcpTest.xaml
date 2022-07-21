@@ -14,34 +14,47 @@
     <Page.Resources>
         <local:boolVisibe x:Key="boolVisibeConverter"/>
         <local:boolNotVisibe x:Key="boolNotVisibeConverter"/>
+        <local:boolNot x:Key="boolNotConverter"/>
     </Page.Resources>
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Grid Name="CreateButtonGrid" Visibility="{Binding IsConnected,Converter={StaticResource boolNotVisibeConverter}}" ToolTip="Provide by netlab.luatos.com">
+        <Grid Name="CreateButtonGrid" Visibility="{Binding IsConnected,Converter={StaticResource boolNotVisibeConverter}}" 
+              IsEnabled="{Binding connecting,Converter={StaticResource boolNotConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             <Button Name="CreateTcpButton" Content="{DynamicResource CreateTcpButton}" Grid.Column="0" 
-                    Margin="0,2,2,2" Click="CreateTcpButton_Click"/>
+                    Margin="0,2,2,2" Click="CreateTcpButton_Click" ToolTip="by netlab.luatos.com"/>
             <Button Name="CreateTcpSSLButton" Content="{DynamicResource CreateTcpSSLButton}" Grid.Column="1" 
-                    Margin="0,2,2,2" Click="CreateTcpSSLButton_OnClick"/>
+                    Margin="0,2,2,2" Click="CreateTcpSSLButton_OnClick" ToolTip="by netlab.luatos.com"/>
             <Button Name="CreateUdpButton" Content="{DynamicResource CreateUdpButton}" Grid.Column="2" 
-                        Margin="2,2,0,2" Click="CreateUdpButton_Click"/>
+                        Margin="2,2,0,2" Click="CreateUdpButton_Click" ToolTip="by netlab.luatos.com"/>
+            <Button Name="CreateTcpIpv6Button" Content="{DynamicResource CreateTcpIpv6Button}" Grid.ColumnSpan="3" Grid.Row="1"
+                        Margin="2,2,0,2" Click="CreateTcpIpv6Button_Click" ToolTip="by netlab.luatos.org"/>
         </Grid>
         <Grid Name="ConnectionAddressGrid"  Visibility="{Binding IsConnected,Converter={StaticResource boolVisibeConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox Name="AddressTextBox" Text="{Binding Address}" Margin="2"/>
-            <Button Name="DisconnectButton" Content="{DynamicResource DisconnectButton}" Margin="0,2,2,2" Grid.Column="1" Click="DisconnectButton_Click"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBox Name="AddressTextBox" Text="{Binding Address}" Margin="2" Grid.Row="0" IsReadOnly="True"/>
+            <TextBox Name="AddressV6TextBox" Text="{Binding AddressV6}" Margin="2" Grid.Row="1" IsReadOnly="True"/>
+            <Button Name="DisconnectButton" Content="{DynamicResource DisconnectButton}" Margin="0,2,2,2" Grid.Column="1" Click="DisconnectButton_Click" Grid.RowSpan="2"/>
         </Grid>
         <TextBlock Text="{DynamicResource ToSendDataTextBlock}" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
         <CheckBox Content="Hex" Grid.Row="1" HorizontalAlignment="Right" Margin="2" VerticalAlignment="Center" IsChecked="{Binding HexMode}"/>
