@@ -266,6 +266,7 @@
                             <Button Name="QuickSendImportButton" Content="{DynamicResource QuickSendImport}" Margin="3" Click="QuickSendImportButton_Click"/>
                             <Button Name="QuickSendExportButton" Content="{DynamicResource QuickSendExport}" Grid.Column="1" Margin="3" Click="QuickSendExportButton_Click"/>
                         </Grid>
+                        <Button Name="removeAllButton" Content="{DynamicResource QuickSendRemoveAll}" Margin="3,3,3,5" Click="removeAllButton_Click"/>
                         <Button Name="importSSCOMButton" Content="{DynamicResource QuickSendImportSSCOM}" Margin="3,3,3,5" Click="ImportSSCOMButton_Click"/>
                     </StackPanel>
                 </ScrollViewer>

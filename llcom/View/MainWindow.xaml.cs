@@ -1147,5 +1147,14 @@ namespace llcom
         {
             lastLuaChangeTime = DateTime.Now;
         }
+
+        private void removeAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(TryFindResource("DeleteConfirmationMsg") as string ?? "?!", TryFindResource("DeleteConfirmation") as string ?? "?!",MessageBoxButton.YesNo,MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                toSendListItems.Clear();
+                SaveSendList(null, EventArgs.Empty);
+            }
+        }
     }
 }
