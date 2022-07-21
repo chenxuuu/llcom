@@ -1150,7 +1150,9 @@ namespace llcom
 
         private void removeAllButton_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show(TryFindResource("DeleteConfirmationMsg") as string ?? "?!", TryFindResource("DeleteConfirmation") as string ?? "?!",MessageBoxButton.YesNo,MessageBoxImage.Question) == MessageBoxResult.Yes)
+            (bool r,string s) = Tools.InputDialog.OpenDialog(TryFindResource("DeleteConfirmationMsg") as string ?? "?!",
+                "", TryFindResource("DeleteConfirmation") as string ?? "?!");
+            if (r && s == "YES")
             {
                 toSendListItems.Clear();
                 SaveSendList(null, EventArgs.Empty);

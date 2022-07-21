@@ -40,7 +40,7 @@
     <system:String x:Key="QuickSendExport">导出该页数据</system:String>
     <system:String x:Key="QuickSendRemoveAll">一键清空该页数据</system:String>
     <system:String x:Key="DeleteConfirmation">删除确认</system:String>
-    <system:String x:Key="DeleteConfirmationMsg">删除后不可恢复,确认删除么?</system:String>
+    <system:String x:Key="DeleteConfirmationMsg">删除后不可恢复，请手动输入“YES”确认删除</system:String>
     <system:String x:Key="QuickSendImportSSCOM">一键导入SSCOM数据</system:String>
     <system:String x:Key="QuickSendSSCOMFile">SSCOM配置文件|sscom51.ini;sscom.ini</system:String>
     <system:String x:Key="QuickSendLLCOMFile">LLCOM列表文件|*.lclst</system:String>
