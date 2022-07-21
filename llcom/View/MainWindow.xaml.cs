@@ -378,10 +378,15 @@ namespace llcom
                 //是文件
                 if (file != null && file.Name.ToLower().EndsWith(".lua"))
                 {
-                    luaFileList.Items.Add(file.Name.Substring(0, file.Name.Length - 4));
+                    string name = file.Name.Substring(0, file.Name.Length - 4);
+                    luaFileList.Items.Add(name);
+                    if (name== Tools.Global.setting.runScript)
+                    {
+                        luaFileList.SelectedIndex = luaFileList.Items.Count - 1;
+                    }
                 }
             }
-            luaFileList.Text = lastLuaFile = Tools.Global.setting.runScript;
+            lastLuaFile = Tools.Global.setting.runScript;
             fileLoading = false;
         }
 
