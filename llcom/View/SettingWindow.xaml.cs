@@ -69,12 +69,17 @@ namespace llcom
             {
                 FileInfo file = luaFiles[i] as FileInfo;
                 //是文件
-                if (file != null && file.Name.IndexOf(".lua") == file.Name.Length - (".lua").Length)
+                if (file != null && file.Name.EndsWith(".lua"))
                 {
-                    luaFileList.Items.Add(file.Name.Substring(0, file.Name.Length - 4));
+                    string name = file.Name.Substring(0, file.Name.Length - 4); ;
+                    luaFileList.Items.Add(name);
+                    if (name == Tools.Global.setting.sendScript)
+                    {
+                        luaFileList.SelectedIndex = luaFileList.Items.Count - 1;
+                    }
                 }
             }
-            luaFileList.Text = lastLuaFile = Tools.Global.setting.sendScript;
+            lastLuaFile = Tools.Global.setting.sendScript;
             fileLoading = false;
         }
         private void loadLuaFileRev(string fileName)
@@ -105,12 +110,17 @@ namespace llcom
             {
                 FileInfo file = luaFiles[i] as FileInfo;
                 //是文件
-                if (file != null && file.Name.IndexOf(".lua") == file.Name.Length - (".lua").Length)
+                 if (file != null && file.Name.EndsWith(".lua"))
                 {
-                    luaFileListRev.Items.Add(file.Name.Substring(0, file.Name.Length - 4));
+                    string name = file.Name.Substring(0, file.Name.Length - 4); ;
+                    luaFileListRev.Items.Add(name);
+                    if (name== Tools.Global.setting.recvScript)
+                    {
+                        luaFileListRev.SelectedIndex = luaFileListRev.Items.Count - 1;
+                    }
                 }
             }
-            luaFileListRev.Text = lastLuaFileRev = Tools.Global.setting.recvScript;
+            lastLuaFileRev = Tools.Global.setting.recvScript;
             fileLoadingRev = false;
         }
 
