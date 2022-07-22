@@ -190,7 +190,7 @@ namespace llcom.Pages
             {
                 Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
                 {
-                    title = $"TCP server: {title}",
+                    title = $"socket server: {title}",
                     data = data ?? new byte[0],
                     color = send ? Brushes.DarkRed : Brushes.DarkGreen,
                 });

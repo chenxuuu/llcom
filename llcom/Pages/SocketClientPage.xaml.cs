@@ -56,7 +56,7 @@ namespace llcom.Pages
             {
                 Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
                 {
-                    title = $"TCP client: {title}",
+                    title = $"socket client: {title}",
                     data = data ?? new byte[0],
                     color = send ? Brushes.DarkRed : Brushes.DarkGreen,
                 });
