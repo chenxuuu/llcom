@@ -9,17 +9,29 @@ Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "WapProj", "WapProj\WapProj.
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9365FB7C-D213-49EE-A668-1A5834AAAD06}.Debug|x64.ActiveCfg = Debug|x64
+		{9365FB7C-D213-49EE-A668-1A5834AAAD06}.Debug|x64.Build.0 = Debug|x64
 		{9365FB7C-D213-49EE-A668-1A5834AAAD06}.Debug|x86.ActiveCfg = Debug|x86
 		{9365FB7C-D213-49EE-A668-1A5834AAAD06}.Debug|x86.Build.0 = Debug|x86
+		{9365FB7C-D213-49EE-A668-1A5834AAAD06}.Release|x64.ActiveCfg = Release|x64
+		{9365FB7C-D213-49EE-A668-1A5834AAAD06}.Release|x64.Build.0 = Release|x64
 		{9365FB7C-D213-49EE-A668-1A5834AAAD06}.Release|x86.ActiveCfg = Release|x86
 		{9365FB7C-D213-49EE-A668-1A5834AAAD06}.Release|x86.Build.0 = Release|x86
+		{53865299-7486-46A1-B3C4-66293D16AF79}.Debug|x64.ActiveCfg = Debug|x64
+		{53865299-7486-46A1-B3C4-66293D16AF79}.Debug|x64.Build.0 = Debug|x64
+		{53865299-7486-46A1-B3C4-66293D16AF79}.Debug|x64.Deploy.0 = Debug|x64
 		{53865299-7486-46A1-B3C4-66293D16AF79}.Debug|x86.ActiveCfg = Debug|x86
 		{53865299-7486-46A1-B3C4-66293D16AF79}.Debug|x86.Build.0 = Debug|x86
 		{53865299-7486-46A1-B3C4-66293D16AF79}.Debug|x86.Deploy.0 = Debug|x86
+		{53865299-7486-46A1-B3C4-66293D16AF79}.Release|x64.ActiveCfg = Release|x64
+		{53865299-7486-46A1-B3C4-66293D16AF79}.Release|x64.Build.0 = Release|x64
+		{53865299-7486-46A1-B3C4-66293D16AF79}.Release|x64.Deploy.0 = Release|x64
 		{53865299-7486-46A1-B3C4-66293D16AF79}.Release|x86.ActiveCfg = Release|x86
 		{53865299-7486-46A1-B3C4-66293D16AF79}.Release|x86.Build.0 = Release|x86
 		{53865299-7486-46A1-B3C4-66293D16AF79}.Release|x86.Deploy.0 = Release|x86

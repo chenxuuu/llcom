@@ -92,7 +92,7 @@ namespace llcom.Pages
                 catch
                 {
                     MonitorButton.IsEnabled = false;
-                    MessageBox.Show("插件加载失败，请尝试更新您的.net framework框架到4.6.2版本以上。");
+                    MessageBox.Show("插件加载失败，目前该功能还不兼容x64版本的LLCOM");
                 }
             }
         }

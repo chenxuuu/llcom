@@ -45,6 +45,7 @@ namespace llcom.Pages
         {
             if (!first)
                 return;
+            first = false;
             //暂时先定1000个点吧
             DataX = new double[MaxPoints];
             for (int i = 0; i < MaxPoints; i++)

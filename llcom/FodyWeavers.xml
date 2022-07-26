@@ -4,6 +4,10 @@
       xlua
       serial_monitor
     </Unmanaged32Assemblies>
+    <Unmanaged64Assemblies>
+      xlua
+      serial_monitor
+    </Unmanaged64Assemblies>
   </Costura>
   <PropertyChanged />
 </Weavers>
