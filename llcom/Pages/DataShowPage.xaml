@@ -15,6 +15,7 @@
     <Page.Resources>
         <local:boolVisibe x:Key="boolVisibeConverter"/>
         <local:boolNotVisibe x:Key="boolNotVisibeConverter"/>
+        <local:showHexFormat x:Key="showHexFormatConverter"/>
     </Page.Resources>
     <Grid x:Name="mainGrid" Background="Transparent">
         <Grid.RowDefinitions>
@@ -41,6 +42,8 @@
                     Margin="10,0,0,3" Orientation="Horizontal" 
                     Visibility="{Binding Path=IsMouseOver, ElementName=mainGrid,Converter={StaticResource boolVisibeConverter}}"
                     Grid.Row="1">
+            <CheckBox Name="HEXBox" Content="{DynamicResource ShowHexFormat}" ToolTip="{DynamicResource ShowHexFormatTip}"
+                      IsChecked="{Binding showHexFormat,Converter={StaticResource showHexFormatConverter}}" IsThreeState="True" Margin="0,0,10,0"/>
             <CheckBox Name="ExtraEnterCheckBox" IsChecked="{Binding extraEnter}" Content="{DynamicResource AddExtraEnter}" ToolTip="{DynamicResource AddExtraEnterTip}"/>
             <CheckBox Name="RTSCheckBox" IsChecked="{Binding Rts}" Content="RTS" Margin="5,0,0,0"/>
             <CheckBox Name="DTRCheckBox" IsChecked="{Binding Dtr}" Content="DTR" Margin="5,0,0,0"/>

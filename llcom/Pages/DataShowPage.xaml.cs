@@ -47,6 +47,7 @@ namespace llcom.Pages
             DTRCheckBox.DataContext = this;
             Rts = false;
             Dtr = true;
+            HEXBox.DataContext = Tools.Global.setting;
             this.ExtraEnterCheckBox.DataContext = Tools.Global.setting;
         }
 
