@@ -19,6 +19,7 @@ namespace llcom.Model
         private bool _autoReconnect = true;
         private bool _autoSaveLog = true;
         private int _showHexFormat = 0;
+        private bool _hexSend = false;
         private bool _showSend = true;
         private int _parity = 0;
         private int _timeout = 50;
@@ -224,6 +225,22 @@ namespace llcom.Model
             set
             {
                 _showHexFormat = value;
+                Save();
+            }
+        }
+
+        /// <summary>
+        /// 主数据发送框是否发hex
+        /// </summary>
+        public bool hexSend
+        {
+            get
+            {
+                return _hexSend;
+            }
+            set
+            {
+                _hexSend = value;
                 Save();
             }
         }

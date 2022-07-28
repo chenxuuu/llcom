@@ -641,7 +641,11 @@ namespace llcom
                 {
                     dataConvert = LuaEnv.LuaLoader.Run(
                         $"{Tools.Global.setting.sendScript}.lua",
-                        new System.Collections.ArrayList { "uartData", Tools.Global.Byte2Hex(data) });
+                        new System.Collections.ArrayList 
+                        { 
+                            "uartData",
+                            Tools.Global.setting.hexSend ? Tools.Global.Byte2String(data) : Tools.Global.Byte2Hex(data) 
+                        });
                 }
                 catch (Exception ex)
                 {

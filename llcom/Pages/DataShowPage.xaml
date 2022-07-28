@@ -42,11 +42,12 @@
                     Margin="10,0,0,3" Orientation="Horizontal" 
                     Visibility="{Binding Path=IsMouseOver, ElementName=mainGrid,Converter={StaticResource boolVisibeConverter}}"
                     Grid.Row="1">
-            <CheckBox Name="HEXBox" Content="{DynamicResource ShowHexFormat}" ToolTip="{DynamicResource ShowHexFormatTip}"
-                      IsChecked="{Binding showHexFormat,Converter={StaticResource showHexFormatConverter}}" IsThreeState="True" Margin="0,0,10,0"/>
-            <CheckBox Name="ExtraEnterCheckBox" IsChecked="{Binding extraEnter}" Content="{DynamicResource AddExtraEnter}" ToolTip="{DynamicResource AddExtraEnterTip}"/>
             <CheckBox Name="RTSCheckBox" IsChecked="{Binding Rts}" Content="RTS" Margin="5,0,0,0"/>
             <CheckBox Name="DTRCheckBox" IsChecked="{Binding Dtr}" Content="DTR" Margin="5,0,0,0"/>
+            <CheckBox Name="HEXBox" Content="{DynamicResource ShowHexFormat}" ToolTip="{DynamicResource ShowHexFormatTip}"
+                      IsChecked="{Binding showHexFormat,Converter={StaticResource showHexFormatConverter}}" IsThreeState="True" Margin="5,0,0,0"/>
+            <CheckBox Name="HexSendCheckBox" IsChecked="{Binding hexSend}" Content="{DynamicResource HexSendMode}" Margin="5,0,0,0"/>
+            <CheckBox Name="ExtraEnterCheckBox" IsChecked="{Binding extraEnter}" Content="{DynamicResource AddExtraEnter}" ToolTip="{DynamicResource AddExtraEnterTip}" Margin="5,0,0,0"/>
         </StackPanel>
         <Button Name="LockLogButton" Margin="0,0,18,20" ToolTip="{DynamicResource LockLogButton}" 
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="LockLogButton_Click"

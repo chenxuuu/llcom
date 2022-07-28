@@ -48,6 +48,7 @@ namespace llcom.Pages
             Rts = false;
             Dtr = true;
             HEXBox.DataContext = Tools.Global.setting;
+            HexSendCheckBox.DataContext = Tools.Global.setting;
             this.ExtraEnterCheckBox.DataContext = Tools.Global.setting;
         }
 

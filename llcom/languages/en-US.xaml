@@ -144,6 +144,7 @@
     <system:String x:Key="LockLogText">Locked</system:String>
     <system:String x:Key="ShowHexFormat">Hex format</system:String>
     <system:String x:Key="ShowHexFormatTip">modes: Only Hex/Only Text/Both Hex and Text</system:String>
+    <system:String x:Key="HexSendMode">Send Hex data</system:String>
     <system:String x:Key="ToolsTab">Tools</system:String>
     <system:String x:Key="EncodingToolsTab">Encoding Converter</system:String>
     <system:String x:Key="EncodingToolsJobs">Jobs</system:String>
