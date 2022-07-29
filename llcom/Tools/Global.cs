@@ -255,9 +255,12 @@ namespace llcom.Tools
             //加载配置文件改成单独拎出来了
 
             //备份一下文件好了（心理安慰）
-            if (File.Exists(ProfilePath + "settings.json.bakup"))
-                File.Delete(ProfilePath + "settings.json.bakup");
-            File.Copy(ProfilePath + "settings.json", ProfilePath + "settings.json.bakup");
+            if (File.Exists(ProfilePath + "settings.json"))
+            {
+                if (File.Exists(ProfilePath + "settings.json.bakup"))
+                    File.Delete(ProfilePath + "settings.json.bakup");
+                File.Copy(ProfilePath + "settings.json", ProfilePath + "settings.json.bakup");
+            }
 
             uart.serial.BaudRate = setting.baudRate;
             uart.serial.Parity = (Parity)setting.parity;
