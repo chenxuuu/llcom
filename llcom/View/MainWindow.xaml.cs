@@ -918,12 +918,16 @@ namespace llcom
                 luaLogCount++;
                 if(luaLogCount < 1000)
                 {
-                    this.Dispatcher.Invoke(new Action(delegate
+                    //新起一个线程，绕过线程锁卡死问题
+                    Task.Run(() =>
                     {
-                        luaLogTextBox.Select(luaLogTextBox.Text.Length, 0);//确保文字不再被选中，防止wpf卡死
-                        luaLogTextBox.AppendText((sender as string) + "\r\n");
-                        luaLogTextBox.ScrollToEnd();
-                    }));
+                        this.Dispatcher.Invoke(new Action(delegate
+                        {
+                            luaLogTextBox.Select(luaLogTextBox.Text.Length, 0);//确保文字不再被选中，防止wpf卡死
+                            luaLogTextBox.AppendText((sender as string) + "\r\n");
+                            luaLogTextBox.ScrollToEnd();
+                        }));
+                    });
                 }
                 else
                 {
