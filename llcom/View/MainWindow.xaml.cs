@@ -626,7 +626,7 @@ namespace llcom
         /// 发串口数据
         /// </summary>
         /// <param name="data"></param>
-        private void sendUartData(byte[] data)
+        private void sendUartData(byte[] data, bool? is_hex = null)
         {
             if (!Tools.Global.uart.IsOpen())
             {
@@ -644,7 +644,9 @@ namespace llcom
                         new System.Collections.ArrayList 
                         { 
                             "uartData",
-                            Tools.Global.setting.hexSend ? Tools.Global.Byte2String(data) : Tools.Global.Byte2Hex(data) 
+                            is_hex == null ? 
+                            (Tools.Global.setting.hexSend ? Tools.Global.Byte2String(data) : Tools.Global.Byte2Hex(data)) :
+                            Tools.Global.Byte2Hex(data)
                         });
                 }
                 catch (Exception ex)
@@ -689,9 +691,9 @@ namespace llcom
         {
             ToSendData data = ((Button)sender).Tag as ToSendData;
             if (data.hex)
-                sendUartData(Tools.Global.Hex2Byte(data.text));
+                sendUartData(Tools.Global.Hex2Byte(data.text), true);
             else
-                sendUartData(Global.GetEncoding().GetBytes(data.text));
+                sendUartData(Global.GetEncoding().GetBytes(data.text), false);
         }
 
         private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)
