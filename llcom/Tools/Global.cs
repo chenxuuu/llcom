@@ -129,6 +129,7 @@ namespace llcom.Tools
                     MessageBox.Show($"配置文件加载失败！\r\n" +
                         $"如果是配置文件损坏，可前往{ProfilePath}settings.json.bakup查找备份文件\r\n" +
                         $"并使用该文件替换{ProfilePath}settings.json文件恢复配置");
+                    Environment.Exit(1);
                 }
             }
             else
