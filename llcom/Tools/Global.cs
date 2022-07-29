@@ -104,6 +104,39 @@ namespace llcom.Tools
         /// </summary>
         public static bool HasNewVersion { get; set; } = false;
 
+
+        /// <summary>
+        /// 加载配置文件
+        /// </summary>
+        public static void LoadSetting()
+        {
+            if (!IsMSIX())
+            {
+                ProfilePath = AppPath;//普通exe时，直接用软件路径
+            }
+            //配置文件
+            if (File.Exists(ProfilePath + "settings.json"))
+            {
+                try
+                {
+                    //cost 309ms
+                    setting = JsonConvert.DeserializeObject<Model.Settings>(File.ReadAllText(ProfilePath + "settings.json"));
+                    setting.SentCount = 0;
+                    setting.ReceivedCount = 0;
+                }
+                catch
+                {
+                    MessageBox.Show($"配置文件加载失败！\r\n" +
+                        $"如果是配置文件损坏，可前往{ProfilePath}settings.json.bakup查找备份文件\r\n" +
+                        $"并使用该文件替换{ProfilePath}settings.json文件恢复配置");
+                }
+            }
+            else
+            {
+                setting = new Model.Settings();
+            }
+        }
+
         /// <summary>
         /// 软件打开后，所有东西的初始化流程
         /// </summary>
@@ -138,7 +171,7 @@ namespace llcom.Tools
                 Environment.Exit(1);
             }
 
-            if(IsMSIX())//商店软件的文件路径改一下
+            if(IsMSIX())//商店软件的文件路径需要手动新建文件夹
             {
                 if (!Directory.Exists(ProfilePath))
                 {
@@ -147,10 +180,6 @@ namespace llcom.Tools
                 //升级的时候不会自动升级核心脚本，所以先强制删掉再释放，确保是最新的
                 if (Directory.Exists(ProfilePath + "core_script"))
                     Directory.Delete(ProfilePath + "core_script", true);
-            }
-            else
-            {
-                ProfilePath = AppPath;//普通exe时，直接用软件路径
             }
 
             //检测多开
@@ -222,32 +251,12 @@ namespace llcom.Tools
                 Environment.Exit(1);
             }
 
-            //配置文件
-            if(File.Exists(ProfilePath+"settings.json"))
-            {
-                try
-                {
-                    //cost 309ms
-                    setting = JsonConvert.DeserializeObject<Model.Settings>(File.ReadAllText(ProfilePath + "settings.json"));
-                    setting.SentCount = 0;
-                    setting.ReceivedCount = 0;
-                    //备份一下文件好了（心理安慰）
-                    if(File.Exists(ProfilePath + "settings.json.bakup"))
-                        File.Delete(ProfilePath + "settings.json.bakup");
-                    File.Copy(ProfilePath + "settings.json", ProfilePath + "settings.json.bakup");
-                }
-                catch
-                {
-                    MessageBox.Show($"配置文件加载失败！\r\n" +
-                        $"如果是配置文件损坏，可前往{ProfilePath}settings.json.bakup查找备份文件\r\n" +
-                        $"并使用该文件替换{ProfilePath}settings.json文件恢复配置");
-                }
-            }
-            else
-            {
-                setting = new Model.Settings();
-            }
+            //加载配置文件改成单独拎出来了
 
+            //备份一下文件好了（心理安慰）
+            if (File.Exists(ProfilePath + "settings.json.bakup"))
+                File.Delete(ProfilePath + "settings.json.bakup");
+            File.Copy(ProfilePath + "settings.json", ProfilePath + "settings.json.bakup");
 
             uart.serial.BaudRate = setting.baudRate;
             uart.serial.Parity = (Parity)setting.parity;

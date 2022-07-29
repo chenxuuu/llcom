@@ -41,6 +41,18 @@ namespace llcom
         public MainWindow()
         {
             InitializeComponent();
+            Tools.Global.LoadSetting();
+            if (Tools.Global.setting.windowHeight != 0 &&
+                Tools.Global.setting.windowLeft > 0 &&
+                Tools.Global.setting.windowTop > 0 &&
+                Tools.Global.setting.windowTop < SystemParameters.FullPrimaryScreenHeight &&
+                Tools.Global.setting.windowLeft < SystemParameters.FullPrimaryScreenWidth)
+            {
+                this.Left = Tools.Global.setting.windowLeft;
+                this.Top = Tools.Global.setting.windowTop;
+                this.Width = Tools.Global.setting.windowWidth;
+                this.Height = Tools.Global.setting.windowHeight;
+            }
         }
         ObservableCollection<ToSendData> toSendListItems = new ObservableCollection<ToSendData>();
         private static IDeviceNotifier usbDeviceNotifier = DeviceNotifier.OpenDeviceNotifier();
@@ -58,22 +70,10 @@ namespace llcom
                     Tools.Global.uart.UartDataSent += Uart_UartDataSent;
 
                     //初始化所有数据
-                    Tools.Global.Initial();//cost 299ms
+                    Tools.Global.Initial();
 
                     //重写关闭窗口代码
                     this.Closing += MainWindow_Closing;
-
-                    if(Tools.Global.setting.windowHeight != 0 &&
-                        Tools.Global.setting.windowLeft > 0 &&
-                        Tools.Global.setting.windowTop > 0 &&
-                        Tools.Global.setting.windowTop < SystemParameters.FullPrimaryScreenHeight &&
-                        Tools.Global.setting.windowLeft < SystemParameters.FullPrimaryScreenWidth)
-                    {
-                        this.Left = Tools.Global.setting.windowLeft;
-                        this.Top = Tools.Global.setting.windowTop;
-                        this.Width = Tools.Global.setting.windowWidth;
-                        this.Height = Tools.Global.setting.windowHeight;
-                    }
 
                     //窗口置顶事件
                     Tools.Global.setting.MainWindowTop += new EventHandler(topEvent);

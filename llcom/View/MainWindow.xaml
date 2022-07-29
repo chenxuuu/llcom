@@ -12,7 +12,6 @@
         mc:Ignorable="d"
         Title="{DynamicResource AppTitle}" Height="500" Width="900"
         Loaded="Window_Loaded"
-        WindowStartupLocation="CenterScreen"
         Activated="Window_Activated"
         Deactivated="Window_Deactivated">
     <Window.Style>
