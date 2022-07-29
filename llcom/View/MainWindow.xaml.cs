@@ -183,6 +183,9 @@ namespace llcom
 
                     this.Title += $" - {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
 
+                    //加载完了，可以允许点击
+                    MainGrid.IsEnabled = true;
+
                     //检查更新
                     if (!Tools.Global.IsMSIX())
                     {

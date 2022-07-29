@@ -28,7 +28,7 @@
     <Window.CommandBindings>
         <CommandBinding Command="{StaticResource SendUartData}" Executed="SendUartData_Executed"/>
     </Window.CommandBindings>
-    <Grid>
+    <Grid Name="MainGrid" IsEnabled="False">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
