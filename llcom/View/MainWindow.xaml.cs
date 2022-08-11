@@ -301,17 +301,21 @@ namespace llcom
                 {
                     foreach (string p in SerialPort.GetPortNames())//加上缺少的com口
                     {
+                        //有些人遇到了微软库的bug，所以需要手动从0x00截断
+                        var pp = p;
+                        if (p.IndexOf("\0") > 0)
+                            pp = p.Substring(0, p.IndexOf("\0"));
                         bool notMatch = true;
                         foreach (string n in strs)
                         {
-                            if (n.Contains($"({p})"))//如果和选中项目匹配
+                            if (n.Contains($"({pp})"))//如果和选中项目匹配
                             {
                                 notMatch = false;
                                 break;
                             }
                         }
                         if (notMatch)
-                            strs.Add($"Serial Port {p} ({p})");//如果列表中没有，就自己加上
+                            strs.Add($"Serial Port {pp} ({pp})");//如果列表中没有，就自己加上
                     }
                 }
                 catch{ }
@@ -505,9 +509,13 @@ namespace llcom
                 string port = "";//最终串口名
                 foreach (string p in ports)//循环查找符合名称串口
                 {
-                    if ((serialPortsListComboBox.SelectedItem as string).Contains($"({p})"))//如果和选中项目匹配
+                    //有些人遇到了微软库的bug，所以需要手动从0x00截断
+                    var pp = p;
+                    if (p.IndexOf("\0") > 0)
+                        pp = p.Substring(0, p.IndexOf("\0"));
+                    if ((serialPortsListComboBox.SelectedItem as string).Contains($"({pp})"))//如果和选中项目匹配
                     {
-                        port = p;
+                        port = pp;
                         break;
                     }
                 }
