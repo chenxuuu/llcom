@@ -46,7 +46,7 @@ namespace llcom
             //检查文件是否存在
             if (!File.Exists(Tools.Global.ProfilePath + $"user_script_send_convert/{fileName}.lua"))
             {
-                Tools.Global.setting.sendScript = "默认";
+                Tools.Global.setting.sendScript = "default";
                 if (!File.Exists(Tools.Global.ProfilePath + $"user_script_send_convert/{Tools.Global.setting.sendScript}.lua"))
                 {
                     File.Create(Tools.Global.ProfilePath + $"user_script_send_convert/{Tools.Global.setting.sendScript}.lua").Close();
@@ -87,7 +87,7 @@ namespace llcom
             //检查文件是否存在
             if (!File.Exists(Tools.Global.ProfilePath + $"user_script_recv_convert/{fileName}.lua"))
             {
-                Tools.Global.setting.recvScript = "默认";
+                Tools.Global.setting.recvScript = "default";
                 if (!File.Exists(Tools.Global.ProfilePath + $"user_script_recv_convert/{Tools.Global.setting.recvScript}.lua"))
                 {
                     File.Create(Tools.Global.ProfilePath + $"user_script_recv_convert/{Tools.Global.setting.recvScript}.lua").Close();

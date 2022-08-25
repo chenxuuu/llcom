@@ -228,14 +228,14 @@ namespace llcom.Tools
                     CreateFile("DefaultFiles/user_script_send_convert/GPS NMEA.lua", ProfilePath+"user_script_send_convert/GPS NMEA.lua");
                     CreateFile("DefaultFiles/user_script_send_convert/加上换行回车.lua", ProfilePath+"user_script_send_convert/加上换行回车.lua");
                     CreateFile("DefaultFiles/user_script_send_convert/解析换行回车的转义字符.lua", ProfilePath+"user_script_send_convert/解析换行回车的转义字符.lua");
-                    CreateFile("DefaultFiles/user_script_send_convert/默认.lua", ProfilePath+"user_script_send_convert/默认.lua");
+                    CreateFile("DefaultFiles/user_script_send_convert/default.lua", ProfilePath+ "user_script_send_convert/default.lua");
                 }
                 if (!Directory.Exists(ProfilePath + "user_script_recv_convert"))
                 {
                     Directory.CreateDirectory(ProfilePath + "user_script_recv_convert");
                 }
-                if (!File.Exists(ProfilePath + "user_script_recv_convert/默认.lua"))
-                    CreateFile("DefaultFiles/user_script_recv_convert/默认.lua", ProfilePath + "user_script_recv_convert/默认.lua");
+                if (!File.Exists(ProfilePath + "user_script_recv_convert/default.lua"))
+                    CreateFile("DefaultFiles/user_script_recv_convert/default.lua", ProfilePath + "user_script_recv_convert/default.lua");
                 if (!File.Exists(ProfilePath + "user_script_recv_convert/绘制曲线.lua"))
                     CreateFile("DefaultFiles/user_script_recv_convert/绘制曲线.lua", ProfilePath + "user_script_recv_convert/绘制曲线.lua");
                 if (!File.Exists(ProfilePath + "user_scrispt_recv_convert/绘制曲线-多条.lua"))

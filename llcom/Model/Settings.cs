@@ -25,8 +25,8 @@ namespace llcom.Model
         private int _timeout = 50;
         private int _dataBits = 8;
         private int _stopBit = 1;
-        private string _sendScript = "默认";
-        private string _recvScript = "默认";
+        private string _sendScript = "default";
+        private string _recvScript = "default";
         private string _runScript = "example";
         private bool _topmost = false;
         public List<List<ToSendData>> quickSendList = new List<List<ToSendData>>();
