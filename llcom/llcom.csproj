@@ -373,8 +373,8 @@
     <Resource Include="DefaultFiles\user_script_send_convert\GPS NMEA.lua" />
     <Resource Include="DefaultFiles\user_script_send_convert\加上换行回车.lua" />
     <Resource Include="DefaultFiles\user_script_send_convert\解析换行回车的转义字符.lua" />
-    <Resource Include="DefaultFiles\user_script_send_convert\默认.lua" />
-    <Resource Include="DefaultFiles\user_script_recv_convert\默认.lua" />
+    <Resource Include="DefaultFiles\user_script_send_convert\default.lua" />
+    <Resource Include="DefaultFiles\user_script_recv_convert\default.lua" />
     <Resource Include="DefaultFiles\user_script_recv_convert\绘制曲线.lua" />
     <Resource Include="DefaultFiles\user_script_recv_convert\绘制曲线-多条.lua" />
     <Resource Include="DefaultFiles\user_script_recv_convert\绘制曲线-解析结构体.lua" />
