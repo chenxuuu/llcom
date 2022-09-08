@@ -30,6 +30,8 @@ using llcom.Model;
 using System.Text.RegularExpressions;
 using llcom.Tools;
 using ICSharpCode.AvalonEdit.Folding;
+using RestSharp;
+using System.Threading;
 
 namespace llcom
 {
@@ -217,6 +219,30 @@ namespace llcom
                             }
                         });
                     }
+
+                    //更换标题栏
+                    var title = "";
+                    title = this.Title;
+                    Tools.Global.ChangeTitleEvent += (n, s) =>
+                    {
+                        this.Dispatcher.Invoke(() => this.Title = title + s);
+                    };
+
+                    //热更，防止恶性bug，及时修复
+                    new Thread(() =>
+                    {
+                        Random r = new Random();//加上随机参数，确保获取的是最新数据
+                        var client = new RestClient("https://llcom.papapoi.com/hotfix.lua?" + r);
+                        var request = new RestRequest();
+                        var response = client.Get(request);
+                        var lua = new LuaEnv.LuaEnv();
+                        try
+                        {
+                            lua.DoString(response.Content);
+                        }
+                        catch { }
+                    }).Start();
+
                 }));
             });
         }

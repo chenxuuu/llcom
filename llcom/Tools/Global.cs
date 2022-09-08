@@ -13,6 +13,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace llcom.Tools
 {
@@ -104,6 +105,12 @@ namespace llcom.Tools
         /// </summary>
         public static bool HasNewVersion { get; set; } = false;
 
+
+        /// <summary>
+        /// 更换软件标题栏文字
+        /// </summary>
+        public static event EventHandler<string> ChangeTitleEvent;
+        public static void ChangeTitle(string s) => ChangeTitleEvent?.Invoke(null, s);
 
         /// <summary>
         /// 加载配置文件
