@@ -231,13 +231,13 @@ namespace llcom
                     //热更，防止恶性bug，及时修复
                     new Thread(() =>
                     {
-                        Random r = new Random();//加上随机参数，确保获取的是最新数据
-                        var client = new RestClient("https://llcom.papapoi.com/hotfix.lua?" + r);
-                        var request = new RestRequest();
-                        var response = client.Get(request);
-                        var lua = new LuaEnv.LuaEnv();
                         try
                         {
+                            Random r = new Random();//加上随机参数，确保获取的是最新数据
+                            var client = new RestClient("https://llcom.papapoi.com/hotfix.lua?" + r.Next());
+                            var request = new RestRequest();
+                            var response = client.Get(request);
+                            var lua = new LuaEnv.LuaEnv();
                             lua.DoString(response.Content);
                         }
                         catch { }
