@@ -7,8 +7,6 @@ assignees: ''
 
 ---
 
-# 如果不按该格式填写，开发者可能会直接忽略该issue
-
 **您的功能请求是否与解决某些问题有关？请描述一下。/ Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
