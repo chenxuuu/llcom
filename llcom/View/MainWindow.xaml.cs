@@ -673,7 +673,7 @@ namespace llcom
 
             if (Tools.Global.uart.IsOpen())
             {
-                string dataConvert;
+                byte[] dataConvert;
                 try
                 {
                     dataConvert = LuaEnv.LuaLoader.Run(
@@ -682,8 +682,7 @@ namespace llcom
                         { 
                             "uartData",
                             is_hex == null ? 
-                            (Tools.Global.setting.hexSend ? Tools.Global.Byte2String(data) : Tools.Global.Byte2Hex(data)) :
-                            Tools.Global.Byte2Hex(data)
+                            (Tools.Global.setting.hexSend ? Tools.Global.Hex2Byte(Tools.Global.Byte2String(data)) : data) : data
                         });
                 }
                 catch (Exception ex)
@@ -694,8 +693,13 @@ namespace llcom
                 try
                 {
                     if (Tools.Global.setting.extraEnter)
-                        dataConvert += "0D0A";
-                    Tools.Global.uart.SendData(Tools.Global.Hex2Byte(dataConvert));
+                    {
+                        var temp = dataConvert.ToList();
+                        temp.Add(0x0d);
+                        temp.Add(0x0a);
+                        dataConvert = temp.ToArray();
+                    }
+                    Tools.Global.uart.SendData(dataConvert);
                 }
                 catch(Exception ex)
                 {

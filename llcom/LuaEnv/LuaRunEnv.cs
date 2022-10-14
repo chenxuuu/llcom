@@ -32,7 +32,7 @@ namespace llcom.LuaEnv
             Tools.Global.uart.UartDataRecived += Uart_UartDataRecived;
         }
 
-        private static void addTigger(int id, string type = "timer", string data = "")
+        private static void addTigger(int id, string type = "timer", byte[] data = null)
         {
             if(isRunning)
             {
@@ -48,7 +48,7 @@ namespace llcom.LuaEnv
         /// <param name="l"></param>
         public static void RunCommand(string l)
         {
-            addTigger(-1, "cmd", l);
+            addTigger(-1, "cmd", Encoding.UTF8.GetBytes(l));
         }
 
 
@@ -59,7 +59,7 @@ namespace llcom.LuaEnv
         /// <param name="e"></param>
         private static void Uart_UartDataRecived(object sender, EventArgs e)
         {
-            addTigger(-1,"uartRev", Tools.Global.Byte2Hex(sender as byte[]));
+            addTigger(-1,"uartRev", sender as byte[]);
         }
 
         private static void runTigger()
@@ -207,6 +207,6 @@ namespace llcom.LuaEnv
     {
         public int id { get; set; }
         public string type { get; set; }
-        public string data { get; set; }
+        public byte[] data { get; set; }
     }
 }

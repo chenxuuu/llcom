@@ -302,11 +302,11 @@ namespace llcom
             {
                 try
                 {
-                    string r = LuaEnv.LuaLoader.Run($"{luaFileList.SelectedItem as string}.lua",
+                    byte[] r = LuaEnv.LuaLoader.Run($"{luaFileList.SelectedItem as string}.lua",
                                         new System.Collections.ArrayList{"uartData",
-                                           Tools.Global.String2Hex(luaTestTextBox.Text,"")});
-                    MessageBox.Show($"{TryFindResource("SettingLuaRunResult") as string ?? "?!"}\r\nHEX：" + r +
-                        $"\r\n{TryFindResource("SettingLuaRawText") as string ?? "?!"}" + Tools.Global.Hex2String(r));
+                                           Tools.Global.GetEncoding().GetBytes(luaTestTextBox.Text)});
+                    MessageBox.Show($"{TryFindResource("SettingLuaRunResult") as string ?? "?!"}\r\nHEX：" + Tools.Global.Byte2Hex(r) +
+                        $"\r\n{TryFindResource("SettingLuaRawText") as string ?? "?!"}" + Tools.Global.Byte2String(r));
                 }
                 catch(Exception ex)
                 {
@@ -413,16 +413,15 @@ namespace llcom
             {
                 try
                 {
-                    string r = LuaEnv.LuaLoader.Run(
+                    byte[] r = LuaEnv.LuaLoader.Run(
                         $"{luaFileListRev.SelectedItem as string}.lua",
                         new System.Collections.ArrayList{
                             "uartData",
-                            Tools.Global.String2Hex(luaTestTextBoxRev.Text,
-                            "")
+                            Tools.Global.GetEncoding().GetBytes(luaTestTextBoxRev.Text)
                         },
                         "user_script_recv_convert/");
-                    MessageBox.Show($"{TryFindResource("SettingLuaRunResult") as string ?? "?!"}\r\nHEX：" + r +
-                        $"\r\n{TryFindResource("SettingLuaRawText") as string ?? "?!"}" + Tools.Global.Hex2String(r));
+                    MessageBox.Show($"{TryFindResource("SettingLuaRunResult") as string ?? "?!"}\r\nHEX：" + Tools.Global.Byte2Hex(r) +
+                        $"\r\n{TryFindResource("SettingLuaRawText") as string ?? "?!"}" + Tools.Global.Byte2String(r));
                 }
                 catch (Exception ex)
                 {

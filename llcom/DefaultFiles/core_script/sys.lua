@@ -291,7 +291,7 @@ function sys.tigger(param)
         if taskTimerPool[taskId] == param then
             taskTimerPool[taskId] = nil
             local r,i = coroutine.resume(taskId)
-            i= DEBUGHEX and i:toHex() or i--当DEBUGHEX打开时，输出hex报错信息，防止因乱码看不出原因
+            i= i and i..",hex:"..i:toHex() or nil
             assert(r,i)
         end
     else

@@ -69,14 +69,7 @@ sys = require("sys")
 
 --串口数据接收接口
 local uartCB = function (d)
-    if uartReceive then uartReceive(d:fromHex()) end
-end
-
---重写串口数据发送接口
-local oldapiSendUartData = apiSendUartData
-apiSendUartData = function (s)
-    local str = s:toHex()
-    return oldapiSendUartData(str)
+    if uartReceive then uartReceive(d) end
 end
 
 --重写获取快捷发送区数据接口

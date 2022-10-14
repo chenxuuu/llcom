@@ -120,11 +120,10 @@ namespace llcom.Pages
             {
                 try
                 {
-                    string dataConvert = LuaEnv.LuaLoader.Run(
+                    data = LuaEnv.LuaLoader.Run(
                         $"{Tools.Global.setting.recvScript}.lua",
-                        new System.Collections.ArrayList { "uartData", Tools.Global.Byte2Hex(data) },
+                        new System.Collections.ArrayList { "uartData", data },
                         "user_script_recv_convert/");
-                    data = Tools.Global.Hex2Byte(dataConvert);
                 }
                 catch (Exception ex)
                 {

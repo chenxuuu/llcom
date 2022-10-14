@@ -206,7 +206,7 @@ namespace llcom.Tools
                 {
                     Directory.CreateDirectory(ProfilePath+"core_script");
                 }
-                CreateFile("DefaultFiles/core_script/head.lua", ProfilePath+"core_script/head.lua", false);
+                CreateFile("DefaultFiles/core_script/head.lua", ProfilePath+"core_script/head.lua", true);
                 CreateFile("DefaultFiles/core_script/JSON.lua", ProfilePath+"core_script/JSON.lua", false);
                 CreateFile("DefaultFiles/core_script/log.lua", ProfilePath+"core_script/log.lua", false);
                 CreateFile("DefaultFiles/core_script/once.lua", ProfilePath+"core_script/once.lua", true);

@@ -42,13 +42,13 @@ namespace llcom.LuaEnv
         /// 发送串口数据
         /// </summary>
         /// <returns>是否成功</returns>
-        public static bool SendUartData(string data)
+        public static bool SendUartData(byte[] data)
         {
             if (Tools.Global.uart.IsOpen())
             {
                 try
                 {
-                    Tools.Global.uart.SendData(Tools.Global.Hex2Byte(data));
+                    Tools.Global.uart.SendData(data);
                     return true;
                 }
                 catch
