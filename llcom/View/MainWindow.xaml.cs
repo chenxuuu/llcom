@@ -858,7 +858,16 @@ namespace llcom
             }
 
             //文件内容显示出来
-            textEditor.Text = File.ReadAllText(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua");
+            try
+            {
+                textEditor.Text = File.ReadAllText(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua");
+            }
+            catch
+            {
+                MessageBox.Show("File load failed.\r\n" +
+                    "Do not open this file in other application!");
+                return;
+            }
             
             //记录最后时间
             lastLuaFileTime = File.GetLastWriteTime(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua");
