@@ -117,7 +117,19 @@ namespace llcom.Tools
         /// </summary>
         public static void LoadSetting()
         {
-            if (!IsMSIX())
+            if (IsMSIX())
+            {
+                if(Directory.Exists(ProfilePath))
+                {
+                    //已经开过一次了，那就继续用之前的路径
+                }
+                else
+                {
+                    //appdata路径不可靠，用文档路径替代
+                    ProfilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\llcom\\";
+                }
+            }
+            else
             {
                 ProfilePath = AppPath;//普通exe时，直接用软件路径
             }

@@ -92,7 +92,8 @@ namespace llcom.Pages
                 catch
                 {
                     MonitorButton.IsEnabled = false;
-                    MessageBox.Show("插件加载失败，目前该功能还不兼容x64版本的LLCOM");
+                    MessageBox.Show("插件加载失败，目前该功能还不兼容x64版本的LLCOM。\r\n" +
+                        "如需使用该功能，请下载32位x86快照版本。");
                 }
             }
         }
