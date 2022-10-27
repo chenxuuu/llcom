@@ -62,14 +62,21 @@ namespace llcom.Pages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (FixResultList.SelectedItem == null) return;
-            //获取单元格内容
-            string copiedData = (FixResultList.SelectedItem as fixedData).result;
-            if (string.IsNullOrEmpty(copiedData)) return;
-            //复制到剪贴板
-            Clipboard.Clear();
-            Clipboard.SetData(DataFormats.Text, copiedData);
-            MessageBox.Show("copyed:\r\n" + copiedData);
+            try
+            {
+                if (FixResultList.SelectedItem == null) return;
+                //获取单元格内容
+                string copiedData = (FixResultList.SelectedItem as fixedData).result;
+                if (string.IsNullOrEmpty(copiedData)) return;
+                //复制到剪贴板
+                Clipboard.Clear();
+                Clipboard.SetData(DataFormats.Text, copiedData);
+                MessageBox.Show("copyed:\r\n" + copiedData);
+            }
+            catch(Exception ee)
+            {
+                MessageBox.Show("error:\r\n" + ee.Message);
+            }
         }
     }
 }
