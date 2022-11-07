@@ -73,7 +73,7 @@ namespace llcom.Pages
             {
                 Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
                 {
-                    title = $"local tcp server: {title}",
+                    title = $"🛰 local tcp server: {title}",
                     data = data ?? new byte[0],
                     color = send ? Brushes.DarkRed : Brushes.DarkGreen,
                 });
