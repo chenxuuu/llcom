@@ -171,6 +171,9 @@ namespace llcom
                     //本地tcp服务器
                     tcpLocalTestFrame.Navigate(new Uri("Pages/TcpLocalPage.xaml", UriKind.Relative));
 
+                    //本地udp服务器
+                    udpLocalTestFrame.Navigate(new Uri("Pages/UdpLocalPage.xaml", UriKind.Relative));
+
                     //mqtt测试页面
                     MqttTestFrame.Navigate(new Uri("Pages/MqttTestPage.xaml", UriKind.Relative));
 

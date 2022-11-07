@@ -571,5 +571,8 @@ namespace llcom.Model
 
         private int _tcpServerPort = 2333;
         public int tcpServerPort { get { return _tcpServerPort; } set { _tcpServerPort = value; Save(); } }
+
+        private int _udpServerPort = 2333;
+        public int udpServerPort { get { return _udpServerPort; } set { _udpServerPort = value; Save(); } }
     }
 }
