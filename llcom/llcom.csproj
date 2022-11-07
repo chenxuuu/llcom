@@ -253,6 +253,9 @@
     <Compile Include="Pages\SocketClientPage.xaml.cs">
       <DependentUpon>SocketClientPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\TcpLocalPage.xaml.cs">
+      <DependentUpon>TcpLocalPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\tcpTest.xaml.cs">
       <DependentUpon>tcpTest.xaml</DependentUpon>
     </Compile>
@@ -307,6 +310,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\SocketClientPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\TcpLocalPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

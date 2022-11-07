@@ -1,6 +1,7 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="AppTitle">LLCOM - 能跑Lua脚本的串口调试工具</system:String>
     <system:String x:Key="OpenPort_open">打开</system:String>
     <system:String x:Key="OpenPort_close">关闭</system:String>
@@ -124,7 +125,9 @@
     <system:String x:Key="SettingLuaRunResult">运行结果</system:String>
     <system:String x:Key="SettingLuaRawText">原始字符串：</system:String>
     <system:String x:Key="ChangeLanguage">语言/Language</system:String>
-    <system:String x:Key="TcpTabTitle">socket服务端</system:String>
+    <system:String x:Key="TcpTabTitle">socket公共服务端</system:String>
+    <system:String x:Key="TcpLocalTabTitle">本机TCP服务端</system:String>
+    <system:String x:Key="UdpLocalTabTitle">本机UDP服务端</system:String>
     <system:String x:Key="TcpClientTitle">socket客户端</system:String>
     <system:String x:Key="CreateTcpButton">测试TCP</system:String>
     <system:String x:Key="CreateTcpSSLButton">测试TCPSSL</system:String>
@@ -183,4 +186,7 @@
     <system:String x:Key="PlotFit">查看全局</system:String>
     <system:String x:Key="PlotClear">清空图像</system:String>
     <system:String x:Key="PlotTheme">切换主题</system:String>
+    <system:String x:Key="RefreshIpList">刷新IP</system:String>
+    <system:String x:Key="StartListen">开始监听</system:String>
+    <system:String x:Key="StopListen">停止监听</system:String>
 </ResourceDictionary>

@@ -567,5 +567,9 @@ namespace llcom.Model
         public string tcpClientServer { get { return _tcpClientServer; } set { _tcpClientServer = value; Save(); } }
         public int tcpClientPort { get { return _tcpClientPort; } set { _tcpClientPort = value; Save(); } }
         public int tcpClientProtocolType { get { return _tcpClientProtocolType; } set { _tcpClientProtocolType = value; Save(); } }
+
+
+        private int _tcpServerPort = 2333;
+        public int tcpServerPort { get { return _tcpServerPort; } set { _tcpServerPort = value; Save(); } }
     }
 }

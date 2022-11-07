@@ -1,6 +1,7 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="AppTitle">LLCOM - Debug serial port with Lua!</system:String>
     <system:String x:Key="OpenPort_open">Open</system:String>
     <system:String x:Key="OpenPort_close">Close</system:String>
@@ -111,7 +112,7 @@
     <system:String x:Key="SettingParityEven">Even</system:String>
     <system:String x:Key="SettingParityMark">Mark</system:String>
     <system:String x:Key="SettingParitySpace">Space</system:String>
-    <system:String x:Key="Encoding">Encoding: </system:String>
+    <system:String x:Key="Encoding">Encoding:</system:String>
     <system:String x:Key="SettingSendLuaScript">Lua script for data to send</system:String>
     <system:String x:Key="SettingRecvLuaScript">Lua script for received data</system:String>
     <system:String x:Key="SettingLuaTestScript">Test script</system:String>
@@ -124,7 +125,9 @@
     <system:String x:Key="SettingLuaRunResult">Result</system:String>
     <system:String x:Key="SettingLuaRawText">Raw text:</system:String>
     <system:String x:Key="ChangeLanguage">语言/Language</system:String>
-    <system:String x:Key="TcpTabTitle">Socket Server</system:String>
+    <system:String x:Key="TcpTabTitle">Socket Public Server</system:String>
+    <system:String x:Key="TcpLocalTabTitle">TCP Local Server</system:String>
+    <system:String x:Key="UdpLocalTabTitle">UDP Local Server</system:String>
     <system:String x:Key="TcpClientTitle">Socket Client</system:String>
     <system:String x:Key="CreateTcpButton">Tset TCP</system:String>
     <system:String x:Key="CreateTcpSSLButton">Tset TCP SSL</system:String>
@@ -183,4 +186,7 @@
     <system:String x:Key="PlotFit">Fit</system:String>
     <system:String x:Key="PlotClear">Clear</system:String>
     <system:String x:Key="PlotTheme">Theme</system:String>
+    <system:String x:Key="RefreshIpList">Refresh IP</system:String>
+    <system:String x:Key="StartListen">Start listen</system:String>
+    <system:String x:Key="StopListen">Stop listen</system:String>
 </ResourceDictionary>

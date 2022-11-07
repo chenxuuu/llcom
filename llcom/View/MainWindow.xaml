@@ -1,79 +1,119 @@
-<Window x:Class="llcom.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:llcom"
-        xmlns:fa="http://schemas.fontawesome.io/icons/"
-        xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI" 
-        xmlns:local_page="clr-namespace:llcom.Pages"
-        adonisExtensions:RippleExtension.FadeInDuration="0"
-        adonisExtensions:RippleExtension.FadeOutDuration="0"
-        mc:Ignorable="d"
-        Title="{DynamicResource AppTitle}" Height="500" Width="900"
-        Loaded="Window_Loaded"
-        Activated="Window_Activated"
-        Deactivated="Window_Deactivated">
+<Window
+    x:Class="llcom.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
+    xmlns:local="clr-namespace:llcom"
+    xmlns:local_page="clr-namespace:llcom.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="{DynamicResource AppTitle}"
+    Width="900"
+    Height="500"
+    adonisExtensions:RippleExtension.FadeInDuration="0"
+    adonisExtensions:RippleExtension.FadeOutDuration="0"
+    Activated="Window_Activated"
+    Deactivated="Window_Deactivated"
+    Loaded="Window_Loaded"
+    mc:Ignorable="d">
     <Window.Style>
-        <Style TargetType="Window" BasedOn="{StaticResource {x:Type Window}}"/>
+        <Style BasedOn="{StaticResource {x:Type Window}}" TargetType="Window" />
     </Window.Style>
     <Window.Resources>
-        <RoutedUICommand x:Key="SendUartData" Text="SendUartData"/>
-        <local_page:boolVisibe x:Key="boolVisibeConverter"/>
-        <local_page:boolNotVisibe x:Key="boolNotVisibeConverter"/>
+        <RoutedUICommand x:Key="SendUartData" Text="SendUartData" />
+        <local_page:boolVisibe x:Key="boolVisibeConverter" />
+        <local_page:boolNotVisibe x:Key="boolNotVisibeConverter" />
     </Window.Resources>
     <Window.InputBindings>
-        <KeyBinding Gesture="Ctrl+Return" Key="Return"  Command="{StaticResource SendUartData}"></KeyBinding>
+        <KeyBinding
+            Key="Return"
+            Command="{StaticResource SendUartData}"
+            Gesture="Ctrl+Return" />
     </Window.InputBindings>
     <Window.CommandBindings>
-        <CommandBinding Command="{StaticResource SendUartData}" Executed="SendUartData_Executed"/>
+        <CommandBinding Command="{StaticResource SendUartData}" Executed="SendUartData_Executed" />
     </Window.CommandBindings>
     <Grid Name="MainGrid" IsEnabled="False">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="11*"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="11*" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="7*" />
         </Grid.ColumnDefinitions>
-        
-        <!-- 收发数据显示 -->
-        <Frame Name="dataShowFrame" NavigationUIVisibility="Hidden"/>
 
-        <!-- 发送数据区 -->
+        <!--  收发数据显示  -->
+        <Frame Name="dataShowFrame" NavigationUIVisibility="Hidden" />
+
+        <!--  发送数据区  -->
         <Grid Grid.Row="1" Margin="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0"/>
-                <ColumnDefinition Width="0"/>
-                <ColumnDefinition Width="0"/>
-                <ColumnDefinition Width="55"/>
-                <ColumnDefinition Width="75"/>
-                <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="0" />
+                <ColumnDefinition Width="0" />
+                <ColumnDefinition Width="0" />
+                <ColumnDefinition Width="55" />
+                <ColumnDefinition Width="75" />
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="50" />
             </Grid.ColumnDefinitions>
-            <Button Name="openClosePortButton" Grid.Column="3" Grid.RowSpan="2" Margin="2" Click="OpenClosePortButton_Click">
+            <Button
+                Name="openClosePortButton"
+                Grid.RowSpan="2"
+                Grid.Column="3"
+                Margin="2"
+                Click="OpenClosePortButton_Click">
                 <WrapPanel>
-                    <TextBlock Name="openClosePortTextBlock" Text="{DynamicResource OpenPort_open}"/>
-                    <TextBlock Text="{DynamicResource OpenPort_port}"/>
+                    <TextBlock Name="openClosePortTextBlock" Text="{DynamicResource OpenPort_open}" />
+                    <TextBlock Text="{DynamicResource OpenPort_port}" />
                 </WrapPanel>
             </Button>
-            <Button Name="clearLogButton" Content="{DynamicResource ClearLog}" Grid.Column="4" Margin="2" Click="ClearLogButton_Click"/>
-            <Button Name="MoreSettingButton" Content="{DynamicResource MoreSettings}" Grid.Column="4" Grid.Row="1" Margin="2" ToolTip="{DynamicResource MoreSettingsTip}" Click="MoreSettingButton_Click"/>
-            <TextBox Name="toSendDataTextBox" Text="{Binding dataToSend}" Grid.Column="5" Grid.RowSpan="2" Height="50" VerticalContentAlignment="Top"
-                     TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="2" FontFamily="Consolas"/>
-            <Button Name="sendDataButton" Content="{DynamicResource SendDataButton}" Grid.Column="6" Grid.RowSpan="2" Margin="2" ToolTip="{DynamicResource SendDataButtonTip}" Command="{StaticResource SendUartData}"/>
+            <Button
+                Name="clearLogButton"
+                Grid.Column="4"
+                Margin="2"
+                Click="ClearLogButton_Click"
+                Content="{DynamicResource ClearLog}" />
+            <Button
+                Name="MoreSettingButton"
+                Grid.Row="1"
+                Grid.Column="4"
+                Margin="2"
+                Click="MoreSettingButton_Click"
+                Content="{DynamicResource MoreSettings}"
+                ToolTip="{DynamicResource MoreSettingsTip}" />
+            <TextBox
+                Name="toSendDataTextBox"
+                Grid.RowSpan="2"
+                Grid.Column="5"
+                Height="50"
+                Margin="2"
+                VerticalContentAlignment="Top"
+                AcceptsReturn="True"
+                FontFamily="Consolas"
+                Text="{Binding dataToSend}"
+                TextWrapping="Wrap"
+                VerticalScrollBarVisibility="Auto" />
+            <Button
+                Name="sendDataButton"
+                Grid.RowSpan="2"
+                Grid.Column="6"
+                Margin="2"
+                Command="{StaticResource SendUartData}"
+                Content="{DynamicResource SendDataButton}"
+                ToolTip="{DynamicResource SendDataButtonTip}" />
         </Grid>
-        
-        
-        <!-- 底部状态栏 -->
-        <DockPanel Grid.Row="2" Grid.ColumnSpan="3" >
+
+
+        <!--  底部状态栏  -->
+        <DockPanel Grid.Row="2" Grid.ColumnSpan="3">
             <StatusBar DockPanel.Dock="Bottom">
                 <StatusBar.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -103,14 +143,20 @@
                         </Grid>
                     </ItemsPanelTemplate>
                 </StatusBar.ItemsPanel>
-                <Button Grid.Column="0" Name="refreshPortButton" Content="{DynamicResource RefreshPortButton}" Click="RefreshPortButton_Click"/>
+                <Button
+                    Name="refreshPortButton"
+                    Grid.Column="0"
+                    Click="RefreshPortButton_Click"
+                    Content="{DynamicResource RefreshPortButton}" />
                 <StatusBarItem Grid.Column="1">
                     <TextBlock Text="{DynamicResource ShowPorts}" />
                 </StatusBarItem>
                 <Separator Grid.Column="2" />
                 <StatusBarItem Grid.Column="3">
-                    <ComboBox Name="serialPortsListComboBox" MinWidth="150" MaxWidth="300">
-                    </ComboBox>
+                    <ComboBox
+                        Name="serialPortsListComboBox"
+                        MinWidth="150"
+                        MaxWidth="300" />
                 </StatusBarItem>
                 <Separator Grid.Column="4" />
                 <StatusBarItem Grid.Column="5">
@@ -118,40 +164,43 @@
                 </StatusBarItem>
                 <Separator Grid.Column="6" />
                 <StatusBarItem Grid.Column="7">
-                    <ComboBox Name="baudRateComboBox" Width="80" SelectionChanged="BaudRateComboBox_SelectionChanged">
-                        <ComboBoxItem Content="110"/>
-                        <ComboBoxItem Content="330"/>
-                        <ComboBoxItem Content="600"/>
-                        <ComboBoxItem Content="1200"/>
-                        <ComboBoxItem Content="2400"/>
-                        <ComboBoxItem Content="4800"/>
-                        <ComboBoxItem Content="9600"/>
-                        <ComboBoxItem Content="14400"/>
-                        <ComboBoxItem Content="19200"/>
-                        <ComboBoxItem Content="38400"/>
-                        <ComboBoxItem Content="56000"/>
-                        <ComboBoxItem Content="57600"/>
-                        <ComboBoxItem Content="115200"/>
-                        <ComboBoxItem Content="128000"/>
-                        <ComboBoxItem Content="230400"/>
-                        <ComboBoxItem Content="256000"/>
-                        <ComboBoxItem Content="460800"/>
-                        <ComboBoxItem Content="500000"/>
-                        <ComboBoxItem Content="128000"/>
-                        <ComboBoxItem Content="512000"/>
-                        <ComboBoxItem Content="600000"/>
-                        <ComboBoxItem Content="750000"/>
-                        <ComboBoxItem Content="921600"/>
-                        <ComboBoxItem Content="1000000"/>
-                        <ComboBoxItem Content="1500000"/>
-                        <ComboBoxItem Content="2000000"/>
-                        <ComboBoxItem Content="3000000"/>
-                        <ComboBoxItem Content="{DynamicResource OtherRate}"/>
+                    <ComboBox
+                        Name="baudRateComboBox"
+                        Width="80"
+                        SelectionChanged="BaudRateComboBox_SelectionChanged">
+                        <ComboBoxItem Content="110" />
+                        <ComboBoxItem Content="330" />
+                        <ComboBoxItem Content="600" />
+                        <ComboBoxItem Content="1200" />
+                        <ComboBoxItem Content="2400" />
+                        <ComboBoxItem Content="4800" />
+                        <ComboBoxItem Content="9600" />
+                        <ComboBoxItem Content="14400" />
+                        <ComboBoxItem Content="19200" />
+                        <ComboBoxItem Content="38400" />
+                        <ComboBoxItem Content="56000" />
+                        <ComboBoxItem Content="57600" />
+                        <ComboBoxItem Content="115200" />
+                        <ComboBoxItem Content="128000" />
+                        <ComboBoxItem Content="230400" />
+                        <ComboBoxItem Content="256000" />
+                        <ComboBoxItem Content="460800" />
+                        <ComboBoxItem Content="500000" />
+                        <ComboBoxItem Content="128000" />
+                        <ComboBoxItem Content="512000" />
+                        <ComboBoxItem Content="600000" />
+                        <ComboBoxItem Content="750000" />
+                        <ComboBoxItem Content="921600" />
+                        <ComboBoxItem Content="1000000" />
+                        <ComboBoxItem Content="1500000" />
+                        <ComboBoxItem Content="2000000" />
+                        <ComboBoxItem Content="3000000" />
+                        <ComboBoxItem Content="{DynamicResource OtherRate}" />
                     </ComboBox>
                 </StatusBarItem>
                 <Separator Grid.Column="8" />
                 <StatusBarItem Grid.Column="9">
-                    <TextBlock Text="{DynamicResource ShowStatus}"/>
+                    <TextBlock Text="{DynamicResource ShowStatus}" />
                 </StatusBarItem>
                 <Separator Grid.Column="10" />
                 <StatusBarItem Grid.Column="11">
@@ -159,50 +208,112 @@
                 </StatusBarItem>
                 <Separator Grid.Column="12" />
                 <StatusBarItem Grid.Column="13">
-                    <TextBlock Text="{DynamicResource SentCount}"  ToolTip="{DynamicResource ClearCountTip}" MouseRightButtonDown="sentCountTextBlock_MouseRightButtonDown" Cursor="Cross"/>
+                    <TextBlock
+                        Cursor="Cross"
+                        MouseRightButtonDown="sentCountTextBlock_MouseRightButtonDown"
+                        Text="{DynamicResource SentCount}"
+                        ToolTip="{DynamicResource ClearCountTip}" />
                 </StatusBarItem>
                 <Separator Grid.Column="14" />
                 <StatusBarItem Grid.Column="15">
-                    <TextBlock Name="sentCountTextBlock" Text="{Binding SentCount}" ToolTip="{DynamicResource ClearCountTip}" MouseRightButtonDown="sentCountTextBlock_MouseRightButtonDown" Cursor="Cross"/>
+                    <TextBlock
+                        Name="sentCountTextBlock"
+                        Cursor="Cross"
+                        MouseRightButtonDown="sentCountTextBlock_MouseRightButtonDown"
+                        Text="{Binding SentCount}"
+                        ToolTip="{DynamicResource ClearCountTip}" />
                 </StatusBarItem>
                 <Separator Grid.Column="16" />
                 <StatusBarItem Grid.Column="17">
-                    <TextBlock Text="{DynamicResource ReceivedCount}"  ToolTip="{DynamicResource ClearCountTip}" MouseRightButtonDown="receivedCountTextBlock_MouseRightButtonDown" Cursor="Cross"/>
+                    <TextBlock
+                        Cursor="Cross"
+                        MouseRightButtonDown="receivedCountTextBlock_MouseRightButtonDown"
+                        Text="{DynamicResource ReceivedCount}"
+                        ToolTip="{DynamicResource ClearCountTip}" />
                 </StatusBarItem>
                 <Separator Grid.Column="18" />
                 <StatusBarItem Grid.Column="19">
-                    <TextBlock Name="receivedCountTextBlock" Text="{Binding ReceivedCount}" ToolTip="{DynamicResource ClearCountTip}" MouseRightButtonDown="receivedCountTextBlock_MouseRightButtonDown" Cursor="Cross"/>
+                    <TextBlock
+                        Name="receivedCountTextBlock"
+                        Cursor="Cross"
+                        MouseRightButtonDown="receivedCountTextBlock_MouseRightButtonDown"
+                        Text="{Binding ReceivedCount}"
+                        ToolTip="{DynamicResource ClearCountTip}" />
                 </StatusBarItem>
             </StatusBar>
         </DockPanel>
 
-        <!-- 中间改变分割大小的东西 -->
-        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" Grid.RowSpan="2" />
-        
-        <!-- 右侧脚本、快捷发送 -->
-        <TabControl Grid.Column="3" Grid.RowSpan="2">
+        <!--  中间改变分割大小的东西  -->
+        <GridSplitter
+            Grid.RowSpan="2"
+            Grid.Column="1"
+            Width="5"
+            HorizontalAlignment="Stretch" />
+
+        <!--  右侧脚本、快捷发送  -->
+        <TabControl Grid.RowSpan="2" Grid.Column="3">
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{DynamicResource QuickSendCard}"/>
+                        <TextBlock Text="{DynamicResource QuickSendCard}" />
                         <Menu Grid.Column="1" HorizontalAlignment="Left">
                             <MenuItem ToolTip="{DynamicResource QuickSendChangeList}">
                                 <MenuItem.Header>
                                     <Grid>
-                                        <fa:FontAwesome Icon="StickyNote" Foreground="LightYellow"/>
-                                        <fa:FontAwesome Icon="StickyNoteOutline" Foreground="Black"/>
+                                        <fa:FontAwesome Foreground="LightYellow" Icon="StickyNote" />
+                                        <fa:FontAwesome Foreground="Black" Icon="StickyNoteOutline" />
                                     </Grid>
                                 </MenuItem.Header>
-                                <MenuItem Name="QuiclListName0" Header="{Binding quickListName0}" Tag="0" Click="MenuItem_Click_QuickSendList"/>
-                                <MenuItem Name="QuiclListName1" Header="{Binding quickListName1}" Tag="1" Click="MenuItem_Click_QuickSendList"/>
-                                <MenuItem Name="QuiclListName2" Header="{Binding quickListName2}" Tag="2" Click="MenuItem_Click_QuickSendList"/>
-                                <MenuItem Name="QuiclListName3" Header="{Binding quickListName3}" Tag="3" Click="MenuItem_Click_QuickSendList"/>
-                                <MenuItem Name="QuiclListName4" Header="{Binding quickListName4}" Tag="4" Click="MenuItem_Click_QuickSendList"/>
-                                <MenuItem Name="QuiclListName5" Header="{Binding quickListName5}" Tag="5" Click="MenuItem_Click_QuickSendList"/>
-                                <MenuItem Name="QuiclListName6" Header="{Binding quickListName6}" Tag="6" Click="MenuItem_Click_QuickSendList"/>
-                                <MenuItem Name="QuiclListName7" Header="{Binding quickListName7}" Tag="7" Click="MenuItem_Click_QuickSendList"/>
-                                <MenuItem Name="QuiclListName8" Header="{Binding quickListName8}" Tag="8" Click="MenuItem_Click_QuickSendList"/>
-                                <MenuItem Name="QuiclListName9" Header="{Binding quickListName9}" Tag="9" Click="MenuItem_Click_QuickSendList"/>
+                                <MenuItem
+                                    Name="QuiclListName0"
+                                    Click="MenuItem_Click_QuickSendList"
+                                    Header="{Binding quickListName0}"
+                                    Tag="0" />
+                                <MenuItem
+                                    Name="QuiclListName1"
+                                    Click="MenuItem_Click_QuickSendList"
+                                    Header="{Binding quickListName1}"
+                                    Tag="1" />
+                                <MenuItem
+                                    Name="QuiclListName2"
+                                    Click="MenuItem_Click_QuickSendList"
+                                    Header="{Binding quickListName2}"
+                                    Tag="2" />
+                                <MenuItem
+                                    Name="QuiclListName3"
+                                    Click="MenuItem_Click_QuickSendList"
+                                    Header="{Binding quickListName3}"
+                                    Tag="3" />
+                                <MenuItem
+                                    Name="QuiclListName4"
+                                    Click="MenuItem_Click_QuickSendList"
+                                    Header="{Binding quickListName4}"
+                                    Tag="4" />
+                                <MenuItem
+                                    Name="QuiclListName5"
+                                    Click="MenuItem_Click_QuickSendList"
+                                    Header="{Binding quickListName5}"
+                                    Tag="5" />
+                                <MenuItem
+                                    Name="QuiclListName6"
+                                    Click="MenuItem_Click_QuickSendList"
+                                    Header="{Binding quickListName6}"
+                                    Tag="6" />
+                                <MenuItem
+                                    Name="QuiclListName7"
+                                    Click="MenuItem_Click_QuickSendList"
+                                    Header="{Binding quickListName7}"
+                                    Tag="7" />
+                                <MenuItem
+                                    Name="QuiclListName8"
+                                    Click="MenuItem_Click_QuickSendList"
+                                    Header="{Binding quickListName8}"
+                                    Tag="8" />
+                                <MenuItem
+                                    Name="QuiclListName9"
+                                    Click="MenuItem_Click_QuickSendList"
+                                    Header="{Binding quickListName9}"
+                                    Tag="9" />
                             </MenuItem>
                         </Menu>
                     </StackPanel>
@@ -211,195 +322,357 @@
                     <StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="40"/>
-                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="40" />
+                                <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
-                            <StackPanel Name="QuickListNameStackPanel" Background="#F6F6F6" Grid.Column="1" HorizontalAlignment="Left" 
-                                        Orientation="Horizontal" MouseRightButtonDown="QuickListNameStackPanel_MouseRightButtonDown"
-                                        ToolTip="{DynamicResource QuickSendListNameTip}"  Cursor="Cross">
-                                <TextBlock Text="("/>
-                                <TextBlock Name="QuickListPageTextBlock" Text="___"/>
-                                <TextBlock Text=")"/>
+                            <StackPanel
+                                Name="QuickListNameStackPanel"
+                                Grid.Column="1"
+                                HorizontalAlignment="Left"
+                                Background="#F6F6F6"
+                                Cursor="Cross"
+                                MouseRightButtonDown="QuickListNameStackPanel_MouseRightButtonDown"
+                                Orientation="Horizontal"
+                                ToolTip="{DynamicResource QuickSendListNameTip}">
+                                <TextBlock Text="(" />
+                                <TextBlock Name="QuickListPageTextBlock" Text="___" />
+                                <TextBlock Text=")" />
                             </StackPanel>
-                            <TextBlock Text="{DynamicResource QuickSendId}" Grid.Column="0" HorizontalAlignment="Center"/>
-                            <TextBlock Text="{DynamicResource QuickSendContent}" Grid.Column="1" HorizontalAlignment="Center"/>
-                            <TextBlock Text="{DynamicResource QuickSendHex}" Grid.Column="3" HorizontalAlignment="Center"/>
+                            <TextBlock
+                                Grid.Column="0"
+                                HorizontalAlignment="Center"
+                                Text="{DynamicResource QuickSendId}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                HorizontalAlignment="Center"
+                                Text="{DynamicResource QuickSendContent}" />
+                            <TextBlock
+                                Grid.Column="3"
+                                HorizontalAlignment="Center"
+                                Text="{DynamicResource QuickSendHex}" />
                         </Grid>
-                        <ItemsControl Name="toSendList" 
-                                      VirtualizingPanel.IsVirtualizing="True"
-                                      VirtualizingPanel.VirtualizationMode="Recycling">
+                        <ItemsControl
+                            Name="toSendList"
+                            VirtualizingPanel.IsVirtualizing="True"
+                            VirtualizingPanel.VirtualizationMode="Recycling">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Margin="0,3,0,0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="4*"/>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="4*" />
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="20" />
                                         </Grid.ColumnDefinitions>
-                                        <Grid Background="#F6F6F6" Tag="{Binding}" Margin="1" MouseRightButtonDown="TextBlock_MouseRightButtonDown" Cursor="Cross"/>
-                                        <TextBlock Text="{Binding id}" Tag="{Binding}" Grid.Column="0" HorizontalAlignment="Center" Margin="2" ToolTip="{DynamicResource QuickSendIdTip}" MouseRightButtonDown="TextBlock_MouseRightButtonDown" Cursor="Cross"/>
-                                        <TextBox Text="{Binding text,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,0,2,0"/>
-                                        <Button Content="{Binding commit}" Tag="{Binding}" Grid.Column="2" HorizontalAlignment="Stretch" ToolTip="{DynamicResource QuickSendButtonTip}" Click="knowSendDataButton_click" MouseRightButtonDown="Button_MouseDoubleClick" Cursor="Cross"/>
-                                        <CheckBox IsChecked="{Binding hex}"  Grid.Column="3" HorizontalAlignment="Center" Margin="2"/>
+                                        <Grid
+                                            Margin="1"
+                                            Background="#F6F6F6"
+                                            Cursor="Cross"
+                                            MouseRightButtonDown="TextBlock_MouseRightButtonDown"
+                                            Tag="{Binding}" />
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            Margin="2"
+                                            HorizontalAlignment="Center"
+                                            Cursor="Cross"
+                                            MouseRightButtonDown="TextBlock_MouseRightButtonDown"
+                                            Tag="{Binding}"
+                                            Text="{Binding id}"
+                                            ToolTip="{DynamicResource QuickSendIdTip}" />
+                                        <TextBox
+                                            Grid.Column="1"
+                                            Margin="0,0,2,0"
+                                            HorizontalAlignment="Stretch"
+                                            Text="{Binding text, UpdateSourceTrigger=PropertyChanged}" />
+                                        <Button
+                                            Grid.Column="2"
+                                            HorizontalAlignment="Stretch"
+                                            Click="knowSendDataButton_click"
+                                            Content="{Binding commit}"
+                                            Cursor="Cross"
+                                            MouseRightButtonDown="Button_MouseDoubleClick"
+                                            Tag="{Binding}"
+                                            ToolTip="{DynamicResource QuickSendButtonTip}" />
+                                        <CheckBox
+                                            Grid.Column="3"
+                                            Margin="2"
+                                            HorizontalAlignment="Center"
+                                            IsChecked="{Binding hex}" />
                                     </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                         <Grid Margin="0,10,0,0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Button Name="addSendListButton" Content="{DynamicResource QuickSendAdd}" Margin="3" Click="AddSendListButton_Click"/>
-                            <Button Name="deleteSendListButton" Content="{DynamicResource QuickSendRemoveLast}" Grid.Column="1" Margin="3" Click="DeleteSendListButton_Click"/>
+                            <Button
+                                Name="addSendListButton"
+                                Margin="3"
+                                Click="AddSendListButton_Click"
+                                Content="{DynamicResource QuickSendAdd}" />
+                            <Button
+                                Name="deleteSendListButton"
+                                Grid.Column="1"
+                                Margin="3"
+                                Click="DeleteSendListButton_Click"
+                                Content="{DynamicResource QuickSendRemoveLast}" />
                         </Grid>
-                        <TextBlock Text="{DynamicResource QuickSendTip}" TextWrapping="Wrap" FontWeight="Bold"/>
+                        <TextBlock
+                            FontWeight="Bold"
+                            Text="{DynamicResource QuickSendTip}"
+                            TextWrapping="Wrap" />
                         <Grid Margin="0,10,0,0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Button Name="QuickSendImportButton" Content="{DynamicResource QuickSendImport}" Margin="3" Click="QuickSendImportButton_Click"/>
-                            <Button Name="QuickSendExportButton" Content="{DynamicResource QuickSendExport}" Grid.Column="1" Margin="3" Click="QuickSendExportButton_Click"/>
+                            <Button
+                                Name="QuickSendImportButton"
+                                Margin="3"
+                                Click="QuickSendImportButton_Click"
+                                Content="{DynamicResource QuickSendImport}" />
+                            <Button
+                                Name="QuickSendExportButton"
+                                Grid.Column="1"
+                                Margin="3"
+                                Click="QuickSendExportButton_Click"
+                                Content="{DynamicResource QuickSendExport}" />
                         </Grid>
-                        <Button Name="removeAllButton" Content="{DynamicResource QuickSendRemoveAll}" Margin="3,3,3,5" Click="removeAllButton_Click"/>
-                        <Button Name="importSSCOMButton" Content="{DynamicResource QuickSendImportSSCOM}" Margin="3,3,3,5" Click="ImportSSCOMButton_Click"/>
+                        <Button
+                            Name="removeAllButton"
+                            Margin="3,3,3,5"
+                            Click="removeAllButton_Click"
+                            Content="{DynamicResource QuickSendRemoveAll}" />
+                        <Button
+                            Name="importSSCOMButton"
+                            Margin="3,3,3,5"
+                            Click="ImportSSCOMButton_Click"
+                            Content="{DynamicResource QuickSendImportSSCOM}" />
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="{DynamicResource LuaCard}">
                 <Grid>
-                    <!-- 脚本编辑界面 -->
+                    <!--  脚本编辑界面  -->
                     <Grid Name="luaScriptEditorGrid" Visibility="Visible">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <WrapPanel Orientation="Horizontal" Margin="0,0,0,5">
-                            <ComboBox Name="luaFileList" Width="150" SelectionChanged="LuaFileList_SelectionChanged">
-                            </ComboBox>
-                            <Button Name="newScriptButton" Margin="3,0,0,0" ToolTip="{DynamicResource LuaNewScript}" Click="NewScriptButton_Click">
+                        <WrapPanel Margin="0,0,0,5" Orientation="Horizontal">
+                            <ComboBox
+                                Name="luaFileList"
+                                Width="150"
+                                SelectionChanged="LuaFileList_SelectionChanged" />
+                            <Button
+                                Name="newScriptButton"
+                                Margin="3,0,0,0"
+                                Click="NewScriptButton_Click"
+                                ToolTip="{DynamicResource LuaNewScript}">
                                 <Grid>
-                                    <fa:FontAwesome Icon="File" Foreground="LightSkyBlue"/>
-                                    <fa:FontAwesome Icon="FileCodeOutline"/>
+                                    <fa:FontAwesome Foreground="LightSkyBlue" Icon="File" />
+                                    <fa:FontAwesome Icon="FileCodeOutline" />
                                 </Grid>
                             </Button>
-                            <Button Name="runScriptButton" Margin="2,0,0,0" ToolTip="{DynamicResource LuaRunScript}" Click="RunScriptButton_Click">
-                                <fa:FontAwesome Icon="Play" Foreground="DarkGreen"/>
+                            <Button
+                                Name="runScriptButton"
+                                Margin="2,0,0,0"
+                                Click="RunScriptButton_Click"
+                                ToolTip="{DynamicResource LuaRunScript}">
+                                <fa:FontAwesome Foreground="DarkGreen" Icon="Play" />
                             </Button>
-                            <Button Name="openScriptFolderButton" Margin="2,0,0,0" ToolTip="{DynamicResource LuaOpenFolder}" Click="OpenScriptFolderButton_Click">
+                            <Button
+                                Name="openScriptFolderButton"
+                                Margin="2,0,0,0"
+                                Click="OpenScriptFolderButton_Click"
+                                ToolTip="{DynamicResource LuaOpenFolder}">
                                 <Grid>
-                                    <fa:FontAwesome Icon="FolderOpen" Foreground="Yellow"/>
-                                    <fa:FontAwesome Icon="FolderOutlinepenOutline"/>
+                                    <fa:FontAwesome Foreground="Yellow" Icon="FolderOpen" />
+                                    <fa:FontAwesome Icon="FolderOutlinepenOutline" />
                                 </Grid>
                             </Button>
-                            <Button Name="refreshScriptListButton" Margin="2,0,0,0" ToolTip="{DynamicResource LuaRefreshList}" Click="RefreshScriptListButton_Click">
-                                <fa:FontAwesome Icon="Refresh" Foreground="Green"/>
+                            <Button
+                                Name="refreshScriptListButton"
+                                Margin="2,0,0,0"
+                                Click="RefreshScriptListButton_Click"
+                                ToolTip="{DynamicResource LuaRefreshList}">
+                                <fa:FontAwesome Foreground="Green" Icon="Refresh" />
                             </Button>
-                            <Button Name="apiDocumentButton" Margin="2,0,0,0" ToolTip="{DynamicResource LuaApiReference}" Click="ApiDocumentButton_Click">
-                                <fa:FontAwesome Icon="Book" Foreground="DarkSlateGray"/>
+                            <Button
+                                Name="apiDocumentButton"
+                                Margin="2,0,0,0"
+                                Click="ApiDocumentButton_Click"
+                                ToolTip="{DynamicResource LuaApiReference}">
+                                <fa:FontAwesome Foreground="DarkSlateGray" Icon="Book" />
                             </Button>
-                            <Button Name="scriptShareButton" Margin="2,0,0,0" ToolTip="{DynamicResource LuaGetShare}" Click="ScriptShareButton_Click">
-                                <fa:FontAwesome Icon="ShareAlt" Foreground="DarkCyan"/>
+                            <Button
+                                Name="scriptShareButton"
+                                Margin="2,0,0,0"
+                                Click="ScriptShareButton_Click"
+                                ToolTip="{DynamicResource LuaGetShare}">
+                                <fa:FontAwesome Foreground="DarkCyan" Icon="ShareAlt" />
                             </Button>
                         </WrapPanel>
-                        <WrapPanel Grid.Row="1" Name="newLuaFileWrapPanel" Visibility="Collapsed" Margin="3">
-                            <TextBlock Text="{DynamicResource LuaFileName}" VerticalAlignment="Center"/>
-                            <TextBox Name="newLuaFileNameTextBox" Width="90" Text="new script"/>
-                            <Button Name="newLuaFilebutton" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="{DynamicResource LuaConfirmCreate}" Click="NewLuaFilebutton_Click">
-                                <fa:FontAwesome Icon="Check" Foreground="Green"/>
+                        <WrapPanel
+                            Name="newLuaFileWrapPanel"
+                            Grid.Row="1"
+                            Margin="3"
+                            Visibility="Collapsed">
+                            <TextBlock VerticalAlignment="Center" Text="{DynamicResource LuaFileName}" />
+                            <TextBox
+                                Name="newLuaFileNameTextBox"
+                                Width="90"
+                                Text="new script" />
+                            <Button
+                                Name="newLuaFilebutton"
+                                Margin="3,0,0,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Click="NewLuaFilebutton_Click"
+                                ToolTip="{DynamicResource LuaConfirmCreate}">
+                                <fa:FontAwesome Foreground="Green" Icon="Check" />
                             </Button>
-                            <Button Name="newLuaFileCancelbutton" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="{DynamicResource LuaCancel}" Click="NewLuaFileCancelbutton_Click">
-                                <fa:FontAwesome Icon="Ban" Foreground="Red"/>
+                            <Button
+                                Name="newLuaFileCancelbutton"
+                                Margin="3,0,0,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Click="NewLuaFileCancelbutton_Click"
+                                ToolTip="{DynamicResource LuaCancel}">
+                                <fa:FontAwesome Foreground="Red" Icon="Ban" />
                             </Button>
                         </WrapPanel>
                         <avalonEdit:TextEditor
-                        Grid.Row="2"
-                        xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
-                        Name="textEditor"
-                        FontFamily="Consolas"
-                        FontSize="10pt"
-                        ShowLineNumbers="True"
-                        LostFocus="TextEditor_LostFocus"
-                        TextChanged="textEditor_TextChanged"  />
+                            xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                            Name="textEditor"
+                            Grid.Row="2"
+                            FontFamily="Consolas"
+                            FontSize="10pt"
+                            LostFocus="TextEditor_LostFocus"
+                            ShowLineNumbers="True"
+                            TextChanged="textEditor_TextChanged" />
                     </Grid>
-                    <!-- 脚本编辑界面END -->
+                    <!--  脚本编辑界面END  -->
 
-                    <!-- 脚本运行日志界面 -->
+                    <!--  脚本运行日志界面  -->
                     <Grid Name="luaLogShowGrid" Visibility="Collapsed">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
-                        <TextBox Name="luaLogTextBox" IsReadOnly="true" VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top" TextWrapping="Wrap"/>
+                        <TextBox
+                            Name="luaLogTextBox"
+                            VerticalContentAlignment="Top"
+                            IsReadOnly="true"
+                            TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto" />
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
-                            <Button Name="stopLuaButton" Margin="0,3,3,3" ToolTip="{DynamicResource LuaStop}" Foreground="DarkRed" Click="StopLuaButton_Click">
-                                <fa:FontAwesome Name="stopLuaOrExitIcon" Icon="Stop"/>
+                            <Button
+                                Name="stopLuaButton"
+                                Margin="0,3,3,3"
+                                Click="StopLuaButton_Click"
+                                Foreground="DarkRed"
+                                ToolTip="{DynamicResource LuaStop}">
+                                <fa:FontAwesome Name="stopLuaOrExitIcon" Icon="Stop" />
                             </Button>
-                            <Button Name="pauseLuaPrintButton" Margin="0,3,3,3" ToolTip="{DynamicResource LuaPause}" Grid.Column="1" Foreground="ForestGreen" Click="PauseLuaPrintButton_Click" MouseRightButtonUp="pauseLuaPrintButton_MouseRightButtonUp">
-                                <fa:FontAwesome Name="pauseLuaPrintIcon" Icon="Pause"/>
+                            <Button
+                                Name="pauseLuaPrintButton"
+                                Grid.Column="1"
+                                Margin="0,3,3,3"
+                                Click="PauseLuaPrintButton_Click"
+                                Foreground="ForestGreen"
+                                MouseRightButtonUp="pauseLuaPrintButton_MouseRightButtonUp"
+                                ToolTip="{DynamicResource LuaPause}">
+                                <fa:FontAwesome Name="pauseLuaPrintIcon" Icon="Pause" />
                             </Button>
-                            <TextBox Name="runOneLineLuaTextBox" Grid.Column="2" Margin="0,3" KeyDown="RunOneLineLuaTextBox_KeyDown"/>
-                            <Button Name="sendLuaScriptButton" Margin="3,3,0,3" ToolTip="{DynamicResource LuaSendScript}" Grid.Column="3" Foreground="DeepSkyBlue" Click="SendLuaScriptButton_Click">
-                                <fa:FontAwesome Icon="ArrowUp"/>
+                            <TextBox
+                                Name="runOneLineLuaTextBox"
+                                Grid.Column="2"
+                                Margin="0,3"
+                                KeyDown="RunOneLineLuaTextBox_KeyDown" />
+                            <Button
+                                Name="sendLuaScriptButton"
+                                Grid.Column="3"
+                                Margin="3,3,0,3"
+                                Click="SendLuaScriptButton_Click"
+                                Foreground="DeepSkyBlue"
+                                ToolTip="{DynamicResource LuaSendScript}">
+                                <fa:FontAwesome Icon="ArrowUp" />
                             </Button>
                         </Grid>
                     </Grid>
-                    <!-- 脚本运行日志界面END -->
+                    <!--  脚本运行日志界面END  -->
                 </Grid>
             </TabItem>
             <TabItem Header="{DynamicResource ToolsTab}">
                 <TabControl>
                     <TabItem Header="{DynamicResource TcpTabTitle}">
-                        <Frame Name="tcpTestFrame" NavigationUIVisibility="Hidden"/>
+                        <Frame Name="tcpTestFrame" NavigationUIVisibility="Hidden" />
+                    </TabItem>
+                    <TabItem Header="{DynamicResource TcpLocalTabTitle}">
+                        <Frame Name="tcpLocalTestFrame" NavigationUIVisibility="Hidden" />
+                    </TabItem>
+                    <TabItem Header="{DynamicResource UdpLocalTabTitle}">
+                        <Frame Name="udpLocalTestFrame" NavigationUIVisibility="Hidden" />
                     </TabItem>
                     <TabItem Header="{DynamicResource TcpClientTitle}">
-                        <Frame Name="tcpClientFrame" NavigationUIVisibility="Hidden"/>
+                        <Frame Name="tcpClientFrame" NavigationUIVisibility="Hidden" />
                     </TabItem>
                     <TabItem Header="{DynamicResource EncodingToolsTab}">
-                        <Frame Name="EncodingToolsFrame" NavigationUIVisibility="Hidden"/>
+                        <Frame Name="EncodingToolsFrame" NavigationUIVisibility="Hidden" />
                     </TabItem>
                     <TabItem Header="MQTT">
-                        <Frame Name="MqttTestFrame" NavigationUIVisibility="Hidden"/>
+                        <Frame Name="MqttTestFrame" NavigationUIVisibility="Hidden" />
                     </TabItem>
                     <TabItem Header="{DynamicResource EncodingFixHeader}">
-                        <Frame Name="EncodingFixFrame" NavigationUIVisibility="Hidden"/>
+                        <Frame Name="EncodingFixFrame" NavigationUIVisibility="Hidden" />
                     </TabItem>
                     <TabItem Header="{DynamicResource SerialMonitorHeader}">
-                        <Frame Name="SerialMonitorFrame" NavigationUIVisibility="Hidden"/>
+                        <Frame Name="SerialMonitorFrame" NavigationUIVisibility="Hidden" />
                     </TabItem>
                     <TabItem Header="{DynamicResource PlotHeader}">
-                        <Frame Name="PlotFrame" NavigationUIVisibility="Hidden"/>
+                        <Frame Name="PlotFrame" NavigationUIVisibility="Hidden" />
                     </TabItem>
                 </TabControl>
             </TabItem>
             <TabItem Header="{DynamicResource AboutCard}">
-                <Frame Name="aboutFrame" NavigationUIVisibility="Hidden"/>
+                <Frame Name="aboutFrame" NavigationUIVisibility="Hidden" />
             </TabItem>
         </TabControl>
 
-        <Menu Grid.Column="3" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top">
+        <Menu
+            Grid.RowSpan="2"
+            Grid.Column="3"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top">
             <MenuItem ToolTip="{DynamicResource ChangeLanguage}">
                 <MenuItem.Header>
-                    <fa:FontAwesome Icon="Globe" Foreground="Blue"/>
+                    <fa:FontAwesome Foreground="Blue" Icon="Globe" />
                 </MenuItem.Header>
-                <MenuItem Header="简体中文" Tag="zh-CN" Click="MenuItem_Click"/>
-                <MenuItem Header="English" Tag="en-US" Click="MenuItem_Click"/>
+                <MenuItem
+                    Click="MenuItem_Click"
+                    Header="简体中文"
+                    Tag="zh-CN" />
+                <MenuItem
+                    Click="MenuItem_Click"
+                    Header="English"
+                    Tag="en-US" />
             </MenuItem>
         </Menu>
 
 
-        <!--统计-->
-        <WebBrowser Source="https://llcom.papapoi.com/bdtj.html" Visibility="Collapsed"/>
+        <!--  统计  -->
+        <WebBrowser Source="https://llcom.papapoi.com/bdtj.html" Visibility="Collapsed" />
     </Grid>
 </Window>

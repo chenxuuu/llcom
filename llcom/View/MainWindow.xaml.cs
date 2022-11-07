@@ -168,6 +168,9 @@ namespace llcom
                     //tcp客户端页面
                     tcpClientFrame.Navigate(new Uri("Pages/SocketClientPage.xaml", UriKind.Relative));
 
+                    //本地tcp服务器
+                    tcpLocalTestFrame.Navigate(new Uri("Pages/TcpLocalPage.xaml", UriKind.Relative));
+
                     //mqtt测试页面
                     MqttTestFrame.Navigate(new Uri("Pages/MqttTestPage.xaml", UriKind.Relative));
 
