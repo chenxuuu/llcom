@@ -108,7 +108,8 @@ namespace llcom.Pages
                     IPEndPoint e = ((UdpState)(ar.AsyncState)).e;
 
                     byte[] receiveBytes = u.EndReceive(ar, ref e);
-                    ShowData($"{e.Address}:{e.Port}", receiveBytes);
+                    var isV6 = e.Address.ToString().Contains(":");
+                    ShowData($"{(isV6 ? "[" : "")}{e.Address}{(isV6 ? "]" : "")}:{e.Port}", receiveBytes);
                     Server.BeginReceive(newConnectionCb, ar.AsyncState);
                 }
                 catch { }

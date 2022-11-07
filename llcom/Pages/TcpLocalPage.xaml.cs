@@ -88,8 +88,11 @@ namespace llcom.Pages
         private string GetClientName(Socket s)
         {
             var remote = (IPEndPoint)s.RemoteEndPoint;
+            var remoteIsV6 = remote.Address.ToString().Contains(":");
             var local = (IPEndPoint)s.LocalEndPoint;
-            return $"{remote.Address}:{remote.Port} → {local.Address}:{local.Port}";
+            var localIsV6 = local.Address.ToString().Contains(":");
+            return $"{(remoteIsV6 ? "[" : "")}{remote.Address}{(remoteIsV6 ? "]" : "")}:{remote.Port} → " +
+                $"{(localIsV6 ? "[" : "")}{local.Address}{(localIsV6 ? "]" : "")}:{local.Port}";
         }
 
 
