@@ -53,6 +53,7 @@ namespace llcom.Pages
             IpListComboBox.Items.Clear();
             IpListComboBox.Items.Add("0.0.0.0");
             IpListComboBox.Items.Add("::");
+            var temp = new List<string>();
             try
             {
                 string name = Dns.GetHostName();
@@ -61,10 +62,12 @@ namespace llcom.Pages
                 {
                     if (ipa.AddressFamily == AddressFamily.InterNetwork ||
                         ipa.AddressFamily == AddressFamily.InterNetworkV6)
-                        IpListComboBox.Items.Add(ipa.ToString());
+                        temp.Add(ipa.ToString());
                 }
             }
             catch { }
+            //去重
+            temp.Distinct().ToList().ForEach(ip => IpListComboBox.Items.Add(ip));
             IpListComboBox.SelectedIndex = 0;
         }
         private void ShowData(string title, byte[] data = null, bool send = false)
