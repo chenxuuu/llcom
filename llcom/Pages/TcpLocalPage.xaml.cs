@@ -60,7 +60,8 @@ namespace llcom.Pages
                 IPAddress[] ipadrlist = Dns.GetHostAddresses(name);
                 foreach (IPAddress ipa in ipadrlist)
                 {
-                    if (ipa.AddressFamily == AddressFamily.InterNetwork)
+                    if (ipa.AddressFamily == AddressFamily.InterNetwork ||
+                        ipa.AddressFamily == AddressFamily.InterNetworkV6)
                         IpListComboBox.Items.Add(ipa.ToString());
                 }
             }
