@@ -673,6 +673,6 @@
 
 
         <!--  统计  -->
-        <WebBrowser Source="https://llcom.papapoi.com/bdtj.html" Visibility="Collapsed" />
+        <WebBrowser Name="TongjiWebBrowser" Visibility="Collapsed" />
     </Grid>
 </Window>

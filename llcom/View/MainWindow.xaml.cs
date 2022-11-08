@@ -191,6 +191,10 @@ namespace llcom
 
                     this.Title += $" - {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
 
+                    TongjiWebBrowser.Source = new Uri(
+                            $"https://llcom.papapoi.com/tongji.html?{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}"
+                        );
+
                     //加载完了，可以允许点击
                     MainGrid.IsEnabled = true;
 
