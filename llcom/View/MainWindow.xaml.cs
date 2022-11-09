@@ -2,7 +2,6 @@ using FontAwesome.WPF;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Search;
-using LibUsbDotNet.DeviceNotify;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -32,6 +31,7 @@ using llcom.Tools;
 using ICSharpCode.AvalonEdit.Folding;
 using RestSharp;
 using System.Threading;
+using System.Windows.Interop;
 
 namespace llcom
 {
@@ -57,7 +57,6 @@ namespace llcom
             }
         }
         ObservableCollection<ToSendData> toSendListItems = new ObservableCollection<ToSendData>();
-        private static IDeviceNotifier usbDeviceNotifier = DeviceNotifier.OpenDeviceNotifier();
         private bool forcusClosePort = true;
         private bool canSaveSendList = true;
         private bool isOpeningPort = false;
@@ -80,16 +79,14 @@ namespace llcom
                     //窗口置顶事件
                     Tools.Global.setting.MainWindowTop += new EventHandler(topEvent);
 
-                    //usb刷新时触发
-                    usbDeviceNotifier.Enabled = true;
-                    usbDeviceNotifier.OnDeviceNotify += UsbDeviceNotifier_OnDeviceNotify; ;
-
                     //收发数据显示页面
                     dataShowFrame.Navigate(new Uri("Pages/DataShowPage.xaml", UriKind.Relative));
 
                     //加载初始波特率
                     baudRateComboBox.Text = Tools.Global.setting.baudRate.ToString();
 
+                    // 绑定事件监听,用于监听HID设备插拔
+                    (PresentationSource.FromVisual(this) as HwndSource)?.AddHook(WndProc);
                     //刷新设备列表
                     refreshPortList();
 
@@ -433,12 +430,37 @@ namespace llcom
             fileLoading = false;
         }
 
-        private void UsbDeviceNotifier_OnDeviceNotify(object sender, DeviceNotifyEventArgs e)
+        private static int UsbPluginDeley = 0;
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (msg == 0x219)// 监听USB设备插拔消息
+            {
+                if (UsbPluginDeley == 0)
+                {
+                    ++UsbPluginDeley;   // Task启动需要准备时间,这里提前对公共变量加一
+                    Task.Run(() =>
+                    {
+                        do Task.Delay(100).Wait();
+                        while (++UsbPluginDeley < 10);
+                        UsbPluginDeley = 0;
+                        Dispatcher.Invoke(() =>
+                        {
+                            UsbDeviceNotifier_OnDeviceNotify();
+                        });
+                        Logger.AddUartLogInfo($"[USB拔插事件] {DateTime.Now:HH:mm:ss.fff}");
+                    });
+                }
+                else UsbPluginDeley = 1;
+                handled = true;
+            }
+            return IntPtr.Zero;
+        }
+        private void UsbDeviceNotifier_OnDeviceNotify()
         {
             if (Tools.Global.uart.IsOpen())
             {
                 refreshPortList();
-                foreach(string c in serialPortsListComboBox.Items)
+                foreach (string c in serialPortsListComboBox.Items)
                 {
                     if (c.Contains($"({Tools.Global.uart.GetName()})"))
                     {
