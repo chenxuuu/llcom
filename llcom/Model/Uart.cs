@@ -11,6 +11,10 @@ namespace llcom.Model
 {
     class Uart
     {
+        //废弃的串口对象，存放处，尝试fix[System.ObjectDisposedException: 已关闭 Safe handle]
+        //https://drdump.com/Problem.aspx?ProblemID=524533
+        private List<SerialPort> useless = new List<SerialPort>();
+
         public SerialPort serial = new SerialPort();
         public event EventHandler UartDataRecived;
         public event EventHandler UartDataSent;
@@ -104,6 +108,8 @@ namespace llcom.Model
                 catch { }
             });
             Tools.Logger.AddUartLogDebug($"[refreshSerialDevice]new");
+            lock(useless)//存起来
+                useless.Add(serial);
             serial = new SerialPort();
             //声明接收到事件
             serial.DataReceived += Serial_DataReceived;
