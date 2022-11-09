@@ -102,7 +102,7 @@ namespace llcom.Tools
         /// <returns></returns>
         public static bool IsMSIX()
         {
-            return AppPath.ToUpper().Contains(@"C:\PROGRAM FILES\WINDOWSAPPS\");
+            return AppPath.ToUpper().Contains(@"\PROGRAM FILES\WINDOWSAPPS\");
         }
 
         /// <summary>
@@ -137,6 +137,8 @@ namespace llcom.Tools
                 {
                     //appdata路径不可靠，用文档路径替代
                     ProfilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\llcom\\";
+                    if(!Directory.Exists(ProfilePath))
+                        Directory.CreateDirectory(ProfilePath);
                 }
             }
             else
