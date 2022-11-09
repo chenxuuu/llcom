@@ -1,8 +1,7 @@
-using LibUsbDotNet;
-using LibUsbDotNet.Main;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -13,6 +12,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Shapes;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace llcom.Tools
@@ -45,16 +45,39 @@ namespace llcom.Tools
         public static Model.Settings setting;
         public static Model.Uart uart = new Model.Uart();
 
+        //软件文件名
+        private static string _fileName = "";
+        public static string FileName
+        {
+            get
+            {
+                if (String.IsNullOrWhiteSpace(_fileName))
+                {
+                    using (var processModule = Process.GetCurrentProcess().MainModule)
+                    {
+                        _fileName = System.IO.Path.GetFileName(processModule?.FileName);
+                    }
+                }
+                return _fileName;
+            }
+        }
+
         //软件根目录
         private static string _appPath = null;
+        /// <summary>
+        /// 软件根目录（末尾带\）
+        /// </summary>
         public static string AppPath
         {
             get 
             { 
                 if(_appPath == null)
                 {
-                    _appPath = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName);
-                    if(!_appPath.EndsWith("\\"))
+                    using (var processModule = Process.GetCurrentProcess().MainModule)
+                    {
+                        _appPath = System.IO.Path.GetDirectoryName(processModule?.FileName);
+                    }
+                    if (!_appPath.EndsWith("\\"))
                         _appPath = _appPath + "\\";
                 }
                 return _appPath; 
@@ -65,25 +88,12 @@ namespace llcom.Tools
         public static string ProfilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\llcom\";
 
         /// <summary>
-        /// 获取实际的ProfilePath路径（商店软件里用）
+        /// 获取实际的ProfilePath路径（目前没啥用了）
         /// </summary>
         /// <returns></returns>
         public static string GetTrueProfilePath()
         {
-            if(IsMSIX())
-            {
-                //C:\Program Files\WindowsApps\800948F61A16.llcom_1.0.44.0_x86__bd8bdx79914mr\llcom\
-                string pkgPath = AppPath.Substring(0,AppPath.LastIndexOf(@"\llcom\"));
-                pkgPath = pkgPath.Substring(pkgPath.LastIndexOf("\\") + 1);
-                pkgPath = pkgPath.Substring(0, pkgPath.IndexOf("_")) + pkgPath.Substring(pkgPath.LastIndexOf("_"));
-                //C:\Users\chenx\AppData\Local\Packages\800948F61A16.llcom_bd8bdx79914mr\LocalCache\Local\llcom
-                return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-                    @"\Packages\" + pkgPath + @"\LocalCache\Local\llcom\";
-            }
-            else
-            {
-                return ProfilePath;
-            }
+            return ProfilePath;
         }
 
         /// <summary>
@@ -153,6 +163,15 @@ namespace llcom.Tools
             }
             else
             {
+                if(Directory.GetFiles(ProfilePath).Length > 10)
+                {
+                    var r = Tools.InputDialog.OpenDialog("检测到当前文件夹有其他文件\r\n" +
+                        "建议新建一个文件夹给llcom，并将llcom.exe放入其中\r\n" +
+                        "不然当前文件夹会显得很乱哦~\r\n" +
+                        "是否想要继续运行呢？",null,"温馨提示");
+                    if(!r.Item1)
+                        Environment.Exit(1);
+                }
                 setting = new Model.Settings();
             }
         }
@@ -184,8 +203,16 @@ namespace llcom.Tools
                     $"建议升级到最新.net framework版本");
                 ReportBug = false;
             }
+            //文件名不能改！
+            if(FileName.ToUpper() != "LLCOM.EXE")
+            {
+                MessageBox.Show("啊呀呀，软件文件名被改了。。。\r\n" +
+                    "为了保证软件功能的正常运行，请将exe名改回llcom.exe");
+                Environment.Exit(1);
+            }
             //C:\Users\chenx\AppData\Local\Temp\7zO05433053\user_script_run
-            if (AppPath.ToUpper().Contains(@"\APPDATA\LOCAL\TEMP\"))
+            if (AppPath.ToUpper().Contains(@"\APPDATA\LOCAL\TEMP\") ||
+                AppPath.ToUpper().Contains(@"\WINDOWS\TEMP\"))
             {
                 System.Windows.MessageBox.Show("请勿在压缩包内直接打开本软件。");
                 Environment.Exit(1);

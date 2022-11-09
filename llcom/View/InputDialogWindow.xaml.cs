@@ -26,7 +26,13 @@ namespace llcom
         {
             InitializeComponent();
             this.DataContext = this;
-            this.Value = defaultInput;
+            if (defaultInput == null)
+                InputText.Visibility = Visibility.Collapsed;
+            else
+            {
+                this.Value = defaultInput;
+                InputText.Visibility = Visibility.Visible;
+            }
             this.Title = title ?? TryFindResource("InputDialogTitle") as string ?? "?!";
             PromptLabel.Text = prompt;
         }
