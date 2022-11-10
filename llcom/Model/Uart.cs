@@ -5,6 +5,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Management;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace llcom.Model
@@ -56,6 +57,7 @@ namespace llcom.Model
             serial.DataReceived += Serial_DataReceived;
             serial.RtsEnable = Rts;
             serial.DtrEnable = Dtr;
+            new Thread(ReadData).Start();
         }
 
         /// <summary>
@@ -189,29 +191,44 @@ namespace llcom.Model
             UartDataSent(data, EventArgs.Empty);//回调
         }
 
+        //收到串口事件的信号量
+        public EventWaitHandle WaitUartReceive = new AutoResetEvent(true);
         //接收到事件
         private void Serial_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            lock (objLock)
+            WaitUartReceive.Set();
+        }
+
+        /// <summary>
+        /// 单独开个线程接收数据
+        /// </summary>
+        private void ReadData()
+        {
+            WaitUartReceive.Reset();
+            while (true)
             {
-                if(Tools.Global.setting.timeout > 0)
+                WaitUartReceive.WaitOne();
+                if (Tools.Global.isMainWindowsClosed)
+                    return;
+                if (Tools.Global.setting.timeout > 0)
                     System.Threading.Thread.Sleep(Tools.Global.setting.timeout);//等待时间
                 List<byte> result = new List<byte>();
                 while (true)//循环读
                 {
-                    if (!serial.IsOpen)//串口被关了，不读了
+                    if (serial == null || !serial.IsOpen)//串口被关了，不读了
                         break;
                     try
                     {
-                        int length = ((SerialPort)sender).BytesToRead;
+                        int length = serial.BytesToRead;
                         if (length == 0)//没数据，退出去
                             break;
                         byte[] rev = new byte[length];
-                        ((SerialPort)sender).Read(rev, 0, length);//读数据
+                        serial.Read(rev, 0, length);//读数据
                         if (rev.Length == 0)
                             break;
                         result.AddRange(rev);//加到list末尾
-                    }catch { break; }//崩了？
+                    }
+                    catch { break; }//崩了？
 
                     if (result.Count > Tools.Global.setting.maxLength)//长度超了
                         break;
@@ -221,9 +238,8 @@ namespace llcom.Model
                     }
                 }
                 Tools.Global.setting.ReceivedCount += result.Count;
-                if(result.Count > 0)
+                if (result.Count > 0)
                     UartDataRecived(result.ToArray(), EventArgs.Empty);//回调事件
-                System.Diagnostics.Debug.WriteLine("end");
             }
         }
     }

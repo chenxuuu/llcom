@@ -1,3 +1,5 @@
+using LibUsbDotNet.Info;
+using LibUsbDotNet.LibUsb;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -34,6 +36,7 @@ namespace llcom.Tools
                 _isMainWindowsClosed = value;
                 if (value)
                 {
+                    uart.WaitUartReceive.Set();
                     Logger.CloseUartLog();
                     Logger.CloseLuaLog();
                     if(File.Exists(ProfilePath + "lock"))
@@ -293,6 +296,11 @@ namespace llcom.Tools
 
                 CreateFile("DefaultFiles/LICENSE", ProfilePath+"LICENSE", false);
                 CreateFile("DefaultFiles/反馈网址.txt", ProfilePath+"反馈网址.txt", false);
+
+                if(IntPtr.Size == 8)
+                    CreateFile("DefaultFiles/libusb-1.0-x64.dll", ProfilePath + "libusb-1.0", false);
+                else
+                    CreateFile("DefaultFiles/libusb-1.0-x86.dll", ProfilePath + "libusb-1.0", false);
             }
             catch(Exception e)
             {
