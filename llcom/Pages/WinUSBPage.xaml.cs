@@ -128,6 +128,14 @@ namespace llcom.Pages
             if (loaded)
                 return;
             loaded = true;
+
+            if(Tools.Global.IsMSIX())
+            {
+                MessageBox.Show("微软商店版无法使用该功能\r\n" +
+                    "Can't use this in MS Store Version");
+                MainGrid.IsEnabled = false;
+            }
+
             //绑定
             MainGrid.DataContext = this;
 
