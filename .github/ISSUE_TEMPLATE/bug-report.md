@@ -24,11 +24,12 @@ assignees: ''
 如果需要，请放上你的截图。 / If applicable, add screenshots to help explain your problem.
 
 ## 日志 / Logs
-有，请上传日志为附件 / Upload your log files.
+`更多设置`--`打开串口收发日志目录`，可以看到日志 / Upload your log files.
 
 ## 系统信息 / Desktop (please complete the following information):
  - OS: [e.g. iOS]
  - Version [e.g. 22]
+ - 如果可以，可以附加配置文件内容（`更多设置`--`打开串口收发日志目录`--切换到上一级目录--`settings.json`文件）
 
 ## 其他备注信息 / Additional context
 Add any other context about the problem here.
