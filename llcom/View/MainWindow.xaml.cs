@@ -186,6 +186,9 @@ namespace llcom
                     //绘制曲线
                     PlotFrame.Navigate(new Uri("Pages/PlotPage.xaml", UriKind.Relative));
 
+                    //WinUSB
+                    WinUSBFrame.Navigate(new Uri("Pages/WinUSBPage.xaml", UriKind.Relative));
+
                     this.Title += $" - {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
 
                     TongjiWebBrowser.Source = new Uri(

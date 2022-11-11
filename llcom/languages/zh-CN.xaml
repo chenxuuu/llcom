@@ -189,4 +189,8 @@
     <system:String x:Key="RefreshIpList">刷新IP</system:String>
     <system:String x:Key="StartListen">开始监听</system:String>
     <system:String x:Key="StopListen">停止监听</system:String>
+    <system:String x:Key="RefreshDevices">刷新设备</system:String>
+    <system:String x:Key="ReadEndpoint">入端点</system:String>
+    <system:String x:Key="WriteEndpoint">出端点</system:String>
+    <system:String x:Key="ReadData">读取数据</system:String>
 </ResourceDictionary>

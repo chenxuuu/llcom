@@ -271,6 +271,9 @@
     <Compile Include="Pages\UdpLocalPage.xaml.cs">
       <DependentUpon>UdpLocalPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\WinUSBPage.xaml.cs">
+      <DependentUpon>WinUSBPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Tools\InputDialog.cs" />
     <Compile Include="Tools\Win32.cs" />
     <Compile Include="View\InputDialogWindow.xaml.cs">
@@ -334,6 +337,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\UdpLocalPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\WinUSBPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

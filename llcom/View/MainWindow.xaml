@@ -644,6 +644,9 @@
                     <TabItem Header="{DynamicResource PlotHeader}">
                         <Frame Name="PlotFrame" NavigationUIVisibility="Hidden" />
                     </TabItem>
+                    <TabItem Header="WinUSB">
+                        <Frame Name="WinUSBFrame" NavigationUIVisibility="Hidden" />
+                    </TabItem>
                 </TabControl>
             </TabItem>
             <TabItem Header="{DynamicResource AboutCard}">
