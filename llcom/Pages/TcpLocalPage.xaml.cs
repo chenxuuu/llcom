@@ -110,7 +110,7 @@ namespace llcom.Pages
             Socket s = so.workSocket;
             try
             {
-
+                var name = GetClientName(s);
                 int read = s.EndReceive(ar);
 
                 if (read > 0)
@@ -118,7 +118,7 @@ namespace llcom.Pages
                     var buff = new byte[read];
                     for (int i = 0; i < buff.Length; i++)
                         buff[i] = so.buffer[i];
-                    ShowData($" → receive", buff);
+                    ShowData($" → receive ({name})", buff);
                     s.BeginReceive(so.buffer, 0, StateObject.BUFFER_SIZE, 0,
                                              new AsyncCallback(Read_Callback), so);
                 }
