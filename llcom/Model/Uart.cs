@@ -239,7 +239,11 @@ namespace llcom.Model
                 }
                 Tools.Global.setting.ReceivedCount += result.Count;
                 if (result.Count > 0)
-                    UartDataRecived(result.ToArray(), EventArgs.Empty);//回调事件
+                    try
+                    {
+                        UartDataRecived(result.ToArray(), EventArgs.Empty);//回调事件
+                    }
+                    catch { }
             }
         }
     }
