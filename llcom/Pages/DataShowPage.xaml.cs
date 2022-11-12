@@ -82,22 +82,30 @@ namespace llcom.Pages
             //同时显示模式时，才显示小字hex
             if (Tools.Global.setting.showHexFormat == 0)
             {
-                if (e.data.Length > maxDataLength)
-                    p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(e.data.Skip(0).Take(maxDataLength).ToArray(), " ")
+                if (e.data.Length > MaxDataLength)
+                    p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(e.data.Skip(0).Take(MaxDataLength).ToArray(), " ")
                     + "\r\nData too long, check log folder for remaining data."));
                 else
                     p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(e.data, " ")));
                 p.Foreground = e.color;
                 p.Margin = new Thickness(0, 0, 0, 8);
                 uartDataFlowDocument.Document.Blocks.Add(p);
-            }
+            }            
+            //条目过多，自动清空
+            CheckPacks();
             if (!LockLog)//如果允许拉到最下面
                 sv.ScrollToBottom();
             uartDataFlowDocument.IsSelectionEnabled = true;
         }
 
-        int maxDataLength = (int)Tools.Global.setting.maxLength;//最长一包数据长度，因为太长会把工具卡死机
-        int maxDataPack = 10000;//最大同时显示数据包数，因为太多会把工具卡死机
+        //最长一包数据长度，因为太长会把工具卡死机
+        private int MaxDataLength
+        {
+            get
+            {
+                return (int)Tools.Global.setting.maxLength;
+            }
+        }
 
         /// <summary>
         /// 添加串口日志数据
@@ -148,12 +156,12 @@ namespace llcom.Pages
                 p.Inlines.Add(text);
 
                 //主要显示数据
-                if (data.Length > maxDataLength)
+                if (data.Length > MaxDataLength)
                 {
                     text = new Span(new Run(Tools.Global.setting.showHexFormat switch
                     {
-                        2 => Tools.Global.Byte2Hex(data.Skip(0).Take(maxDataLength).ToArray(), " "),
-                        _ => Tools.Global.Byte2String(data.Skip(0).Take(maxDataLength).ToArray())
+                        2 => Tools.Global.Byte2Hex(data.Skip(0).Take(MaxDataLength).ToArray(), " "),
+                        _ => Tools.Global.Byte2String(data.Skip(0).Take(MaxDataLength).ToArray())
                     } + "\r\nData too long, check log folder for remaining data."));
                 }
                 else
@@ -180,8 +188,8 @@ namespace llcom.Pages
                 //同时显示模式时，才显示小字hex
                 if (Tools.Global.setting.showHexFormat == 0)
                 {
-                    if (data.Length > maxDataLength)
-                        p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(data.Skip(0).Take(maxDataLength).ToArray(), " ")
+                    if (data.Length > MaxDataLength)
+                        p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(data.Skip(0).Take(MaxDataLength).ToArray(), " ")
                         + "\r\nData too long, check log folder for remaining data."));
                     else
                         p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(data, " ")));
@@ -192,17 +200,6 @@ namespace llcom.Pages
                         p.Foreground = Brushes.ForestGreen;
                     p.Margin = new Thickness(0, 0, 0, 8);
                     uartDataFlowDocument.Document.Blocks.Add(p);
-                }
-
-                //条目过多，自动清空
-                if (uartDataFlowDocument.Document.Blocks.Count > maxDataPack)
-                {
-                    uartDataFlowDocument.Document.Blocks.Clear();
-                    addUartLog(null, new Tools.DataShowPara
-                    {
-                        data = Encoding.Default.GetBytes("Too much packs, please check your log folder for log data."),
-                        send = true
-                    });
                 }
             }
             else//不分包
@@ -226,9 +223,31 @@ namespace llcom.Pages
                 (uartDataFlowDocument.Document.Blocks.LastBlock as Paragraph).Inlines.Add(text);
             }
 
-            if(!LockLog)//如果允许拉到最下面
+            //条目过多，自动清空
+            CheckPacks();
+
+            if (!LockLog)//如果允许拉到最下面
                 sv.ScrollToBottom();
             uartDataFlowDocument.IsSelectionEnabled = true;
+        }
+
+        int maxDataPack = 10_000;//最大同时显示数据包数，因为太多会把工具卡死机
+        /// <summary>
+        /// 条目过多，自动清空
+        /// </summary>
+        private void CheckPacks()
+        {
+            maxDataPack++;
+            if (uartDataFlowDocument.Document.Blocks.Count > maxDataPack)
+            {
+                maxDataPack = 0;
+                uartDataFlowDocument.Document.Blocks.Clear();
+                addUartLog(null, new Tools.DataShowPara
+                {
+                    data = Encoding.Default.GetBytes("Too much packs, please check your log folder for log data."),
+                    send = true
+                });
+            }
         }
 
         private void uartDataFlowDocument_GotFocus(object sender, RoutedEventArgs e)
