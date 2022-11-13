@@ -101,7 +101,7 @@ namespace llcom.Pages
                     }
                 }
             }
-            ShowData($"device list\r\n{Tools.Global.GetEncoding().GetBytes(sb.ToString())}");
+            ShowData($"device list\r\n{sb}");
             return list;
         }
 
