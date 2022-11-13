@@ -66,31 +66,34 @@ namespace llcom.Pages
             p.Inlines.Add(text);
             uartDataFlowDocument.Document.Blocks.Add(p);
 
-            //主要显示数据
-            string showData = Tools.Global.setting.showHexFormat switch
+            if(e.data.Length > 0)//有数据时才显示信息
             {
-                2 => Tools.Global.Byte2Hex(e.data, " "),
-                _ => Tools.Global.Byte2String(e.data)
-            };
-            p = new Paragraph(new Run(""));
-            text = new Span(new Run(showData)); 
-            text.Foreground = e.color;
-            text.FontSize = 15;
-            p.Inlines.Add(text);
-            uartDataFlowDocument.Document.Blocks.Add(p);
-
-            //同时显示模式时，才显示小字hex
-            if (Tools.Global.setting.showHexFormat == 0)
-            {
-                if (e.data.Length > MaxDataLength)
-                    p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(e.data.Skip(0).Take(MaxDataLength).ToArray(), " ")
-                    + "\r\nData too long, check log folder for remaining data."));
-                else
-                    p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(e.data, " ")));
-                p.Foreground = e.color;
-                p.Margin = new Thickness(0, 0, 0, 8);
+                //主要显示数据
+                string showData = Tools.Global.setting.showHexFormat switch
+                {
+                    2 => Tools.Global.Byte2Hex(e.data, " "),
+                    _ => Tools.Global.Byte2String(e.data)
+                };
+                p = new Paragraph(new Run(""));
+                text = new Span(new Run(showData));
+                text.Foreground = e.color;
+                text.FontSize = 15;
+                p.Inlines.Add(text);
                 uartDataFlowDocument.Document.Blocks.Add(p);
-            }            
+
+                //同时显示模式时，才显示小字hex
+                if (Tools.Global.setting.showHexFormat == 0)
+                {
+                    if (e.data.Length > MaxDataLength)
+                        p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(e.data.Skip(0).Take(MaxDataLength).ToArray(), " ")
+                        + "\r\nData too long, check log folder for remaining data."));
+                    else
+                        p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(e.data, " ")));
+                    p.Foreground = e.color;
+                    p.Margin = new Thickness(0, 0, 0, 8);
+                    uartDataFlowDocument.Document.Blocks.Add(p);
+                }
+            }
             //条目过多，自动清空
             CheckPacks();
             if (!LockLog)//如果允许拉到最下面
