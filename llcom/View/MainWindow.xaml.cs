@@ -88,7 +88,7 @@ namespace llcom
                     // 绑定事件监听,用于监听HID设备插拔
                     (PresentationSource.FromVisual(this) as HwndSource)?.AddHook(WndProc);
                     //刷新设备列表
-                    refreshPortList();
+                    1refreshPortList();
 
                     //绑定数据
                     this.toSendDataTextBox.DataContext = Tools.Global.setting;
@@ -436,7 +436,7 @@ namespace llcom
         private static int UsbPluginDeley = 0;
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            if (msg == 0x219)// 监听USB设备插拔消息
+            if (msg == 0x219 && !Tools.Global.uart.IsOpen())// 监听USB设备插拔消息
             {
                 if (UsbPluginDeley == 0)
                 {
@@ -647,6 +647,9 @@ namespace llcom
                 serialPortsListComboBox.IsEnabled = true;
                 statusTextBlock.Text = (TryFindResource("OpenPort_close") as string ?? "?!");
                 Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]change show done");
+                await Task.Run(() => {
+                    refreshPortList();
+                });
             }
 
         }
@@ -1088,9 +1091,11 @@ namespace llcom
             System.Diagnostics.Process.Start("https://github.com/chenxuuu/llcom/blob/master/scripts");
         }
 
-        private void RefreshPortButton_Click(object sender, RoutedEventArgs e)
+        private async void RefreshPortButton_Click(object sender, RoutedEventArgs e)
         {
-            refreshPortList();
+            await Task.Run(() => {
+                refreshPortList();
+            });
         }
 
         private void ImportSSCOMButton_Click(object sender, RoutedEventArgs e)
