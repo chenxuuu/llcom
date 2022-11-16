@@ -621,7 +621,7 @@ namespace llcom
                 }
             }
         }
-        private void OpenClosePortButton_Click(object sender, RoutedEventArgs e)
+        private async void OpenClosePortButton_Click(object sender, RoutedEventArgs e)
         {
             Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]now:{Tools.Global.uart.IsOpen()}");
             if (!Tools.Global.uart.IsOpen())//打开串口逻辑
