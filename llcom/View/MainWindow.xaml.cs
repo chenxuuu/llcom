@@ -88,7 +88,7 @@ namespace llcom
                     // 绑定事件监听,用于监听HID设备插拔
                     (PresentationSource.FromVisual(this) as HwndSource)?.AddHook(WndProc);
                     //刷新设备列表
-                    1refreshPortList();
+                    refreshPortList();
 
                     //绑定数据
                     this.toSendDataTextBox.DataContext = Tools.Global.setting;
