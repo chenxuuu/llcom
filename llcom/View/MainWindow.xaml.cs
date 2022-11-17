@@ -294,7 +294,11 @@ namespace llcom
         private void Uart_UartDataRecived(object sender, EventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate {
-                Tools.Logger.ShowData(sender as byte[], false);
+                try
+                {
+                    Tools.Logger.ShowData(sender as byte[], false);
+                }
+                catch { }
             }));
         }
 
