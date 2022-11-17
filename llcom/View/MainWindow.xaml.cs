@@ -621,7 +621,7 @@ namespace llcom
                 }
             }
         }
-        private async void OpenClosePortButton_Click(object sender, RoutedEventArgs e)
+        private void OpenClosePortButton_Click(object sender, RoutedEventArgs e)
         {
             Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]now:{Tools.Global.uart.IsOpen()}");
             if (!Tools.Global.uart.IsOpen())//打开串口逻辑
@@ -647,9 +647,7 @@ namespace llcom
                 serialPortsListComboBox.IsEnabled = true;
                 statusTextBlock.Text = (TryFindResource("OpenPort_close") as string ?? "?!");
                 Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]change show done");
-                await Task.Run(() => {
-                    refreshPortList();
-                });
+                refreshPortList();
             }
 
         }
@@ -1091,11 +1089,9 @@ namespace llcom
             System.Diagnostics.Process.Start("https://github.com/chenxuuu/llcom/blob/master/scripts");
         }
 
-        private async void RefreshPortButton_Click(object sender, RoutedEventArgs e)
+        private void RefreshPortButton_Click(object sender, RoutedEventArgs e)
         {
-            await Task.Run(() => {
-                refreshPortList();
-            });
+            refreshPortList();
         }
 
         private void ImportSSCOMButton_Click(object sender, RoutedEventArgs e)
