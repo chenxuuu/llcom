@@ -178,7 +178,15 @@ namespace llcom.Pages
                 }
                 catch { }
             });
-            Server.BeginAcceptSocket(newConnectionCb, Server);
+            try
+            {
+                Server.BeginAcceptSocket(newConnectionCb, Server);
+            }
+            catch (Exception ex)
+            {
+                ShowData($"❗ Server create error {ex.Message}");
+                return false;
+            }
 
             return true;
         }

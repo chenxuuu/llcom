@@ -121,7 +121,15 @@ namespace llcom.Pages
             UdpState s = new UdpState();
             s.e = IpEndPoint;
             s.u = Server;
-            Server.BeginReceive(newConnectionCb, s);
+            try
+            {
+                Server.BeginReceive(newConnectionCb, s);
+            }
+            catch (Exception ex)
+            {
+                ShowData($"❗ Server create error {ex.Message}");
+                return false;
+            }
 
             return true;
         }

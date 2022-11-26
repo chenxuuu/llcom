@@ -94,26 +94,35 @@ namespace llcom.Pages
                 return;
             }
             ShowData("📢 Connecting......");
-            s.BeginConnect(ipe, new AsyncCallback((r) =>
+            try
             {
-                var s = (Socket)r.AsyncState;
-                if (s.Connected)
+                s.BeginConnect(ipe, new AsyncCallback((r) =>
                 {
-                    socketNow = s;
-                    IsConnected = true;
-                    ShowData("✔ Server connected");
-                }
-                else
-                {
-                    Changeable = true;
-                    ShowData("❗ Server connect failed");
-                    return;
-                }
+                    var s = (Socket)r.AsyncState;
+                    if (s.Connected)
+                    {
+                        socketNow = s;
+                        IsConnected = true;
+                        ShowData("✔ Server connected");
+                    }
+                    else
+                    {
+                        Changeable = true;
+                        ShowData("❗ Server connect failed");
+                        return;
+                    }
 
-                StateObject so = new StateObject();
-                so.workSocket = s;
-                s.BeginReceive(so.buffer, 0, StateObject.BUFFER_SIZE, 0,new AsyncCallback(Read_Callback), so);
-            }), s);
+                    StateObject so = new StateObject();
+                    so.workSocket = s;
+                    s.BeginReceive(so.buffer, 0, StateObject.BUFFER_SIZE, 0, new AsyncCallback(Read_Callback), so);
+                }), s);
+            }
+            catch (Exception ex)
+            {
+                ShowData($"❗ Server connect error {ex.Message}");
+                Changeable = true;
+                return;
+            }
         }
 
         public void Read_Callback(IAsyncResult ar)
