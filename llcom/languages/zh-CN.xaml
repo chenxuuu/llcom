@@ -193,4 +193,13 @@
     <system:String x:Key="ReadEndpoint">入端点</system:String>
     <system:String x:Key="WriteEndpoint">出端点</system:String>
     <system:String x:Key="ReadData">读取数据</system:String>
+    <system:String x:Key="Loading">加载中...</system:String>
+    <system:String x:Key="OnlineScriptLoading">正在获取在线脚本列表...</system:String>
+    <system:String x:Key="OnlineScriptTitle">社区脚本</system:String>
+    <system:String x:Key="OnlineScriptAuthor">作者：</system:String>
+    <system:String x:Key="OnlineScriptVersion">版本：</system:String>
+    <system:String x:Key="OnlineScriptDownload">下载此脚本</system:String>
+    <system:String x:Key="OnlineScriptDownloadTitle">下载脚本</system:String>
+    <system:String x:Key="OnlineScriptDownloadSaveNotice">请设置要保存为的文件名：</system:String>
+    <system:String x:Key="SaveSucceed">文件保存成功！</system:String>
 </ResourceDictionary>

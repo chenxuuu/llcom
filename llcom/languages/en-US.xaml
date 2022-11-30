@@ -193,4 +193,12 @@
     <system:String x:Key="ReadEndpoint">Read endpoint</system:String>
     <system:String x:Key="WriteEndpoint">Write endpoint</system:String>
     <system:String x:Key="ReadData">Read data</system:String>
+    <system:String x:Key="Loading">Loading...</system:String>
+    <system:String x:Key="OnlineScriptLoading">Fetching online scripts...</system:String>
+    <system:String x:Key="OnlineScriptTitle">Community scripts</system:String>
+    <system:String x:Key="OnlineScriptAuthor">Author:</system:String>
+    <system:String x:Key="OnlineScriptVersion">Version:</system:String>
+    <system:String x:Key="OnlineScriptDownload">Download this script</system:String>
+    <system:String x:Key="OnlineScriptDownloadSaveNotice">Please input a file name:</system:String>
+    <system:String x:Key="SaveSucceed">File saved!</system:String>
 </ResourceDictionary>

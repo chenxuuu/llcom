@@ -156,6 +156,9 @@ namespace llcom
                     //lua代码出错/结束运行事件
                     LuaEnv.LuaRunEnv.LuaRunError += LuaRunEnv_LuaRunError;
 
+                    //在线脚本列表
+                    OnlineScriptsFrame.Navigate(new Uri("Pages/OnlineScriptsPage.xaml", UriKind.Relative));
+
                     //关于页面
                     aboutFrame.Navigate(new Uri("Pages/AboutPage.xaml", UriKind.Relative));
 
@@ -252,6 +255,12 @@ namespace llcom
                         }
                         catch { }
                     }).Start();
+
+
+                    Tools.Global.RefreshLuaScriptListEvent += (n, s) =>
+                    {
+                        this.Dispatcher.Invoke(() => RefreshScriptList());
+                    };
 
                 }));
             });

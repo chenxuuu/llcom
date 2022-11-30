@@ -615,6 +615,12 @@
                     <!--  脚本运行日志界面END  -->
                 </Grid>
             </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <fa:FontAwesome Foreground="Brown" Icon="cubes" />
+                </TabItem.Header>
+                <Frame Name="OnlineScriptsFrame" NavigationUIVisibility="Hidden" />
+            </TabItem>
             <TabItem Header="{DynamicResource ToolsTab}">
                 <TabControl>
                     <TabItem Header="{DynamicResource TcpTabTitle}">
