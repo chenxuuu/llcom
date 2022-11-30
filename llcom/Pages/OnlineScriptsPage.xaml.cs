@@ -160,5 +160,14 @@ namespace llcom.Pages
             }
 
         }
+
+        private void UrlButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(ScriptNow.Url);
+            }
+            catch { }
+        }
     }
 }

@@ -151,6 +151,21 @@
                             Icon="ArrowLeft" />
                     </Button.Content>
                 </Button>
+                <Button
+                    Name="UrlButton"
+                    Margin="5"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Click="UrlButton_Click">
+                    <Button.Content>
+                        <fa:FontAwesome
+                            Width="20"
+                            Height="20"
+                            FontSize="20"
+                            Foreground="Black"
+                            Icon="Question" />
+                    </Button.Content>
+                </Button>
                 <TextBlock
                     HorizontalAlignment="Center"
                     FontSize="25"
