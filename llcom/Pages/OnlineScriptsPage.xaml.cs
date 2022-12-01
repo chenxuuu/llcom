@@ -1,6 +1,7 @@
 ﻿using llcom.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -47,7 +48,7 @@ namespace llcom.Pages
         private void UnLoading() => IsLoding = false;
 
 
-        List<OnlineScript> scripts = new List<OnlineScript>();
+        ObservableCollection<OnlineScript> scripts = new ObservableCollection<OnlineScript>();
         /// <summary>
         /// 刷新脚本列表
         /// </summary>
@@ -64,14 +65,13 @@ namespace llcom.Pages
                     {
                         Loading(TryFindResource("OnlineScriptLoading") as string, (int)(got * 100.0 / total));
                     });
-                    scripts.AddRange(r);
+                    Dispatcher.Invoke(() =>
+                    {
+                        foreach (var d in r)
+                            scripts.Add(d);
+                    });
                 }
                 catch { }
-            });
-            Dispatcher.Invoke(() =>
-            {
-                //绑上去
-                ScriptListItemsControl.ItemsSource = scripts;
             });
             UnLoading();
         }
@@ -84,6 +84,10 @@ namespace llcom.Pages
             loaded = true;
 
             this.DataContext = this;
+
+            //绑上去
+            ScriptListItemsControl.ItemsSource = scripts;
+
             //打开时刷新一下
             await RefreshList();
         }
