@@ -32,6 +32,8 @@ using ICSharpCode.AvalonEdit.Folding;
 using RestSharp;
 using System.Threading;
 using System.Windows.Interop;
+using WebSocketSharp;
+using Logger = llcom.Tools.Logger;
 
 namespace llcom
 {
@@ -315,7 +317,7 @@ namespace llcom
         /// <summary>
         /// 刷新设备列表
         /// </summary>
-        private void refreshPortList()
+        private void refreshPortList(string lastPort = null)
         {
             if (refreshLock)
                 return;
@@ -384,11 +386,12 @@ namespace llcom
                     }
                     refreshLock = false;
 
-
+                    if (lastPort.IsNullOrEmpty())
+                        lastPort = Tools.Global.uart.GetName();
                     //选定上次的com口
                     foreach (string c in serialPortsListComboBox.Items)
                     {
-                        if (c.Contains($"({Tools.Global.uart.GetName()})"))
+                        if (c.Contains($"({lastPort})"))
                         {
                             serialPortsListComboBox.Text = c;
                             //自动重连，不管结果
@@ -643,10 +646,12 @@ namespace llcom
             }
             else//关闭串口逻辑
             {
+                string lastPort = null;//记录一下上次的串口号
                 try
                 {
                     Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]close");
                     forcusClosePort = true;//不再重新开启串口
+                    lastPort = Tools.Global.uart.GetName();//串口号
                     Tools.Global.uart.Close();
                     Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]close done");
                 }
@@ -660,7 +665,7 @@ namespace llcom
                 serialPortsListComboBox.IsEnabled = true;
                 statusTextBlock.Text = (TryFindResource("OpenPort_close") as string ?? "?!");
                 Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]change show done");
-                refreshPortList();
+                refreshPortList(lastPort);
             }
 
         }

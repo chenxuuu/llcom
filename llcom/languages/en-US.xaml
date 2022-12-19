@@ -25,7 +25,7 @@
     <system:String x:Key="ReceivedCount">Data received:</system:String>
     <system:String x:Key="ClearCountTip">Right click to clear this</system:String>
     <system:String x:Key="QuickSendLoadError">Quick send List error, return to default data.</system:String>
-    <system:String x:Key="QuickSendCard">Quick send List</system:String>
+    <system:String x:Key="QuickSendCard">Quick send</system:String>
     <system:String x:Key="QuickSendId">ID</system:String>
     <system:String x:Key="QuickSendContent">Content</system:String>
     <system:String x:Key="QuickSendHex">HEX</system:String>
@@ -51,7 +51,7 @@
     <system:String x:Key="QuickSendChangeIdButton">Enter where you want to insert(empty means delete this line)</system:String>
     <system:String x:Key="QuickSendChangeIdTitle">Change index of this line</system:String>
     <system:String x:Key="QuickSendChangeList">Change to another quick send list</system:String>
-    <system:String x:Key="LuaCard">Run Lua script</system:String>
+    <system:String x:Key="LuaCard">Run script</system:String>
     <system:String x:Key="LuaNewScript">New script</system:String>
     <system:String x:Key="LuaRunScript">Run script</system:String>
     <system:String x:Key="LuaOpenFolder">Open script folder</system:String>

@@ -25,7 +25,7 @@
     <system:String x:Key="ReceivedCount">已接收字节：</system:String>
     <system:String x:Key="ClearCountTip">右键可清空此计数</system:String>
     <system:String x:Key="QuickSendLoadError">待发送列表，数据损坏，全部清空</system:String>
-    <system:String x:Key="QuickSendCard">快捷发送列表</system:String>
+    <system:String x:Key="QuickSendCard">快捷发送</system:String>
     <system:String x:Key="QuickSendId">编号</system:String>
     <system:String x:Key="QuickSendContent">内容</system:String>
     <system:String x:Key="QuickSendHex">HEX</system:String>
@@ -51,7 +51,7 @@
     <system:String x:Key="QuickSendChangeIdButton">输入你想改到哪个序号的位置（留空表示删除该项目）</system:String>
     <system:String x:Key="QuickSendChangeIdTitle">更改这个条目的序号</system:String>
     <system:String x:Key="QuickSendChangeList">切换到其他快捷发送数据列表</system:String>
-    <system:String x:Key="LuaCard">运行lua脚本</system:String>
+    <system:String x:Key="LuaCard">运行脚本</system:String>
     <system:String x:Key="LuaNewScript">新建脚本</system:String>
     <system:String x:Key="LuaRunScript">运行脚本</system:String>
     <system:String x:Key="LuaOpenFolder">打开脚本目录</system:String>
@@ -70,7 +70,7 @@
     <system:String x:Key="LuaNoName">请输入文件名！</system:String>
     <system:String x:Key="LuaExist">该文件已存在！</system:String>
     <system:String x:Key="LuaCreateFail">新建失败，请检查！</system:String>
-    <system:String x:Key="AboutCard">关于与反馈</system:String>
+    <system:String x:Key="AboutCard">关于</system:String>
     <system:String x:Key="AboutSubTitle">能跑Lua脚本的串口调试工具</system:String>
     <system:String x:Key="AboutDiscriptionMain">LLCOM是一款串口调试工具，工具连接可靠，断线后可自动重连，同时右侧具有快捷发送区的功能。</system:String>
     <system:String x:Key="AboutDiscriptionMore">本工具除了具有与其他同类工具，所包含的数据收发功能外，还添加了Lua运行环境。用户可自行使用Lua，完成几乎所有可以想象到的自动化操作，大大提高了串口工具的可用性。</system:String>
