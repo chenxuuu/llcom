@@ -460,6 +460,8 @@ namespace llcom.Model
         private string _mqttPassword = "password";
         private int _mqttKeepAlive = 120;
         private bool _mqttCleanSession = false;
+        private string _mqttPublishTopic = "your/publish/topic";
+        private string _mqttSubscribeTopic = "your/subcribe/topic";
         public string mqttServer { get { return _mqttServer; } set { _mqttServer = value; Save(); } }
         public int mqttPort { get { return _mqttPort; } set { _mqttPort = value; Save(); } }
         public string mqttClientID { get { return _mqttClientID; } set { _mqttClientID = value; Save(); } }
@@ -470,6 +472,8 @@ namespace llcom.Model
         public string mqttPassword { get { return _mqttPassword; } set { _mqttPassword = value; Save(); } }
         public int mqttKeepAlive { get { return _mqttKeepAlive; } set { _mqttKeepAlive = value; Save(); } }
         public bool mqttCleanSession { get { return _mqttCleanSession; } set { _mqttCleanSession = value; Save(); } }
+        public string mqttPublishTopic { get { return _mqttPublishTopic; } set { _mqttPublishTopic = value; Save(); } }
+        public string mqttSubscribeTopic { get { return _mqttSubscribeTopic; } set { _mqttSubscribeTopic = value; Save(); } }
 
 
         private string _quickListName0 = "未命名0";

@@ -32,8 +32,6 @@ using ICSharpCode.AvalonEdit.Folding;
 using RestSharp;
 using System.Threading;
 using System.Windows.Interop;
-using WebSocketSharp;
-using Logger = llcom.Tools.Logger;
 
 namespace llcom
 {
@@ -386,7 +384,7 @@ namespace llcom
                     }
                     refreshLock = false;
 
-                    if (lastPort.IsNullOrEmpty())
+                    if (string.IsNullOrEmpty(lastPort))
                         lastPort = Tools.Global.uart.GetName();
                     //选定上次的com口
                     foreach (string c in serialPortsListComboBox.Items)

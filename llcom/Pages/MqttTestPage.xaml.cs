@@ -52,6 +52,8 @@ namespace llcom.Pages
             HexCheckBox.DataContext = Tools.Global.setting;
             WsCheckBox.DataContext = Tools.Global.setting;
             WsPathTextBox.DataContext = Tools.Global.setting;
+            publishTopicTextBox.DataContext = Tools.Global.setting;
+            subcribeTextBox.DataContext = Tools.Global.setting;
             ConnectButton.DataContext = this;
             SettingStackPanel.DataContext = this;
 
