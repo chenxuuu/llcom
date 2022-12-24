@@ -72,7 +72,7 @@ namespace llcom.Pages
                 string showData = Tools.Global.setting.showHexFormat switch
                 {
                     2 => Tools.Global.Byte2Hex(e.data, " "),
-                    _ => Tools.Global.Byte2String(e.data)
+                    _ => Tools.Global.Byte2Readable(e.data)
                 };
                 p = new Paragraph(new Run(""));
                 text = new Span(new Run(showData));
@@ -164,7 +164,7 @@ namespace llcom.Pages
                     text = new Span(new Run(Tools.Global.setting.showHexFormat switch
                     {
                         2 => Tools.Global.Byte2Hex(data.Skip(0).Take(MaxDataLength).ToArray(), " "),
-                        _ => Tools.Global.Byte2String(data.Skip(0).Take(MaxDataLength).ToArray())
+                        _ => Tools.Global.Byte2Readable(data.Skip(0).Take(MaxDataLength).ToArray())
                     } + "\r\nData too long, check log folder for remaining data."));
                 }
                 else
@@ -172,7 +172,7 @@ namespace llcom.Pages
                     text = new Span(new Run(Tools.Global.setting.showHexFormat switch
                     {
                         2 => Tools.Global.Byte2Hex(data, " "),
-                        _ => Tools.Global.Byte2String(data),
+                        _ => Tools.Global.Byte2Readable(data),
                     }));
                 }
 
@@ -216,7 +216,7 @@ namespace llcom.Pages
                 if (Tools.Global.setting.showHexFormat == 2)
                     s = Tools.Global.Byte2Hex(data, " ");
                 else
-                    s = Tools.Global.Byte2String(data);
+                    s = Tools.Global.Byte2Readable(data);
                 Span text = new Span(new Run(s));
                 text.FontSize = 15;
                 if (send)

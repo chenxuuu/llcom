@@ -306,7 +306,7 @@ namespace llcom
                                         new System.Collections.ArrayList{"uartData",
                                            Tools.Global.GetEncoding().GetBytes(luaTestTextBox.Text)});
                     MessageBox.Show($"{TryFindResource("SettingLuaRunResult") as string ?? "?!"}\r\nHEX：" + Tools.Global.Byte2Hex(r) +
-                        $"\r\n{TryFindResource("SettingLuaRawText") as string ?? "?!"}" + Tools.Global.Byte2String(r));
+                        $"\r\n{TryFindResource("SettingLuaRawText") as string ?? "?!"}" + Tools.Global.Byte2Readable(r));
                 }
                 catch(Exception ex)
                 {
@@ -421,7 +421,7 @@ namespace llcom
                         },
                         "user_script_recv_convert/");
                     MessageBox.Show($"{TryFindResource("SettingLuaRunResult") as string ?? "?!"}\r\nHEX：" + Tools.Global.Byte2Hex(r) +
-                        $"\r\n{TryFindResource("SettingLuaRawText") as string ?? "?!"}" + Tools.Global.Byte2String(r));
+                        $"\r\n{TryFindResource("SettingLuaRawText") as string ?? "?!"}" + Tools.Global.Byte2Readable(r));
                 }
                 catch (Exception ex)
                 {

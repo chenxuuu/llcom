@@ -343,7 +343,7 @@ namespace llcom.Tools
         /// <param name="e"></param>
         private static void Uart_UartDataSent(object sender, EventArgs e)
         {
-            Logger.AddUartLogInfo($"<-{Byte2String((byte[])sender)}");
+            Logger.AddUartLogInfo($"<-{Byte2Readable((byte[])sender)}");
             Logger.AddUartLogDebug($"[HEX]{Byte2Hex((byte[])sender, " ")}");
         }
 
@@ -354,7 +354,7 @@ namespace llcom.Tools
         /// <param name="e"></param>
         private static void Uart_UartDataRecived(object sender, EventArgs e)
         {
-            Logger.AddUartLogInfo($"->{Byte2String((byte[])sender)}");
+            Logger.AddUartLogInfo($"->{Byte2Readable((byte[])sender)}");
             Logger.AddUartLogDebug($"[HEX]{Byte2Hex((byte[])sender, " ")}");
         }
 
@@ -402,6 +402,41 @@ namespace llcom.Tools
                      where e != 0
                      select e;
             return GetEncoding().GetString(br.ToArray());
+        }
+
+        private static byte[] b_null = Encoding.GetEncoding(65001).GetBytes("␀");
+        private static byte[] b_cr = Encoding.GetEncoding(65001).GetBytes("␍");
+        private static byte[] b_lf = Encoding.GetEncoding(65001).GetBytes("␊");
+        /// <summary>
+        /// byte转string（可读）
+        /// </summary>
+        /// <param name="vBytes"></param>
+        /// <returns></returns>
+        public static string Byte2Readable(byte[] vBytes)
+        {
+            //非utf8就别搞了
+            if (setting.encoding != 65001)
+                return Byte2String(vBytes);
+            var tb = new List<byte>();
+            for (int i = 0; i < vBytes.Length; i++)
+            {
+                switch(vBytes[i])
+                {
+                    case 0:
+                        tb.AddRange(b_null);
+                        break;
+                    case 0x0d:
+                        tb.AddRange(b_cr);
+                        break;
+                    case 0x0a:
+                        tb.AddRange(b_lf);
+                        break;
+                    default:
+                        tb.Add(vBytes[i]);
+                        break;
+                }
+            }
+            return GetEncoding().GetString(tb.ToArray());
         }
 
         /// <summary>
