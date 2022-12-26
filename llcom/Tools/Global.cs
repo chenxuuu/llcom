@@ -426,10 +426,24 @@ namespace llcom.Tools
                         tb.AddRange(b_null);
                         break;
                     case 0x0d:
-                        tb.AddRange(b_cr);
+                        //遇到成对出现
+                        if(i < vBytes.Length-1 && vBytes[i+1] == 0x0a)
+                        {
+                            tb.AddRange(b_cr);
+                            tb.AddRange(b_lf);
+                            tb.Add(0x0d);
+                            tb.Add(0x0a);
+                            i++;
+                        }
+                        else
+                        {
+                            tb.AddRange(b_cr);
+                            tb.Add(0x0d);
+                        }
                         break;
                     case 0x0a:
                         tb.AddRange(b_lf);
+                        tb.Add(0x0a);
                         break;
                     default:
                         tb.Add(vBytes[i]);
