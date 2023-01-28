@@ -42,7 +42,7 @@ namespace llcom.Tools
                     uart.WaitUartReceive.Set();
                     Logger.CloseUartLog();
                     Logger.CloseLuaLog();
-                    if(File.Exists(ProfilePath + "lock"))
+                    if (File.Exists(ProfilePath + "lock"))
                         File.Delete(ProfilePath + "lock");
                 }
             }
@@ -75,9 +75,9 @@ namespace llcom.Tools
         /// </summary>
         public static string AppPath
         {
-            get 
-            { 
-                if(_appPath == null)
+            get
+            {
+                if (_appPath == null)
                 {
                     using (var processModule = Process.GetCurrentProcess().MainModule)
                     {
@@ -86,7 +86,7 @@ namespace llcom.Tools
                     if (!_appPath.EndsWith("\\"))
                         _appPath = _appPath + "\\";
                 }
-                return _appPath; 
+                return _appPath;
             }
         }
 
@@ -141,7 +141,7 @@ namespace llcom.Tools
         {
             if (IsMSIX())
             {
-                if(Directory.Exists(ProfilePath))
+                if (Directory.Exists(ProfilePath))
                 {
                     //已经开过一次了，那就继续用之前的路径
                 }
@@ -149,7 +149,7 @@ namespace llcom.Tools
                 {
                     //appdata路径不可靠，用文档路径替代
                     ProfilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\llcom\\";
-                    if(!Directory.Exists(ProfilePath))
+                    if (!Directory.Exists(ProfilePath))
                         Directory.CreateDirectory(ProfilePath);
                 }
             }
@@ -177,13 +177,13 @@ namespace llcom.Tools
             }
             else
             {
-                if(Directory.GetFiles(ProfilePath).Length > 10)
+                if (Directory.GetFiles(ProfilePath).Length > 10)
                 {
                     var r = Tools.InputDialog.OpenDialog("检测到当前文件夹有其他文件\r\n" +
                         "建议新建一个文件夹给llcom，并将llcom.exe放入其中\r\n" +
                         "不然当前文件夹会显得很乱哦~\r\n" +
-                        "是否想要继续运行呢？",null,"温馨提示");
-                    if(!r.Item1)
+                        "是否想要继续运行呢？", null, "温馨提示");
+                    if (!r.Item1)
                         Environment.Exit(1);
                 }
                 setting = new Model.Settings();
@@ -201,8 +201,8 @@ namespace llcom.Tools
             {
                 if (currentVersion.StartsWith("4."))
                 {
-                    var sv = int.Parse(currentVersion.Substring(2,1));
-                    if(sv < 6)
+                    var sv = int.Parse(currentVersion.Substring(2, 1));
+                    if (sv < 6)
                         throw new Exception();
                 }
                 else
@@ -218,7 +218,7 @@ namespace llcom.Tools
                 ReportBug = false;
             }
             //文件名不能改！
-            if(FileName.ToUpper() != "LLCOM.EXE")
+            if (FileName.ToUpper() != "LLCOM.EXE")
             {
                 MessageBox.Show("啊呀呀，软件文件名被改了。。。\r\n" +
                     "为了保证软件功能的正常运行，请将exe名改回llcom.exe");
@@ -232,7 +232,7 @@ namespace llcom.Tools
                 Environment.Exit(1);
             }
 
-            if(IsMSIX())//商店软件的文件路径需要手动新建文件夹
+            if (IsMSIX())//商店软件的文件路径需要手动新建文件夹
             {
                 if (!Directory.Exists(ProfilePath))
                 {
@@ -255,40 +255,40 @@ namespace llcom.Tools
             File.Create(ProfilePath + "lock").Close();
             try
             {
-                if (!Directory.Exists(ProfilePath+"core_script"))
+                if (!Directory.Exists(ProfilePath + "core_script"))
                 {
-                    Directory.CreateDirectory(ProfilePath+"core_script");
+                    Directory.CreateDirectory(ProfilePath + "core_script");
                 }
-                CreateFile("DefaultFiles/core_script/head.lua", ProfilePath+"core_script/head.lua", true);
-                CreateFile("DefaultFiles/core_script/JSON.lua", ProfilePath+"core_script/JSON.lua", false);
-                CreateFile("DefaultFiles/core_script/log.lua", ProfilePath+"core_script/log.lua", false);
-                CreateFile("DefaultFiles/core_script/once.lua", ProfilePath+"core_script/once.lua", true);
-                CreateFile("DefaultFiles/core_script/strings.lua", ProfilePath+"core_script/strings.lua", false);
-                CreateFile("DefaultFiles/core_script/sys.lua", ProfilePath+"core_script/sys.lua", true);
+                CreateFile("DefaultFiles/core_script/head.lua", ProfilePath + "core_script/head.lua", true);
+                CreateFile("DefaultFiles/core_script/JSON.lua", ProfilePath + "core_script/JSON.lua", false);
+                CreateFile("DefaultFiles/core_script/log.lua", ProfilePath + "core_script/log.lua", false);
+                CreateFile("DefaultFiles/core_script/once.lua", ProfilePath + "core_script/once.lua", true);
+                CreateFile("DefaultFiles/core_script/strings.lua", ProfilePath + "core_script/strings.lua", false);
+                CreateFile("DefaultFiles/core_script/sys.lua", ProfilePath + "core_script/sys.lua", true);
 
-                if (!Directory.Exists(ProfilePath+"logs"))
-                    Directory.CreateDirectory(ProfilePath+"logs");
-                if (!Directory.Exists(ProfilePath+"user_script_run"))
+                if (!Directory.Exists(ProfilePath + "logs"))
+                    Directory.CreateDirectory(ProfilePath + "logs");
+                if (!Directory.Exists(ProfilePath + "user_script_run"))
                 {
-                    Directory.CreateDirectory(ProfilePath+"user_script_run");
-                    CreateFile("DefaultFiles/user_script_run/AT控制TCP连接-快发模式.lua", ProfilePath+"user_script_run/AT控制TCP连接-快发模式.lua");
-                    CreateFile("DefaultFiles/user_script_run/AT控制TCP连接-慢发模式.lua", ProfilePath+"user_script_run/AT控制TCP连接-慢发模式.lua");
-                    CreateFile("DefaultFiles/user_script_run/example.lua", ProfilePath+"user_script_run/example.lua");
-                    CreateFile("DefaultFiles/user_script_run/循环发送快捷发送区数据.lua", ProfilePath+"user_script_run/循环发送快捷发送区数据.lua");
+                    Directory.CreateDirectory(ProfilePath + "user_script_run");
+                    CreateFile("DefaultFiles/user_script_run/AT控制TCP连接-快发模式.lua", ProfilePath + "user_script_run/AT控制TCP连接-快发模式.lua");
+                    CreateFile("DefaultFiles/user_script_run/AT控制TCP连接-慢发模式.lua", ProfilePath + "user_script_run/AT控制TCP连接-慢发模式.lua");
+                    CreateFile("DefaultFiles/user_script_run/example.lua", ProfilePath + "user_script_run/example.lua");
+                    CreateFile("DefaultFiles/user_script_run/循环发送快捷发送区数据.lua", ProfilePath + "user_script_run/循环发送快捷发送区数据.lua");
                 }
-                if (!Directory.Exists(ProfilePath+"user_script_run/requires"))
-                    Directory.CreateDirectory(ProfilePath+"user_script_run/requires");
-                if (!Directory.Exists(ProfilePath+"user_script_run/logs"))
-                    Directory.CreateDirectory(ProfilePath+"user_script_run/logs");
+                if (!Directory.Exists(ProfilePath + "user_script_run/requires"))
+                    Directory.CreateDirectory(ProfilePath + "user_script_run/requires");
+                if (!Directory.Exists(ProfilePath + "user_script_run/logs"))
+                    Directory.CreateDirectory(ProfilePath + "user_script_run/logs");
 
-                if (!Directory.Exists(ProfilePath+"user_script_send_convert"))
+                if (!Directory.Exists(ProfilePath + "user_script_send_convert"))
                 {
                     Directory.CreateDirectory(ProfilePath + "user_script_send_convert");
-                    CreateFile("DefaultFiles/user_script_send_convert/16进制数据.lua", ProfilePath+"user_script_send_convert/16进制数据.lua");
-                    CreateFile("DefaultFiles/user_script_send_convert/GPS NMEA.lua", ProfilePath+"user_script_send_convert/GPS NMEA.lua");
-                    CreateFile("DefaultFiles/user_script_send_convert/加上换行回车.lua", ProfilePath+"user_script_send_convert/加上换行回车.lua");
-                    CreateFile("DefaultFiles/user_script_send_convert/解析换行回车的转义字符.lua", ProfilePath+"user_script_send_convert/解析换行回车的转义字符.lua");
-                    CreateFile("DefaultFiles/user_script_send_convert/default.lua", ProfilePath+ "user_script_send_convert/default.lua");
+                    CreateFile("DefaultFiles/user_script_send_convert/16进制数据.lua", ProfilePath + "user_script_send_convert/16进制数据.lua");
+                    CreateFile("DefaultFiles/user_script_send_convert/GPS NMEA.lua", ProfilePath + "user_script_send_convert/GPS NMEA.lua");
+                    CreateFile("DefaultFiles/user_script_send_convert/加上换行回车.lua", ProfilePath + "user_script_send_convert/加上换行回车.lua");
+                    CreateFile("DefaultFiles/user_script_send_convert/解析换行回车的转义字符.lua", ProfilePath + "user_script_send_convert/解析换行回车的转义字符.lua");
+                    CreateFile("DefaultFiles/user_script_send_convert/default.lua", ProfilePath + "user_script_send_convert/default.lua");
                 }
                 if (!Directory.Exists(ProfilePath + "user_script_recv_convert"))
                 {
@@ -303,17 +303,17 @@ namespace llcom.Tools
                 if (!File.Exists(ProfilePath + "user_script_recv_convert/绘制曲线-解析结构体.lua"))
                     CreateFile("DefaultFiles/user_script_recv_convert/绘制曲线-解析结构体.lua", ProfilePath + "user_script_recv_convert/绘制曲线-解析结构体.lua");
 
-                CreateFile("DefaultFiles/LICENSE", ProfilePath+"LICENSE", false);
-                CreateFile("DefaultFiles/反馈网址.txt", ProfilePath+"反馈网址.txt", false);
+                CreateFile("DefaultFiles/LICENSE", ProfilePath + "LICENSE", false);
+                CreateFile("DefaultFiles/反馈网址.txt", ProfilePath + "反馈网址.txt", false);
 
-                if(IntPtr.Size == 8)
+                if (IntPtr.Size == 8)
                     CreateFile("DefaultFiles/libusb-1.0-x64.dll", ProfilePath + "libusb-1.0", false);
                 else
                     CreateFile("DefaultFiles/libusb-1.0-x86.dll", ProfilePath + "libusb-1.0", false);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                System.Windows.MessageBox.Show("生成文件结构失败，请确保本软件处于有读写权限的目录下再打开。\r\n错误信息："+e.Message);
+                System.Windows.MessageBox.Show("生成文件结构失败，请确保本软件处于有读写权限的目录下再打开。\r\n错误信息：" + e.Message);
                 Environment.Exit(1);
             }
 
@@ -368,7 +368,7 @@ namespace llcom.Tools
         /// <returns>结果</returns>
         public static string String2Hex(string str, string space)
         {
-             return BitConverter.ToString(GetEncoding().GetBytes(str)).Replace("-", space);
+            return BitConverter.ToString(GetEncoding().GetBytes(str)).Replace("-", space);
         }
 
 
@@ -404,9 +404,11 @@ namespace llcom.Tools
             return GetEncoding().GetString(br.ToArray());
         }
 
-        private static byte[] b_null = Encoding.GetEncoding(65001).GetBytes("␀");
         private static byte[] b_cr = Encoding.GetEncoding(65001).GetBytes("␍");
         private static byte[] b_lf = Encoding.GetEncoding(65001).GetBytes("␊");
+        private static byte[] b_del = Encoding.GetEncoding(65001).GetBytes("␡");
+
+        private static byte[][] symbols = null;
         /// <summary>
         /// byte转string（可读）
         /// </summary>
@@ -417,14 +419,20 @@ namespace llcom.Tools
             //非utf8就别搞了
             if (setting.encoding != 65001)
                 return Byte2String(vBytes);
+            //初始化一下这个数组
+            if (symbols == null)
+            {
+                symbols = new byte[32][];
+                string[] tc = { "␀", "␁", "␂", "␃", "␄", "␅", "␆", "␇", "␈", "␉", "␊", "␋", "␌", "␍",
+                    "␎", "␏", "␐", "␑", "␒", "␓", "␔", "␕", "␖", "␗", "␘", "␙", "␚", "␛", "␜", "␝", "␞", "␟" };
+                for (int i = 0; i < 32; i++)
+                    symbols[i] = Encoding.GetEncoding(65001).GetBytes(tc[i]);
+            }
             var tb = new List<byte>();
             for (int i = 0; i < vBytes.Length; i++)
             {
                 switch(vBytes[i])
                 {
-                    case 0:
-                        tb.AddRange(b_null);
-                        break;
                     case 0x0d:
                         //遇到成对出现
                         if(i < vBytes.Length-1 && vBytes[i+1] == 0x0a)
@@ -446,7 +454,13 @@ namespace llcom.Tools
                         tb.Add(0x0a);
                         break;
                     default:
-                        tb.Add(vBytes[i]);
+                        //普通的字符
+                        if(vBytes[i] <= 0x1f)
+                            tb.AddRange(symbols[vBytes[i]]);
+                        else if (vBytes[i] == 0x7f)//del
+                            tb.AddRange(b_del);
+                        else
+                            tb.Add(vBytes[i]);
                         break;
                 }
             }
