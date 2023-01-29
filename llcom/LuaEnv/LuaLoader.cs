@@ -19,6 +19,7 @@ namespace llcom.LuaEnv
         {
             //utf8转gbk编码的hex值
             lua.DoString("apiUtf8ToHex = CS.llcom.LuaEnv.LuaApis.Utf8ToAsciiHex");
+            lua.DoString("apiAscii2Utf8 = CS.llcom.LuaEnv.LuaApis.Ascii2Utf8");
             //获取软件目录路径
             lua.DoString("apiGetPath = CS.llcom.LuaEnv.LuaApis.GetPath");
             //输出日志
@@ -29,6 +30,9 @@ namespace llcom.LuaEnv
             lua.DoString("apiInputBox = CS.llcom.LuaEnv.LuaApis.InputBox");
             //加点
             lua.DoString("apiAddPoint = CS.llcom.LuaEnv.LuaApis.AddPoint");
+
+            //发送数据到通用通道
+            lua.DoString("apiSend = CS.llcom.LuaEnv.LuaApis.Send");
 
             if (t != "send")
             {

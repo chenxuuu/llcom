@@ -1,3 +1,4 @@
+using llcom.LuaEnv;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -58,6 +59,22 @@ namespace llcom.Model
             serial.RtsEnable = Rts;
             serial.DtrEnable = Dtr;
             new Thread(ReadData).Start();
+
+            //适配一下通用通道
+            LuaApis.SendChannelsRegister("uart", (data) => 
+            {
+                if (IsOpen())
+                {
+                    SendData(data);
+                    return true;
+                }
+                else
+                    return false;
+            });
+            this.UartDataRecived += (r, e) =>
+            {
+                LuaApis.SendChannelsReceived("uart", r as byte[]);
+            };
         }
 
         /// <summary>

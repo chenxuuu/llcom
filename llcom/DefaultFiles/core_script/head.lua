@@ -67,11 +67,6 @@ end
 log = require("log")
 sys = require("sys")
 
---串口数据接收接口
-local uartCB = function (d)
-    if uartReceive then uartReceive(d) end
-end
-
 --重写获取快捷发送区数据接口
 local oldapiQuickSendList = apiQuickSendList
 apiQuickSendList = function (id)
@@ -85,22 +80,30 @@ apiQuickSendList = function (id)
     end
 end
 
+--设置回调
+local channelCb = {}
+function apiSetCb(channel, cb)
+    channelCb[channel] = cb
+end
+
 --协程外部触发
 tiggerCB = function (id,type,data)
-    --log.debug("tigger",id,type,data:toHex())
-    if type == "uartRev" then--串口消息
-        uartCB(data)
-    elseif type == "cmd" then
-        local result, info = pcall(function ()
+    local result, info = pcall(function ()
+        if id >= 0 then--定时器消息
+            sys.tigger(id)
+        elseif type == "uartRev" then--串口消息
+            if uartReceive then uartReceive(data) end
+        elseif type == "cmd" then
             load(data)()
-        end)
-        if result then
             log.info("console","run success")
-        else
-            log.info("console","run failed\r\n"..tostring(info))
+        else--其他消息（通用通道）
+            if channelCb[type] then
+                channelCb[type](data)
+            end
         end
-    elseif id >= 0 then--定时器消息
-        sys.tigger(id)
+    end)
+    if not result then
+        log.error("task","run failed\r\n"..apiAscii2Utf8(tostring(info)))
     end
 end
 

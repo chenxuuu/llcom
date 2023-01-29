@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,17 @@ namespace llcom.LuaEnv
         public static string Utf8ToAsciiHex(string input)
         {
             return BitConverter.ToString(Encoding.GetEncoding("GB2312").GetBytes(input)).Replace("-","");
+        }
+
+
+        /// <summary>
+        /// utf8编码改为gbk的hex编码
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static byte[] Ascii2Utf8(byte[] input)
+        {
+            return Encoding.UTF8.GetBytes(Encoding.Default.GetString(input));
         }
 
         /// <summary>
@@ -98,5 +110,32 @@ namespace llcom.LuaEnv
         {
             LinePlotAdd?.Invoke(null, new Model.LinePlotPoint { N = n, Line = l });
         }
+
+        /// <summary>
+        /// 发送通道的回调函数
+        /// </summary>
+        private static Dictionary<string, Func<byte[], bool>> SendChannels = new Dictionary<string, Func<byte[], bool>>();
+        public static void SendChannelsRegister(string channel, Func<byte[], bool> cb) => SendChannels[channel] = cb;
+
+        /// <summary>
+        /// 发送数据到通用通道
+        /// </summary>
+        /// <param name="channel">通道名称</param>
+        /// <param name="data">数据</param>
+        /// <returns>发送是否成功</returns>
+        public static bool Send(string channel, byte[] data)
+        {
+            if (SendChannels.ContainsKey(channel))
+                return SendChannels[channel](data);
+            return false;
+        }
+
+        /// <summary>
+        /// 通用通道收到消息
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="data"></param>
+        public static void SendChannelsReceived(string channel, byte[] data) => LuaRunEnv.ChannelReceived(channel, data);
+
     }
 }

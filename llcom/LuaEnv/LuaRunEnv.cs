@@ -62,6 +62,18 @@ namespace llcom.LuaEnv
             addTigger(-1,"uartRev", sender as byte[]);
         }
 
+        /// <summary>
+        /// 收到通用通道消息
+        /// </summary>
+        public static void ChannelReceived(string channel, byte[] data)
+        {
+            if (isRunning)
+            {
+                toRun.Add(new LuaPool { id = -1, type = channel, data = data });
+                runTigger();
+            }
+        }
+
         private static void runTigger()
         {
             lock (tiggerLock)
