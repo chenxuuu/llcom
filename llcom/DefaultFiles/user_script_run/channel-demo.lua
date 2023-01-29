@@ -4,13 +4,13 @@
 可以更加灵活地进行自动化测试
 ]]
 
--- 串口：uart
+-- uart，对应软件自身的串口功能
 apiSetCb("uart",function (data)
     log.info("uart received",data)
 end)
 local sendResult = apiSend("uart","ok!")
 
--- mqtt
+-- mqtt，对应 MQTT 选项卡
 apiSetCb("mqtt",function (data)
   log.info(
     "mqtt received",
@@ -25,7 +25,7 @@ local sendResult = apiSend("mqtt",nil,
   qos     = 0
 })
 
--- tcp-server
+-- tcp-server，对应 本机TCP服务端 选项卡
 apiSetCb("tcp-server",function (data)
   log.info(
     "tcp-server received",
@@ -34,13 +34,13 @@ apiSetCb("tcp-server",function (data)
 end)
 local sendResult = apiSend("tcp-server","broadcast message!")
 
--- socket-client
+-- socket-client，对应 socket客户端 选项卡
 apiSetCb("socket-client",function (data)
   log.info("socket-client received", data)
 end)
 local sendResult = apiSend("socket-client","send message by lua!")
 
--- netlab
+-- netlab，对应 socket公共服务端 选项卡
 apiSetCb("netlab",function (data)
   log.info(
     "netlab received",
