@@ -19,11 +19,17 @@ namespace llcom.Tools
         //清空日志显示
         public static void ClearData()
         {
+            //不刷新日志
+            if (Tools.Global.setting.DisableLog)
+                return;
             DataClearEvent?.Invoke(null,null);
         }
         //显示日志数据
         public static void ShowData(byte[] data, bool send)
         {
+            //不刷新日志
+            if (Tools.Global.setting.DisableLog)
+                return;
             DataShowEvent?.Invoke(null, new DataShowPara
             {
                 data = data,

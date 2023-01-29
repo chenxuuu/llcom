@@ -201,4 +201,5 @@
     <system:String x:Key="OnlineScriptDownload">Download this script</system:String>
     <system:String x:Key="OnlineScriptDownloadSaveNotice">Please input a file name:</system:String>
     <system:String x:Key="SaveSucceed">File saved!</system:String>
+    <system:String x:Key="DisableLog">Disable log refresh</system:String>
 </ResourceDictionary>

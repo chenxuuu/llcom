@@ -202,4 +202,5 @@
     <system:String x:Key="OnlineScriptDownloadTitle">下载脚本</system:String>
     <system:String x:Key="OnlineScriptDownloadSaveNotice">请设置要保存为的文件名：</system:String>
     <system:String x:Key="SaveSucceed">文件保存成功！</system:String>
+    <system:String x:Key="DisableLog">禁止此处日志刷新</system:String>
 </ResourceDictionary>

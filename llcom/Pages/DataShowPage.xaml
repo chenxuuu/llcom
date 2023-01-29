@@ -1,61 +1,115 @@
-<Page x:Class="llcom.Pages.DataShowPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:llcom.Pages"
-      xmlns:fa="http://schemas.fontawesome.io/icons/"
-      xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
-      adonisExtensions:RippleExtension.FadeInDuration="0"
-      adonisExtensions:RippleExtension.FadeOutDuration="0"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="DataShowPage"
-      Loaded="Page_Loaded">
+<Page
+    x:Class="llcom.Pages.DataShowPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
+    xmlns:local="clr-namespace:llcom.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="DataShowPage"
+    adonisExtensions:RippleExtension.FadeInDuration="0"
+    adonisExtensions:RippleExtension.FadeOutDuration="0"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Loaded="Page_Loaded"
+    mc:Ignorable="d">
     <Page.Resources>
-        <local:boolVisibe x:Key="boolVisibeConverter"/>
-        <local:boolNotVisibe x:Key="boolNotVisibeConverter"/>
-        <local:showHexFormat x:Key="showHexFormatConverter"/>
+        <local:boolVisibe x:Key="boolVisibeConverter" />
+        <local:boolNotVisibe x:Key="boolNotVisibeConverter" />
+        <local:showHexFormat x:Key="showHexFormatConverter" />
     </Page.Resources>
     <Grid x:Name="mainGrid" Background="Transparent">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <FlowDocumentScrollViewer Name="uartDataFlowDocument" VerticalScrollBarVisibility="Visible" MinZoom="50" 
-                              BorderBrush="#FF009400" BorderThickness="0" 
-                              GotFocus="uartDataFlowDocument_GotFocus" LostFocus="uartDataFlowDocument_LostFocus"
-                              PreviewTextInput="uartDataFlowDocument_PreviewTextInput"
-                              PreviewKeyDown="uartDataFlowDocument_PreviewKeyDown">
-            <!-- 更改段落间距 -->
+        <FlowDocumentScrollViewer
+            Name="uartDataFlowDocument"
+            BorderBrush="#FF009400"
+            BorderThickness="0"
+            GotFocus="uartDataFlowDocument_GotFocus"
+            LostFocus="uartDataFlowDocument_LostFocus"
+            MinZoom="50"
+            PreviewKeyDown="uartDataFlowDocument_PreviewKeyDown"
+            PreviewTextInput="uartDataFlowDocument_PreviewTextInput"
+            VerticalScrollBarVisibility="Visible">
+            <!--  更改段落间距  -->
             <FlowDocumentScrollViewer.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0" />
                 </Style>
             </FlowDocumentScrollViewer.Resources>
-            <!-- 更改段落间距END -->
-            <FlowDocument FontSize="12" FontFamily="Consolas" IsOptimalParagraphEnabled="False" TextAlignment="Left">
-            </FlowDocument>
+            <!--  更改段落间距END  -->
+            <FlowDocument
+                FontFamily="Consolas"
+                FontSize="12"
+                IsOptimalParagraphEnabled="False"
+                TextAlignment="Left" />
         </FlowDocumentScrollViewer>
-        <StackPanel VerticalAlignment="Bottom" 
-                    HorizontalAlignment="Left" 
-                    Margin="10,0,0,3" Orientation="Horizontal" 
-                    Visibility="{Binding Path=IsMouseOver, ElementName=mainGrid,Converter={StaticResource boolVisibeConverter}}"
-                    Grid.Row="1">
-            <CheckBox Name="RTSCheckBox" IsChecked="{Binding Rts}" Content="RTS" Margin="5,0,0,0"/>
-            <CheckBox Name="DTRCheckBox" IsChecked="{Binding Dtr}" Content="DTR" Margin="5,0,0,0"/>
-            <CheckBox Name="HEXBox" Content="{DynamicResource ShowHexFormat}" ToolTip="{DynamicResource ShowHexFormatTip}"
-                      IsChecked="{Binding showHexFormat,Converter={StaticResource showHexFormatConverter}}" IsThreeState="True" Margin="5,0,0,0"/>
-            <CheckBox Name="HexSendCheckBox" IsChecked="{Binding hexSend}" Content="{DynamicResource HexSendMode}" Margin="5,0,0,0"/>
-            <CheckBox Name="ExtraEnterCheckBox" IsChecked="{Binding extraEnter}" Content="{DynamicResource AddExtraEnter}" ToolTip="{DynamicResource AddExtraEnterTip}" Margin="5,0,0,0"/>
+        <StackPanel
+            Grid.Row="1"
+            Margin="10,0,0,3"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Orientation="Horizontal"
+            Visibility="{Binding Path=IsMouseOver, ElementName=mainGrid, Converter={StaticResource boolVisibeConverter}}">
+            <CheckBox
+                Name="RTSCheckBox"
+                Margin="5,0,0,0"
+                Content="RTS"
+                IsChecked="{Binding Rts}" />
+            <CheckBox
+                Name="DTRCheckBox"
+                Margin="5,0,0,0"
+                Content="DTR"
+                IsChecked="{Binding Dtr}" />
+            <CheckBox
+                Name="HEXBox"
+                Margin="5,0,0,0"
+                Content="{DynamicResource ShowHexFormat}"
+                IsChecked="{Binding showHexFormat, Converter={StaticResource showHexFormatConverter}}"
+                IsThreeState="True"
+                ToolTip="{DynamicResource ShowHexFormatTip}" />
+            <CheckBox
+                Name="HexSendCheckBox"
+                Margin="5,0,0,0"
+                Content="{DynamicResource HexSendMode}"
+                IsChecked="{Binding hexSend}" />
+            <CheckBox
+                Name="ExtraEnterCheckBox"
+                Margin="5,0,0,0"
+                Content="{DynamicResource AddExtraEnter}"
+                IsChecked="{Binding extraEnter}"
+                ToolTip="{DynamicResource AddExtraEnterTip}" />
+            <CheckBox
+                Name="DisableLogCheckBox"
+                Margin="5,0,0,0"
+                Content="{DynamicResource DisableLog}"
+                IsChecked="{Binding DisableLog}" />
         </StackPanel>
-        <Button Name="LockLogButton" Margin="0,0,18,20" ToolTip="{DynamicResource LockLogButton}" 
-                HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="LockLogButton_Click"
-                Visibility="{Binding Path=IsMouseOver, ElementName=mainGrid,Converter={StaticResource boolVisibeConverter}}">
+        <Button
+            Name="LockLogButton"
+            Margin="0,0,18,20"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Click="LockLogButton_Click"
+            ToolTip="{DynamicResource LockLogButton}"
+            Visibility="{Binding Path=IsMouseOver, ElementName=mainGrid, Converter={StaticResource boolVisibeConverter}}">
             <StackPanel>
-                <fa:FontAwesome Name="LockIcon" Icon="Lock" Visibility="{Binding LockLog,Converter={StaticResource boolNotVisibeConverter}}"/>
-                <fa:FontAwesome Name="UnLockIcon" Icon="Unlock" Foreground="Green" Visibility="{Binding LockLog,Converter={StaticResource boolVisibeConverter}}"/>
-                <TextBlock Name="UnLockText" Text="{DynamicResource LockLogText}" Visibility="{Binding LockLog,Converter={StaticResource boolVisibeConverter}}"/>
+                <fa:FontAwesome
+                    Name="LockIcon"
+                    Icon="Lock"
+                    Visibility="{Binding LockLog, Converter={StaticResource boolNotVisibeConverter}}" />
+                <fa:FontAwesome
+                    Name="UnLockIcon"
+                    Foreground="Green"
+                    Icon="Unlock"
+                    Visibility="{Binding LockLog, Converter={StaticResource boolVisibeConverter}}" />
+                <TextBlock
+                    Name="UnLockText"
+                    Text="{DynamicResource LockLogText}"
+                    Visibility="{Binding LockLog, Converter={StaticResource boolVisibeConverter}}" />
             </StackPanel>
         </Button>
     </Grid>

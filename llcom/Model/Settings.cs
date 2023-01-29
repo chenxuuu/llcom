@@ -38,6 +38,7 @@ namespace llcom.Model
         private int _encoding = 65001;
         private bool _terminal = true;
         private bool _extraEnter = false;
+        private bool _disableLog = false;
 
         //窗口大小与位置
         private double _windowTop = 0;
@@ -449,6 +450,18 @@ namespace llcom.Model
             }
         }
 
+        public bool DisableLog
+        {
+            get
+            {
+                return _disableLog;
+            }
+            set
+            {
+                _disableLog = value;
+                Save();
+            }
+        }
 
         private string _mqttServer = "broker.emqx.io";
         private int _mqttPort = 1883;
