@@ -18,7 +18,56 @@
 
 ## C#层增加的接口(底层接口)
 
-### apiSendUartData(string)
+### apiSend(channel,data[,table])
+
+发送数据到某个通道，具体用法请见软件自带的`channel-demo.lua`例子
+
+* 参数
+
+|传入值类型|释义|
+|-|-|
+|string|channel，数据要发送到的通道名称|
+|string|data，要发送的数据（如果需要传入复合数据，此参数一般填入nil）|
+|table|可选，复合数据，提供给mqtt等需要同时传多种参数的通道使用|
+
+* 返回值
+
+boolean，发送结果，成功为true
+
+* 例子
+
+```lua
+local str = ("01020304"):fromHex()
+local result = apiData("uart",str)
+```
+
+### apiSetCb(channel,callback)
+
+订阅某个通道的数据，具体用法请见软件自带的`channel-demo.lua`例子
+
+* 参数
+
+|传入值类型|释义|
+|-|-|
+|string|channel，想设置回调函数的通道名称|
+|function|callback，回调函数，会传入一个参数，有可能是string也有可能是table，具体请见`channel-demo.lua`例子|
+
+* 返回值
+
+无
+
+* 例子
+
+```lua
+apiSetCb("uart",function (data)
+    log.info("uart received",data)
+end)
+apiSetCb("mqtt",function (data)
+    log.info("mqtt received",data.topic,data.payload)
+end)
+```
+
+### apiSendUartData(string)（旧接口，不推荐）
 
 发送串口数据
 
@@ -39,7 +88,7 @@ local str = ("01020304"):fromHex()
 local result = apiSendUartData(str)
 ```
 
-### uartReceive回调
+### uartReceive回调（旧接口，不推荐）
 
 注意，本接口是用来回调的，如果使用Lua需要处理回调，请声明此函数为全局变量
 

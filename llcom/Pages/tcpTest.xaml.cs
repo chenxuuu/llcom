@@ -1,3 +1,4 @@
+using llcom.LuaEnv;
 using llcom.Tools;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -107,8 +108,15 @@ namespace llcom.Pages
                             break;
                         case "data":
                             string data = (string)o["data"];
-                            ShowData($" → receive from [{o["client"]}]",
-                                        (bool)o["hex"] ? Global.Hex2Byte(data) : Global.GetEncoding().GetBytes(data));
+                            byte[] buff = (bool)o["hex"] ? Global.Hex2Byte(data) : Global.GetEncoding().GetBytes(data);
+                            ShowData($" → receive from [{o["client"]}]", buff);
+                            //适配一下通用通道
+                            LuaApis.SendChannelsReceived("netlab",
+                                new
+                                {
+                                    client = (string)o["client"],
+                                    data = buff,
+                                });
                             break;
                         case "error":
                             ShowData($"❔ error:{o["msg"]}");
@@ -157,8 +165,15 @@ namespace llcom.Pages
                             break;
                         case "data":
                             string data = (string)o["data"];
-                            ShowData($" → receive from [{o["client"]}]",
-                                        (bool)o["hex"] ? Global.Hex2Byte(data) : Global.GetEncoding().GetBytes(data));
+                            byte[] buff = (bool)o["hex"] ? Global.Hex2Byte(data) : Global.GetEncoding().GetBytes(data);
+                            ShowData($" → receive from [{o["client"]}]", buff);
+                            //适配一下通用通道
+                            LuaApis.SendChannelsReceived("netlab",
+                                new
+                                {
+                                    client = (string)o["client"],
+                                    data = buff,
+                                });
                             break;
                         case "error":
                             ShowData($"❔ error:{o["msg"]}");
@@ -181,6 +196,21 @@ namespace llcom.Pages
             {
                 ShowData($"📢 Create failed");
             };
+
+            //适配一下通用通道
+            LuaApis.SendChannelsRegister("netlab", (_, t) =>
+            {
+                if (IsConnected && t != null)
+                {
+                    return Send(
+                        Tools.Global.Byte2Hex(t.Get<byte[]>("data")),
+                        true,
+                        t.Get<string>("client")
+                        );
+                }
+                else
+                    return false;
+            });
         }
 
 
@@ -271,22 +301,29 @@ namespace llcom.Pages
         {
             if (!IsConnected || ClientList.Text.Length == 0)
                 return;
+            Send(toSendDataTextBox.Text,HexMode, ClientList.Text);
+        }
+
+        private bool Send(string data, bool isHex, string client)
+        {
             try
             {
                 (ws.IsAlive ? ws : wsV6).Send(JsonConvert.SerializeObject(new
                 {
                     action = "sendc",
-                    data = toSendDataTextBox.Text,
-                    hex = HexMode,
-                    client = ClientList.Text,
+                    data,
+                    hex = isHex,
+                    client,
                 }));
-                ShowData($" ← send to [{ClientList.Text}]", 
-                    HexMode ? Global.Hex2Byte(toSendDataTextBox.Text) : Global.GetEncoding().GetBytes(toSendDataTextBox.Text),
+                ShowData($" ← send to [{client}]",
+                    isHex ? Global.Hex2Byte(data) : Global.GetEncoding().GetBytes(data),
                     true);
+                return true;
             }
             catch (Exception ee)
             {
-                MessageBox.Show(ee.Message);
+                ShowData($"sent error: {ee.Message}");
+                return false;
             }
         }
 

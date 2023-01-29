@@ -61,9 +61,9 @@ namespace llcom.Model
             new Thread(ReadData).Start();
 
             //适配一下通用通道
-            LuaApis.SendChannelsRegister("uart", (data) => 
+            LuaApis.SendChannelsRegister("uart", (data, _) => 
             {
-                if (IsOpen())
+                if (IsOpen() && data != null)
                 {
                     SendData(data);
                     return true;
@@ -73,7 +73,7 @@ namespace llcom.Model
             });
             this.UartDataRecived += (r, e) =>
             {
-                LuaApis.SendChannelsReceived("uart", r as byte[]);
+                LuaApis.SendChannelsReceived("uart", r);
             };
         }
 

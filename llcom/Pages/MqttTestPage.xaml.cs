@@ -1,7 +1,9 @@
+using llcom.LuaEnv;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
 using MQTTnet.Client.Subscribing;
+using ScottPlot.Drawing.Colormaps;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,6 +91,15 @@ namespace llcom.Pages
             //
             mqttClient.UseApplicationMessageReceivedHandler(e =>
             {
+                //适配一下通用通道
+                LuaApis.SendChannelsReceived("mqtt", 
+                    new
+                    {
+                        topic = e.ApplicationMessage.Topic,
+                        payload = e.ApplicationMessage.Payload,
+                        qos = (int)e.ApplicationMessage.QualityOfServiceLevel
+                    });
+                //显示数据
                 this.Dispatcher.Invoke(new Action(delegate
                 {
                     Tools.Logger.ShowDataRaw(new Tools.DataShowRaw {
@@ -97,6 +108,27 @@ namespace llcom.Pages
                         color = Brushes.DarkGreen
                     });
                 }));
+            });
+
+            //适配一下通用通道
+            LuaApis.SendChannelsRegister("mqtt", (_, t) =>
+            {
+                if (mqttClient.IsConnected && t != null)
+                {
+                    try
+                    {
+                        return Publish(
+                            t.Get<string>("topic"), 
+                            t.Get<byte[]>("payload"),
+                            t.Get<int>("qos"));
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }
+                else
+                    return false;
             });
         }
 
@@ -186,30 +218,42 @@ namespace llcom.Pages
             }
             if (mqttClient.IsConnected)
             {
-                var message = new MqttApplicationMessageBuilder()
-                    .WithTopic(publishTopicTextBox.Text)
-                    .WithPayload(HexCheckBox.IsChecked ?? false ? 
+                var topic = publishTopicTextBox.Text;
+                var payload = HexCheckBox.IsChecked ?? false ?
                     Tools.Global.Hex2Byte(PublishTextBox.Text) :
-                    Tools.Global.GetEncoding().GetBytes(PublishTextBox.Text))
-                    .WithQualityOfServiceLevel(int.Parse(publishQOSComboBox.Text))
-                    .Build();
-                Task.Run(async () =>
+                    Tools.Global.GetEncoding().GetBytes(PublishTextBox.Text);
+                var qos = int.Parse(publishQOSComboBox.Text);
+                Task.Run(() =>
                 {
-                    try
-                    {
-                        await mqttClient.PublishAsync(message, CancellationToken.None);
-                        this.Dispatcher.Invoke(new Action(delegate
-                        {
-                            Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
-                            {
-                                title = $"MQTT ← {message.Topic}({(int)message.QualityOfServiceLevel})",
-                                data = message.Payload ?? new byte[0],
-                                color = Brushes.DarkRed
-                            });
-                        }));
-                    }
-                    catch { }
+                    Publish(topic, payload, qos);
                 });
+            }
+        }
+
+        private bool Publish(string topic, byte[] payload, int qos)
+        {
+            try
+            {
+                var message = new MqttApplicationMessageBuilder()
+                    .WithTopic(topic)
+                    .WithPayload(payload)
+                    .WithQualityOfServiceLevel(qos)
+                    .Build();
+                mqttClient.PublishAsync(message, CancellationToken.None).Wait();
+                this.Dispatcher.Invoke(new Action(delegate
+                {
+                    Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
+                    {
+                        title = $"MQTT ← {message.Topic}({(int)message.QualityOfServiceLevel})",
+                        data = message.Payload ?? new byte[0],
+                        color = Brushes.DarkRed
+                    });
+                }));
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

@@ -276,8 +276,7 @@ function dispatch()
                     callback(table.unpack(message, 2, #message))
                 elseif type(callback) == "thread" then
                     local r,i = coroutine.resume(callback, table.unpack(message))
-                    i= DEBUGHEX and i:toHex() or i--当DEBUGHEX打开时，输出hex报错信息，防止因乱码看不出原因
-                    assert(r,i)
+                    assert(r,apiAscii2Utf8(i))
                 end
             end
         end

@@ -18,6 +18,7 @@ using System.Threading;
 using CoAP.Server;
 using System.Diagnostics;
 using static llcom.Pages.SocketClientPage;
+using llcom.LuaEnv;
 
 namespace llcom.Pages
 {
@@ -32,6 +33,8 @@ namespace llcom.Pages
             InitializeComponent();
         }
 
+        //收到消息的事件
+        public event EventHandler<byte[]> DataRecived;
         public bool IsConnected { get; set; } = false;
 
         private static bool loaded = false;
@@ -44,6 +47,33 @@ namespace llcom.Pages
             //绑定
             MainGrid.DataContext = this;
             IpPortTextBox.DataContext = Tools.Global.setting;
+
+            //收到消息，显示日志
+            DataRecived += (name, data) =>
+            {
+                ShowData($" → receive ({(string)name})", data);
+            };
+
+            //适配一下通用通道
+            LuaApis.SendChannelsRegister("tcp-server", (data, _) =>
+            {
+                if (Server != null && data != null)
+                {
+                    return Broadcast(data);
+                }
+                else
+                    return false;
+            });
+            //通用通道收到消息
+            DataRecived += (name, data) =>
+            {
+                LuaApis.SendChannelsReceived("tcp-server", 
+                    new
+                    {
+                        from = (string)name,
+                        data
+                    });
+            };
         }
 
         /// <summary>
@@ -118,7 +148,7 @@ namespace llcom.Pages
                     var buff = new byte[read];
                     for (int i = 0; i < buff.Length; i++)
                         buff[i] = so.buffer[i];
-                    ShowData($" → receive ({name})", buff);
+                    DataRecived?.Invoke(name, buff);
                     s.BeginReceive(so.buffer, 0, StateObject.BUFFER_SIZE, 0,
                                              new AsyncCallback(Read_Callback), so);
                 }
@@ -250,25 +280,32 @@ namespace llcom.Pages
         {
             if (Server != null)
             {
-                try
+                byte[] buff = HexMode ? Tools.Global.Hex2Byte(toSendDataTextBox.Text) :
+                    Tools.Global.GetEncoding().GetBytes(toSendDataTextBox.Text);
+                Broadcast(buff);
+            }
+        }
+
+        private bool Broadcast(byte[] buff)
+        {
+            try
+            {
+                lock (Clients)
                 {
-                    byte[] buff = HexMode ? Tools.Global.Hex2Byte(toSendDataTextBox.Text) :
-                        Tools.Global.GetEncoding().GetBytes(toSendDataTextBox.Text);
-                    lock (Clients)
-                    {
-                        foreach (var c in Clients)
-                            try
-                            {
-                                c.Send(buff);
-                            }
-                            catch { }
-                    }
-                    ShowData($"💥 broadcast", buff, true);
+                    foreach (var c in Clients)
+                        try
+                        {
+                            c.Send(buff);
+                        }
+                        catch { }
                 }
-                catch (Exception ex)
-                {
-                    ShowData($"❗ broadcast error {ex.Message}");
-                }
+                ShowData($"💥 broadcast", buff, true);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ShowData($"❗ broadcast error {ex.Message}");
+                return false;
             }
         }
     }

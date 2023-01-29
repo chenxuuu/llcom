@@ -65,7 +65,7 @@ namespace llcom.LuaEnv
         /// <summary>
         /// 收到通用通道消息
         /// </summary>
-        public static void ChannelReceived(string channel, byte[] data)
+        public static void ChannelReceived(string channel, object data)
         {
             if (isRunning)
             {
@@ -219,6 +219,6 @@ namespace llcom.LuaEnv
     {
         public int id { get; set; }
         public string type { get; set; }
-        public byte[] data { get; set; }
+        public object data { get; set; }
     }
 }

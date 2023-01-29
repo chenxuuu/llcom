@@ -420,6 +420,7 @@
     <Resource Include="DefaultFiles\user_script_recv_convert\绘制曲线.lua" />
     <Resource Include="DefaultFiles\user_script_recv_convert\绘制曲线-多条.lua" />
     <Resource Include="DefaultFiles\user_script_recv_convert\绘制曲线-解析结构体.lua" />
+    <Resource Include="DefaultFiles\user_script_run\channel-demo.lua" />
     <None Include="llcom_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

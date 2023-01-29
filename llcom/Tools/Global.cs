@@ -276,6 +276,10 @@ namespace llcom.Tools
                     CreateFile("DefaultFiles/user_script_run/example.lua", ProfilePath + "user_script_run/example.lua");
                     CreateFile("DefaultFiles/user_script_run/循环发送快捷发送区数据.lua", ProfilePath + "user_script_run/循环发送快捷发送区数据.lua");
                 }
+                //通用消息通道的demo
+                if (!File.Exists(ProfilePath + "user_script_run/channel-demo.lua"))
+                    CreateFile("DefaultFiles/user_script_run/channel-demo.lua", ProfilePath + "user_script_run/channel-demo.lua");
+
                 if (!Directory.Exists(ProfilePath + "user_script_run/requires"))
                     Directory.CreateDirectory(ProfilePath + "user_script_run/requires");
                 if (!Directory.Exists(ProfilePath + "user_script_run/logs"))

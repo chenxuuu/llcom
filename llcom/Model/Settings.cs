@@ -83,9 +83,9 @@ namespace llcom.Model
         {
             get
             {
-                if (_quickSendSelect == -1)
+                if (_quickSendSelect < 0 || _quickSendSelect > 10)
                     return new List<ToSendData>();
-                if (quickSendList.Count == 0)
+                if (quickSendList.Count <= 10)
                 {
                     for (var i = 0; i < 10; i++)
                         quickSendList.Add(new List<ToSendData>());
@@ -94,9 +94,9 @@ namespace llcom.Model
             }
             set
             {
-                if (_quickSendSelect == -1)
+                if (_quickSendSelect < 0 || _quickSendSelect > 10)
                     return;
-                if (quickSendList.Count == 0)
+                if (quickSendList.Count <= 10)
                 {
                     for (var i = 0; i < 10; i++)
                         quickSendList.Add(new List<ToSendData>());

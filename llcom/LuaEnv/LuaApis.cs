@@ -114,8 +114,8 @@ namespace llcom.LuaEnv
         /// <summary>
         /// 发送通道的回调函数
         /// </summary>
-        private static Dictionary<string, Func<byte[], bool>> SendChannels = new Dictionary<string, Func<byte[], bool>>();
-        public static void SendChannelsRegister(string channel, Func<byte[], bool> cb) => SendChannels[channel] = cb;
+        private static Dictionary<string, Func<byte[], XLua.LuaTable, bool>> SendChannels = new Dictionary<string, Func<byte[], XLua.LuaTable, bool>>();
+        public static void SendChannelsRegister(string channel, Func<byte[], XLua.LuaTable, bool> cb) => SendChannels[channel] = cb;
 
         /// <summary>
         /// 发送数据到通用通道
@@ -123,10 +123,10 @@ namespace llcom.LuaEnv
         /// <param name="channel">通道名称</param>
         /// <param name="data">数据</param>
         /// <returns>发送是否成功</returns>
-        public static bool Send(string channel, byte[] data)
+        public static bool Send(string channel, byte[] data, XLua.LuaTable table)
         {
             if (SendChannels.ContainsKey(channel))
-                return SendChannels[channel](data);
+                return SendChannels[channel](data, table);
             return false;
         }
 
@@ -135,7 +135,6 @@ namespace llcom.LuaEnv
         /// </summary>
         /// <param name="channel"></param>
         /// <param name="data"></param>
-        public static void SendChannelsReceived(string channel, byte[] data) => LuaRunEnv.ChannelReceived(channel, data);
-
+        public static void SendChannelsReceived(string channel, object data) => LuaRunEnv.ChannelReceived(channel, data);
     }
 }
