@@ -22,8 +22,6 @@ namespace llcom.LuaEnv
         public static bool isRunning = false;
         public static bool canRun = false;
 
-        private static object tiggerLock = new object();//回调锁标志
-
         /// <summary>
         /// 刚启动的时候运行的
         /// </summary>
@@ -76,7 +74,7 @@ namespace llcom.LuaEnv
 
         private static void runTigger()
         {
-            lock (tiggerLock)
+            lock (lua)
             {
                 try
                 {
@@ -202,9 +200,12 @@ namespace llcom.LuaEnv
                     Task.Delay(100).Wait();
                 try
                 {
-                    lua.Global.SetInPath("runType", "script");//一次性处理标志
-                    LuaLoader.Initial(lua);
-                    lua.DoString($"require '{file.Replace("/",".").Substring(0,file.Length-4)}'");
+                    lock(lua)
+                    {
+                        lua.Global.SetInPath("runType", "script");//一次性处理标志
+                        LuaLoader.Initial(lua);
+                        lua.DoString($"require '{file.Replace("/", ".").Substring(0, file.Length - 4)}'");
+                    }
                 }
                 catch (Exception ex)
                 {
