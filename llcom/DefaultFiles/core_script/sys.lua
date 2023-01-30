@@ -276,7 +276,9 @@ function dispatch()
                     callback(table.unpack(message, 2, #message))
                 elseif type(callback) == "thread" then
                     local r,i = coroutine.resume(callback, table.unpack(message))
-                    assert(r,apiAscii2Utf8(i))
+                    if not r then
+                        assert(r,apiAscii2Utf8(i))
+                    end
                 end
             end
         end
