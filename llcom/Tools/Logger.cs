@@ -39,6 +39,9 @@ namespace llcom.Tools
         //显示日志数据
         public static void ShowDataRaw(DataShowRaw s)
         {
+            //不刷新日志
+            if (Tools.Global.setting.DisableLog)
+                return;
             DataShowRawEvent?.Invoke(null, s);
         }
 
