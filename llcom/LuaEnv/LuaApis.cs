@@ -51,27 +51,6 @@ namespace llcom.LuaEnv
         }
 
         /// <summary>
-        /// 发送串口数据
-        /// </summary>
-        /// <returns>是否成功</returns>
-        public static bool SendUartData(byte[] data)
-        {
-            if (Tools.Global.uart.IsOpen())
-            {
-                try
-                {
-                    Tools.Global.uart.SendData(data);
-                    return true;
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
         /// 获取快捷发送区数据
         /// </summary>
         /// <param name="id">快捷发送数据的编号</param>

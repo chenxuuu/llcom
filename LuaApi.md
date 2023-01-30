@@ -62,12 +62,42 @@ local result = apiData("uart",str)
 apiSetCb("uart",function (data)
     log.info("uart received",data)
 end)
+--可以使用不同函数多次订阅，都会被调用
+apiSetCb("uart",function (data)
+    log.info("uart received2",data)
+end)
 apiSetCb("mqtt",function (data)
     log.info("mqtt received",data.topic,data.payload)
 end)
 ```
 
-### apiSendUartData(string)（旧接口，不推荐）
+### apiUnetCb(channel,callback)
+
+取消某个通道的订阅
+
+* 参数
+
+|传入值类型|释义|
+|-|-|
+|string|channel，想取消的通道名称|
+|function|callback，设置时的函数，必须是设置时的那个函数|
+
+* 返回值
+
+boolean，取消结果，该函数回调被成功取消，为true
+
+* 例子
+
+```lua
+local uartCb = function (data)
+    log.info("uart received",data)
+end
+apiSetCb("uart",uartCb)
+--取消上面的订阅
+apiUnetCb("uart",uartCb)
+```
+
+### apiSendUartData(string)（旧接口，不推荐，后续将会移除）
 
 发送串口数据
 
@@ -88,7 +118,7 @@ local str = ("01020304"):fromHex()
 local result = apiSendUartData(str)
 ```
 
-### uartReceive回调（旧接口，不推荐）
+### uartReceive回调（旧接口，不推荐，后续将会移除）
 
 注意，本接口是用来回调的，如果使用Lua需要处理回调，请声明此函数为全局变量
 

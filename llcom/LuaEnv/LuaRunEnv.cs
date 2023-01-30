@@ -22,14 +22,6 @@ namespace llcom.LuaEnv
         public static bool isRunning = false;
         public static bool canRun = false;
 
-        /// <summary>
-        /// 刚启动的时候运行的
-        /// </summary>
-        public static void init()
-        {
-            Tools.Global.uart.UartDataRecived += Uart_UartDataRecived;
-        }
-
         private static void addTigger(int id, string type = "timer", byte[] data = null)
         {
             if(isRunning)
@@ -47,17 +39,6 @@ namespace llcom.LuaEnv
         public static void RunCommand(string l)
         {
             addTigger(-1, "cmd", Encoding.UTF8.GetBytes(l));
-        }
-
-
-        /// <summary>
-        /// 收到串口消息
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private static void Uart_UartDataRecived(object sender, EventArgs e)
-        {
-            addTigger(-1,"uartRev", sender as byte[]);
         }
 
         /// <summary>

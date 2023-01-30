@@ -83,7 +83,26 @@ end
 --设置回调
 local channelCb = {}
 function apiSetCb(channel, cb)
-    channelCb[channel] = cb
+    if not channelCb[channel] then
+        channelCb[channel] = {}
+    end
+    --把每个注册的回调都保存下来
+    table.insert(channelCb[channel],cb)
+end
+--取消某个回调
+function apiUnsetCb(channel, cb)
+    if not channelCb[channel] then
+        return true
+    end
+    for i=1,#channelCb[channel] do
+        if channelCb[channel][i] == cb then
+            table.remove(channelCb[channel],i)
+            if #channelCb[channel] == 0 then
+                channelCb[channel] = nil
+            end
+            return true
+        end
+    end
 end
 
 --协程外部触发
@@ -91,14 +110,12 @@ tiggerCB = function (id,type,data)
     local result, info = pcall(function ()
         if id >= 0 then--定时器消息
             sys.tigger(id)
-        elseif type == "uartRev" then--串口消息
-            if uartReceive then uartReceive(data) end
-        elseif type == "cmd" then
-            load(data)()
-            log.info("console","run success")
         else--其他消息（通用通道）
             if channelCb[type] then
-                channelCb[type](data)
+                --把每个注册的函数都运行一遍
+                for i=1,#channelCb[type] do
+                    channelCb[type][i](data)
+                end
             end
         end
     end)
@@ -107,5 +124,16 @@ tiggerCB = function (id,type,data)
     end
 end
 
+--执行命令
+apiSetCb("cmd",function(data)
+    load(data)()
+    log.info("console","run success")
+end)
 
-
+--兼容老的串口接口
+apiSendUartData = function(data)
+    return apiSend("uart",data)
+end
+apiSetCb("uart",function(data)
+    if uartReceive then uartReceive(data) end
+end)

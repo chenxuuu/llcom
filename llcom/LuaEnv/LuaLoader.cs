@@ -36,8 +36,6 @@ namespace llcom.LuaEnv
 
             if (t != "send")
             {
-                //发送串口数据
-                lua.DoString("apiSendUartData = CS.llcom.LuaEnv.LuaApis.SendUartData");
                 //定时器
                 lua.DoString("apiStartTimer = CS.llcom.LuaEnv.LuaRunEnv.StartTimer");
                 lua.DoString("apiStopTimer = CS.llcom.LuaEnv.LuaRunEnv.StopTimer");

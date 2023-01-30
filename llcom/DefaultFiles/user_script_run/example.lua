@@ -5,10 +5,10 @@
 --建议在此处require你在改的脚本
 
 --注册串口接收函数
-uartReceive = function (data)
+apiSetCb("uart", function (data)
     log.info("uart receive",data)
     sys.publish("UART",data)--发布消息
-end
+end)
 
 --新建任务，等待接收到消息再继续运行
 sys.taskInit(function()
@@ -18,7 +18,7 @@ sys.taskInit(function()
         log.info("uart wait",r,udata)
         if r then
             --发送串口消息，并获取发送结果
-            local sendResult = apiSendUartData("ok!")
+            local sendResult = apiSend("uart","ok!")
             log.info("uart send",sendResult)
         end
     end
