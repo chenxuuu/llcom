@@ -51,6 +51,7 @@ namespace llcom.Pages
             HexSendCheckBox.DataContext = Tools.Global.setting;
             this.ExtraEnterCheckBox.DataContext = Tools.Global.setting;
             DisableLogCheckBox.DataContext = Tools.Global.setting;
+            EnableSymbolCheckBox.DataContext = Tools.Global.setting;
         }
 
         private void Logger_DataShowRawEvent(object sender, Tools.DataShowRaw e)

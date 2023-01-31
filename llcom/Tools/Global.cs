@@ -166,6 +166,7 @@ namespace llcom.Tools
                     setting = JsonConvert.DeserializeObject<Model.Settings>(File.ReadAllText(ProfilePath + "settings.json"));
                     setting.SentCount = 0;
                     setting.ReceivedCount = 0;
+                    setting.DisableLog = false;
                 }
                 catch
                 {
@@ -407,8 +408,6 @@ namespace llcom.Tools
             return GetEncoding().GetString(br.ToArray());
         }
 
-        private static byte[] b_cr = Encoding.GetEncoding(65001).GetBytes("␍");
-        private static byte[] b_lf = Encoding.GetEncoding(65001).GetBytes("␊");
         private static byte[] b_del = Encoding.GetEncoding(65001).GetBytes("␡");
 
         private static byte[][] symbols = null;
@@ -419,8 +418,8 @@ namespace llcom.Tools
         /// <returns></returns>
         public static string Byte2Readable(byte[] vBytes)
         {
-            //非utf8就别搞了
-            if (setting.encoding != 65001)
+            //没开这个功能/非utf8就别搞了
+            if (!setting.EnableSymbol || setting.encoding != 65001)
                 return Byte2String(vBytes);
             //初始化一下这个数组
             if (symbols == null)
@@ -440,21 +439,22 @@ namespace llcom.Tools
                         //遇到成对出现
                         if(i < vBytes.Length-1 && vBytes[i+1] == 0x0a)
                         {
-                            tb.AddRange(b_cr);
-                            tb.AddRange(b_lf);
+                            tb.AddRange(symbols[0x0d]);
+                            tb.AddRange(symbols[0x0a]);
                             tb.Add(0x0d);
                             tb.Add(0x0a);
                             i++;
                         }
                         else
                         {
-                            tb.AddRange(b_cr);
-                            tb.Add(0x0d);
+                            tb.AddRange(symbols[0x0d]);
+                            tb.Add(vBytes[i]);
                         }
                         break;
                     case 0x0a:
-                        tb.AddRange(b_lf);
-                        tb.Add(0x0a);
+                    case 0x09://tab字符
+                        tb.AddRange(symbols[vBytes[i]]);
+                        tb.Add(vBytes[i]);
                         break;
                     default:
                         //普通的字符

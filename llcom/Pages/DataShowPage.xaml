@@ -83,6 +83,12 @@
                 IsChecked="{Binding extraEnter}"
                 ToolTip="{DynamicResource AddExtraEnterTip}" />
             <CheckBox
+                Name="EnableSymbolCheckBox"
+                Margin="5,0,0,0"
+                Content="{DynamicResource ShowSymbol}"
+                IsChecked="{Binding EnableSymbol}"
+                ToolTip="{DynamicResource ShowSymbolTooltip}" />
+            <CheckBox
                 Name="DisableLogCheckBox"
                 Margin="5,0,0,0"
                 Content="{DynamicResource DisableLog}"

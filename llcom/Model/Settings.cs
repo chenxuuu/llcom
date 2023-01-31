@@ -38,7 +38,7 @@ namespace llcom.Model
         private int _encoding = 65001;
         private bool _terminal = true;
         private bool _extraEnter = false;
-        private bool _disableLog = false;
+        private bool _enableSymbol = true;
 
         //窗口大小与位置
         private double _windowTop = 0;
@@ -450,15 +450,14 @@ namespace llcom.Model
             }
         }
 
-        public bool DisableLog
+        public bool DisableLog { get; set; } = false;
+
+        public bool EnableSymbol
         {
-            get
-            {
-                return _disableLog;
-            }
+            get => _enableSymbol;
             set
             {
-                _disableLog = value;
+                _enableSymbol = value;
                 Save();
             }
         }
