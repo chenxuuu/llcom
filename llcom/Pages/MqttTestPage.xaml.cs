@@ -1,12 +1,17 @@
 using llcom.LuaEnv;
+using llcom.Model;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
 using MQTTnet.Client.Subscribing;
+using Newtonsoft.Json;
 using ScottPlot.Drawing.Colormaps;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -56,6 +61,10 @@ namespace llcom.Pages
             WsPathTextBox.DataContext = Tools.Global.setting;
             publishTopicTextBox.DataContext = Tools.Global.setting;
             subcribeTextBox.DataContext = Tools.Global.setting;
+            TLSCertBox.DataContext = Tools.Global.setting;
+            MQTTTLSCa.DataContext = Tools.Global.setting;
+            MQTTTLSClient.DataContext = Tools.Global.setting;
+            MQTTTLSPassword.DataContext = Tools.Global.setting;
             ConnectButton.DataContext = this;
             SettingStackPanel.DataContext = this;
 
@@ -132,6 +141,8 @@ namespace llcom.Pages
             });
         }
 
+
+
         private void ConnectButton_Click(object sender, RoutedEventArgs e)
         {
             if(mqttClient.IsConnected)
@@ -147,13 +158,75 @@ namespace llcom.Pages
             }
             else
             {
-                MqttIsConnected = true;
                 var temp = new MqttClientOptionsBuilder()
                     .WithClientId(Tools.Global.setting.mqttClientID)
                     .WithCredentials(Tools.Global.setting.mqttUser, Tools.Global.setting.mqttPassword)
                     .WithKeepAlivePeriod(new TimeSpan(0, 0, Tools.Global.setting.mqttKeepAlive));
                 if (Tools.Global.setting.mqttTLS)
-                    temp.WithTls();
+                {
+                    if(!Tools.Global.setting.mqttTLSCert || Tools.Global.setting.mqttWs)
+                        temp.WithTls(new MqttClientOptionsBuilderTlsParameters()
+                        {
+                            AllowUntrustedCertificates = true,
+                            IgnoreCertificateChainErrors = true,
+                            UseTls = true,
+                            SslProtocol =
+                                System.Security.Authentication.SslProtocols.Default |
+                                System.Security.Authentication.SslProtocols.Tls11 |
+                                System.Security.Authentication.SslProtocols.Tls12 |
+                                System.Security.Authentication.SslProtocols.Ssl2 |
+                                System.Security.Authentication.SslProtocols.Ssl3,
+                        });
+                    else
+                    {
+                        try
+                        {
+                            var certCa = X509Certificate.CreateFromCertFile(Tools.Global.setting.mqttTLSCertCaPath);
+                            var certClient = new X509Certificate2(Tools.Global.setting.mqttTLSCertClientPath,
+                                string.IsNullOrEmpty(Tools.Global.setting.mqttTLSCertClientPassword) ? 
+                                null : Tools.Global.setting.mqttTLSCertClientPassword);
+                            temp.WithTls(new MqttClientOptionsBuilderTlsParameters()
+                            {
+                                AllowUntrustedCertificates = false,
+                                IgnoreCertificateChainErrors = true,
+                                UseTls = true,
+                                SslProtocol =
+                                System.Security.Authentication.SslProtocols.Default |
+                                System.Security.Authentication.SslProtocols.Tls11 |
+                                System.Security.Authentication.SslProtocols.Tls12 |
+                                System.Security.Authentication.SslProtocols.Ssl2 |
+                                System.Security.Authentication.SslProtocols.Ssl3,
+                                CertificateValidationHandler = (eventArgs) =>
+                                {
+                                    if(eventArgs.SslPolicyErrors != System.Net.Security.SslPolicyErrors.None)
+                                    {
+                                        Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
+                                        {
+                                            title = $"MQTT event: ‼ ssl error {eventArgs.SslPolicyErrors}",
+                                            data = new byte[0],
+                                            color = Brushes.DarkGreen
+                                        });
+                                    }
+                                    return true;
+                                },
+                                Certificates = new List<X509Certificate>()
+                                {
+                                    certClient,certCa
+                                },
+                            });
+                        }
+                        catch
+                        {
+                            Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
+                            {
+                                title = $"MQTT error: ‼ ssl certificate pfx file error",
+                                data = new byte[0],
+                                color = Brushes.DarkGreen
+                            });
+                            return;
+                        }
+                    }
+                }
                 if (Tools.Global.setting.mqttWs)
                     temp.WithWebSocketServer(
                         $"{Tools.Global.setting.mqttServer}:{Tools.Global.setting.mqttPort}" +
@@ -163,6 +236,7 @@ namespace llcom.Pages
                 if (Tools.Global.setting.mqttCleanSession)
                     temp.WithCleanSession();
                 var options = temp.Build();
+                MqttIsConnected = true;//连接中，锁住数据
                 Task.Run(async () =>
                 {
                     try
@@ -254,6 +328,33 @@ namespace llcom.Pages
             catch
             {
                 return false;
+            }
+        }
+
+        private void LoadCertificate_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            System.Windows.Forms.OpenFileDialog OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            OpenFileDialog.Filter = (string)((TextBlock)sender).Tag switch
+            {
+                "CA" => "crt file|*.crt",
+                "Client" => "pfx file|*.pfx",
+                _ => "",
+            };
+            if (OpenFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                try
+                {
+                    switch ((string)((TextBlock)sender).Tag)
+                    {
+                        case "CA":
+                            Tools.Global.setting.mqttTLSCertCaPath = OpenFileDialog.FileName;
+                            break;
+                        case "Client":
+                            Tools.Global.setting.mqttTLSCertClientPath = OpenFileDialog.FileName;
+                            break;
+                    }
+                }
+                catch { }
             }
         }
     }

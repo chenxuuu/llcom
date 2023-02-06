@@ -204,4 +204,8 @@
     <system:String x:Key="DisableLog">Stop print</system:String>
     <system:String x:Key="ShowSymbol">Replace invisible characters</system:String>
     <system:String x:Key="ShowSymbolTooltip">Only support UTF8</system:String>
+    <system:String x:Key="MQTTTLSCert">use user's certificate</system:String>
+    <system:String x:Key="MQTTTLSCA">CA file path(right click me to select file)</system:String>
+    <system:String x:Key="MQTTTLSClient">Client certificate path(right click me to select file)</system:String>
+    <system:String x:Key="MQTTTLSPassword">Client certificate password(leave empty if none)</system:String>
 </ResourceDictionary>

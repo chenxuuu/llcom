@@ -205,4 +205,8 @@
     <system:String x:Key="DisableLog">停止打印</system:String>
     <system:String x:Key="ShowSymbol">替换不可见字符</system:String>
     <system:String x:Key="ShowSymbolTooltip">仅支持在UTF8编码时生效</system:String>
+    <system:String x:Key="MQTTTLSCert">指定tls证书</system:String>
+    <system:String x:Key="MQTTTLSCA">CA证书路径（右击我选择文件）</system:String>
+    <system:String x:Key="MQTTTLSClient">客户端证书路径（右击我选择文件）</system:String>
+    <system:String x:Key="MQTTTLSPassword">客户端证书密码（没有则留空）</system:String>
 </ResourceDictionary>
