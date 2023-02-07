@@ -12,8 +12,7 @@ namespace llcom.Tools
     class Logger
     {
         //显示日志数据的回调函数
-        public static event EventHandler<DataShowPara> DataShowEvent;
-        public static event EventHandler<DataShowRaw> DataShowRawEvent;
+        public static event EventHandler<DataShow> DataShowTask;
         //清空显示的回调函数
         public static event EventHandler DataClearEvent;
         //清空日志显示
@@ -27,7 +26,7 @@ namespace llcom.Tools
             //不刷新日志
             if (Tools.Global.setting.DisableLog)
                 return;
-            DataShowEvent?.Invoke(null, new DataShowPara
+            DataShowTask?.Invoke(null, new DataShowPara
             {
                 data = data,
                 send = send
@@ -39,7 +38,7 @@ namespace llcom.Tools
             //不刷新日志
             if (Tools.Global.setting.DisableLog)
                 return;
-            DataShowRawEvent?.Invoke(null, s);
+            DataShowTask?.Invoke(null, s);
         }
 
 
@@ -128,21 +127,27 @@ namespace llcom.Tools
         }
     }
 
+    //整个父类统一下
+    class DataShow
+    {
+        public DateTime time { get; set; } = DateTime.Now;
+        public byte[] data;
+    }
+
     /// <summary>
     /// 显示到日志显示页面的类
     /// </summary>
-    class DataShowPara
+    class DataShowPara : DataShow
     {
-        public DateTime time { get; set; } = DateTime.Now;
-        public byte[] data;
         public bool send;
     }
 
-    class DataShowRaw
+    /// <summary>
+    /// 更通用的日志数据
+    /// </summary>
+    class DataShowRaw : DataShow
     {
-        public DateTime time { get; set; } = DateTime.Now;
         public string title;
-        public byte[] data;
         public SolidColorBrush color;
     }
 }

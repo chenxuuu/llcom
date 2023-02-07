@@ -79,8 +79,11 @@ package.cpath = package.cpath..
             if (luaRunner == null)
             {
                 luaRunner = new XLua.LuaEnv();
-                luaRunner.Global.SetInPath("runType", "send");//一次性处理标志
-                Initial(luaRunner, "send");
+                lock(luaRunner)
+                {
+                    luaRunner.Global.SetInPath("runType", "send");//一次性处理标志
+                    Initial(luaRunner, "send");
+                }
             }
             lock (luaRunner)
             {

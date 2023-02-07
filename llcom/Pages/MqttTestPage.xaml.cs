@@ -74,13 +74,13 @@ namespace llcom.Pages
                 {
                     MqttIsConnected = mqttClient.IsConnected;
                     subListBox.Items.Clear();
-                    Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
-                    {
-                        title = $"MQTT event: ✔ connected",
-                        data = new byte[0],
-                        color = Brushes.DarkGreen
-                    });
                 }));
+                Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
+                {
+                    title = $"MQTT event: ✔ connected",
+                    data = new byte[0],
+                    color = Brushes.DarkGreen
+                });
             });
             mqttClient.UseDisconnectedHandler(e =>
             {
@@ -89,15 +89,14 @@ namespace llcom.Pages
                     MqttIsConnected = mqttClient.IsConnected;
                     subListBox.Items.Clear();
                     subListBox.Items.Add(TryFindResource("MQTTNotConnect") as string ?? "?!");
-                    Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
-                    {
-                        title = $"MQTT event: ❌ disconnected",
-                        data = new byte[0],
-                        color = Brushes.DarkGreen
-                    });
                 }));
+                Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
+                {
+                    title = $"MQTT event: ❌ disconnected",
+                    data = new byte[0],
+                    color = Brushes.DarkGreen
+                });
             });
-            //
             mqttClient.UseApplicationMessageReceivedHandler(e =>
             {
                 //适配一下通用通道
@@ -109,14 +108,12 @@ namespace llcom.Pages
                         qos = (int)e.ApplicationMessage.QualityOfServiceLevel
                     });
                 //显示数据
-                this.Dispatcher.Invoke(new Action(delegate
+                Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
                 {
-                    Tools.Logger.ShowDataRaw(new Tools.DataShowRaw {
-                        title = $"MQTT → {e.ApplicationMessage.Topic}({(int)e.ApplicationMessage.QualityOfServiceLevel})",
-                        data = e.ApplicationMessage.Payload,
-                        color = Brushes.DarkGreen
-                    });
-                }));
+                    title = $"MQTT → {e.ApplicationMessage.Topic}({(int)e.ApplicationMessage.QualityOfServiceLevel})",
+                    data = e.ApplicationMessage.Payload,
+                    color = Brushes.DarkGreen
+                });
             });
 
             //适配一下通用通道
@@ -314,15 +311,12 @@ namespace llcom.Pages
                     .WithQualityOfServiceLevel(qos)
                     .Build();
                 mqttClient.PublishAsync(message, CancellationToken.None).Wait();
-                this.Dispatcher.Invoke(new Action(delegate
+                Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
                 {
-                    Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
-                    {
-                        title = $"MQTT ← {message.Topic}({(int)message.QualityOfServiceLevel})",
-                        data = message.Payload ?? new byte[0],
-                        color = Brushes.DarkRed
-                    });
-                }));
+                    title = $"MQTT ← {message.Topic}({(int)message.QualityOfServiceLevel})",
+                    data = message.Payload ?? new byte[0],
+                    color = Brushes.DarkRed
+                });
                 return true;
             }
             catch

@@ -24,6 +24,7 @@ namespace llcom.Tools
 {
     class Global
     {
+        public static event EventHandler ProgramClosedEvent;
         //api接口文档网址
         public static string apiDocumentUrl = "https://github.com/chenxuuu/llcom/blob/master/LuaApi.md";
         //主窗口是否被关闭？
@@ -44,6 +45,7 @@ namespace llcom.Tools
                     Logger.CloseLuaLog();
                     if (File.Exists(ProfilePath + "lock"))
                         File.Delete(ProfilePath + "lock");
+                    ProgramClosedEvent?.Invoke(null,EventArgs.Empty);
                 }
             }
         }
@@ -400,12 +402,14 @@ namespace llcom.Tools
         /// </summary>
         /// <param name="mHex"></param>
         /// <returns></returns>
-        public static string Byte2String(byte[] vBytes)
+        public static string Byte2String(byte[] vBytes, int len = -1)
         {
             var br = from e in vBytes
                      where e != 0
                      select e;
-            return GetEncoding().GetString(br.ToArray());
+            if (len == -1 || len > br.Count())
+                len = br.Count();
+            return GetEncoding().GetString(br.Take(len).ToArray());
         }
 
         private static byte[] b_del = Encoding.GetEncoding(65001).GetBytes("␡");
@@ -416,11 +420,13 @@ namespace llcom.Tools
         /// </summary>
         /// <param name="vBytes"></param>
         /// <returns></returns>
-        public static string Byte2Readable(byte[] vBytes)
+        public static string Byte2Readable(byte[] vBytes, int len = -1)
         {
+            if (len == -1)
+                len = vBytes.Length;
             //没开这个功能/非utf8就别搞了
             if (!setting.EnableSymbol || setting.encoding != 65001)
-                return Byte2String(vBytes);
+                return Byte2String(vBytes, len);
             //初始化一下这个数组
             if (symbols == null)
             {
@@ -431,13 +437,13 @@ namespace llcom.Tools
                     symbols[i] = Encoding.GetEncoding(65001).GetBytes(tc[i]);
             }
             var tb = new List<byte>();
-            for (int i = 0; i < vBytes.Length; i++)
+            for (int i = 0; i < len; i++)
             {
                 switch(vBytes[i])
                 {
                     case 0x0d:
                         //遇到成对出现
-                        if(i < vBytes.Length-1 && vBytes[i+1] == 0x0a)
+                        if(i < len - 1 && vBytes[i+1] == 0x0a)
                         {
                             tb.AddRange(symbols[0x0d]);
                             tb.AddRange(symbols[0x0a]);
@@ -489,9 +495,11 @@ namespace llcom.Tools
         }
 
 
-        public static string Byte2Hex(byte[] d, string s = "")
+        public static string Byte2Hex(byte[] d, string s = "", int len = -1)
         {
-            return BitConverter.ToString(d).Replace("-", s);
+            if (len == -1)
+                len = d.Length;
+            return BitConverter.ToString(d,0,len).Replace("-", s);
         }
 
 

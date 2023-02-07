@@ -103,6 +103,8 @@
     <system:String x:Key="SettingSplitByEmpty">Split by no data time(or split by time from first time)</system:String>
     <system:String x:Key="SettingTerminal">Terminal (select data space and send key datas)</system:String>
     <system:String x:Key="SettingMaxPack">Max length per packet</system:String>
+    <system:String x:Key="SettingMaxShowPack">Max log print pack length</system:String>
+    <system:String x:Key="SettingMaxShowPackWarn">!!Auto cut because data too long, you can change this in settings!!</system:String>
     <system:String x:Key="SettingByte">Byte(s)</system:String>
     <system:String x:Key="SettingDataBits">Data bits:</system:String>
     <system:String x:Key="SettingStopBit">Stop bit:</system:String>

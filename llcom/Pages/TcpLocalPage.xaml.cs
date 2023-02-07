@@ -103,15 +103,12 @@ namespace llcom.Pages
         }
         private void ShowData(string title, byte[] data = null, bool send = false)
         {
-            this.Dispatcher.Invoke(new Action(delegate
+            Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
             {
-                Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
-                {
-                    title = $"🛰 local tcp server: {title}",
-                    data = data ?? new byte[0],
-                    color = send ? Brushes.DarkRed : Brushes.DarkGreen,
-                });
-            }));
+                title = $"🛰 local tcp server: {title}",
+                data = data ?? new byte[0],
+                color = send ? Brushes.DarkRed : Brushes.DarkGreen,
+            });
         }
 
         /// <summary>

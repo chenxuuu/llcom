@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,14 +29,23 @@ namespace llcom.Pages
         }
 
         ScrollViewer sv;
+        /// <summary>
+        /// 禁止自动滚动？
+        /// </summary>
         public bool LockLog { get; set; } = false;
+        private bool loaded = false;
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            if (loaded)
+                return;
+            loaded = true;
             //使日志富文本区域滚动可控制
             sv = uartDataFlowDocument.Template.FindName("PART_ContentHost", uartDataFlowDocument) as ScrollViewer;
             sv.CanContentScroll = true;
-            Tools.Logger.DataShowEvent += addUartLog;
-            Tools.Logger.DataShowRawEvent += Logger_DataShowRawEvent;
+            //添加待显示数据到缓冲区
+            Tools.Logger.DataShowTask += DataShowAdd;
+            //显示数据的任务
+            new Thread(DataShowTask).Start();
             Tools.Logger.DataClearEvent += (xx,x) =>
             {
                 uartDataFlowDocument.Document.Blocks.Clear();
@@ -52,14 +62,180 @@ namespace llcom.Pages
             this.ExtraEnterCheckBox.DataContext = Tools.Global.setting;
             DisableLogCheckBox.DataContext = Tools.Global.setting;
             EnableSymbolCheckBox.DataContext = Tools.Global.setting;
+
+            packLengthWarn = TryFindResource("SettingMaxShowPackWarn") as string ?? "?!";
         }
 
-        private void Logger_DataShowRawEvent(object sender, Tools.DataShowRaw e)
+        /// <summary>
+        /// 数据缓冲
+        /// </summary>
+        private List<Tools.DataShow> DataQueue = new List<Tools.DataShow>();
+        /// <summary>
+        /// 消息来的信号量
+        /// </summary>
+        private EventWaitHandle waitQueue = new AutoResetEvent(false);
+        /// <summary>
+        /// 添加一个日志数据到缓冲区
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DataShowAdd(object sender, Tools.DataShow e)
         {
-            uartDataFlowDocument.IsSelectionEnabled = false;
+            lock (DataQueue)
+                DataQueue.Add(e);
+            waitQueue.Set();
+        }
+        /// <summary>
+        /// 分发显示数据的任务
+        /// </summary>
+        private void DataShowTask()
+        {
+            waitQueue.Reset();
+            Tools.Global.ProgramClosedEvent += (_, _) =>
+            {
+                waitQueue.Set();
+            };
+            while (true)
+            {
+                waitQueue.WaitOne();
+                if (Tools.Global.isMainWindowsClosed)
+                    return;
+                var logList = new List<Tools.DataShow>();
+                lock (DataQueue)//取数据
+                {
+                    for(int i=0; i<DataQueue.Count;i++)
+                        logList.Add(DataQueue[i]);
+                    DataQueue.Clear();
+                }
+                waitQueue.Reset();
 
+                //缓存处理好的数据
+                var rawList = new List<DataRaw>();
+                DateTime uartSentTime = DateTime.MinValue;
+                var uartSentList = new List<byte>();
+                DateTime uartReceivedTime = DateTime.MinValue;
+                var uartReceivedList = new List<byte>();
+                for (int i = 0; i < logList.Count; i++)
+                {
+                    if (logList[i] as Tools.DataShowRaw != null)
+                        rawList.Add(new DataRaw(logList[i] as Tools.DataShowRaw));
+                    else
+                    {
+                        //串口数据收发分一下，后续可以合并数据
+                        var d = logList[i] as Tools.DataShowPara;
+                        if (d.data.Length > 0)
+                        {
+                            if(d.send)
+                            {
+                                if(Tools.Global.setting.showSend)//显示发送出去的串口数据
+                                {
+                                    uartSentList.AddRange(d.data);
+                                    if (uartSentTime == DateTime.MinValue)//第一包的时间
+                                        uartSentTime = d.time;
+                                }
+                            }
+                            else
+                            {
+                                uartReceivedList.AddRange(d.data);
+                                if (uartReceivedTime == DateTime.MinValue)//第一包的时间
+                                    uartReceivedTime = d.time;
+                            }
+                        }
+                    }
+                }
+
+                //合并串口数据
+                var uartList = new List<DataUart>();
+                DataUart sentData = null;
+                DataUart receivedData = null;
+                if (uartSentList.Count > 0)
+                    sentData = new DataUart(uartSentList, uartSentTime, true);
+                if (uartReceivedList.Count > 0)
+                    receivedData = new DataUart(uartReceivedList, uartReceivedTime, false);
+                //包的时间顺序要对
+                if (sentData == null && receivedData != null)
+                    uartList.Add(receivedData);
+                else if (sentData != null && receivedData == null)
+                    uartList.Add(sentData);
+                else if (sentData != null && receivedData != null)
+                {
+                    if (uartSentTime < uartReceivedTime)
+                    {
+                        uartList.Add(sentData);
+                        uartList.Add(receivedData);
+                    }
+                    else
+                    {
+                        uartList.Add(receivedData);
+                        uartList.Add(sentData);
+                    }
+                }
+
+                //禁止选中
+                if (logList.Count > 0)
+                    Dispatcher.Invoke(() => {  });
+
+                //显示数据
+                if (rawList.Count == 0 && uartList.Count == 0)
+                    continue;
+                Dispatcher.Invoke(() =>
+                {
+                    uartDataFlowDocument.IsSelectionEnabled = true;
+                    for (int i = 0; i < rawList.Count; i++)
+                        DataShowRaw(rawList[i]);
+                    for (int i = 0; i < uartList.Count; i++)
+                        addUartLog(uartList[i]);
+                    if (!LockLog)//如果允许拉到最下面
+                        Dispatcher.Invoke(sv.ScrollToBottom);
+                    uartDataFlowDocument.IsSelectionEnabled = true;
+                });
+
+                //条目过多，自动清空
+                //CheckPacks();
+                //Thread.Sleep(200);
+            }
+        }
+
+        private static string packLengthWarn =  "";
+
+        class DataRaw
+        {
+            public string time;
+            public string title;
+            public string data = null;
+            public string hex = null;
+            public SolidColorBrush color;
+            public DataRaw(Tools.DataShowRaw d) 
+            {
+                time = d.time.ToString("[yyyy/MM/dd HH:mm:ss.fff]");
+                title = d.title;
+                if (d.data != null && d.data.Length > 0)
+                {
+                    var len = d.data.Length;
+                    var warn = "";
+                    if (d.data.Length > Tools.Global.setting.MaxPackShow)
+                    {
+                        warn = packLengthWarn;
+                        len = Tools.Global.setting.MaxPackShow;
+                    }
+
+                    //主要数据
+                    data = Tools.Global.setting.showHexFormat switch
+                    {
+                        2 => Tools.Global.Byte2Hex(d.data, " ",len) + warn,
+                        _ => Tools.Global.Byte2Readable(d.data, len) + warn,
+                    };
+                    color = d.color;
+                    //小字hex
+                    if (Tools.Global.setting.showHexFormat == 0)
+                        hex = "HEX:" + Tools.Global.Byte2Hex(d.data, " ", len) + warn;
+                }
+            }
+        }
+        private void DataShowRaw(DataRaw e)
+        {
             Paragraph p = new Paragraph(new Run(""));
-            Span text = new Span(new Run(e.time.ToString("[yyyy/MM/dd HH:mm:ss.fff]")));
+            Span text = new Span(new Run(e.time));
             text.Foreground = Brushes.DarkSlateGray;
             p.Inlines.Add(text);
             text = new Span(new Run(e.title));
@@ -68,47 +244,73 @@ namespace llcom.Pages
             p.Inlines.Add(text);
             uartDataFlowDocument.Document.Blocks.Add(p);
 
-            if(e.data.Length > 0)//有数据时才显示信息
+            if (e.data != null)//有数据时才显示信息
             {
                 //主要显示数据
-                string showData = Tools.Global.setting.showHexFormat switch
-                {
-                    2 => Tools.Global.Byte2Hex(e.data, " "),
-                    _ => Tools.Global.Byte2Readable(e.data)
-                };
                 p = new Paragraph(new Run(""));
-                text = new Span(new Run(showData));
+                text = new Span(new Run(e.data));
                 text.Foreground = e.color;
                 text.FontSize = 15;
                 p.Inlines.Add(text);
                 uartDataFlowDocument.Document.Blocks.Add(p);
 
                 //同时显示模式时，才显示小字hex
-                if (Tools.Global.setting.showHexFormat == 0)
+                if (e.hex != null)
                 {
-                    if (e.data.Length > MaxDataLength)
-                        p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(e.data.Skip(0).Take(MaxDataLength).ToArray(), " ")
-                        + "\r\nData too long, check log folder for remaining data."));
-                    else
-                        p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(e.data, " ")));
+                    p = new Paragraph(new Run(e.hex));
                     p.Foreground = e.color;
                     p.Margin = new Thickness(0, 0, 0, 8);
                     uartDataFlowDocument.Document.Blocks.Add(p);
                 }
             }
-            //条目过多，自动清空
-            CheckPacks();
-            if (!LockLog)//如果允许拉到最下面
-                sv.ScrollToBottom();
-            uartDataFlowDocument.IsSelectionEnabled = true;
         }
 
-        //最长一包数据长度，因为太长会把工具卡死机
-        private int MaxDataLength
+        class DataUart
         {
-            get
+            public string time;
+            public string title;
+            public string data;
+            public string hex = null;
+            public SolidColorBrush color;
+            public SolidColorBrush hexColor;
+
+            public DataUart(List<byte> data, DateTime time, bool sent)
             {
-                return (int)Tools.Global.setting.maxLength;
+                byte[] temp = data.ToArray();
+                //转换下接收数据
+                if (!sent)
+                    try
+                    {
+                        temp = LuaEnv.LuaLoader.Run(
+                            $"{Tools.Global.setting.recvScript}.lua",
+                            new System.Collections.ArrayList { "uartData", temp },
+                            "user_script_recv_convert/");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"receive convert lua script error\r\n" + ex.ToString());
+                    }
+                this.time = time.ToString("[yyyy/MM/dd HH:mm:ss.fff]");
+                title = sent ? " ← " : " → ";
+                color = sent ? Brushes.DarkRed : Brushes.DarkGreen;
+                hexColor = sent ? Brushes.IndianRed : Brushes.ForestGreen;
+
+                var len = temp.Length;
+                var warn = "";
+                if (temp.Length > Tools.Global.setting.MaxPackShow)
+                {
+                    warn = packLengthWarn;
+                    len = Tools.Global.setting.MaxPackShow;
+                }
+                //主要数据
+                this.data = Tools.Global.setting.showHexFormat switch
+                {
+                    2 => Tools.Global.Byte2Hex(temp, " ", len) + warn,
+                    _ => Tools.Global.Byte2Readable(temp, len) + warn,
+                };
+                //同时显示模式时，才显示小字hex
+                if (Tools.Global.setting.showHexFormat == 0)
+                    hex = "HEX:" + Tools.Global.Byte2Hex(temp, " ", len) + warn;
             }
         }
 
@@ -117,92 +319,37 @@ namespace llcom.Pages
         /// </summary>
         /// <param name="data">数据</param>
         /// <param name="send">true为发送，false为接收</param>
-        private void addUartLog(object e,Tools.DataShowPara input)
+        private void addUartLog(DataUart d)
         {
-            byte[] data = input.data;
-            if (data.Length == 0)
-                return;
-            bool send = input.send;
-            if (!Tools.Global.setting.showSend && send)
-                return;
-
-            uartDataFlowDocument.IsSelectionEnabled = false;
-
-            //转换下接收数据
-            if(!send)
-            {
-                try
-                {
-                    data = LuaEnv.LuaLoader.Run(
-                        $"{Tools.Global.setting.recvScript}.lua",
-                        new System.Collections.ArrayList { "uartData", data },
-                        "user_script_recv_convert/");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"{TryFindResource("ErrorScript") as string ?? "?!"}\r\n" + ex.ToString());
-                }
-            }
-
             if (Tools.Global.setting.timeout >= 0)
             {
                 Paragraph p = new Paragraph(new Run(""));
 
-                Span text = new Span(new Run(input.time.ToString("[yyyy/MM/dd HH:mm:ss.fff]")));
+                Span text = new Span(new Run(d.time));
                 text.Foreground = Brushes.DarkSlateGray;
                 p.Inlines.Add(text);
 
-                if (send)
-                    text = new Span(new Run(" ← "));
-                else
-                    text = new Span(new Run(" → "));
+                text = new Span(new Run(d.title));
                 text.Foreground = Brushes.Black;
                 text.FontWeight = FontWeights.Bold;
                 p.Inlines.Add(text);
 
                 //主要显示数据
-                if (data.Length > MaxDataLength)
-                {
-                    text = new Span(new Run(Tools.Global.setting.showHexFormat switch
-                    {
-                        2 => Tools.Global.Byte2Hex(data.Skip(0).Take(MaxDataLength).ToArray(), " "),
-                        _ => Tools.Global.Byte2Readable(data.Skip(0).Take(MaxDataLength).ToArray())
-                    } + "\r\nData too long, check log folder for remaining data."));
-                }
-                else
-                {
-                    text = new Span(new Run(Tools.Global.setting.showHexFormat switch
-                    {
-                        2 => Tools.Global.Byte2Hex(data, " "),
-                        _ => Tools.Global.Byte2Readable(data),
-                    }));
-                }
-
-                if (send)
-                    text.Foreground = Brushes.DarkRed;
-                else
-                    text.Foreground = Brushes.DarkGreen;
+                text = new Span(new Run(d.data));
+                text.Foreground = d.color;
                 text.FontSize = 15;
                 p.Inlines.Add(text);
 
                 //同时显示模式时，才显示小字hex
-                if (Tools.Global.setting.showHexFormat != 0)
+                if (d.hex != null)
                     p.Margin = new Thickness(0, 0, 0, 8);
                 uartDataFlowDocument.Document.Blocks.Add(p);
 
                 //同时显示模式时，才显示小字hex
-                if (Tools.Global.setting.showHexFormat == 0)
+                if (d.hex != null)
                 {
-                    if (data.Length > MaxDataLength)
-                        p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(data.Skip(0).Take(MaxDataLength).ToArray(), " ")
-                        + "\r\nData too long, check log folder for remaining data."));
-                    else
-                        p = new Paragraph(new Run("HEX:" + Tools.Global.Byte2Hex(data, " ")));
-
-                    if (send)
-                        p.Foreground = Brushes.IndianRed;
-                    else
-                        p.Foreground = Brushes.ForestGreen;
+                    p = new Paragraph(new Run(d.hex));
+                    p.Foreground = d.hexColor;
                     p.Margin = new Thickness(0, 0, 0, 8);
                     uartDataFlowDocument.Document.Blocks.Add(p);
                 }
@@ -215,44 +362,19 @@ namespace llcom.Pages
 
                 //待显示的数据
                 string s;
-                if (Tools.Global.setting.showHexFormat == 2)
-                    s = Tools.Global.Byte2Hex(data, " ");
+                if (Tools.Global.setting.showHexFormat == 2 && d.hex != null)
+                    s = d.hex;
                 else
-                    s = Tools.Global.Byte2Readable(data);
+                    s = d.data;
                 Span text = new Span(new Run(s));
                 text.FontSize = 15;
-                if (send)
-                    text.Foreground = Brushes.DarkRed;
-                else
-                    text.Foreground = Brushes.DarkGreen;
+                text.Foreground = d.color;
                 (uartDataFlowDocument.Document.Blocks.LastBlock as Paragraph).Inlines.Add(text);
             }
-
-            //条目过多，自动清空
-            CheckPacks();
 
             if (!LockLog)//如果允许拉到最下面
                 sv.ScrollToBottom();
             uartDataFlowDocument.IsSelectionEnabled = true;
-        }
-
-        int maxDataPack = 10_000;//最大同时显示数据包数，因为太多会把工具卡死机
-        /// <summary>
-        /// 条目过多，自动清空
-        /// </summary>
-        private void CheckPacks()
-        {
-            maxDataPack++;
-            if (uartDataFlowDocument.Document.Blocks.Count > maxDataPack)
-            {
-                maxDataPack = 0;
-                uartDataFlowDocument.Document.Blocks.Clear();
-                addUartLog(null, new Tools.DataShowPara
-                {
-                    data = Encoding.Default.GetBytes("Too much packs, please check your log folder for log data."),
-                    send = true
-                });
-            }
         }
 
         private void uartDataFlowDocument_GotFocus(object sender, RoutedEventArgs e)

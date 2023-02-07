@@ -216,15 +216,12 @@ namespace llcom.Pages
 
         private void ShowData(string title, byte[] data = null, bool send = false)
         {
-            this.Dispatcher.Invoke(new Action(delegate
+            Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
             {
-                Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
-                {
-                    title = $"🚀 public socket server: {title}",
-                    data = data ?? new byte[0],
-                    color = send ? Brushes.DarkRed : Brushes.DarkGreen,
-                });
-            }));
+                title = $"🚀 public socket server: {title}",
+                data = data ?? new byte[0],
+                color = send ? Brushes.DarkRed : Brushes.DarkGreen,
+            });
         }
 
         public bool connecting { get; set; } = false;

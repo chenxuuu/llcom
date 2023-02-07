@@ -295,20 +295,12 @@ namespace llcom
 
         private void Uart_UartDataSent(object sender, EventArgs e)
         {
-            this.Dispatcher.Invoke(new Action(delegate {
-                Tools.Logger.ShowData(sender as byte[], true);
-            }));
+            Tools.Logger.ShowData(sender as byte[], true);
         }
 
         private void Uart_UartDataRecived(object sender, EventArgs e)
         {
-            this.Dispatcher.Invoke(new Action(delegate {
-                try
-                {
-                    Tools.Logger.ShowData(sender as byte[], false);
-                }
-                catch { }
-            }));
+            Tools.Logger.ShowData(sender as byte[], false);
         }
 
         private bool refreshLock = false;

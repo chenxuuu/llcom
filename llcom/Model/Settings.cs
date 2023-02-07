@@ -598,5 +598,12 @@ namespace llcom.Model
 
         private int _udpServerPort = 2333;
         public int udpServerPort { get { return _udpServerPort; } set { _udpServerPort = value; Save(); } }
+
+
+        private int _maxPackShow = 1024*2;
+        /// <summary>
+        /// log显示时，一包最大显示长度
+        /// </summary>
+        public int MaxPackShow { get { return _maxPackShow; } set { _maxPackShow = value; Save(); } }
     }
 }
