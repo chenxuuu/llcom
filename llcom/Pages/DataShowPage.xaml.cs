@@ -59,7 +59,7 @@ namespace llcom.Pages
             uartDataFlowDocument.IsSelectionEnabled = false;
 
             Paragraph p = new Paragraph(new Run(""));
-            Span text = new Span(new Run(DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss.ffff]")));
+            Span text = new Span(new Run(e.time.ToString("[yyyy/MM/dd HH:mm:ss.fff]")));
             text.Foreground = Brushes.DarkSlateGray;
             p.Inlines.Add(text);
             text = new Span(new Run(e.title));
@@ -148,7 +148,7 @@ namespace llcom.Pages
             {
                 Paragraph p = new Paragraph(new Run(""));
 
-                Span text = new Span(new Run(DateTime.Now.ToString("[yyyy/MM/dd HH:mm:ss.ffff]")));
+                Span text = new Span(new Run(input.time.ToString("[yyyy/MM/dd HH:mm:ss.fff]")));
                 text.Foreground = Brushes.DarkSlateGray;
                 p.Inlines.Add(text);
 
@@ -258,7 +258,7 @@ namespace llcom.Pages
         private void uartDataFlowDocument_GotFocus(object sender, RoutedEventArgs e)
         {
             if(Tools.Global.setting.terminal)
-                uartDataFlowDocument.BorderThickness = new Thickness(1);
+                uartDataFlowDocument.BorderThickness = new Thickness(0.5);
         }
 
         private void uartDataFlowDocument_LostFocus(object sender, RoutedEventArgs e)

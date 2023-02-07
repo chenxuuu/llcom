@@ -19,9 +19,6 @@ namespace llcom.Tools
         //清空日志显示
         public static void ClearData()
         {
-            //不刷新日志
-            if (Tools.Global.setting.DisableLog)
-                return;
             DataClearEvent?.Invoke(null,null);
         }
         //显示日志数据
@@ -136,12 +133,14 @@ namespace llcom.Tools
     /// </summary>
     class DataShowPara
     {
+        public DateTime time { get; set; } = DateTime.Now;
         public byte[] data;
         public bool send;
     }
 
     class DataShowRaw
     {
+        public DateTime time { get; set; } = DateTime.Now;
         public string title;
         public byte[] data;
         public SolidColorBrush color;
