@@ -147,7 +147,8 @@
                     Name="refreshPortButton"
                     Grid.Column="0"
                     Click="RefreshPortButton_Click"
-                    Content="{DynamicResource RefreshPortButton}" />
+                    Content="{DynamicResource RefreshPortButton}"
+                    IsEnabled="{Binding ElementName=serialPortsListComboBox, Path=IsEnabled}" />
                 <StatusBarItem Grid.Column="1">
                     <TextBlock Text="{DynamicResource ShowPorts}" />
                 </StatusBarItem>
