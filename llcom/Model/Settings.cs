@@ -605,5 +605,12 @@ namespace llcom.Model
         /// log显示时，一包最大显示长度
         /// </summary>
         public int MaxPackShow { get { return _maxPackShow; } set { _maxPackShow = value; Save(); } }
+
+
+        private int _maxPacksAutoClear = 200;
+        /// <summary>
+        /// log显示时，达到多少包自动清空日志区域
+        /// </summary>
+        public int MaxPacksAutoClear { get { return _maxPacksAutoClear; } set { _maxPacksAutoClear = value; Save(); } }
     }
 }

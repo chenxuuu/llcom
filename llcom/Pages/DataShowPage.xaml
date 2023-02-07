@@ -42,7 +42,7 @@
             </FlowDocumentScrollViewer.Resources>
             <!--  更改段落间距END  -->
             <FlowDocument
-                FontFamily="Consolas"
+                FontFamily="Consolas,Microsoft YaHei,微软雅黑"
                 FontSize="12"
                 IsOptimalParagraphEnabled="False"
                 TextAlignment="Left" />

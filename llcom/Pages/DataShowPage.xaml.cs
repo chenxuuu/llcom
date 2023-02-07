@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -64,6 +65,7 @@ namespace llcom.Pages
             EnableSymbolCheckBox.DataContext = Tools.Global.setting;
 
             packLengthWarn = TryFindResource("SettingMaxShowPackWarn") as string ?? "?!";
+            logAutoClearWarn = TryFindResource("SettingMaxPacksWarn") as string ?? "?!";
         }
 
         /// <summary>
@@ -180,6 +182,12 @@ namespace llcom.Pages
                     continue;
                 Dispatcher.Invoke(() =>
                 {
+                    if (uartDataFlowDocument.Document.Blocks.Count > Tools.Global.setting.MaxPacksAutoClear)
+                    {
+                        uartDataFlowDocument.Document.Blocks.Clear();
+                        Paragraph p = new Paragraph(new Run(logAutoClearWarn));
+                        uartDataFlowDocument.Document.Blocks.Add(p);
+                    }
                     uartDataFlowDocument.IsSelectionEnabled = true;
                     for (int i = 0; i < rawList.Count; i++)
                         DataShowRaw(rawList[i]);
@@ -196,7 +204,8 @@ namespace llcom.Pages
             }
         }
 
-        private static string packLengthWarn =  "";
+        private static string packLengthWarn = "";
+        private static string logAutoClearWarn = "";
 
         class DataRaw
         {

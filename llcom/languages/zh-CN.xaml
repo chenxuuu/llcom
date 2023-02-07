@@ -105,7 +105,10 @@
     <system:String x:Key="SettingMaxPack">串口数据每包最大</system:String>
     <system:String x:Key="SettingMaxShowPack">日志打印每最大显示长度限制</system:String>
     <system:String x:Key="SettingMaxShowPackWarn">!!数据过长自动截断显示，可前往设置更改长度限制!!</system:String>
+    <system:String x:Key="SettingMaxPacksWarn">!!数据包过多自动清空，可前往设置更改此限制!!</system:String>
     <system:String x:Key="SettingByte">字节</system:String>
+    <system:String x:Key="SettingPacksText">收到</system:String>
+    <system:String x:Key="SettingPacks">包数据后，自动清空日志区域</system:String>
     <system:String x:Key="SettingDataBits">数据位长度：</system:String>
     <system:String x:Key="SettingStopBit">停止位：</system:String>
     <system:String x:Key="SettingParity">校验位：</system:String>

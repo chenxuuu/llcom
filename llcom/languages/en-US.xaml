@@ -105,7 +105,10 @@
     <system:String x:Key="SettingMaxPack">Max length per packet</system:String>
     <system:String x:Key="SettingMaxShowPack">Max log print pack length</system:String>
     <system:String x:Key="SettingMaxShowPackWarn">!!Auto cut because data too long, you can change this in settings!!</system:String>
+    <system:String x:Key="SettingMaxPacksWarn">!!Auto clear because packs too much, you can change this in settings!!</system:String>
     <system:String x:Key="SettingByte">Byte(s)</system:String>
+    <system:String x:Key="SettingPacksText">Auto clear log display area after</system:String>
+    <system:String x:Key="SettingPacks">packs received</system:String>
     <system:String x:Key="SettingDataBits">Data bits:</system:String>
     <system:String x:Key="SettingStopBit">Stop bit:</system:String>
     <system:String x:Key="SettingParity">Parity</system:String>

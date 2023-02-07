@@ -67,15 +67,20 @@
                             Margin="5"
                             Content="{DynamicResource SettingTerminal}"
                             IsChecked="{Binding terminal}" />
-                        <StackPanel Margin="0,10" Orientation="Horizontal">
+                        <StackPanel Margin="0,10,0,5" Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center" Text="{DynamicResource SettingMaxPack}" />
                             <TextBox MinWidth="60" Text="{Binding maxLength, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock VerticalAlignment="Center" Text="{DynamicResource SettingByte}" />
                         </StackPanel>
-                        <StackPanel Margin="0,10" Orientation="Horizontal">
+                        <StackPanel Margin="0,5" Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center" Text="{DynamicResource SettingMaxShowPack}" />
                             <TextBox MinWidth="60" Text="{Binding MaxPackShow, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock VerticalAlignment="Center" Text="{DynamicResource SettingByte}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="{DynamicResource SettingPacksText}" />
+                            <TextBox MinWidth="60" Text="{Binding MaxPacksAutoClear, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock VerticalAlignment="Center" Text="{DynamicResource SettingPacks}" />
                         </StackPanel>
                         <WrapPanel Margin="5">
                             <TextBlock VerticalAlignment="Center" Text="{DynamicResource SettingDataBits}" />
