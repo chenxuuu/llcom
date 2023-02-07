@@ -1,3 +1,4 @@
+using llcom.Tools;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -120,7 +121,12 @@ namespace llcom.Pages
                 for (int i = 0; i < logList.Count; i++)
                 {
                     if (logList[i] as Tools.DataShowRaw != null)
+                    {
+                        Logger.AddUartLogInfo($"[{logList[i].time}]{(logList[i] as Tools.DataShowRaw).title}\r\n" +
+                            $"{Global.GetEncoding().GetString(logList[i].data)}\r\n" +
+                            $"HEX:{Tools.Global.Byte2Hex(logList[i].data, " ")}");
                         rawList.Add(new DataRaw(logList[i] as Tools.DataShowRaw));
+                    }
                     else
                     {
                         //串口数据收发分一下，后续可以合并数据
@@ -173,21 +179,19 @@ namespace llcom.Pages
                     }
                 }
 
-                //禁止选中
-                if (logList.Count > 0)
-                    Dispatcher.Invoke(() => {  });
-
                 //显示数据
                 if (rawList.Count == 0 && uartList.Count == 0)
                     continue;
                 Dispatcher.Invoke(() =>
                 {
+                    //条目过多，自动清空
                     if (uartDataFlowDocument.Document.Blocks.Count > Tools.Global.setting.MaxPacksAutoClear)
                     {
                         uartDataFlowDocument.Document.Blocks.Clear();
                         Paragraph p = new Paragraph(new Run(logAutoClearWarn));
                         uartDataFlowDocument.Document.Blocks.Add(p);
                     }
+                    //禁止选中
                     uartDataFlowDocument.IsSelectionEnabled = true;
                     for (int i = 0; i < rawList.Count; i++)
                         DataShowRaw(rawList[i]);
@@ -197,10 +201,6 @@ namespace llcom.Pages
                         Dispatcher.Invoke(sv.ScrollToBottom);
                     uartDataFlowDocument.IsSelectionEnabled = true;
                 });
-
-                //条目过多，自动清空
-                //CheckPacks();
-                //Thread.Sleep(200);
             }
         }
 
