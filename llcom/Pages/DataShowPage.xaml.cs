@@ -192,14 +192,15 @@ namespace llcom.Pages
                         uartDataFlowDocument.Document.Blocks.Add(p);
                     }
                     //禁止选中
-                    uartDataFlowDocument.IsSelectionEnabled = true;
+                    uartDataFlowDocument.IsEnabled = false;
                     for (int i = 0; i < rawList.Count; i++)
                         DataShowRaw(rawList[i]);
                     for (int i = 0; i < uartList.Count; i++)
                         addUartLog(uartList[i]);
                     if (!LockLog)//如果允许拉到最下面
                         Dispatcher.Invoke(sv.ScrollToBottom);
-                    uartDataFlowDocument.IsSelectionEnabled = true;
+                    if(!uartDataFlowDocument.IsMouseOver)
+                        uartDataFlowDocument.IsEnabled = true;
                 });
             }
         }
@@ -448,6 +449,11 @@ namespace llcom.Pages
             {
                 Tools.Global.uart.Dtr = value;
             }
+        }
+
+        private void uartDataFlowDocument_MouseLeave(object sender, MouseEventArgs e)
+        {
+            uartDataFlowDocument.IsEnabled = true;
         }
     }
 }

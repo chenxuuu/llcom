@@ -31,6 +31,7 @@
             GotFocus="uartDataFlowDocument_GotFocus"
             LostFocus="uartDataFlowDocument_LostFocus"
             MinZoom="50"
+            MouseLeave="uartDataFlowDocument_MouseLeave"
             PreviewKeyDown="uartDataFlowDocument_PreviewKeyDown"
             PreviewTextInput="uartDataFlowDocument_PreviewTextInput"
             VerticalScrollBarVisibility="Visible">

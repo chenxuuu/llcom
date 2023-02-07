@@ -1007,32 +1007,29 @@ namespace llcom
             if (luaLogPrintable)
             {
                 luaLogCount++;
-                if(luaLogCount < 1000)
+                //新起一个线程，绕过线程锁卡死问题
+                Task.Run(() =>
                 {
-                    //新起一个线程，绕过线程锁卡死问题
-                    Task.Run(() =>
-                    {
-                        this.Dispatcher.Invoke(new Action(delegate
-                        {
-                            luaLogTextBox.Select(luaLogTextBox.Text.Length, 0);//确保文字不再被选中，防止wpf卡死
-                            luaLogTextBox.AppendText((sender as string) + "\r\n");
-                            luaLogTextBox.ScrollToEnd();
-                        }));
-                    });
-                }
-                else
-                {
-                    luaLogCount = 0;
                     this.Dispatcher.Invoke(new Action(delegate
                     {
-                        luaLogTextBox.Clear();
-                        luaLogTextBox.AppendText("Lua log too long, auto clear.\r\n" +
-                            "more logs see lua log file.\r\n");
+                        luaLogTextBox.IsEnabled = false;//确保文字不再被选中，防止wpf卡死
+                        if (luaLogCount >= 1000)
+                        {
+                            luaLogTextBox.Clear();
+                            luaLogTextBox.AppendText("Lua log too long, auto clear.\r\n" +
+                                "more logs see lua log file.\r\n");
+                        }
+                        luaLogTextBox.AppendText((sender as string) + "\r\n");
                         luaLogTextBox.ScrollToEnd();
+                        if(!luaLogTextBox.IsMouseOver)
+                            luaLogTextBox.IsEnabled = true;
                     }));
-                }
-
+                });
             }
+        }
+        private void luaLogTextBox_MouseLeave(object sender, MouseEventArgs e)
+        {
+            luaLogTextBox.IsEnabled = true;
         }
 
         private void StopLuaButton_Click(object sender, RoutedEventArgs e)

@@ -571,7 +571,8 @@
                             VerticalContentAlignment="Top"
                             IsReadOnly="true"
                             TextWrapping="Wrap"
-                            VerticalScrollBarVisibility="Auto" />
+                            VerticalScrollBarVisibility="Auto" 
+                            MouseLeave="luaLogTextBox_MouseLeave"/>
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
