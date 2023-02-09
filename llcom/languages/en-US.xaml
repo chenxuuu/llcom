@@ -213,4 +213,5 @@
     <system:String x:Key="MQTTTLSCA">CA file path(right click me to select file)</system:String>
     <system:String x:Key="MQTTTLSClient">Client certificate path(right click me to select file)</system:String>
     <system:String x:Key="MQTTTLSPassword">Client certificate password(leave empty if none)</system:String>
+    <system:String x:Key="BuffPacksTooMuchWarn">!!Buff data much more then 100, auto clear!!you can see them in log files</system:String>
 </ResourceDictionary>

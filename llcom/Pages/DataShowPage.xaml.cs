@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace llcom.Pages
 {
@@ -67,6 +68,7 @@ namespace llcom.Pages
 
             packLengthWarn = TryFindResource("SettingMaxShowPackWarn") as string ?? "?!";
             logAutoClearWarn = TryFindResource("SettingMaxPacksWarn") as string ?? "?!";
+            packsTooMuch = TryFindResource("BuffPacksTooMuchWarn") as string ?? "?!";
         }
 
         /// <summary>
@@ -85,6 +87,24 @@ namespace llcom.Pages
         private void DataShowAdd(object sender, Tools.DataShow e)
         {
             lock (DataQueue)
+            {
+                if(e is DataShowRaw)
+                    Logger.AddUartLogInfo($"[{e.time}]{(e as Tools.DataShowRaw).title}\r\n" +
+                        $"{Global.GetEncoding().GetString(e.data)}\r\n" +
+                        $"HEX:{Tools.Global.Byte2Hex(e.data, " ")}");
+                if(DataQueue.Count > 100)
+                {
+                    DataQueue.Clear();
+                    DataQueue.Add(new DataShowRaw
+                    {
+                        title = packsTooMuch
+                    });
+                    //延时0.5秒，防止卡住ui线程
+                    Thread.Sleep(500);
+                }
+                else
+                    DataQueue.Add(e);
+            }
                 DataQueue.Add(e);
             waitQueue.Set();
         }
@@ -112,6 +132,9 @@ namespace llcom.Pages
                 }
                 waitQueue.Reset();
 
+                if (logList.Count == 0)//没数据，切走
+                    continue;
+
                 //缓存处理好的数据
                 var rawList = new List<DataRaw>();
                 DateTime uartSentTime = DateTime.MinValue;
@@ -121,12 +144,7 @@ namespace llcom.Pages
                 for (int i = 0; i < logList.Count; i++)
                 {
                     if (logList[i] as Tools.DataShowRaw != null)
-                    {
-                        Logger.AddUartLogInfo($"[{logList[i].time}]{(logList[i] as Tools.DataShowRaw).title}\r\n" +
-                            $"{Global.GetEncoding().GetString(logList[i].data)}\r\n" +
-                            $"HEX:{Tools.Global.Byte2Hex(logList[i].data, " ")}");
                         rawList.Add(new DataRaw(logList[i] as Tools.DataShowRaw));
-                    }
                     else
                     {
                         //串口数据收发分一下，后续可以合并数据
@@ -207,6 +225,7 @@ namespace llcom.Pages
 
         private static string packLengthWarn = "";
         private static string logAutoClearWarn = "";
+        private static string packsTooMuch = "";
 
         class DataRaw
         {
