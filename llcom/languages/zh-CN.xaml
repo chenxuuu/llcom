@@ -109,6 +109,7 @@
     <system:String x:Key="SettingByte">字节</system:String>
     <system:String x:Key="SettingPacksText">收到</system:String>
     <system:String x:Key="SettingPacks">包数据后，自动清空日志区域</system:String>
+    <system:String x:Key="SettingLagAutoClear">日志界面卡顿超过250ms，自动清空</system:String>
     <system:String x:Key="SettingDataBits">数据位长度：</system:String>
     <system:String x:Key="SettingStopBit">停止位：</system:String>
     <system:String x:Key="SettingParity">校验位：</system:String>
@@ -215,4 +216,5 @@
     <system:String x:Key="MQTTTLSClient">客户端证书路径（右击我选择文件）</system:String>
     <system:String x:Key="MQTTTLSPassword">客户端证书密码（没有则留空）</system:String>
     <system:String x:Key="BuffPacksTooMuchWarn">!!缓冲区数据超过100条，为避免卡顿已自动合并!!如需查看，请前往日志文件查看</system:String>
+    <system:String x:Key="LogLagWarn">!!检测到日志刷新卡顿超过250毫秒，自动执行清空数据操作!!</system:String>
 </ResourceDictionary>

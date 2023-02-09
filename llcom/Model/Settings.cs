@@ -612,5 +612,12 @@ namespace llcom.Model
         /// log显示时，达到多少包自动清空日志区域
         /// </summary>
         public int MaxPacksAutoClear { get { return _maxPacksAutoClear; } set { _maxPacksAutoClear = value; Save(); } }
+
+
+        private bool _lagAutoClear = true;
+        /// <summary>
+        /// log输出卡顿时，自动清空数据
+        /// </summary>
+        public bool LagAutoClear { get { return _lagAutoClear; } set { _lagAutoClear = value; Save(); } }
     }
 }

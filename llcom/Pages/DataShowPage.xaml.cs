@@ -69,6 +69,7 @@ namespace llcom.Pages
             packLengthWarn = TryFindResource("SettingMaxShowPackWarn") as string ?? "?!";
             logAutoClearWarn = TryFindResource("SettingMaxPacksWarn") as string ?? "?!";
             packsTooMuch = TryFindResource("BuffPacksTooMuchWarn") as string ?? "?!";
+            uiTooLag = TryFindResource("LogLagWarn") as string ?? "?!";
         }
 
         /// <summary>
@@ -105,7 +106,6 @@ namespace llcom.Pages
                 else
                     DataQueue.Add(e);
             }
-                DataQueue.Add(e);
             waitQueue.Set();
         }
         /// <summary>
@@ -200,6 +200,8 @@ namespace llcom.Pages
                 //显示数据
                 if (rawList.Count == 0 && uartList.Count == 0)
                     continue;
+                //记录一下开始的时间
+                var start = DateTime.Now;
                 Dispatcher.Invoke(() =>
                 {
                     //条目过多，自动清空
@@ -220,12 +222,25 @@ namespace llcom.Pages
                     if(!uartDataFlowDocument.IsMouseOver)
                         uartDataFlowDocument.IsEnabled = true;
                 });
+                //如果卡顿超过了半秒，则触发自动清空
+                if(Tools.Global.setting.LagAutoClear && (DateTime.Now - start).Milliseconds > 250)
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        uartDataFlowDocument.Document.Blocks.Clear();
+                        Paragraph p = new Paragraph(new Run(uiTooLag));
+                        uartDataFlowDocument.Document.Blocks.Add(p);
+                    });
+                }
+                //正常就延时10ms，防止卡住ui线程
+                Thread.Sleep(10);
             }
         }
 
         private static string packLengthWarn = "";
         private static string logAutoClearWarn = "";
         private static string packsTooMuch = "";
+        private static string uiTooLag = "";
 
         class DataRaw
         {

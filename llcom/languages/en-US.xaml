@@ -109,6 +109,7 @@
     <system:String x:Key="SettingByte">Byte(s)</system:String>
     <system:String x:Key="SettingPacksText">Auto clear log display area after</system:String>
     <system:String x:Key="SettingPacks">packs received</system:String>
+    <system:String x:Key="SettingLagAutoClear">Suto clear log when lag more then 250ms</system:String>
     <system:String x:Key="SettingDataBits">Data bits:</system:String>
     <system:String x:Key="SettingStopBit">Stop bit:</system:String>
     <system:String x:Key="SettingParity">Parity</system:String>
@@ -214,4 +215,5 @@
     <system:String x:Key="MQTTTLSClient">Client certificate path(right click me to select file)</system:String>
     <system:String x:Key="MQTTTLSPassword">Client certificate password(leave empty if none)</system:String>
     <system:String x:Key="BuffPacksTooMuchWarn">!!Buff data much more then 100, auto clear!!you can see them in log files</system:String>
+    <system:String x:Key="LogLagWarn">!!Detect log print lag 250ms, auto clear logs!!</system:String>
 </ResourceDictionary>
