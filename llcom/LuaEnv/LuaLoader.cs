@@ -60,6 +60,25 @@ package.cpath = package.cpath..
 
             //运行初始化文件
             lua.DoString("require 'core_script.head'");
+
+            if (t == "send")
+            {
+                lua.DoString(@"
+--只运行一次的代码
+local rootPath = apiUtf8ToHex(apiGetPath()):fromHex()
+--读到的文件
+local script = {}
+_G[""!once!""] = function()
+    runLimitStart(3)
+    if not script[file] then
+        script[file] = load(CS.System.IO.File.ReadAllText(file))
+    end
+    local result = script[file]()
+    runLimitStop()
+    return result:toHex()
+end
+");
+            }
         }
 
 
@@ -87,7 +106,7 @@ package.cpath = package.cpath..
             }
             lock (luaRunner)
             {
-                luaRunner.Global.SetInPath("file", path + file);
+                luaRunner.Global.SetInPath("file", Tools.Global.ProfilePath + path + file);
 
                 try
                 {
@@ -95,9 +114,9 @@ package.cpath = package.cpath..
                         for (int i = 0; i < args.Count; i += 2)
                         {
                             luaRunner.Global.SetInPath((string)args[i], args[i + 1]);
-                            System.Diagnostics.Debug.WriteLine($"{(string)args[i]},{args[i + 1]}");
                         }
-                    var r = luaRunner.DoString("return require('core_script.once')()")[0].ToString();
+                    
+                    var r = luaRunner.Global.Get<XLua.LuaFunction>("!once!").Call()[0].ToString();
                     return Tools.Global.Hex2Byte(r);
                 }
                 catch (Exception e)
@@ -107,6 +126,14 @@ package.cpath = package.cpath..
                     throw new Exception(e.ToString());
                 }
             }
+        }
+
+        /// <summary>
+        /// 清除运行用的脚本虚拟机，实现重新加载所有文件的功能
+        /// </summary>
+        public static void ClearRun()
+        {
+            luaRunner = null;
         }
     }
 }

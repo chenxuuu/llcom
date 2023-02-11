@@ -81,6 +81,9 @@ namespace llcom
             }
             lastLuaFile = Tools.Global.setting.sendScript;
             fileLoading = false;
+
+            //重载脚本
+            LuaEnv.LuaLoader.ClearRun();
         }
         private void loadLuaFileRev(string fileName)
         {
@@ -122,6 +125,9 @@ namespace llcom
             }
             lastLuaFileRev = Tools.Global.setting.recvScript;
             fileLoadingRev = false;
+
+            //重载脚本
+            LuaEnv.LuaLoader.ClearRun();
         }
 
         /// <summary>
@@ -131,10 +137,16 @@ namespace llcom
         private void saveLuaFile(string fileName)
         {
             File.WriteAllText(Tools.Global.ProfilePath + $"user_script_send_convert/{fileName}.lua", textEditor.Text);
+
+            //重载脚本
+            LuaEnv.LuaLoader.ClearRun();
         }
         private void saveLuaFileRev(string fileName)
         {
             File.WriteAllText(Tools.Global.ProfilePath + $"user_script_recv_convert/{fileName}.lua", textEditorRev.Text);
+
+            //重载脚本
+            LuaEnv.LuaLoader.ClearRun();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
