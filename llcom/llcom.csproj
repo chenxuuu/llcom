@@ -403,7 +403,6 @@
     <Resource Include="DefaultFiles\core_script\head.lua" />
     <Resource Include="DefaultFiles\core_script\JSON.lua" />
     <Resource Include="DefaultFiles\core_script\log.lua" />
-    <Resource Include="DefaultFiles\core_script\once.lua" />
     <Resource Include="DefaultFiles\core_script\strings.lua" />
     <Resource Include="DefaultFiles\core_script\sys.lua" />
     <Resource Include="DefaultFiles\LICENSE" />

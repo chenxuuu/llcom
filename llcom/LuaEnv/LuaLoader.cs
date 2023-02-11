@@ -75,7 +75,7 @@ _G[""!once!""] = function()
     end
     local result = script[file]()
     runLimitStop()
-    return result:toHex()
+    return result
 end
 ");
             }
@@ -116,8 +116,8 @@ end
                             luaRunner.Global.SetInPath((string)args[i], args[i + 1]);
                         }
                     
-                    var r = luaRunner.Global.Get<XLua.LuaFunction>("!once!").Call()[0].ToString();
-                    return Tools.Global.Hex2Byte(r);
+                    var r = luaRunner.Global.Get<XLua.LuaFunction>("!once!").Call(null, new Type[] { typeof(byte[]) })[0] as byte[];
+                    return r;
                 }
                 catch (Exception e)
                 {
