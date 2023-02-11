@@ -68,6 +68,16 @@ namespace llcom.Pages
             heartbeatV6.AutoReset = true;
             heartbeatV6.Elapsed += (ss, ee) => { try { if (IsConnected) wsV6.Send("{}"); } catch { } };
 
+            //允许所有tls协议版本
+            var tlsAll = 
+                System.Security.Authentication.SslProtocols.Ssl2 | 
+                System.Security.Authentication.SslProtocols.Ssl3 |
+                System.Security.Authentication.SslProtocols.Tls | 
+                System.Security.Authentication.SslProtocols.Tls11 | 
+                System.Security.Authentication.SslProtocols.Tls12;
+            ws.SslConfiguration.EnabledSslProtocols = tlsAll;
+            wsV6.SslConfiguration.EnabledSslProtocols = tlsAll;
+
             //ws事件
             ws.OnOpen += (ss, ee) => { IsConnected = true; heartbeat.Start(); this.Dispatcher.Invoke(() => { clients.Clear(); }); };
             wsV6.OnOpen += (ss, ee) => { IsConnected = true; heartbeatV6.Start(); this.Dispatcher.Invoke(() => { clients.Clear(); }); };
@@ -190,11 +200,11 @@ namespace llcom.Pages
 
             ws.OnError += (ss, ee) =>
             {
-                ShowData($"📢 Create failed");
+                ShowData($"📢 Create failed :{ee.Message}");
             };
             wsV6.OnError += (ss, ee) =>
             {
-                ShowData($"📢 Create failed");
+                ShowData($"📢 Create failed :{ee.Message}");
             };
 
             //适配一下通用通道
