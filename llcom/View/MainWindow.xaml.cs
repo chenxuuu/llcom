@@ -198,6 +198,8 @@ namespace llcom
                             $"https://llcom.papapoi.com/tongji.html?{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}"
                         );
 
+                    new Thread(LuaLogPrintTask).Start();
+
                     //加载完了，可以允许点击
                     MainGrid.IsEnabled = true;
 
@@ -1001,32 +1003,81 @@ namespace llcom
                 _luaLogPrintable = value;
             }
         }
+
+        //lua日志打印次数
         private int luaLogCount = 0;
+        /// <summary>
+        /// 消息来的信号量
+        /// </summary>
+        private EventWaitHandle luaWaitQueue = new AutoResetEvent(false);
+        private List<string> luaLogsBuff = new List<string>();
         private void LuaApis_PrintLuaLog(object sender, EventArgs e)
         {
-            if (luaLogPrintable)
-            {
-                luaLogCount++;
-                //新起一个线程，绕过线程锁卡死问题
-                Task.Run(() =>
+            if(sender is string && sender != null)
+            { 
+                lock(luaLogsBuff)
                 {
-                    this.Dispatcher.Invoke(new Action(delegate
+                    if (luaLogsBuff.Count > 500)
                     {
-                        luaLogTextBox.IsEnabled = false;//确保文字不再被选中，防止wpf卡死
-                        if (luaLogCount >= 1000)
-                        {
-                            luaLogTextBox.Clear();
-                            luaLogTextBox.AppendText("Lua log too long, auto clear.\r\n" +
-                                "more logs see lua log file.\r\n");
-                        }
-                        luaLogTextBox.AppendText((sender as string) + "\r\n");
-                        luaLogTextBox.ScrollToEnd();
-                        if(!luaLogTextBox.IsMouseOver)
-                            luaLogTextBox.IsEnabled = true;
-                    }));
-                });
+                        luaLogsBuff.Clear();
+                        luaLogsBuff.Add("too many logs!");
+                        //延时0.5秒，防止卡住ui线程
+                        Thread.Sleep(500);
+                    }
+                    else
+                        luaLogsBuff.Add(sender as string);
+                }
+                luaWaitQueue.Set();
             }
         }
+
+        private void LuaLogPrintTask()
+        {
+            luaWaitQueue.Reset();
+            Tools.Global.ProgramClosedEvent += (_, _) =>
+            {
+                luaWaitQueue.Set();
+            };
+            while (true)
+            {
+                luaWaitQueue.WaitOne();
+                if (Tools.Global.isMainWindowsClosed)
+                    return;
+                var logsb = new StringBuilder();
+                lock (luaLogsBuff)
+                {
+                    for(int i=0;i<luaLogsBuff.Count;i++)
+                        logsb.AppendLine(luaLogsBuff[i]);
+                    luaLogsBuff.Clear();
+                }
+
+                if (!luaLogPrintable)
+                    continue;
+                if (logsb.Length == 0)
+                    continue;
+                luaLogCount++;
+                var logs = logsb.ToString();
+                this.Dispatcher.Invoke(()=>
+                {
+                    luaLogTextBox.IsEnabled = false;//确保文字不再被选中，防止wpf卡死
+                    if (luaLogCount >= 1000)
+                    {
+                        luaLogTextBox.Clear();
+                        luaLogTextBox.AppendText("Lua log too long, auto clear.\r\n" +
+                            "more logs see lua log file.\r\n");
+                        luaLogCount = 0;
+                    }
+                    luaLogTextBox.AppendText(logs);
+                    luaLogTextBox.ScrollToEnd();
+                    if (!luaLogTextBox.IsMouseOver)
+                        luaLogTextBox.IsEnabled = true;
+                });
+                //正常就延时10ms，防止卡住ui线程
+                Thread.Sleep(10);
+            }
+        }
+
+
         private void luaLogTextBox_MouseLeave(object sender, MouseEventArgs e)
         {
             luaLogTextBox.IsEnabled = true;
@@ -1035,6 +1086,8 @@ namespace llcom
         private void StopLuaButton_Click(object sender, RoutedEventArgs e)
         {
             luaLogCount = 0;
+            lock(luaLogsBuff)
+                luaLogsBuff.Clear();
             if (!LuaEnv.LuaRunEnv.isRunning)
             {
                 luaLogTextBox.Clear();
