@@ -22,13 +22,7 @@ namespace llcom
 #else
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
             Application.Current.DispatcherUnhandledException += DispatcherOnUnhandledException;
-            //TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;
 #endif
-        }
-
-        private void TaskSchedulerOnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs unobservedTaskExceptionEventArgs)
-        {
-            SendReport(unobservedTaskExceptionEventArgs.Exception);
         }
 
         private void DispatcherOnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs dispatcherUnhandledExceptionEventArgs)

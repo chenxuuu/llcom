@@ -268,6 +268,14 @@ namespace llcom
             });
         }
 
+        private bool DoInvoke(Action action)
+        {
+            if (Tools.Global.isMainWindowsClosed)
+                return false;
+            Dispatcher.Invoke(action);
+            return true;
+        }
+
         /// <summary>
         /// 加载快捷发送区数据
         /// </summary>
@@ -1057,7 +1065,7 @@ namespace llcom
                     continue;
                 luaLogCount++;
                 var logs = logsb.ToString();
-                this.Dispatcher.Invoke(()=>
+                DoInvoke(()=>
                 {
                     luaLogTextBox.IsEnabled = false;//确保文字不再被选中，防止wpf卡死
                     if (luaLogCount >= 1000)

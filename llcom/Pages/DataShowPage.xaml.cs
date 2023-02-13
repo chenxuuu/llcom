@@ -72,6 +72,14 @@ namespace llcom.Pages
             uiTooLag = TryFindResource("LogLagWarn") as string ?? "?!";
         }
 
+        private bool DoInvoke(Action action)
+        {
+            if (Tools.Global.isMainWindowsClosed)
+                return false;
+            Dispatcher.Invoke(action);
+            return true;
+        }
+
         /// <summary>
         /// 数据缓冲
         /// </summary>
@@ -202,7 +210,7 @@ namespace llcom.Pages
                     continue;
                 //记录一下开始的时间
                 var start = DateTime.Now;
-                Dispatcher.Invoke(() =>
+                if(!DoInvoke(() =>
                 {
                     //条目过多，自动清空
                     if (uartDataFlowDocument.Document.Blocks.Count > Tools.Global.setting.MaxPacksAutoClear)
@@ -218,14 +226,15 @@ namespace llcom.Pages
                     for (int i = 0; i < uartList.Count; i++)
                         addUartLog(uartList[i]);
                     if (!LockLog)//如果允许拉到最下面
-                        Dispatcher.Invoke(sv.ScrollToBottom);
+                        DoInvoke(sv.ScrollToBottom);
                     if(!uartDataFlowDocument.IsMouseOver)
                         uartDataFlowDocument.IsEnabled = true;
-                });
+                }))
+                    return;
                 //如果卡顿超过了半秒，则触发自动清空
                 if(Tools.Global.setting.LagAutoClear && (DateTime.Now - start).Milliseconds > 250)
                 {
-                    Dispatcher.Invoke(() =>
+                    DoInvoke(() =>
                     {
                         uartDataFlowDocument.Document.Blocks.Clear();
                         Paragraph p = new Paragraph(new Run(uiTooLag));
