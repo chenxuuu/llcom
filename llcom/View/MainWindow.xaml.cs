@@ -1055,7 +1055,10 @@ namespace llcom
                 lock (luaLogsBuff)
                 {
                     for(int i=0;i<luaLogsBuff.Count;i++)
+                    {
                         logsb.AppendLine(luaLogsBuff[i]);
+                        luaLogCount++;
+                    }
                     luaLogsBuff.Clear();
                 }
 
@@ -1063,7 +1066,6 @@ namespace llcom
                     continue;
                 if (logsb.Length == 0)
                     continue;
-                luaLogCount++;
                 var logs = logsb.ToString();
                 DoInvoke(()=>
                 {
