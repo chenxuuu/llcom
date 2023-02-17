@@ -10,6 +10,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/telji5j8r0v5001c?svg=true)](https://ci.appveyor.com/project/chenxuuu/llcom)
 [![MIT](https://img.shields.io/static/v1.svg?label=license&message=Apache+2&color=blue)](https://github.com/chenxuuu/llcom/blob/master/LICENSE)
 [![code-size](https://img.shields.io/github/languages/code-size/chenxuuu/llcom.svg)](https://github.com/chenxuuu/llcom/archive/master.zip)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fchenxuuu%2Fllcom.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fchenxuuu%2Fllcom?ref=badge_shield)
 
 可运行lua脚本的高自由度串口调试工具。使用交流群：`931546484`
 
@@ -180,7 +181,6 @@ This project follows the [all-contributors](htts://github.com/all-contributors/a
 ## 特别感谢
 
 [![icon-resharper](/image/icon-resharper.svg)](https://www.jetbrains.com/?from=LLCOM)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fchenxuuu%2Fllcom.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fchenxuuu%2Fllcom?ref=badge_shield)
 
 
 ## License
