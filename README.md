@@ -180,3 +180,8 @@ This project follows the [all-contributors](htts://github.com/all-contributors/a
 ## 特别感谢
 
 [![icon-resharper](/image/icon-resharper.svg)](https://www.jetbrains.com/?from=LLCOM)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fchenxuuu%2Fllcom.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fchenxuuu%2Fllcom?ref=badge_shield)
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fchenxuuu%2Fllcom.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fchenxuuu%2Fllcom?ref=badge_large)
