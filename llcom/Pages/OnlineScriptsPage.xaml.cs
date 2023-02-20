@@ -146,7 +146,7 @@ namespace llcom.Pages
                 //文件已经有了
                 if (File.Exists($"{Tools.Global.ProfilePath}user_script_run/{fileName}.lua"))
                 {
-                    MessageBox.Show(TryFindResource("LuaExist") as string ?? "?!");
+                    Tools.MessageBox.Show(TryFindResource("LuaExist") as string ?? "?!");
                     continue;//回到最开始
                 }
 
@@ -154,11 +154,11 @@ namespace llcom.Pages
                 {
                     File.WriteAllText($"{Tools.Global.ProfilePath}user_script_run/{fileName}.lua", ScriptNow.Script);
                     Tools.Global.RefreshLuaScriptList();
-                    MessageBox.Show(TryFindResource("SaveSucceed") as string ?? "?!");
+                    Tools.MessageBox.Show(TryFindResource("SaveSucceed") as string ?? "?!");
                 }
                 catch(Exception err)
                 {
-                    MessageBox.Show(err.ToString());
+                    Tools.MessageBox.Show(err.ToString());
                 }
                 return;
             }

@@ -87,7 +87,7 @@
     <system:String x:Key="AboutVersion">Software version</system:String>
     <system:String x:Key="InputDialogConfirm">OK</system:String>
     <system:String x:Key="InputDialogCancel">Cancel</system:String>
-    <system:String x:Key="InputDialogTitle">Enter</system:String>
+    <system:String x:Key="InputDialogTitle">Notice</system:String>
     <system:String x:Key="SettingTitle">More serial port settings</system:String>
     <system:String x:Key="SettingBasic">Basic</system:String>
     <system:String x:Key="SettingAutoReconnect">Auto reconnect after disconnect</system:String>

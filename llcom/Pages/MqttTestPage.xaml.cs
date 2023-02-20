@@ -249,7 +249,7 @@ namespace llcom.Pages
         {
             if (string.IsNullOrEmpty(subcribeTextBox.Text))
             {
-                MessageBox.Show("no subcribe topic!");
+                Tools.MessageBox.Show("no subcribe topic!");
                 return;
             }
             if (mqttClient.IsConnected)
@@ -284,7 +284,7 @@ namespace llcom.Pages
         {
             if(string.IsNullOrEmpty(publishTopicTextBox.Text))
             {
-                MessageBox.Show("no publish topic!");
+                Tools.MessageBox.Show("no publish topic!");
                 return;
             }
             if (mqttClient.IsConnected)

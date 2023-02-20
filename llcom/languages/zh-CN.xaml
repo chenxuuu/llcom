@@ -87,7 +87,7 @@
     <system:String x:Key="AboutVersion">软件版本</system:String>
     <system:String x:Key="InputDialogConfirm">确定</system:String>
     <system:String x:Key="InputDialogCancel">取消</system:String>
-    <system:String x:Key="InputDialogTitle">输入</system:String>
+    <system:String x:Key="InputDialogTitle">提示</system:String>
     <system:String x:Key="SettingTitle">更多串口设置</system:String>
     <system:String x:Key="SettingBasic">串口基本设置</system:String>
     <system:String x:Key="SettingAutoReconnect">自动恢复被断开的串口连接</system:String>

@@ -300,7 +300,7 @@ namespace llcom.Pages
             }
             catch (Exception ee)
             {
-                MessageBox.Show(ee.Message);
+                Tools.MessageBox.Show(ee.Message);
             }
         }
 
@@ -348,7 +348,7 @@ namespace llcom.Pages
             }
             catch (Exception ee)
             {
-                MessageBox.Show(ee.Message);
+                Tools.MessageBox.Show(ee.Message);
             }
         }
 

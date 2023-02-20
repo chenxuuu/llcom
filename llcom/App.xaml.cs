@@ -37,18 +37,23 @@ namespace llcom
 
         public static void SendReport(Exception exception, string developerMessage = "", bool silent = true)
         {
+            if(exception.GetType() == typeof(System.ComponentModel.Win32Exception))
+            {
+                Tools.MessageBox.Show($"internal error from system!\r\n{exception.Message}\r\nexit!");
+                return;
+            }
             if(Tools.Global.setting.language == "zh-CN")
-                MessageBox.Show("恭喜你触发了一个BUG！\r\n" +
+                Tools.MessageBox.Show("恭喜你触发了一个BUG！\r\n" +
                     "如果条件允许，请点击“Send Report”来上报这个BUG\r\n" +
                     $"报错信息：{exception.Message}");
             if(!Tools.Global.ReportBug)
             {
-                MessageBox.Show("检测到不支持的.net版本，禁止上报bug");
+                Tools.MessageBox.Show("检测到不支持的.net版本，禁止上报bug");
                 return;
             }
             if(Tools.Global.HasNewVersion)
             {
-                MessageBox.Show("检测到该软件不是最新版，禁止上报bug\r\n请保证软件是最新版");
+                Tools.MessageBox.Show("检测到该软件不是最新版，禁止上报bug\r\n请保证软件是最新版");
                 return;
             }
             var reportCrash = new ReportCrash("lolicon@papapoi.com")

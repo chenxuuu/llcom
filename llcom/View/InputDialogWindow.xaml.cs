@@ -34,6 +34,8 @@ namespace llcom
                 InputText.Visibility = Visibility.Visible;
             }
             this.Title = title ?? TryFindResource("InputDialogTitle") as string ?? "?!";
+            SingleButton.Visibility = title == null ? Visibility.Visible : Visibility.Collapsed;
+            TwoButtons.Visibility = title != null ? Visibility.Visible : Visibility.Collapsed;
             PromptLabel.Text = prompt;
         }
 

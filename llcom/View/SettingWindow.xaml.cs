@@ -250,7 +250,7 @@ namespace llcom
             if (dataCheckComboBox.SelectedItem != null)
             {
                 Tools.Global.setting.parity = dataCheckComboBox.SelectedIndex;
-                //MessageBox.Show((dataCheckComboBox.SelectedItem as ComboBoxItem).Content.ToString());
+                //Tools.MessageBox.Show((dataCheckComboBox.SelectedItem as ComboBoxItem).Content.ToString());
             }
         }
 
@@ -286,12 +286,12 @@ namespace llcom
         {
             if (string.IsNullOrWhiteSpace(newLuaFileNameTextBox.Text))
             {
-                MessageBox.Show(TryFindResource("LuaNoName") as string ?? "?!");
+                Tools.MessageBox.Show(TryFindResource("LuaNoName") as string ?? "?!");
                 return;
             }
             if (File.Exists(Tools.Global.ProfilePath + $"user_script_send_convert/{newLuaFileNameTextBox.Text}.lua"))
             {
-                MessageBox.Show(TryFindResource("LuaExist") as string ?? "?!");
+                Tools.MessageBox.Show(TryFindResource("LuaExist") as string ?? "?!");
                 return;
             }
 
@@ -302,7 +302,7 @@ namespace llcom
             }
             catch
             {
-                MessageBox.Show(TryFindResource("LuaCreateFail") as string ?? "?!");
+                Tools.MessageBox.Show(TryFindResource("LuaCreateFail") as string ?? "?!");
                 return;
             }
             newLuaFileWrapPanel.Visibility = Visibility.Collapsed;
@@ -317,12 +317,12 @@ namespace llcom
                     byte[] r = LuaEnv.LuaLoader.Run($"{luaFileList.SelectedItem as string}.lua",
                                         new System.Collections.ArrayList{"uartData",
                                            Tools.Global.GetEncoding().GetBytes(luaTestTextBox.Text)});
-                    MessageBox.Show($"{TryFindResource("SettingLuaRunResult") as string ?? "?!"}\r\nHEX：" + Tools.Global.Byte2Hex(r) +
+                    Tools.MessageBox.Show($"{TryFindResource("SettingLuaRunResult") as string ?? "?!"}\r\nHEX：" + Tools.Global.Byte2Hex(r) +
                         $"\r\n{TryFindResource("SettingLuaRawText") as string ?? "?!"}" + Tools.Global.Byte2Readable(r));
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show($"{TryFindResource("ErrorScript") as string ?? "?!"}\r\n" + ex.ToString());
+                    Tools.MessageBox.Show($"{TryFindResource("ErrorScript") as string ?? "?!"}\r\n" + ex.ToString());
                 }
 
             }
@@ -348,7 +348,7 @@ namespace llcom
             }
             catch
             {
-                MessageBox.Show($"尝试打开文件夹失败，请自行打开该路径：{Tools.Global.GetTrueProfilePath()}logs");
+                Tools.MessageBox.Show($"尝试打开文件夹失败，请自行打开该路径：{Tools.Global.GetTrueProfilePath()}logs");
             }
         }
 
@@ -392,12 +392,12 @@ namespace llcom
         {
             if (string.IsNullOrWhiteSpace(newLuaFileNameTextBoxRev.Text))
             {
-                MessageBox.Show(TryFindResource("LuaNoName") as string ?? "?!");
+                Tools.MessageBox.Show(TryFindResource("LuaNoName") as string ?? "?!");
                 return;
             }
             if (File.Exists(Tools.Global.ProfilePath + $"user_script_recv_convert/{newLuaFileNameTextBoxRev.Text}.lua"))
             {
-                MessageBox.Show(TryFindResource("LuaExist") as string ?? "?!");
+                Tools.MessageBox.Show(TryFindResource("LuaExist") as string ?? "?!");
                 return;
             }
 
@@ -408,7 +408,7 @@ namespace llcom
             }
             catch
             {
-                MessageBox.Show(TryFindResource("LuaCreateFail") as string ?? "?!");
+                Tools.MessageBox.Show(TryFindResource("LuaCreateFail") as string ?? "?!");
                 return;
             }
             newLuaFileWrapPanelRev.Visibility = Visibility.Collapsed;
@@ -432,12 +432,12 @@ namespace llcom
                             Tools.Global.GetEncoding().GetBytes(luaTestTextBoxRev.Text)
                         },
                         "user_script_recv_convert/");
-                    MessageBox.Show($"{TryFindResource("SettingLuaRunResult") as string ?? "?!"}\r\nHEX：" + Tools.Global.Byte2Hex(r) +
+                    Tools.MessageBox.Show($"{TryFindResource("SettingLuaRunResult") as string ?? "?!"}\r\nHEX：" + Tools.Global.Byte2Hex(r) +
                         $"\r\n{TryFindResource("SettingLuaRawText") as string ?? "?!"}" + Tools.Global.Byte2Readable(r));
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"{TryFindResource("ErrorScript") as string ?? "?!"}\r\n" + ex.ToString());
+                    Tools.MessageBox.Show($"{TryFindResource("ErrorScript") as string ?? "?!"}\r\n" + ex.ToString());
                 }
             }
         }

@@ -329,9 +329,12 @@ namespace llcom.Pages
 
             public DataUart(List<byte> data, DateTime time, bool sent)
             {
+                if (data == null || data.Count == 0)
+                    return;
                 byte[] temp = data.ToArray();
                 //转换下接收数据
                 if (!sent)
+                {
                     try
                     {
                         temp = LuaEnv.LuaLoader.Run(
@@ -341,8 +344,13 @@ namespace llcom.Pages
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"receive convert lua script error\r\n" + ex.ToString());
+                        Tools.MessageBox.Show($"receive convert lua script error\r\n" + ex.ToString());
+                        return;
                     }
+                    if (temp == null)
+                        return;
+                }
+
                 this.time = time.ToString("[yyyy/MM/dd HH:mm:ss.fff]");
                 title = sent ? " ← " : " → ";
                 color = sent ? Brushes.DarkRed : Brushes.DarkGreen;

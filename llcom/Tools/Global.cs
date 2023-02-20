@@ -172,7 +172,7 @@ namespace llcom.Tools
                 }
                 catch
                 {
-                    MessageBox.Show($"配置文件加载失败！\r\n" +
+                    Tools.MessageBox.Show($"配置文件加载失败！\r\n" +
                         $"如果是配置文件损坏，可前往{ProfilePath}settings.json.bakup查找备份文件\r\n" +
                         $"并使用该文件替换{ProfilePath}settings.json文件恢复配置");
                     Environment.Exit(1);
@@ -215,7 +215,7 @@ namespace llcom.Tools
             }
             catch
             {
-                MessageBox.Show($"本软件仅支持.net framework 4.6.2以上版本，该计算机上的最高版本为{currentVersion}\r\n" +
+                Tools.MessageBox.Show($"本软件仅支持.net framework 4.6.2以上版本，该计算机上的最高版本为{currentVersion}\r\n" +
                     $"你可以选择继续使用，但若运行途中遇到bug，将不会上报给开发者。\r\n" +
                     $"建议升级到最新.net framework版本");
                 ReportBug = false;
@@ -223,7 +223,7 @@ namespace llcom.Tools
             //文件名不能改！
             if (FileName.ToUpper() != "LLCOM.EXE")
             {
-                MessageBox.Show("啊呀呀，软件文件名被改了。。。\r\n" +
+                Tools.MessageBox.Show("啊呀呀，软件文件名被改了。。。\r\n" +
                     "为了保证软件功能的正常运行，请将exe名改回llcom.exe");
                 Environment.Exit(1);
             }
@@ -231,7 +231,7 @@ namespace llcom.Tools
             if (AppPath.ToUpper().Contains(@"\APPDATA\LOCAL\TEMP\") ||
                 AppPath.ToUpper().Contains(@"\WINDOWS\TEMP\"))
             {
-                System.Windows.MessageBox.Show("请勿在压缩包内直接打开本软件。");
+                Tools.MessageBox.Show("请勿在压缩包内直接打开本软件。");
                 Environment.Exit(1);
             }
 
@@ -252,7 +252,7 @@ namespace llcom.Tools
             //如果该数组长度大于1，说明多次运行
             if (processes.Length > 1 && File.Exists(ProfilePath + "lock"))
             {
-                MessageBox.Show("不支持同文件夹多开！\r\n如需多开，请在多个文件夹分别存放llcom.exe后，分别运行。");
+                Tools.MessageBox.Show("不支持同文件夹多开！\r\n如需多开，请在多个文件夹分别存放llcom.exe后，分别运行。");
                 Environment.Exit(1);
             }
             File.Create(ProfilePath + "lock").Close();
@@ -319,7 +319,7 @@ namespace llcom.Tools
             }
             catch (Exception e)
             {
-                System.Windows.MessageBox.Show("生成文件结构失败，请确保本软件处于有读写权限的目录下再打开。\r\n错误信息：" + e.Message);
+                Tools.MessageBox.Show("生成文件结构失败，请确保本软件处于有读写权限的目录下再打开。\r\n错误信息：" + e.Message);
                 Environment.Exit(1);
             }
 

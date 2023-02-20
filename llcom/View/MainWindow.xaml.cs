@@ -554,7 +554,7 @@ namespace llcom
             }
             catch
             {
-                MessageBox.Show($"尝试打开文件夹失败，请自行打开该路径：{Tools.Global.GetTrueProfilePath()}user_script_run");
+                Tools.MessageBox.Show($"尝试打开文件夹失败，请自行打开该路径：{Tools.Global.GetTrueProfilePath()}user_script_run");
             }
         }
 
@@ -628,7 +628,7 @@ namespace llcom
                         {
                             Tools.Logger.AddUartLogDebug($"[openPort]open error:{e.Message}");
                             //串口打开失败！
-                            MessageBox.Show(TryFindResource("ErrorOpenPort") as string ?? "?!");
+                            Tools.MessageBox.Show(TryFindResource("ErrorOpenPort") as string ?? "?!");
                         }
                         isOpeningPort = false;
                         Tools.Logger.AddUartLogDebug($"[openPort]all done");
@@ -658,7 +658,7 @@ namespace llcom
                 catch
                 {
                     //串口关闭失败！
-                    MessageBox.Show(TryFindResource("ErrorClosePort") as string ?? "?!");
+                    Tools.MessageBox.Show(TryFindResource("ErrorClosePort") as string ?? "?!");
                 }
                 Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]change show");
                 openClosePortTextBlock.Text = (TryFindResource("OpenPort_open") as string ?? "?!");
@@ -687,7 +687,7 @@ namespace llcom
                         "115200", TryFindResource("OtherRate") as string ?? "?!");
                     if (!ret.Item1 || !int.TryParse(ret.Item2,out br))//啥都没选
                     {
-                        MessageBox.Show(TryFindResource("OtherRateFail") as string ?? "?!");
+                        Tools.MessageBox.Show(TryFindResource("OtherRateFail") as string ?? "?!");
                         Task.Run(() =>
                         {
                             this.Dispatcher.Invoke(new Action(delegate {
@@ -741,7 +741,7 @@ namespace llcom
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"{TryFindResource("ErrorScript") as string ?? "?!"}\r\n" + ex.ToString());
+                    Tools.MessageBox.Show($"{TryFindResource("ErrorScript") as string ?? "?!"}\r\n" + ex.ToString());
                     return;
                 }
                 try
@@ -757,7 +757,7 @@ namespace llcom
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show($"{TryFindResource("ErrorSendFail") as string ?? "?!"}\r\n"+ex.ToString());
+                    Tools.MessageBox.Show($"{TryFindResource("ErrorSendFail") as string ?? "?!"}\r\n"+ ex.ToString());
                     return;
                 }
             }
@@ -856,12 +856,12 @@ namespace llcom
         {
             if (string.IsNullOrWhiteSpace(newLuaFileNameTextBox.Text))
             {
-                MessageBox.Show(TryFindResource("LuaNoName") as string ?? "?!");
+                Tools.MessageBox.Show(TryFindResource("LuaNoName") as string ?? "?!");
                 return;
             }
             if (File.Exists(Tools.Global.ProfilePath + $"user_script_run/{newLuaFileNameTextBox.Text}.lua"))
             {
-                MessageBox.Show(TryFindResource("LuaExist") as string ?? "?!");
+                Tools.MessageBox.Show(TryFindResource("LuaExist") as string ?? "?!");
                 return;
             }
 
@@ -872,7 +872,7 @@ namespace llcom
             }
             catch
             {
-                MessageBox.Show(TryFindResource("LuaCreateFail") as string ?? "?!");
+                Tools.MessageBox.Show(TryFindResource("LuaCreateFail") as string ?? "?!");
                 return;
             }
             newLuaFileWrapPanel.Visibility = Visibility.Collapsed;
@@ -918,7 +918,7 @@ namespace llcom
             }
             catch
             {
-                MessageBox.Show("File load failed.\r\n" +
+                Tools.MessageBox.Show("File load failed.\r\n" +
                     "Do not open this file in other application!");
                 return;
             }
@@ -1261,7 +1261,7 @@ namespace llcom
                 }
                 catch (Exception err)
                 {
-                    MessageBox.Show(err.Message);
+                    Tools.MessageBox.Show(err.Message);
                     return;
                 }
                 this.Dispatcher.Invoke(new Action(delegate
@@ -1286,11 +1286,11 @@ namespace llcom
                 try
                 {
                     File.WriteAllText(SaveFileDialog.FileName, JsonConvert.SerializeObject(toSendListItems));
-                    MessageBox.Show(TryFindResource("QuickSendSaveFileDone") as string ?? "?!");
+                    Tools.MessageBox.Show(TryFindResource("QuickSendSaveFileDone") as string ?? "?!");
                 }
                 catch(Exception err)
                 {
-                    MessageBox.Show(err.Message);
+                    Tools.MessageBox.Show(err.Message);
                 }
             }
         }

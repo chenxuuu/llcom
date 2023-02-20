@@ -180,7 +180,7 @@ namespace llcom.Model
                 }
                 catch(Exception e)
                 {
-                    System.Windows.Forms.MessageBox.Show(e.Message);
+                    Tools.MessageBox.Show(e.Message);
                 }
             }
         }
@@ -275,7 +275,7 @@ namespace llcom.Model
                 }
                 catch (Exception e)
                 {
-                    System.Windows.Forms.MessageBox.Show(e.Message);
+                    Tools.MessageBox.Show(e.Message);
                 }
             }
         }
@@ -309,7 +309,7 @@ namespace llcom.Model
                 }
                 catch (Exception e)
                 {
-                    System.Windows.Forms.MessageBox.Show(e.Message);
+                    Tools.MessageBox.Show(e.Message);
                 }
             }
         }
@@ -330,7 +330,7 @@ namespace llcom.Model
                 }
                 catch (Exception e)
                 {
-                    System.Windows.Forms.MessageBox.Show(e.Message);
+                    Tools.MessageBox.Show(e.Message);
                 }
             }
         }

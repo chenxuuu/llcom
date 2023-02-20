@@ -71,11 +71,11 @@ namespace llcom.Pages
                 //复制到剪贴板
                 Clipboard.Clear();
                 Clipboard.SetData(DataFormats.Text, copiedData);
-                MessageBox.Show("copyed:\r\n" + copiedData);
+                Tools.MessageBox.Show("copyed:\r\n" + copiedData);
             }
             catch(Exception ee)
             {
-                MessageBox.Show("error:\r\n" + ee.Message);
+                Tools.MessageBox.Show("error:\r\n" + ee.Message);
             }
         }
     }
