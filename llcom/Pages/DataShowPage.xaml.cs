@@ -364,11 +364,14 @@ namespace llcom.Pages
                     len = Tools.Global.setting.MaxPackShow;
                 }
                 //主要数据
-                this.data = Tools.Global.setting.showHexFormat switch
+                if(temp != null && temp.Length > 0)
                 {
-                    2 => Tools.Global.Byte2Hex(temp, " ", len) + warn,
-                    _ => Tools.Global.Byte2Readable(temp, len) + warn,
-                };
+                    this.data = Tools.Global.setting.showHexFormat switch
+                    {
+                        2 => Tools.Global.Byte2Hex(temp, " ", len) + warn,
+                        _ => Tools.Global.Byte2Readable(temp, len) + warn,
+                    };
+                }
                 //同时显示模式时，才显示小字hex
                 if (Tools.Global.setting.showHexFormat == 0)
                     hex = "HEX:" + Tools.Global.Byte2Hex(temp, " ", len) + warn;
