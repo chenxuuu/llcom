@@ -71,10 +71,6 @@ namespace llcom.Model
                 else
                     return false;
             });
-            this.UartDataRecived += (r, e) =>
-            {
-                LuaApis.SendChannelsReceived("uart", r);
-            };
         }
 
         /// <summary>
@@ -258,7 +254,9 @@ namespace llcom.Model
                 if (result.Count > 0)
                     try
                     {
-                        UartDataRecived(result.ToArray(), EventArgs.Empty);//回调事件
+                        var r = result.ToArray();
+                        UartDataRecived(r, EventArgs.Empty);//回调事件
+                        LuaApis.SendChannelsReceived("uart", r);
                     }
                     catch { }
             }
