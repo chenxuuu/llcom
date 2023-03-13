@@ -70,10 +70,10 @@ local rootPath = apiUtf8ToHex(apiGetPath()):fromHex()
 local script = {}
 _G[""!once!""] = function()
     runLimitStart(3)
-    if not script[file] then
-        script[file] = load(CS.System.IO.File.ReadAllText(file))
+    if not script[_G[""!file!""]] then
+        script[_G[""!file!""]] = load(CS.System.IO.File.ReadAllText(_G[""!file!""]))
     end
-    local result = script[file]()
+    local result = script[_G[""!file!""]]()
     runLimitStop()
     return result
 end
@@ -106,7 +106,7 @@ end
             }
             lock (luaRunner)
             {
-                luaRunner.Global.SetInPath("file", Tools.Global.ProfilePath + path + file);
+                luaRunner.Global.SetInPath("!file!", Tools.Global.ProfilePath + path + file);
 
                 try
                 {
