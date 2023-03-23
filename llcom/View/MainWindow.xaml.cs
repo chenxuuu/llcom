@@ -1078,7 +1078,7 @@ namespace llcom
                         luaLogCount = 0;
                     }
                     luaLogTextBox.AppendText(logs);
-                    luaLogTextBox.ScrollToEnd();
+                    //luaLogTextBox.ScrollToEnd();
                     if (!luaLogTextBox.IsMouseOver)
                         luaLogTextBox.IsEnabled = true;
                 });

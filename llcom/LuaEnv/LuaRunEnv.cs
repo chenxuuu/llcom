@@ -55,6 +55,8 @@ namespace llcom.LuaEnv
 
         private static void runTigger()
         {
+            if (!canRun)
+                return;
             lock (lua)
             {
                 try
@@ -69,7 +71,10 @@ namespace llcom.LuaEnv
                             {
                                 LuaPool temp;
                                 toRun.TryTake(out temp);
-                                lua.Global.Get<XLua.LuaFunction>("tiggerCB").Call(temp.id, temp.type, temp.data);
+                                XLua.LuaFunction f = null;
+                                //while (f == null)
+                                    f = lua.Global.Get<XLua.LuaFunction>("tiggerCB");
+                                f.Call(temp.id, temp.type, temp.data);
                             }
                             catch (Exception le)
                             {
@@ -174,14 +179,14 @@ namespace llcom.LuaEnv
             //文件不存在
             if (!File.Exists(Tools.Global.ProfilePath + file))
                 return;
-            lua = new XLua.LuaEnv();
             Task.Run(() =>
             {
                 while(!canRun)
                     Task.Delay(100).Wait();
                 try
                 {
-                    lock(lua)
+                    lua = new XLua.LuaEnv();
+                    lock (lua)
                     {
                         lua.Global.SetInPath("runType", "script");//一次性处理标志
                         LuaLoader.Initial(lua);

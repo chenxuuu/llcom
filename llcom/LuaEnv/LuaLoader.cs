@@ -106,17 +106,24 @@ end
             }
             lock (luaRunner)
             {
-                luaRunner.Global.SetInPath("!file!", Tools.Global.ProfilePath + path + file);
+                var pathIn = Tools.Global.ProfilePath + path + file;
+                luaRunner.Global.SetInPath("!file!", pathIn);
+                while(luaRunner.Global.GetInPath<string>("!file!") != pathIn)
+                    luaRunner.Global.SetInPath("!file!", pathIn);
 
+                if (args != null)
+                    for (int i = 0; i < args.Count; i += 2)
+                    {
+                        luaRunner.Global.SetInPath((string)args[i], args[i + 1]);
+                    }
+
+                XLua.LuaFunction f = null;
                 try
                 {
-                    if (args != null)
-                        for (int i = 0; i < args.Count; i += 2)
-                        {
-                            luaRunner.Global.SetInPath((string)args[i], args[i + 1]);
-                        }
-                    
-                    var r = luaRunner.Global.Get<XLua.LuaFunction>("!once!").Call(null, new Type[] { typeof(byte[]) })[0] as byte[];
+                    while(f == null)
+                        f = luaRunner.Global.Get<XLua.LuaFunction>("!once!");
+                    var lr = f.Call(null, new Type[] { typeof(byte[]) });
+                    var r = lr[0] as byte[];
                     return r;
                 }
                 catch (Exception e)
