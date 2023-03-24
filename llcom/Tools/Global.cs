@@ -423,6 +423,8 @@ namespace llcom.Tools
         {
             if (len == -1)
                 len = vBytes.Length;
+            if (vBytes == null)//fix
+                return "";
             //没开这个功能/非utf8就别搞了
             if (!setting.EnableSymbol || setting.encoding != 65001)
                 return Byte2String(vBytes, len);
