@@ -20,7 +20,7 @@
     </Page.Resources>
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="35" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="35" />
             <RowDefinition Height="35" />
             <RowDefinition Height="30" />
@@ -32,7 +32,10 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
-            <ComboBox Name="UsbListComboBox" IsEnabled="{Binding IsConnected, Converter={StaticResource boolNotConverter}}" />
+            <ComboBox
+                Name="UsbListComboBox"
+                IsEnabled="{Binding IsConnected, Converter={StaticResource boolNotConverter}}"
+                SelectionChanged="UsbListComboBox_SelectionChanged" />
             <Button
                 x:Name="RefreshUsbButton"
                 Grid.Column="1"
@@ -67,23 +70,21 @@
                 Name="UsbOutComboBox"
                 Grid.Column="3"
                 IsEnabled="{Binding IsConnected, Converter={StaticResource boolNotConverter}}" />
-            <TextBlock
-                Grid.Column="4"
-                Margin="5,0"
-                VerticalAlignment="Center"
-                Text="Interface" />
-            <TextBox
-                Grid.Column="5"
-                IsEnabled="{Binding IsConnected, Converter={StaticResource boolNotConverter}}"
-                Text="{Binding InterfaceIndex}" />
         </Grid>
         <Button
             x:Name="ConnectButton"
             Grid.Row="2"
             Margin="0,5,0,0"
             Click="ConnectButton_Click"
-            Content="{DynamicResource ReadData}"
+            Content="{DynamicResource OpenPort_open}"
             Visibility="{Binding IsConnected, Converter={StaticResource boolNotVisibeConverter}}" />
+        <Button
+            x:Name="DisonnectButton"
+            Grid.Row="2"
+            Margin="0,5,0,0"
+            Click="DisonnectButton_Click"
+            Content="{DynamicResource OpenPort_close}"
+            Visibility="{Binding IsConnected, Converter={StaticResource boolVisibeConverter}}" />
         <TextBlock
             Grid.Row="3"
             Margin="2"
