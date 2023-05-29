@@ -3,6 +3,7 @@ using LibUsbDotNet;
 using LibUsbDotNet.Info;
 using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.Main;
+using llcom.LuaEnv;
 using llcom.Tools;
 using System;
 using System.Collections.Generic;
@@ -139,6 +140,15 @@ namespace llcom.Pages
             //绑定
             MainGrid.DataContext = this;
 
+            //适配一下通用通道
+            LuaApis.SendChannelsRegister("winusb", (data,_) =>
+            {
+                if (!IsConnected)
+                    return false;
+                toSendBuffer.Add(data);
+                return true;
+            });
+
             await RefreshUsbList();
         }
 
@@ -243,9 +253,12 @@ namespace llcom.Pages
                                     ShowData($"disconnect");
                                     return;
                             }
-                            if (readLength > 0)//有数据了，放缓冲区里
+                            if (readLength > 0)//有数据了
                             {
-                                ShowData($"recv {readLength} bytes", temp.Take(readLength).ToArray());
+                                var data = temp.Take(readLength).ToArray();
+                                ShowData($"recv {readLength} bytes", data);
+                                //适配一下通用通道
+                                LuaApis.SendChannelsReceived("winusb", data);
                             }
                             lock (toSendBuffer)//发数据
                             {

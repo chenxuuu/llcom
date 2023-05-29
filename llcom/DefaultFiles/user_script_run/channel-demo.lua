@@ -52,3 +52,9 @@ local sendResult = apiSend("netlab",nil,
   client = "aioSession--718957913",
   data   = "test data~"
 })
+
+-- winusb，对应 winusb 选项卡
+apiSetCb("winusb",function (data)
+  log.info("winusb received", data)
+end)
+local sendResult = apiSend("winusb",string.char(0,4))
