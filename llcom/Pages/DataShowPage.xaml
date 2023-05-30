@@ -26,14 +26,8 @@
         </Grid.RowDefinitions>
         <FlowDocumentScrollViewer
             Name="uartDataFlowDocument"
-            BorderBrush="#FF009400"
-            BorderThickness="0"
-            GotFocus="uartDataFlowDocument_GotFocus"
-            LostFocus="uartDataFlowDocument_LostFocus"
             MinZoom="50"
             MouseLeave="uartDataFlowDocument_MouseLeave"
-            PreviewKeyDown="uartDataFlowDocument_PreviewKeyDown"
-            PreviewTextInput="uartDataFlowDocument_PreviewTextInput"
             VerticalScrollBarVisibility="Visible">
             <!--  更改段落间距  -->
             <FlowDocumentScrollViewer.Resources>
