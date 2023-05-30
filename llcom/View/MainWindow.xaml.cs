@@ -83,7 +83,15 @@ namespace llcom
                     dataShowFrame.Navigate(new Uri("Pages/DataShowPage.xaml", UriKind.Relative));
 
                     //加载初始波特率
-                    baudRateComboBox.Text = Tools.Global.setting.baudRate.ToString();
+                    var br = Tools.Global.setting.baudRate.ToString();
+                    if(baudRateComboBox.Items.Contains(br))
+                        baudRateComboBox.Text = Tools.Global.setting.baudRate.ToString();
+                    else
+                    {
+                        lastBaudRateSelectedIndex = baudRateComboBox.Items.Count - 1;//防止弹窗提示
+                        baudRateComboBox.Items[baudRateComboBox.Items.Count - 1] = br;
+                        baudRateComboBox.Text = br;
+                    }
 
                     // 绑定事件监听,用于监听HID设备插拔
                     (PresentationSource.FromVisual(this) as HwndSource)?.AddHook(WndProc);
@@ -675,12 +683,17 @@ namespace llcom
             Tools.Logger.ClearData();
         }
 
+        private int lastBaudRateSelectedIndex = -1;
         private void BaudRateComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            //选的没变
+            if(lastBaudRateSelectedIndex == baudRateComboBox.SelectedIndex)
+                return;
+
             if (baudRateComboBox.SelectedItem != null)
             {
-                if ((baudRateComboBox.SelectedItem as ComboBoxItem).Content.ToString() ==
-                    (TryFindResource("OtherRate") as string ?? "?!"))
+                lastBaudRateSelectedIndex = baudRateComboBox.SelectedIndex;
+                if (baudRateComboBox.SelectedIndex == baudRateComboBox.Items.Count - 1)
                 {
                     int br = 0;
                     Tuple<bool, string> ret = Tools.InputDialog.OpenDialog(TryFindResource("ShowBaudRate") as string ?? "?!",
@@ -688,27 +701,22 @@ namespace llcom
                     if (!ret.Item1 || !int.TryParse(ret.Item2,out br))//啥都没选
                     {
                         Tools.MessageBox.Show(TryFindResource("OtherRateFail") as string ?? "?!");
-                        Task.Run(() =>
-                        {
-                            this.Dispatcher.Invoke(new Action(delegate {
-                                baudRateComboBox.Text = Tools.Global.setting.baudRate.ToString();
-                            }));
-                        });
-                        return;
                     }
                     Tools.Global.setting.baudRate = br;
-                    if(Tools.Global.setting.baudRate != br)//说明设置失败了
-                        Task.Run(() =>
-                        {
-                            this.Dispatcher.Invoke(new Action(delegate {
-                                baudRateComboBox.Text = Tools.Global.setting.baudRate.ToString();
-                            }));
-                        });
+                    Task.Run(() =>
+                    {
+                        this.Dispatcher.Invoke(new Action(delegate {
+                            var text = Tools.Global.setting.baudRate.ToString();
+                            baudRateComboBox.Items[baudRateComboBox.Items.Count - 1] = text;
+                            baudRateComboBox.Text = text;
+                        }));
+                    });
                 }
                 else
                 {
                     Tools.Global.setting.baudRate =
                         int.Parse((baudRateComboBox.SelectedItem as ComboBoxItem).Content.ToString());
+                    baudRateComboBox.Items[baudRateComboBox.Items.Count - 1] = TryFindResource("OtherRate") as string ?? "?!";
                 }
             }
         }
