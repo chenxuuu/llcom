@@ -108,7 +108,11 @@ namespace llcom.Pages
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             Plot.Plot.SetAxisLimitsX(-MaxPoints, 0);
-            Plot.Plot.SetAxisLimitsY(Data.Min(x => x.Min()), Data.Max(x => x.Max()));
+            //防止最大值最小值错误
+            var min = Data.Min(x => x.Min());
+            var max = Data.Max(x => x.Max());
+            if(min < max)
+                Plot.Plot.SetAxisLimitsY(min, max);
             Refresh();
         }
 
