@@ -413,7 +413,16 @@ namespace llcom.Tools
 
         private static byte[] b_del = Encoding.GetEncoding(65001).GetBytes("␡");
 
-        private static byte[][] symbols = null;
+        private static byte[][] symbols =
+        {
+            new byte[]{226,144,128},new byte[]{226,144,129},new byte[]{226,144,130},new byte[]{226,144,131},new byte[]{226,144,132},
+            new byte[]{226,144,133},new byte[]{226,144,134},new byte[]{226,144,135},new byte[]{226,144,136},new byte[]{226,144,137},
+            new byte[]{226,144,138},new byte[]{226,144,139},new byte[]{226,144,140},new byte[]{226,144,141},new byte[]{226,144,142},
+            new byte[]{226,144,143},new byte[]{226,144,144},new byte[]{226,144,145},new byte[]{226,144,146},new byte[]{226,144,147},
+            new byte[]{226,144,148},new byte[]{226,144,149},new byte[]{226,144,150},new byte[]{226,144,151},new byte[]{226,144,152},
+            new byte[]{226,144,153},new byte[]{226,144,154},new byte[]{226,144,155},new byte[]{226,144,156},new byte[]{226,144,157},
+            new byte[]{226,144,158},new byte[]{226,144,159},
+        };
         /// <summary>
         /// byte转string（可读）
         /// </summary>
@@ -428,15 +437,6 @@ namespace llcom.Tools
             //没开这个功能/非utf8就别搞了
             if (!setting.EnableSymbol || setting.encoding != 65001)
                 return Byte2String(vBytes, len);
-            //初始化一下这个数组
-            if (symbols == null)
-            {
-                symbols = new byte[32][];
-                string[] tc = { "␀", "␁", "␂", "␃", "␄", "␅", "␆", "␇", "␈", "␉", "␊", "␋", "␌", "␍",
-                    "␎", "␏", "␐", "␑", "␒", "␓", "␔", "␕", "␖", "␗", "␘", "␙", "␚", "␛", "␜", "␝", "␞", "␟" };
-                for (int i = 0; i < 32; i++)
-                    symbols[i] = Encoding.GetEncoding(65001).GetBytes(tc[i]);
-            }
             var tb = new List<byte>();
             for (int i = 0; i < len; i++)
             {
