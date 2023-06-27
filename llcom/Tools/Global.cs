@@ -290,6 +290,7 @@ namespace llcom.Tools
                 if (!Directory.Exists(ProfilePath + "user_script_send_convert"))
                 {
                     Directory.CreateDirectory(ProfilePath + "user_script_send_convert");
+                    CreateFile("DefaultFiles/user_script_send_convert/checksum.lua", ProfilePath + "user_script_send_convert/checksum.lua");
                     CreateFile("DefaultFiles/user_script_send_convert/16进制数据.lua", ProfilePath + "user_script_send_convert/16进制数据.lua");
                     CreateFile("DefaultFiles/user_script_send_convert/GPS NMEA.lua", ProfilePath + "user_script_send_convert/GPS NMEA.lua");
                     CreateFile("DefaultFiles/user_script_send_convert/加上换行回车.lua", ProfilePath + "user_script_send_convert/加上换行回车.lua");
