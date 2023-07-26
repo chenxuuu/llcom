@@ -38,7 +38,7 @@ jobs:
           DOTNETARCH: ${{ matrix.dotnetarch }}
         run: |
           cd llcomNext/LLCOM
-          dotnet publish -r $DOTNETOS-$DOTNETARCH --no-self-contained
+          dotnet publish -r $DOTNETOS-$DOTNETARCH --configuration Release -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true
           mkdir pkg
           mv bin/Debug/net7.0/$DOTNETOS-$DOTNETARCH/publish/* pkg/
 
