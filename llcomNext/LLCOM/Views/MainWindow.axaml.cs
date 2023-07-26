@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace llcomNext.Views
+namespace LLCOM.Views
 {
     public partial class MainWindow : Window
     {

@@ -1,9 +1,7 @@
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.ReactiveUI;
+﻿using Avalonia;
 using System;
 
-namespace llcomNext
+namespace LLCOM
 {
     internal class Program
     {
@@ -18,7 +16,7 @@ namespace llcomNext
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
-                .LogToTrace()
-                .UseReactiveUI();
+                .WithInterFont()
+                .LogToTrace();
     }
 }
