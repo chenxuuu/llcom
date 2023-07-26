@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # build and publish in parallel: linux-arm,linux-x64,win-x86,win-x64,win-arm,osx-x64
+        # build and publish in parallel: linux-arm,linux-x64,win-x86,win-x64,osx-x64
         dotnetos: [linux, win, osx]
         dotnetarch: [x86, x64, arm, arm64]
         exclude:
@@ -21,6 +21,8 @@ jobs:
           - dotnetos: osx
             dotnetarch: x86
           - dotnetos: osx
+            dotnetarch: arm
+          - dotnetos: win
             dotnetarch: arm
       fail-fast: true
     steps:
