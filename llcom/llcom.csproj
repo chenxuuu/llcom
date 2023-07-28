@@ -129,11 +129,11 @@
     <Reference Include="RestSharp, Version=106.15.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.106.15.0\lib\net452\RestSharp.dll</HintPath>
     </Reference>
-    <Reference Include="ScottPlot, Version=4.1.64.0, Culture=neutral, PublicKeyToken=86698dc10387c39e, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScottPlot.4.1.64\lib\net462\ScottPlot.dll</HintPath>
+    <Reference Include="ScottPlot, Version=4.1.65.0, Culture=neutral, PublicKeyToken=86698dc10387c39e, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScottPlot.4.1.65\lib\net462\ScottPlot.dll</HintPath>
     </Reference>
-    <Reference Include="ScottPlot.WPF, Version=4.1.64.0, Culture=neutral, PublicKeyToken=e53b06131e34a3aa, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScottPlot.WPF.4.1.64\lib\net461\ScottPlot.WPF.dll</HintPath>
+    <Reference Include="ScottPlot.WPF, Version=4.1.65.0, Culture=neutral, PublicKeyToken=e53b06131e34a3aa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScottPlot.WPF.4.1.65\lib\net461\ScottPlot.WPF.dll</HintPath>
     </Reference>
     <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
       <HintPath>..\packages\Serilog.3.0.1\lib\net462\Serilog.dll</HintPath>
