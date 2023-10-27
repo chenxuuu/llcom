@@ -1288,7 +1288,7 @@ namespace llcom
         private void QuickSendExportButton_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.SaveFileDialog SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            SaveFileDialog.FileName = QuickListPageTextBlock.Text;
+            SaveFileDialog.FileName = System.Text.RegularExpressions.Regex.Replace(QuickListPageTextBlock.Text, "[<>/\\|:\"?*]", "-");
             SaveFileDialog.Filter = TryFindResource("QuickSendLLCOMFile") as string ?? "?!";
             if (SaveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
