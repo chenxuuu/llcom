@@ -106,6 +106,13 @@ namespace llcom.Pages
                                 if (ClientList.Text.Length == 0)
                                     ClientList.Text = (string)o["client"];
                             }));
+                            //适配一下通用通道
+                            LuaApis.SendChannelsReceived("netlab",
+                                new
+                                {
+                                    client = "connected",
+                                    data = (string)o["client"],
+                                });
                             break;
                         case "closed":
                             ShowData($"❌ [{o["client"]}] disconnected.");
@@ -115,6 +122,13 @@ namespace llcom.Pages
                                 if (ClientList.Text.Length == 0 && clients.Count > 0)
                                     ClientList.Text = clients[0];
                             }));
+                            //适配一下通用通道
+                            LuaApis.SendChannelsReceived("netlab",
+                                new
+                                {
+                                    client = "disconnected",
+                                    data = (string)o["client"],
+                                });
                             break;
                         case "data":
                             string data = (string)o["data"];
@@ -163,6 +177,13 @@ namespace llcom.Pages
                                 if (ClientList.Text.Length == 0)
                                     ClientList.Text = (string)o["client"];
                             }));
+                            //适配一下通用通道
+                            LuaApis.SendChannelsReceived("netlab",
+                                new
+                                {
+                                    client = "connected",
+                                    data = (string)o["client"],
+                                });
                             break;
                         case "closed":
                             ShowData($"❌ [{o["client"]}] disconnected.");
@@ -172,6 +193,13 @@ namespace llcom.Pages
                                 if (ClientList.Text.Length == 0 && clients.Count > 0)
                                     ClientList.Text = clients[0];
                             }));
+                            //适配一下通用通道
+                            LuaApis.SendChannelsReceived("netlab",
+                                new
+                                {
+                                    client = "disconnected",
+                                    data = (string)o["client"],
+                                });
                             break;
                         case "data":
                             string data = (string)o["data"];

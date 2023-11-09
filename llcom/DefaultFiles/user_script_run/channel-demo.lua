@@ -31,6 +31,9 @@ apiSetCb("tcp-server",function (data)
     "tcp-server received",
     data.from,
     data.data)
+-- 特殊功能：当data.from为"connected"或"disconnected"时
+-- 表示某客户端连上或断开了
+-- 此时data.data用来存储data.from本来要存的内容
 end)
 local sendResult = apiSend("tcp-server","broadcast message!")
 
@@ -46,6 +49,9 @@ apiSetCb("netlab",function (data)
     "netlab received",
     data.client,
     data.data)
+-- 特殊功能：当data.client为"connected"或"disconnected"时
+-- 表示某客户端连上或断开了
+-- 此时data.data用来存储data.client本来要存的内容
 end)
 local sendResult = apiSend("netlab",nil,
 {

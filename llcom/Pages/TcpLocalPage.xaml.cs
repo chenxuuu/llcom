@@ -19,6 +19,7 @@ using CoAP.Server;
 using System.Diagnostics;
 using static llcom.Pages.SocketClientPage;
 using llcom.LuaEnv;
+using System.Xml.Linq;
 
 namespace llcom.Pages
 {
@@ -164,6 +165,12 @@ namespace llcom.Pages
                     }
                     catch { }
                     ShowData($"☠ {name}");
+                    LuaApis.SendChannelsReceived("tcp-server",
+                        new
+                        {
+                            from = "disconnected",
+                            data = name
+                        });
                 }
                 catch { }
             }
@@ -191,7 +198,13 @@ namespace llcom.Pages
                 try
                 {
                     Socket client = listener.EndAcceptSocket(ar);//必须有这一句，不然新的请求没反应
-                    ShowData($"😀 {GetClientName(client)}");
+                    ShowData($"😀 {GetClientName(client)}"); 
+                    LuaApis.SendChannelsReceived("tcp-server",
+                        new
+                        {
+                            from = "connected",
+                            data = GetClientName(client)
+                        });
                     lock (Clients)
                         Clients.Add(client);//加到列表里
 
@@ -232,6 +245,12 @@ namespace llcom.Pages
                         c.Close();
                         c.Dispose();
                         ShowData($"☠ {name}");
+                        LuaApis.SendChannelsReceived("tcp-server",
+                            new
+                            {
+                                from = "disconnected",
+                                data = name
+                            });
                     }
                     catch { }
                 Clients.Clear();
