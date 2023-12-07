@@ -1,0 +1,23 @@
+name: issue_check
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  ssh:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: prepare software
+      run: |
+        pip install PyGithub
+        cd ..
+        wget https://raw.githubusercontent.com/chenxuuu/action/main/scripts/issue_check.py
+    - name: check issue
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ISSUE_URL: ${{ github.event.issue.html_url }}
+      run: |
+        cd ..
+        python issue_check.py
