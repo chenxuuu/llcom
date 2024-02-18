@@ -71,7 +71,7 @@ apiSetCb("mqtt",function (data)
 end)
 ```
 
-### apiUnetCb(channel,callback)
+### apiUnsetCb(channel,callback)
 
 取消某个通道的订阅
 
@@ -94,7 +94,7 @@ local uartCb = function (data)
 end
 apiSetCb("uart",uartCb)
 --取消上面的订阅
-apiUnetCb("uart",uartCb)
+apiUnsetCb("uart",uartCb)
 ```
 
 ### apiSendUartData(string)（旧接口，不推荐，后续将会移除）
