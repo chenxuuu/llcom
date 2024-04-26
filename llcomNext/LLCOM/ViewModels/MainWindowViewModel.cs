@@ -1,7 +1,20 @@
-﻿namespace LLCOM.ViewModels
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Threading.Tasks;
+
+namespace LLCOM.ViewModels
 {
+
     public partial class MainWindowViewModel : ViewModelBase
     {
-        public string Greeting => "Welcome to Avalonia!";
+        /// <summary>
+        /// 标题栏
+        /// </summary>
+        [ObservableProperty]
+        public string _title = "LLCOM - Next";
+
+        public MainWindowViewModel()
+        {
+
+        }
     }
 }
