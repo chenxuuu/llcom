@@ -5,11 +5,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:LLCOM.ViewModels"
-    Title="LLCOM"
+    Title="LLCOM - Next"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="vm:MainWindowViewModel"
     Icon="/Assets/llcom-logo.ico"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
     <Design.DataContext>
