@@ -43,6 +43,7 @@ jobs:
           dotnet publish -r $DOTNETOS-$DOTNETARCH --configuration Release -p:PublishSingleFile=true -p:PublishTrimmed=true --self-contained true
           mkdir pkg
           mv bin/Release/net8.0/$DOTNETOS-$DOTNETARCH/publish/* pkg/
+          if [[ "$DOTNETOS-$DOTNETARCH" =~ "win-" ]]; then :; else mv pkg/ llcom/; tar -cvf llcom.tar llcom/; mkdir pkg; mv llcom.tar pkg/; fi
 
       - uses: actions/upload-artifact@v4
         with:
