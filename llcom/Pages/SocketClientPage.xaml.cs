@@ -38,6 +38,8 @@ namespace llcom.Pages
         //收到消息的事件
         public event EventHandler<byte[]> DataRecived;
         public bool IsConnected { get; set; } = false;
+        public bool NeedDisconnected { get; set; } = false;
+
         //是否可更改服务器信息
         public bool Changeable { get; set; } = true;
         public bool HexMode { get; set; } = false;
@@ -56,6 +58,8 @@ namespace llcom.Pages
             ServerTextBox.DataContext = Tools.Global.setting;
             PortTextBox.DataContext = Tools.Global.setting;
             ProtocolTypeComboBox.DataContext = Tools.Global.setting;
+            ReconnectInterval.DataContext = Tools.Global.setting;
+            NeedReconnect.DataContext = Tools.Global.setting;
 
             //收到消息显示
             DataRecived += (_, buff) =>
@@ -90,10 +94,12 @@ namespace llcom.Pages
             });
         }
 
-        private void ConnectButton_Click(object sender, RoutedEventArgs e)
+        private System.Timers.Timer reconnectTimer;
+        private void Reconnect()
         {
-            if (!Changeable)
+            if (!Changeable || IsConnected)
                 return;
+
             IPEndPoint ipe = null;
             Socket s = null;
             try
@@ -111,10 +117,10 @@ namespace llcom.Pages
                 }
                 ipe = new IPEndPoint(ip, int.Parse(PortTextBox.Text));
                 s = new Socket(ipe.AddressFamily,
-                    ProtocolTypeComboBox.SelectedIndex == 1 ? SocketType.Dgram : SocketType.Stream, 
+                    ProtocolTypeComboBox.SelectedIndex == 1 ? SocketType.Dgram : SocketType.Stream,
                     ProtocolTypeComboBox.SelectedIndex == 1 ? ProtocolType.Udp : ProtocolType.Tcp);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ShowData($"❗ Server information error {ex.Message}");
                 Changeable = true;
@@ -133,6 +139,7 @@ namespace llcom.Pages
                         if (!so.isSSL)
                             socketNow = new SocketObj(s);
                         IsConnected = true;
+                        NeedDisconnected = true;
                         ShowData("✔ Server connected");
                     }
                     else
@@ -148,8 +155,8 @@ namespace llcom.Pages
                         var ssl = new SslStream(
                             networkStream,
                                false,
-    new RemoteCertificateValidationCallback((_, _, _, _) => true),
-    null);
+                                new RemoteCertificateValidationCallback((_, _, _, _) => true),
+                                null);
                         so.workStream = ssl;
                         try
                         {
@@ -160,6 +167,8 @@ namespace llcom.Pages
                             ShowData($"❗ SSL error {ssle.Message}");
                             socketNow = null;
                             IsConnected = false;
+                            if (!Tools.Global.setting.tcpReconnect)
+                                NeedDisconnected = false;
                             Changeable = true;
                             s.Close();
                             s.Dispose();
@@ -212,6 +221,37 @@ namespace llcom.Pages
             }
         }
 
+        private void ConnectButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Tools.Global.setting.tcpReconnect)
+            {
+                reconnectTimer = new System.Timers.Timer(Tools.Global.setting.tcpReconnectInterval * 1000);
+                reconnectTimer.Elapsed += (_, _) =>
+                {
+                    if (!IsConnected)
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            Reconnect();
+                        });
+                    }
+                };
+                reconnectTimer.AutoReset = true;
+                reconnectTimer.Enabled = true;                
+                NeedDisconnected = true;
+            }
+            else
+            {
+                if (reconnectTimer != null)
+                {
+                    reconnectTimer.Stop();
+                    reconnectTimer.Dispose();
+                    reconnectTimer = null;
+                }
+            }
+            Reconnect();
+        }
+
         public void Read_Callback(IAsyncResult ar)
         {
             StateObject so = (StateObject)ar.AsyncState;
@@ -242,6 +282,8 @@ namespace llcom.Pages
                         catch { }
                         socketNow = null;
                         IsConnected = false;
+                        if (!Tools.Global.setting.tcpReconnect)
+                            NeedDisconnected = false;
                         Changeable = true;
                         ShowData("❌ Server disconnected");
                     }
@@ -276,11 +318,21 @@ namespace llcom.Pages
                     catch { }
                     socketNow = null;
                     IsConnected = false;
+                    if (!Tools.Global.setting.tcpReconnect)
+                        NeedDisconnected = false;
                     Changeable = true;
                     ShowData("❌ Server disconnected");
                 }
             }
             catch { }
+        }
+
+        private void Reconnect_TextInputCheck(object sender, TextCompositionEventArgs e)
+        {
+            if (!int.TryParse(e.Text, out int num) || num < 0 || num > 120)
+            {
+                e.Handled = true;
+            }
         }
 
         private void DisconnectButton_Click(object sender, RoutedEventArgs e)
@@ -297,6 +349,11 @@ namespace llcom.Pages
                 Changeable = true;
                 ShowData("❌ Server disconnected");
             }
+
+            NeedDisconnected = false;
+            reconnectTimer.Stop();
+            reconnectTimer.Dispose();
+            reconnectTimer = null;
         }
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
