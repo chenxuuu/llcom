@@ -141,6 +141,8 @@
     <system:String x:Key="CreateTcpIpv6Button">Test TCP (ipv6)</system:String>
     <system:String x:Key="DisconnectButton">Disconnect</system:String>
     <system:String x:Key="ConnectButton">Connect</system:String>
+    <system:String x:Key="TcpReconnect">Auto Reconnect</system:String>
+    <system:String x:Key="TcpReconnectInterval">Reconnect Interval:</system:String>
     <system:String x:Key="TcpServerAddr">Server address</system:String>
     <system:String x:Key="TcpServerPort">Server port</system:String>
     <system:String x:Key="TcpServerProtocol">Protocol</system:String>

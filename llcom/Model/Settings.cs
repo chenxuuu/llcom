@@ -596,6 +596,11 @@ namespace llcom.Model
         private int _tcpServerPort = 2333;
         public int tcpServerPort { get { return _tcpServerPort; } set { _tcpServerPort = value; Save(); } }
 
+        private bool _tcpReconnect = false;
+        public bool tcpReconnect { get { return _tcpReconnect; } set { _tcpReconnect = value; Save(); } }
+        private int _tcpReconnectInterval = 5;
+        public int tcpReconnectInterval { get { return _tcpReconnectInterval; } set { _tcpReconnectInterval = value; Save(); } }
+
         private int _udpServerPort = 2333;
         public int udpServerPort { get { return _udpServerPort; } set { _udpServerPort = value; Save(); } }
 
