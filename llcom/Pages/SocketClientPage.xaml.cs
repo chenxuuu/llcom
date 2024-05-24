@@ -94,7 +94,7 @@ namespace llcom.Pages
             });
         }
 
-        private System.Timers.Timer reconnectTimer;
+        private System.Timers.Timer reconnectTimer = null;
         private void Reconnect()
         {
             if (!Changeable || IsConnected)
@@ -323,9 +323,12 @@ namespace llcom.Pages
             }
 
             NeedDisconnected = false;
-            reconnectTimer.Stop();
-            reconnectTimer.Dispose();
-            reconnectTimer = null;
+            if (reconnectTimer != null)
+            {
+                reconnectTimer.Stop();
+                reconnectTimer.Dispose();
+                reconnectTimer = null;
+            }
         }
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
