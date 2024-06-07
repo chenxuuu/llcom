@@ -1,6 +1,6 @@
 # LLCOM (in progress)
 
-[中文点我](README-zh_Hans.md)
+[涓枃鐐规垜](README-zh_Hans.md)
 
 This is a cross-platform multi-functional debugging tool, and supports the use of Lua scripts, flexible and automatic processing of incoming and outgoing data, you can also directly run standalone Lua scripts for automated testing.
 
