@@ -12,13 +12,15 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2022
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: environment prepare
         run: |
-          choco install dotnet-8.0-runtime -y
-          choco install dotnet-8.0-sdk -y
+          sudo apt-get update
+          sudo apt-get install -y apt-transport-https
+          sudo apt-get update
+          sudo apt-get install -y dotnet-sdk-8.0
       - name: test
         run: |
           cd llcomNext
