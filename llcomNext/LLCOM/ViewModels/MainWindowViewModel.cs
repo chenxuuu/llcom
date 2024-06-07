@@ -10,7 +10,7 @@ namespace LLCOM.ViewModels
         /// 标题栏
         /// </summary>
         [ObservableProperty]
-        public string _title = "LLCOM - Next";
+        public string _title = "LLCOM";
 
         public MainWindowViewModel()
         {
