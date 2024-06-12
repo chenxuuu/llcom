@@ -69,6 +69,7 @@
         </Grid.RowDefinitions>
         <TextBox
             Name="MainTextBox"
+            VerticalContentAlignment="Top"
             Background="Transparent"
             BorderThickness="0"
             FontFamily="Consolas,Microsoft YaHei,微软雅黑"
@@ -79,10 +80,10 @@
             TextWrapping="Wrap" />
         <ListBox
             Name="MainList"
+            Background="Transparent"
             ItemContainerStyle="{StaticResource DataShowStyle}"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
-            SelectionMode="Extended"
             VirtualizingStackPanel.VirtualizationMode="Recycling" />
         <StackPanel
             Grid.Row="1"

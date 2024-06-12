@@ -67,6 +67,8 @@ namespace llcom.Pages
             EnableSymbolCheckBox.DataContext = Tools.Global.setting;
 
             lastPackShowMode = Tools.Global.setting.timeout >= 0;
+            MainList.Visibility = lastPackShowMode ? Visibility.Visible : Visibility.Collapsed;
+            MainTextBox.Visibility = lastPackShowMode ? Visibility.Collapsed : Visibility.Visible;
         }
 
         //记录一下上次是不是分包显示的
@@ -82,6 +84,8 @@ namespace llcom.Pages
                 {
                     MainList.Items.Clear();
                     MainTextBox.Clear();
+                    MainList.Visibility = needPack ? Visibility.Visible : Visibility.Collapsed;
+                    MainTextBox.Visibility = needPack ? Visibility.Collapsed : Visibility.Visible;
                 });
             }
 
@@ -95,7 +99,7 @@ namespace llcom.Pages
                 };
                 DoInvoke(() =>
                 {
-                    MainList.Items.Add(DataText);
+                    MainTextBox.AppendText(DataText);
                     if (!LockLog)
                         MainTextBox.ScrollToEnd();
                 });
