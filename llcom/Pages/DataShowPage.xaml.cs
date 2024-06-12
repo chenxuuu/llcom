@@ -218,10 +218,10 @@ namespace llcom.Pages
                         2 => Tools.Global.Byte2Hex(temp, " ", len),
                         _ => Tools.Global.Byte2Readable(temp, len),
                     };
+                    //同时显示模式时，才显示小字hex
+                    if (Tools.Global.setting.showHexFormat == 0)
+                        HexText = "\nHex: " + Tools.Global.Byte2Hex(temp, " ", len);
                 }
-                //同时显示模式时，才显示小字hex
-                if (Tools.Global.setting.showHexFormat == 0)
-                    HexText = "\nHex: " + Tools.Global.Byte2Hex(temp, " ", len);
             }
 
             public DataShow(string title, byte[] data, DateTime time, SolidColorBrush color)
@@ -239,13 +239,14 @@ namespace llcom.Pages
                         2 => Tools.Global.Byte2Hex(temp, " ", len),
                         _ => Tools.Global.Byte2Readable(temp, len),
                     };
+                    //同时显示模式时，才显示小字hex
+                    if (Tools.Global.setting.showHexFormat == 0)
+                        HexText = "\nHex: " + Tools.Global.Byte2Hex(temp, " ", len);
                 }
-                //同时显示模式时，才显示小字hex
-                if (Tools.Global.setting.showHexFormat == 0)
-                    HexText = "\nHex: " + Tools.Global.Byte2Hex(temp, " ", len);
 
                 RawTitle = title;
                 RawTextColor = color;
+                HexTextColor = color;
             }
         }
     }
