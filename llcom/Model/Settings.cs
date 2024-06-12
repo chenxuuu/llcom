@@ -598,26 +598,5 @@ namespace llcom.Model
 
         private int _udpServerPort = 2333;
         public int udpServerPort { get { return _udpServerPort; } set { _udpServerPort = value; Save(); } }
-
-
-        private int _maxPackShow = 1024*2;
-        /// <summary>
-        /// log显示时，一包最大显示长度
-        /// </summary>
-        public int MaxPackShow { get { return _maxPackShow; } set { _maxPackShow = value; Save(); } }
-
-
-        private int _maxPacksAutoClear = 200;
-        /// <summary>
-        /// log显示时，达到多少包自动清空日志区域
-        /// </summary>
-        public int MaxPacksAutoClear { get { return _maxPacksAutoClear; } set { _maxPacksAutoClear = value; Save(); } }
-
-
-        private bool _lagAutoClear = true;
-        /// <summary>
-        /// log输出卡顿时，自动清空数据
-        /// </summary>
-        public bool LagAutoClear { get { return _lagAutoClear; } set { _lagAutoClear = value; Save(); } }
     }
 }

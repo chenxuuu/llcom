@@ -364,6 +364,8 @@
                         </Grid>
                         <ItemsControl
                             Name="toSendList"
+                            VirtualizingPanel.CacheLength="1,2"
+                            VirtualizingPanel.CacheLengthUnit="Page"
                             VirtualizingPanel.IsVirtualizing="True"
                             VirtualizingPanel.VirtualizationMode="Recycling">
                             <ItemsControl.ItemTemplate>

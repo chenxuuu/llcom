@@ -18,30 +18,72 @@
         <local:boolVisibe x:Key="boolVisibeConverter" />
         <local:boolNotVisibe x:Key="boolNotVisibeConverter" />
         <local:showHexFormat x:Key="showHexFormatConverter" />
+        <Style x:Key="DataShowStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <RichTextBox
+                            Name="ItemGrid"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            FontFamily="Consolas,Microsoft YaHei,微软雅黑"
+                            FontSize="12"
+                            IsReadOnly="True">
+                            <FlowDocument>
+                                <Paragraph Margin="0">
+                                    <Run Foreground="DarkSlateGray" Text="{Binding TimeText}" />
+                                    <Run Foreground="DarkSlateGray" Text="{Binding ArrowText}" />
+                                    <Run
+                                        FontSize="15"
+                                        Foreground="{Binding DataTextColor}"
+                                        Text="{Binding DataText}" />
+                                    <Run
+                                        FontWeight="Bold"
+                                        Foreground="Black"
+                                        Text="{Binding RawTitle}" />
+                                    <Run
+                                        FontSize="15"
+                                        Foreground="{Binding RawTextColor}"
+                                        Text="{Binding RawText}" />
+                                    <Run Foreground="{Binding HexTextColor}" Text="{Binding HexText}" />
+                                </Paragraph>
+                            </FlowDocument>
+                        </RichTextBox>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="ItemGrid" Property="Background" Value="Transparent" />
+                            </Trigger>
+                            <Trigger Property="Selector.IsSelected" Value="true">
+                                <Setter TargetName="ItemGrid" Property="Background" Value="Transparent" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
     <Grid x:Name="mainGrid" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <FlowDocumentScrollViewer
-            Name="uartDataFlowDocument"
-            MinZoom="50"
-            MouseLeave="uartDataFlowDocument_MouseLeave"
-            VerticalScrollBarVisibility="Visible">
-            <!--  更改段落间距  -->
-            <FlowDocumentScrollViewer.Resources>
-                <Style TargetType="{x:Type Paragraph}">
-                    <Setter Property="Margin" Value="0" />
-                </Style>
-            </FlowDocumentScrollViewer.Resources>
-            <!--  更改段落间距END  -->
-            <FlowDocument
-                FontFamily="Consolas,Microsoft YaHei,微软雅黑"
-                FontSize="12"
-                IsOptimalParagraphEnabled="False"
-                TextAlignment="Left" />
-        </FlowDocumentScrollViewer>
+        <TextBox
+            Name="MainTextBox"
+            Background="Transparent"
+            BorderThickness="0"
+            FontFamily="Consolas,Microsoft YaHei,微软雅黑"
+            FontSize="15"
+            Foreground="DarkGreen"
+            IsReadOnly="True"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            TextWrapping="Wrap" />
+        <ListBox
+            Name="MainList"
+            ItemContainerStyle="{StaticResource DataShowStyle}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            SelectionMode="Extended"
+            VirtualizingStackPanel.VirtualizationMode="Recycling" />
         <StackPanel
             Grid.Row="1"
             Margin="10,0,0,3"
