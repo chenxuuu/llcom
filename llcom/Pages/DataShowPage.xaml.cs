@@ -65,6 +65,7 @@ namespace llcom.Pages
             this.ExtraEnterCheckBox.DataContext = Tools.Global.setting;
             DisableLogCheckBox.DataContext = Tools.Global.setting;
             EnableSymbolCheckBox.DataContext = Tools.Global.setting;
+            EnterTerminalModeButton.DataContext = Tools.Global.setting;
 
             lastPackShowMode = Tools.Global.setting.timeout >= 0;
             MainList.Visibility = lastPackShowMode ? Visibility.Visible : Visibility.Collapsed;

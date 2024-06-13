@@ -63,10 +63,6 @@
         </Style>
     </Page.Resources>
     <Grid x:Name="mainGrid" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
-        </Grid.RowDefinitions>
         <TextBox
             Name="MainTextBox"
             VerticalContentAlignment="Top"
@@ -84,9 +80,10 @@
             ItemContainerStyle="{StaticResource DataShowStyle}"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
+            VirtualizingStackPanel.CacheLength="2,2"
+            VirtualizingStackPanel.IsVirtualizing="True"
             VirtualizingStackPanel.VirtualizationMode="Recycling" />
         <StackPanel
-            Grid.Row="1"
             Margin="10,0,0,3"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
@@ -132,9 +129,18 @@
                 Content="{DynamicResource DisableLog}"
                 IsChecked="{Binding DisableLog}" />
         </StackPanel>
+        <StackPanel
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Visibility="{Binding Path=IsMouseOver, ElementName=mainGrid, Converter={StaticResource boolVisibeConverter}}">
+            <Button
+                Name="EnterTerminalModeButton"
+                Content="{DynamicResource EnterTerminalMode}"
+                Visibility="{Binding terminal, Converter={StaticResource boolVisibeConverter}}" />
+        </StackPanel>
         <Button
             Name="LockLogButton"
-            Margin="0,0,18,20"
+            Margin="0,0,18,25"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Click="LockLogButton_Click"

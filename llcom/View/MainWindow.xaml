@@ -49,6 +49,7 @@
         <!--  收发数据显示  -->
         <Frame
             Name="dataShowFrame"
+            Background="Transparent"
             BorderBrush="#FF009400"
             BorderThickness="0"
             GotFocus="uartDataFlowDocument_GotFocus"
