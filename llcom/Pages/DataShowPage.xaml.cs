@@ -90,8 +90,12 @@ namespace llcom.Pages
                 });
             }
 
+            //如果不开回显，就别打印
+            if(!Tools.Global.setting.showSend && e is DataShowPara para && para.send)
+                return;
+
             //显示到列表
-            if(!needPack && e is not DataShowRaw)//不分包模式
+            if (!needPack && e is not DataShowRaw)//不分包模式
             {
                 var DataText = Tools.Global.setting.showHexFormat switch
                 {
