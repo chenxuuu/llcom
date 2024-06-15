@@ -142,6 +142,8 @@
     <system:String x:Key="CreateTcpIpv6Button">测试TCP (ipv6)</system:String>
     <system:String x:Key="DisconnectButton">断开</system:String>
     <system:String x:Key="ConnectButton">连接</system:String>
+    <system:String x:Key="TcpReconnect">自动重连</system:String>
+    <system:String x:Key="TcpReconnectInterval">重连间隔:</system:String>
     <system:String x:Key="TcpServerAddr">服务器地址</system:String>
     <system:String x:Key="TcpServerPort">服务器端口</system:String>
     <system:String x:Key="TcpServerProtocol">协议</system:String>
