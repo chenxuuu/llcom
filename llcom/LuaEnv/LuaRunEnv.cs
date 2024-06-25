@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace llcom.LuaEnv
 {
@@ -18,6 +19,7 @@ namespace llcom.LuaEnv
         private static ConcurrentDictionary<int, CancellationTokenSource> pool = 
             new ConcurrentDictionary<int, CancellationTokenSource>();//timer回调池子
         private static ConcurrentBag<LuaPool> toRun = new ConcurrentBag<LuaPool>();//待运行的池子
+        private static XLua.LuaFunction triggerCB = null;
 
         public static bool isRunning = false;
         public static bool canRun = false;
@@ -71,10 +73,7 @@ namespace llcom.LuaEnv
                             {
                                 LuaPool temp;
                                 toRun.TryTake(out temp);
-                                XLua.LuaFunction f = null;
-                                //while (f == null)
-                                    f = lua.Global.Get<XLua.LuaFunction>("tiggerCB");
-                                f.Call(temp.id, temp.type, temp.data);
+                                triggerCB.Call(temp.id, temp.type, temp.data);
                             }
                             catch (Exception le)
                             {
@@ -190,6 +189,7 @@ namespace llcom.LuaEnv
                     {
                         lua.Global.SetInPath("runType", "script");//一次性处理标志
                         LuaLoader.Initial(lua);
+                        triggerCB = lua.Global.Get<XLua.LuaFunction>("tiggerCB");
                         lua.DoString($"require '{file.Replace("/", ".").Substring(0, file.Length - 4)}'");
                     }
                 }

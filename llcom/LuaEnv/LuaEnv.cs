@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace llcom.LuaEnv
 {
@@ -28,8 +29,9 @@ namespace llcom.LuaEnv
         private bool stop = false;//是否停止运行
         private ConcurrentDictionary<int, CancellationTokenSource> timerPool =
                 new ConcurrentDictionary<int, CancellationTokenSource>();//timer取消标志池子
-        private static ConcurrentBag<LuaTaskData> toRun = new ConcurrentBag<LuaTaskData>();//待运行的池子
+        private ConcurrentBag<LuaTaskData> toRun = new ConcurrentBag<LuaTaskData>();//待运行的池子
         private readonly object taskLock = new object();
+        private XLua.LuaFunction triggerCB = null;
 
         /// <summary>
         /// 发出报错信息
@@ -83,8 +85,7 @@ namespace llcom.LuaEnv
                     {
                         LuaTaskData task;
                         toRun.TryTake(out task);//取出来一个任务
-                        var cb = lua.Global.Get<XLua.LuaTable>("sys").Get<XLua.LuaFunction>("tiggerCB");
-                        cb.Call(task.id, task.type, task.data);//跑
+                        triggerCB.Call(task.id, task.type, task.data);//跑
                     }
                     catch (Exception e)
                     {
@@ -187,6 +188,7 @@ namespace llcom.LuaEnv
             if (input != null)
                 lua.Global.SetInPath("lua", input);//传递输入值
             lock (taskLock) lua.DoString(sysCode);
+            triggerCB = lua.Global.Get<XLua.LuaTable>("sys").Get<XLua.LuaFunction>("tiggerCB");
             lua.Global.SetInPath("@this", this);//自己传给自己
 
             //加上需要require的路径
