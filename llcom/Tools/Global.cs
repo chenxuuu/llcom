@@ -191,6 +191,7 @@ namespace llcom.Tools
                 }
                 setting = new Model.Settings();
             }
+            LoadLanguageFile(setting.language);
         }
 
         /// <summary>
