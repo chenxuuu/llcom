@@ -187,8 +187,17 @@ namespace llcom.Pages
             if (Server != null)
                 return false;
             IPAddress localAddr = IPAddress.Parse(ip);
-            Server = new TcpListener(localAddr, port);
-            Server.Start();
+            try
+            {
+                Server = new TcpListener(localAddr, port);
+                Server.Start();
+            }
+            catch (Exception ex)
+            {
+                Server = null;
+                throw ex;
+            }
+            
             var isV6 = ip.Contains(":");
             ShowData($"🛰 {(isV6 ? "[" : "")}{ip}{(isV6 ? "]" : "")}:{port}");
             AsyncCallback newConnectionCb = null;
