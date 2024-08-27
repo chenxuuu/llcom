@@ -328,7 +328,7 @@
                         </Menu>
                     </StackPanel>
                 </TabItem.Header>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ScrollViewer Name="QuickSendScrollViewer" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>

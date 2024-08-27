@@ -779,6 +779,10 @@ namespace llcom
         private void AddSendListButton_Click(object sender, RoutedEventArgs e)
         {
             toSendListItems.Add(new ToSendData() { id = toSendListItems.Count + 1, text = "", hex = false , commit = TryFindResource("QuickSendButton") as string ?? "?!" });
+            //将QuickSendScrollViewer滚动回底部的相对位置
+            var itemHeight = toSendList.ActualHeight / toSendListItems.Count;
+            var offset = QuickSendScrollViewer.VerticalOffset + itemHeight;
+            QuickSendScrollViewer.ScrollToVerticalOffset(offset);
         }
 
         private void DeleteSendListButton_Click(object sender, RoutedEventArgs e)
@@ -788,6 +792,12 @@ namespace llcom
                 toSendListItems.RemoveAt(toSendListItems.Count - 1);
             }
             SaveSendList(null, EventArgs.Empty);
+            //将QuickSendScrollViewer滚动回底部的相对位置
+            if (toSendListItems.Count == 0)
+                return;
+            var itemHeight = toSendList.ActualHeight / toSendListItems.Count;
+            var offset = QuickSendScrollViewer.VerticalOffset - itemHeight;
+            QuickSendScrollViewer.ScrollToVerticalOffset(offset);
         }
 
         private void knowSendDataButton_click(object sender, RoutedEventArgs e)
