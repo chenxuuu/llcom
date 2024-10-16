@@ -142,7 +142,7 @@ namespace llcom.Pages
                         return;
                     }
 
-                    if(so.isSSL)
+                    if (so.isSSL)
                     {
                         var networkStream = new NetworkStream(s);
                         var ssl = new SslStream(
@@ -155,7 +155,7 @@ namespace llcom.Pages
                         {
                             ssl.AuthenticateAsClient("llcom tcp ssl client");
                         }
-                        catch(Exception ssle)
+                        catch (Exception ssle)
                         {
                             ShowData($"❗ SSL error {ssle.Message}");
                             socketNow = null;
@@ -166,13 +166,41 @@ namespace llcom.Pages
                             ShowData("❌ Server disconnected");
                             return;
                         }
-                        socketNow = new SocketObj(ssl);
-                        ssl.BeginRead(so.buffer, 0, StateObject.BUFFER_SIZE, new AsyncCallback(Read_Callback), so);
+                        try
+                        {
+                            socketNow = new SocketObj(ssl);
+                            ssl.BeginRead(so.buffer, 0, StateObject.BUFFER_SIZE, new AsyncCallback(Read_Callback), so);
+                        }
+                        catch (Exception ex)
+                        {
+                            ShowData($"❗ Server connect error {ex.Message}");
+                            socketNow = null;
+                            IsConnected = false;
+                            Changeable = true;
+                            s.Close();
+                            s.Dispose();
+                            ShowData("❌ Server disconnected");
+                            return;
+                        }
                     }
                     else
                     {
                         so.workSocket = s;
-                        s.BeginReceive(so.buffer, 0, StateObject.BUFFER_SIZE, 0, new AsyncCallback(Read_Callback), so);
+                        try
+                        {
+                            s.BeginReceive(so.buffer, 0, StateObject.BUFFER_SIZE, 0, new AsyncCallback(Read_Callback), so);
+                        }
+                        catch(Exception ex)
+                        {
+                            ShowData($"❗ Server connect error {ex.Message}");
+                            socketNow = null;
+                            IsConnected = false;
+                            Changeable = true;
+                            s.Close();
+                            s.Dispose();
+                            ShowData("❌ Server disconnected");
+                            return;
+                        }
                     }
                 }), s);
             }
