@@ -78,6 +78,8 @@ namespace llcom
 
                     //窗口置顶事件
                     Tools.Global.setting.MainWindowTop += new EventHandler(topEvent);
+                    if (Tools.Global.setting.topmost)//设置窗口置顶
+                        this.Topmost = true;
 
                     //收发数据显示页面
                     dataShowFrame.Navigate(new Uri("Pages/DataShowPage.xaml", UriKind.Relative));
