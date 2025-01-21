@@ -65,7 +65,6 @@ namespace llcom.Pages
             this.ExtraEnterCheckBox.DataContext = Tools.Global.setting;
             DisableLogCheckBox.DataContext = Tools.Global.setting;
             EnableSymbolCheckBox.DataContext = Tools.Global.setting;
-            EnterTerminalModeButton.DataContext = Tools.Global.setting;
 
             lastPackShowMode = Tools.Global.setting.timeout >= 0;
             MainList.Visibility = lastPackShowMode ? Visibility.Visible : Visibility.Collapsed;
@@ -120,7 +119,7 @@ namespace llcom.Pages
                     {
                         MainList.Items.Add(data);
                         if (!LockLog)
-                            MainList.ScrollIntoView(MainList.Items[MainList.Items.Count - 1]);
+                            MainListScrollViewer.ScrollToEnd();
                     });
                 }
             }

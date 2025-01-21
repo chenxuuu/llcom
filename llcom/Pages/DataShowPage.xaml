@@ -63,6 +63,10 @@
         </Style>
     </Page.Resources>
     <Grid x:Name="mainGrid" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <TextBox
             Name="MainTextBox"
             VerticalContentAlignment="Top"
@@ -74,21 +78,58 @@
             IsReadOnly="True"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             TextWrapping="Wrap" />
-        <ListBox
-            Name="MainList"
-            Background="Transparent"
-            ItemContainerStyle="{StaticResource DataShowStyle}"
-            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-            ScrollViewer.VerticalScrollBarVisibility="Auto"
-            VirtualizingStackPanel.CacheLength="2,2"
-            VirtualizingStackPanel.IsVirtualizing="True"
-            VirtualizingStackPanel.VirtualizationMode="Recycling" />
+        <ScrollViewer Name="MainListScrollViewer" VerticalScrollBarVisibility="Auto">
+            <ItemsControl
+                Name="MainList"
+                Background="Transparent"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                VirtualizingStackPanel.CacheLength="2,2"
+                VirtualizingStackPanel.IsVirtualizing="True"
+                VirtualizingStackPanel.VirtualizationMode="Recycling">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <RichTextBox
+                            Background="Transparent"
+                            BorderThickness="0"
+                            FontFamily="Consolas,Microsoft YaHei,微软雅黑"
+                            FontSize="12"
+                            IsReadOnly="True">
+                            <FlowDocument>
+                                <Paragraph Margin="0">
+                                    <Run Foreground="DarkSlateGray" Text="{Binding TimeText}" />
+                                    <Run Foreground="DarkSlateGray" Text="{Binding ArrowText}" />
+                                    <Run
+                                        FontSize="15"
+                                        Foreground="{Binding DataTextColor}"
+                                        Text="{Binding DataText}" />
+                                    <Run
+                                        FontWeight="Bold"
+                                        Foreground="Black"
+                                        Text="{Binding RawTitle}" />
+                                    <Run
+                                        FontSize="15"
+                                        Foreground="{Binding RawTextColor}"
+                                        Text="{Binding RawText}" />
+                                    <Run Foreground="{Binding HexTextColor}" Text="{Binding HexText}" />
+                                </Paragraph>
+                            </FlowDocument>
+                        </RichTextBox>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
         <StackPanel
+            Grid.Row="1"
             Margin="10,0,0,3"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Orientation="Horizontal"
-            Visibility="{Binding Path=IsMouseOver, ElementName=mainGrid, Converter={StaticResource boolVisibeConverter}}">
+            Orientation="Horizontal">
             <CheckBox
                 Name="RTSCheckBox"
                 Margin="5,0,0,0"
@@ -128,15 +169,6 @@
                 Margin="5,0,0,0"
                 Content="{DynamicResource DisableLog}"
                 IsChecked="{Binding DisableLog}" />
-        </StackPanel>
-        <StackPanel
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Visibility="{Binding Path=IsMouseOver, ElementName=mainGrid, Converter={StaticResource boolVisibeConverter}}">
-            <Button
-                Name="EnterTerminalModeButton"
-                Content="{DynamicResource EnterTerminalMode}"
-                Visibility="{Binding terminal, Converter={StaticResource boolVisibeConverter}}" />
         </StackPanel>
         <Button
             Name="LockLogButton"
