@@ -686,7 +686,7 @@ namespace llcom
         }
 
         private int lastBaudRateSelectedIndex = -1;
-        private void BaudRateComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void BaudRateComboBox_Changed(object sender, EventArgs e)
         {
             //选的没变
             if(lastBaudRateSelectedIndex == baudRateComboBox.SelectedIndex)

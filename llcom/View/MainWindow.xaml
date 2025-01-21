@@ -177,7 +177,8 @@
                     <ComboBox
                         Name="baudRateComboBox"
                         Width="80"
-                        SelectionChanged="BaudRateComboBox_SelectionChanged">
+                        DropDownClosed="BaudRateComboBox_Changed"
+                        DropDownOpened="BaudRateComboBox_Changed">
                         <ComboBoxItem Content="110" />
                         <ComboBoxItem Content="330" />
                         <ComboBoxItem Content="600" />
