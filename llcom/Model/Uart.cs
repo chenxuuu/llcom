@@ -225,6 +225,8 @@ namespace llcom.Model
                     return;
                 if (Tools.Global.setting.timeout > 0)
                     System.Threading.Thread.Sleep(Tools.Global.setting.timeout);//等待时间
+                else
+                    System.Threading.Thread.Sleep(10);//等待时间默认给个10ms吧，防止中文被分割
                 List<byte> result = new List<byte>();
                 while (true)//循环读
                 {
@@ -248,6 +250,10 @@ namespace llcom.Model
                     if (Tools.Global.setting.bitDelay && Tools.Global.setting.timeout > 0)//如果是设置了等待间隔时间
                     {
                         System.Threading.Thread.Sleep(Tools.Global.setting.timeout);//等待时间
+                    }
+                    else if (Tools.Global.setting.timeout < 0)//如果是设置了等待间隔时间
+                    {
+                        System.Threading.Thread.Sleep(10);//等待时间默认给个10ms吧，防止中文被分割
                     }
                 }
                 Tools.Global.setting.ReceivedCount += result.Count;
