@@ -4,18 +4,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:LLCOM.Views"
     xmlns:vm="using:LLCOM.ViewModels"
-    Title="{Binding Title}"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    Title="LLCOM Next"
+	Height="800"
+	Width="1200"
     x:DataType="vm:MainWindowViewModel"
     Icon="/Assets/llcom-logo.ico"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-
-    <Design.DataContext>
-        <vm:MainWindowViewModel />
-    </Design.DataContext>
-
-
+    <!--  这里别写别的ui控件，不然跨平台会出问题  -->
+    <views:MainView />
 </Window>

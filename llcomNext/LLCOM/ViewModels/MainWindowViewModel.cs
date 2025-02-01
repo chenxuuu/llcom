@@ -6,12 +6,6 @@ namespace LLCOM.ViewModels
 
     public partial class MainWindowViewModel : ViewModelBase
     {
-        /// <summary>
-        /// 标题栏
-        /// </summary>
-        [ObservableProperty]
-        public string _title = "LLCOM";
-
         public MainWindowViewModel()
         {
 
