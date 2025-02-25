@@ -50,8 +50,8 @@
         <Frame
             Name="dataShowFrame"
             Background="Transparent"
-            BorderBrush="#FF009400"
-            BorderThickness="0"
+            BorderBrush="#00000000"
+            BorderThickness="0.5"
             GotFocus="uartDataFlowDocument_GotFocus"
             LostFocus="uartDataFlowDocument_LostFocus"
             NavigationUIVisibility="Hidden"

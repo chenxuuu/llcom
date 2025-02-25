@@ -1342,12 +1342,12 @@ namespace llcom
         private void uartDataFlowDocument_GotFocus(object sender, RoutedEventArgs e)
         {
             if (Tools.Global.setting.terminal)
-                dataShowFrame.BorderThickness = new Thickness(0.5);
+                dataShowFrame.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 148, 0));
         }
 
         private void uartDataFlowDocument_LostFocus(object sender, RoutedEventArgs e)
         {
-            dataShowFrame.BorderThickness = new Thickness(0);
+            dataShowFrame.BorderBrush = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
         }
 
         private void uartDataFlowDocument_PreviewTextInput(object sender, TextCompositionEventArgs e)
