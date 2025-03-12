@@ -1,14 +1,14 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LLCOM.ViewModels
 {
 
-    public partial class MainWindowViewModel : ViewModelBase
+    public partial class MainWindowViewModel(Func<Type, ViewModelBase?> getService) : ViewModelBase
     {
-        public MainWindowViewModel()
-        {
-
-        }
+        [ObservableProperty]
+        private MainViewModel _mainViewModel = (MainViewModel)getService(typeof(MainViewModel))!;
     }
 }

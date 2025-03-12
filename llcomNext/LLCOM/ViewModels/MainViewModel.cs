@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LLCOM.ViewModels;
 
-public partial class MainViewModel : ViewModelBase
+public partial class MainViewModel(Func<Type, ViewModelBase?> getService) : ViewModelBase
 {
 
 }
