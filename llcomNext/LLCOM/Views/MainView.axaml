@@ -1,4 +1,5 @@
 <UserControl
+    Background="{DynamicResource SemiColorBackground0}"
     d:DesignHeight="800"
     d:DesignWidth="1200"
     mc:Ignorable="d"
@@ -9,7 +10,36 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:LLCOM.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid>
-        <Button Content="test" />
+    <Grid ColumnDefinitions="auto,*">
+        <Border
+            Background="{DynamicResource SemiColorBackground4}"
+            BorderBrush="{DynamicResource SemiColorBorder}"
+            BorderThickness="0,0,1,0">
+            <Panel Margin="5">
+                <StackPanel Spacing="5">
+                    <Button
+                        Classes="IconButtonActivated"
+                        Content="&#xEB56;"
+                        ToolTip.Tip="数据收发" />
+                    <Button
+                        Classes="IconButton"
+                        Content="&#xECA0;"
+                        ToolTip.Tip="调试工具" />
+                    <Button
+                        Classes="IconButton"
+                        Content="&#xEAFE;"
+                        ToolTip.Tip="自动脚本" />
+                    <Button
+                        Classes="IconButton"
+                        Content="&#xE288;"
+                        ToolTip.Tip="在线功能" />
+                </StackPanel>
+                <Button
+                    Classes="IconButton"
+                    Content="&#xE270;"
+                    ToolTip.Tip="软件设置"
+                    VerticalAlignment="Bottom" />
+            </Panel>
+        </Border>
     </Grid>
 </UserControl>

@@ -12,5 +12,12 @@
 
     <Application.Styles>
         <semi:SemiTheme Locale="zh-CN" />
+        <semi:SemiPopupAnimations />
+        <StyleInclude Source="/Styles/MainStyle.axaml" />
     </Application.Styles>
+
+    <Application.Resources>
+        <FontFamily x:Key="Phosphor">/Assets/Fonts/Phosphor.ttf#Phosphor</FontFamily>
+        <FontFamily x:Key="PhosphorFill">/Assets/Fonts/Phosphor.ttf#Phosphor-Fill</FontFamily>
+    </Application.Resources>
 </Application>
