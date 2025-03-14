@@ -32,4 +32,40 @@
     <PackageReference Include="NLua" Version="1.7.4" />
     <PackageReference Include="Semi.Avalonia" Version="11.2.1.5" />
   </ItemGroup>
+
+
+  <ItemGroup>
+    <Compile Update="Views\Pages\DataPageView.axaml.cs">
+      <DependentUpon>DataPageView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Pages\OnlinePageView.axaml.cs">
+      <DependentUpon>OnlinePageView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Pages\ScriptPageView.axaml.cs">
+      <DependentUpon>ScriptPageView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Pages\SettingPageView.axaml.cs">
+      <DependentUpon>SettingPageView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Pages\ToolsPageView.axaml.cs">
+      <DependentUpon>ToolsPageView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\DataViews\WaveformView.axaml.cs">
+      <DependentUpon>WaveformView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\DataViews\TerminalView.axaml.cs">
+      <DependentUpon>TerminalView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\DataViews\PacketDataView.axaml.cs">
+      <DependentUpon>PacketDataView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
 </Project>
