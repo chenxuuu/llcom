@@ -61,20 +61,27 @@
                     <TextBlock TextWrapping="Wrap">
                         软件支持跨平台，为各平台用户提供一致的体验。
                     </TextBlock>
-                    <TextBlock Margin="0,5,0,0" Text="本软件为开源项目" />
-                    <HyperlinkButton
-                        Classes="WithIcon Underline"
-                        Content="LLCOM Next GitHub源码仓库"
-                        Height="20"
-                        NavigateUri="https://github.com/chenxuuu/llcom/tree/next" />
+                    <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                        <TextBlock Text="本软件为开源项目：" />
+                        <HyperlinkButton
+                            Classes="WithIcon Underline"
+                            Content="GitHub源码仓库"
+                            Height="20"
+                            NavigateUri="https://github.com/chenxuuu/llcom/tree/next" />
+                    </StackPanel>
+
 
                     <TextBox
                         AcceptsReturn="True"
                         FontSize="15"
                         IsReadOnly="True"
                         Margin="0,20,0,0"
-                        Text="LLCOM 2.0.0&#13;Window 10 21H1&#13;用来展示系统和软件版本信息&#13;xxx"
-                        TextWrapping="Wrap" />
+                        Text="{Binding SystemInfo}" />
+                    <Button
+                        Command="{Binding CopySystemInfoCommand}"
+                        Content="复制调试信息"
+                        HorizontalAlignment="Stretch"
+                        Margin="0,5,0,0" />
                 </StackPanel>
             </ScrollViewer>
         </TabItem>
