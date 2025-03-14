@@ -1,6 +1,8 @@
 <Window
     Height="800"
     Icon="/Assets/llcom-logo.ico"
+    MinHeight="300"
+    MinWidth="400"
     Title="LLCOM Next"
     Width="1200"
     WindowStartupLocation="CenterScreen"

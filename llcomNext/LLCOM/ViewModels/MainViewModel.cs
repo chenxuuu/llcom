@@ -11,13 +11,55 @@ namespace LLCOM.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
-    private Func<Type, ViewModelBase?> GetService;
+    private Func<Type, ViewModelBase> _getService;
     
-
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(
+        nameof(IsDataPageActive),
+        nameof(IsToolsPageActive),
+        nameof(IsScriptPageActive),
+        nameof(IsOnlinePageActive),
+        nameof(IsSettingPageActive)
+        )]
+    private ViewModelBase _currentPage;
     
-    public MainViewModel(Func<Type, ViewModelBase?> getService)
+    public bool IsDataPageActive => CurrentPage is DataPageViewModel;
+    public bool IsToolsPageActive => CurrentPage is ToolsPageViewModel;
+    public bool IsScriptPageActive => CurrentPage is ScriptPageViewModel;
+    public bool IsOnlinePageActive => CurrentPage is OnlinePageViewModel;
+    public bool IsSettingPageActive => CurrentPage is SettingPageViewModel;
+    
+    //用于设计时预览，正式代码中无效
+    public MainViewModel() {}
+    
+    public MainViewModel(Func<Type, ViewModelBase> getService)
     {
-        GetService = getService;
+        _getService = getService;
+        CurrentPage = _getService(typeof(DataPageViewModel));
+        CurrentDataPage = _getService(typeof(PacketDataViewModel));
     }
+
+    [RelayCommand]
+    private void DataPageButton() => CurrentPage = _getService(typeof(DataPageViewModel));
+    [RelayCommand]
+    private void ToolsPageButton() => CurrentPage = _getService(typeof(ToolsPageViewModel));
+    [RelayCommand]
+    private void ScriptPageButton() => CurrentPage = _getService(typeof(ScriptPageViewModel));
+    [RelayCommand]
+    private void OnlinePageButton() => CurrentPage = _getService(typeof(OnlinePageViewModel));
+    [RelayCommand]
+    private void SettingPageButton() => CurrentPage = _getService(typeof(SettingPageViewModel));
+    
+    
+    //以下代码用于切换DataPage中的子页面
+    [ObservableProperty]
+    private ViewModelBase _currentDataPage;
+    
+    [RelayCommand]
+    private void PacketDataButton() => CurrentDataPage = _getService(typeof(PacketDataViewModel));
+    [RelayCommand]
+    private void TerminalButton() => CurrentDataPage = _getService(typeof(TerminalViewModel));
+    [RelayCommand]
+    private void WaveformButton() => CurrentDataPage = _getService(typeof(WaveformViewModel));
 
 }

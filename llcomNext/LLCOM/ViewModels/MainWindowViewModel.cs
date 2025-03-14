@@ -6,9 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 namespace LLCOM.ViewModels
 {
 
-    public partial class MainWindowViewModel(Func<Type, ViewModelBase?> getService) : ViewModelBase
+    public partial class MainWindowViewModel(Func<Type, ViewModelBase> getService) : ViewModelBase
     {
         [ObservableProperty]
-        private MainViewModel _mainViewModel = (MainViewModel)getService(typeof(MainViewModel))!;
+        private MainViewModel _mainViewModel = (MainViewModel)getService(typeof(MainViewModel));
     }
 }

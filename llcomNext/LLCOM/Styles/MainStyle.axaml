@@ -2,7 +2,7 @@
     <Design.PreviewWith>
         <StackPanel>
             <Button Classes="IconButton" Content="&#xEB56;" />
-            <Button Classes="IconButtonActivated" Content="&#xEB56;" />
+            <Button Classes="IconButtonActive" Content="&#xEB56;" />
         </StackPanel>
     </Design.PreviewWith>
 
@@ -16,8 +16,8 @@
         <Setter Property="Width" Value="40" />
         <Setter Property="FontSize" Value="20" />
     </Style>
-    <Style Selector="Button.IconButtonActivated">
-        <Setter Property="FontFamily" Value="{DynamicResource PhosphorFill}" />
+    <Style Selector="Button.IconButtonActive">
+        <Setter Property="FontFamily" Value="{DynamicResource Phosphor}" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="Theme" Value="{DynamicResource SolidButton}" />
         <Setter Property="Height" Value="40" />

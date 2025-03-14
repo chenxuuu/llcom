@@ -10,36 +10,96 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:LLCOM.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid ColumnDefinitions="auto,*">
+    <Design.DataContext>
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+    <Grid Background="{DynamicResource SemiColorBackground1}" ColumnDefinitions="auto,*,auto,2*">
         <Border
-            Background="{DynamicResource SemiColorBackground4}"
+            Background="{DynamicResource SemiColorBackground2}"
             BorderBrush="{DynamicResource SemiColorBorder}"
             BorderThickness="0,0,1,0">
             <Panel Margin="5">
                 <StackPanel Spacing="5">
                     <Button
-                        Classes="IconButtonActivated"
+                        Classes="IconButton Secondary"
+                        Classes.IconButtonActive="{Binding IsDataPageActive}"
+                        Command="{Binding DataPageButtonCommand}"
                         Content="&#xEB56;"
                         ToolTip.Tip="数据收发" />
                     <Button
-                        Classes="IconButton"
+                        Classes="IconButton Secondary"
+                        Classes.IconButtonActive="{Binding IsToolsPageActive}"
+                        Command="{Binding ToolsPageButtonCommand}"
                         Content="&#xECA0;"
                         ToolTip.Tip="调试工具" />
                     <Button
-                        Classes="IconButton"
+                        Classes="IconButton Secondary"
+                        Classes.IconButtonActive="{Binding IsScriptPageActive}"
+                        Command="{Binding ScriptPageButtonCommand}"
                         Content="&#xEAFE;"
                         ToolTip.Tip="自动脚本" />
                     <Button
-                        Classes="IconButton"
+                        Classes="IconButton Secondary"
+                        Classes.IconButtonActive="{Binding IsOnlinePageActive}"
+                        Command="{Binding OnlinePageButtonCommand}"
                         Content="&#xE288;"
                         ToolTip.Tip="在线功能" />
                 </StackPanel>
                 <Button
-                    Classes="IconButton"
+                    Classes="IconButton Secondary"
+                    Classes.IconButtonActive="{Binding IsSettingPageActive}"
+                    Command="{Binding SettingPageButtonCommand}"
                     Content="&#xE270;"
                     ToolTip.Tip="软件设置"
                     VerticalAlignment="Bottom" />
             </Panel>
         </Border>
+        <UserControl Content="{Binding CurrentPage}" Grid.Column="1" />
+        <GridSplitter Grid.Column="2" ResizeDirection="Columns" />
+        <Grid Grid.Column="3" RowDefinitions="Auto,*">
+            <Border BorderBrush="{DynamicResource SemiColorBorder}" BorderThickness="0,0,0,1">
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                    <RadioButton
+                        Classes="Large Secondary"
+                        Command="{Binding PacketDataButtonCommand}"
+                        IsChecked="True"
+                        Theme="{DynamicResource ButtonRadioButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                FontFamily="{DynamicResource Phosphor}"
+                                FontSize="20"
+                                Text="&#xE5A2;" />
+                            <TextBlock>分包数据</TextBlock>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton
+                        Classes="Large"
+                        Command="{Binding TerminalButtonCommand}"
+                        Theme="{DynamicResource ButtonRadioButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                FontFamily="{DynamicResource Phosphor}"
+                                FontSize="20"
+                                Text="&#xEAE8;" />
+                            <TextBlock>虚拟终端</TextBlock>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton
+                        Classes="Large"
+                        Command="{Binding WaveformButtonCommand}"
+                        Theme="{DynamicResource ButtonRadioButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                FontFamily="{DynamicResource Phosphor}"
+                                FontSize="20"
+                                Text="&#xEA9A;" />
+                            <TextBlock>波形显示</TextBlock>
+                        </StackPanel>
+                    </RadioButton>
+                </StackPanel>
+            </Border>
+            <UserControl Content="{Binding CurrentDataPage}" Grid.Row="1" />
+        </Grid>
     </Grid>
 </UserControl>

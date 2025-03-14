@@ -24,9 +24,18 @@ namespace LLCOM
             
             collection.AddSingleton<MainWindowViewModel>();
             collection.AddSingleton<MainViewModel>();
+            collection.AddSingleton<DataPageViewModel>();
+            collection.AddSingleton<ToolsPageViewModel>();
+            collection.AddSingleton<ScriptPageViewModel>();
+            collection.AddSingleton<OnlinePageViewModel>();
+            collection.AddSingleton<SettingPageViewModel>();
+            
+            collection.AddSingleton<PacketDataViewModel>();
+            collection.AddSingleton<TerminalViewModel>();
+            collection.AddSingleton<WaveformViewModel>();
 
             //用于获取别的ViewModel
-            collection.AddSingleton<Func<Type, ViewModelBase?>>(x => type => serviceProvider!.GetService(type) as ViewModelBase);
+            collection.AddSingleton<Func<Type, ViewModelBase>>(x => type => (ViewModelBase)serviceProvider!.GetService(type));
             
             serviceProvider = collection.BuildServiceProvider();
             
