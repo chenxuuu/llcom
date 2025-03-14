@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<svg width="1024" height="1024"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:svg="http://www.w3.org/2000/svg" class="icon" version="1.1">
+    <defs>
+        <linearGradient id="svg_colors" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0" stop-color="#7f7fd5"/>
+            <stop offset="0.5" stop-color="#86a8e7"/>
+            <stop offset="1" stop-color="#91eae4"/>
+        </linearGradient>
+        <!-- <filter id="shadow_filter">
+            <feDropShadow dx="10" dy="10" stdDeviation="10" flood-color="black" flood-opacity="0.3" />
+        </filter> -->
+    </defs>
+    <g class="layer">
+        <path d="m448.51,1006.59c-237.57,0 -432.13,-194.56 -432.13,-432.13s194.56,-436.22 440.32,-432.12c232.45,6.14 419.84,194.56 419.84,432.12s-190.46,432.13 -428.03,432.13zm178.18,-737.28c-69.63,0 -129.03,59.39 -129.03,129.03s55.3,129.02 129.03,129.02c69.63,0 129.02,-55.3 129.02,-129.02c-2.05,-69.64 -55.29,-129.03 -129.02,-129.03zm251.9,0c-69.63,0 -129.02,-55.29 -122.88,-129.02c0,-69.63 55.3,-122.88 129.03,-122.88c69.63,0 122.88,59.39 122.88,129.02s-59.4,122.88 -129.03,122.88z"
+        fill="url(#svg_colors)"/>
+        <!-- filter="url(#shadow_filter)" -->
+    </g>
+</svg>

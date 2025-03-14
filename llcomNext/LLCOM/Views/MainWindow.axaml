@@ -1,6 +1,6 @@
 <Window
     Height="800"
-    Icon="/Assets/llcom-logo.ico"
+    Icon="/Assets/Images/logo.ico"
     MinHeight="300"
     MinWidth="400"
     Title="LLCOM Next"
