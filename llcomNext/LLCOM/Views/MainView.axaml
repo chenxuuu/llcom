@@ -22,32 +22,32 @@
             <Panel Margin="5">
                 <StackPanel Spacing="5">
                     <Button
-                        Classes="IconButton Secondary"
+                        Classes="IconButton Tertiary"
                         Classes.IconButtonActive="{Binding IsDataPageActive}"
                         Command="{Binding DataPageButtonCommand}"
                         Content="&#xEB56;"
                         ToolTip.Tip="数据收发" />
                     <Button
-                        Classes="IconButton Secondary"
+                        Classes="IconButton Tertiary"
                         Classes.IconButtonActive="{Binding IsToolsPageActive}"
                         Command="{Binding ToolsPageButtonCommand}"
                         Content="&#xECA0;"
                         ToolTip.Tip="调试工具" />
                     <Button
-                        Classes="IconButton Secondary"
+                        Classes="IconButton Tertiary"
                         Classes.IconButtonActive="{Binding IsScriptPageActive}"
                         Command="{Binding ScriptPageButtonCommand}"
                         Content="&#xEAFE;"
                         ToolTip.Tip="自动脚本" />
                     <Button
-                        Classes="IconButton Secondary"
+                        Classes="IconButton Tertiary"
                         Classes.IconButtonActive="{Binding IsOnlinePageActive}"
                         Command="{Binding OnlinePageButtonCommand}"
                         Content="&#xE288;"
                         ToolTip.Tip="在线功能" />
                 </StackPanel>
                 <Button
-                    Classes="IconButton Secondary"
+                    Classes="IconButton Tertiary"
                     Classes.IconButtonActive="{Binding IsSettingPageActive}"
                     Command="{Binding SettingPageButtonCommand}"
                     Content="&#xE270;"
@@ -59,12 +59,15 @@
         <GridSplitter Grid.Column="2" ResizeDirection="Columns" />
         <Grid Grid.Column="3" RowDefinitions="Auto,*">
             <Border BorderBrush="{DynamicResource SemiColorBorder}" BorderThickness="0,0,0,1">
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                    <RadioButton
-                        Classes="Large Secondary"
-                        Command="{Binding PacketDataButtonCommand}"
-                        IsChecked="True"
-                        Theme="{DynamicResource ButtonRadioButton}">
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    Margin="0,5"
+                    Orientation="Horizontal"
+                    Spacing="5">
+                    <Button
+                        Classes="NotActiveButton Tertiary"
+                        Classes.ActiveButton="{Binding IsPacketDataActive}"
+                        Command="{Binding PacketDataButtonCommand}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
                                 FontFamily="{DynamicResource Phosphor}"
@@ -72,11 +75,11 @@
                                 Text="&#xE5A2;" />
                             <TextBlock>分包数据</TextBlock>
                         </StackPanel>
-                    </RadioButton>
-                    <RadioButton
-                        Classes="Large"
-                        Command="{Binding TerminalButtonCommand}"
-                        Theme="{DynamicResource ButtonRadioButton}">
+                    </Button>
+                    <Button
+                        Classes="NotActiveButton Tertiary"
+                        Classes.ActiveButton="{Binding IsTerminalActive}"
+                        Command="{Binding TerminalButtonCommand}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
                                 FontFamily="{DynamicResource Phosphor}"
@@ -84,11 +87,11 @@
                                 Text="&#xEAE8;" />
                             <TextBlock>虚拟终端</TextBlock>
                         </StackPanel>
-                    </RadioButton>
-                    <RadioButton
-                        Classes="Large"
-                        Command="{Binding WaveformButtonCommand}"
-                        Theme="{DynamicResource ButtonRadioButton}">
+                    </Button>
+                    <Button
+                        Classes="NotActiveButton Tertiary"
+                        Classes.ActiveButton="{Binding IsWaveformActive}"
+                        Command="{Binding WaveformButtonCommand}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
                                 FontFamily="{DynamicResource Phosphor}"
@@ -96,7 +99,7 @@
                                 Text="&#xEA9A;" />
                             <TextBlock>波形显示</TextBlock>
                         </StackPanel>
-                    </RadioButton>
+                    </Button>
                 </StackPanel>
             </Border>
             <UserControl Content="{Binding CurrentDataPage}" Grid.Row="1" />

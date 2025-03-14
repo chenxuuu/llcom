@@ -53,7 +53,12 @@ public partial class MainViewModel : ViewModelBase
     
     //以下代码用于切换DataPage中的子页面
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsPacketDataActive), nameof(IsTerminalActive), nameof(IsWaveformActive))]
     private ViewModelBase _currentDataPage;
+    
+    public bool IsPacketDataActive => CurrentDataPage is PacketDataViewModel;
+    public bool IsTerminalActive => CurrentDataPage is TerminalViewModel;
+    public bool IsWaveformActive => CurrentDataPage is WaveformViewModel;
     
     [RelayCommand]
     private void PacketDataButton() => CurrentDataPage = _getService(typeof(PacketDataViewModel));
