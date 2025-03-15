@@ -1,10 +1,11 @@
 <Application
-    RequestedThemeVariant="Default"
     x:Class="LLCOM.App"
     xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:LLCOM"
     xmlns:semi="https://irihi.tech/semi"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:u-semi="https://irihi.tech/ursa/themes/semi"
+    RequestedThemeVariant="Default">
 
     <Application.DataTemplates>
         <local:ViewLocator />
@@ -12,8 +13,9 @@
 
     <Application.Styles>
         <semi:SemiTheme Locale="zh-CN" />
-        <semi:SemiPopupAnimations />
+        <u-semi:SemiTheme Locale="zh-CN" />
         <StyleInclude Source="/Styles/MainStyle.axaml" />
+        <StyleInclude Source="/Controls/PacketDataControl.axaml" />
     </Application.Styles>
 
     <Application.Resources>

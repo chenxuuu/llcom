@@ -1,0 +1,63 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:LLCOM.Controls">
+    <Design.PreviewWith>
+        <Grid Width="500">
+            <controls:PacketDataControl
+                Extra="2025/03/11 - 11:22:33.123"
+                Header="本机 &lt;&lt; 串口1"
+                Hex="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"
+                MainColor="{DynamicResource SemiGreen8}"
+                Text="接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123" />
+        </Grid>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|PacketDataControl">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <StackPanel>
+                    <Grid>
+                        <Border
+                            HorizontalAlignment="Left"
+                            Background="{TemplateBinding MainColor}"
+                            BorderBrush="{TemplateBinding MainColor}"
+                            BorderThickness="1,1,1,0"
+                            CornerRadius="5 5 0 0">
+                            <TextBlock
+                                Margin="6,2"
+                                FontSize="12"
+                                Foreground="{DynamicResource SemiColorHighlight}"
+                                Text="{TemplateBinding Header}" />
+                        </Border>
+                        <TextBlock
+                            Margin="0,2,10,0"
+                            HorizontalAlignment="Right"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Text="{DynamicResource Extra}" />
+                    </Grid>
+                    <Border
+                        BorderBrush="{TemplateBinding MainColor}"
+                        BorderThickness="1"
+                        CornerRadius="0 5 5 5">
+                        <StackPanel>
+                            <SelectableTextBlock
+                                Margin="5,5,5,0"
+                                FontSize="16"
+                                Foreground="{TemplateBinding MainColor}"
+                                Text="{TemplateBinding Text}"
+                                TextWrapping="Wrap" />
+                            <SelectableTextBlock
+                                Margin="5,0,5,3"
+                                FontSize="12"
+                                Foreground="{DynamicResource SemiColorText2}"
+                                Text="{TemplateBinding Hex}"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

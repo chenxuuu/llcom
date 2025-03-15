@@ -1,14 +1,15 @@
 <UserControl
-    d:DesignHeight="800"
-    d:DesignWidth="1200"
-    mc:Ignorable="d"
     x:Class="LLCOM.Views.MainView"
-    x:DataType="vm:MainViewModel"
     xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:u="https://irihi.tech/ursa"
     xmlns:vm="using:LLCOM.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    d:DesignHeight="800"
+    d:DesignWidth="1200"
+    x:DataType="vm:MainViewModel"
+    mc:Ignorable="d">
     <Design.DataContext>
         <vm:MainViewModel />
     </Design.DataContext>
@@ -52,21 +53,21 @@
                         ToolTip.Tip="历史日志" />
                 </StackPanel>
                 <Button
+                    VerticalAlignment="Bottom"
                     Classes="IconButton Tertiary"
                     Classes.IconButtonActive="{Binding IsSettingPageActive}"
                     Command="{Binding SettingPageButtonCommand}"
                     Content="&#xE270;"
-                    ToolTip.Tip="软件设置"
-                    VerticalAlignment="Bottom" />
+                    ToolTip.Tip="软件设置" />
             </Panel>
         </Border>
-        <UserControl Content="{Binding CurrentPage}" Grid.Column="1" />
+        <UserControl Grid.Column="1" Content="{Binding CurrentPage}" />
         <GridSplitter Grid.Column="2" ResizeDirection="Columns" />
         <Grid Grid.Column="3" RowDefinitions="Auto,*">
             <Border BorderBrush="{DynamicResource SemiColorBorder}" BorderThickness="0,0,0,1">
                 <StackPanel
-                    HorizontalAlignment="Center"
                     Margin="0,5"
+                    HorizontalAlignment="Center"
                     Orientation="Horizontal"
                     Spacing="5">
                     <Button
@@ -107,7 +108,7 @@
                     </Button>
                 </StackPanel>
             </Border>
-            <UserControl Content="{Binding CurrentDataPage}" Grid.Row="1" />
+            <UserControl Grid.Row="1" Content="{Binding CurrentDataPage}" />
         </Grid>
     </Grid>
 </UserControl>

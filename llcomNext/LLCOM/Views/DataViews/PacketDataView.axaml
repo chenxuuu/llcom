@@ -2,6 +2,7 @@
     x:Class="LLCOM.Views.PacketDataView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:LLCOM.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:LLCOM.ViewModels"
@@ -12,195 +13,20 @@
     <Design.DataContext>
         <vm:PacketDataViewModel />
     </Design.DataContext>
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <StaticResource x:Key="SendColor" ResourceKey="SemiRed8" />
-            <StaticResource x:Key="ReceiveColor" ResourceKey="SemiGreen8" />
-            <StaticResource x:Key="SendBackGround" ResourceKey="SemiRed1" />
-            <StaticResource x:Key="ReceiveBackGround" ResourceKey="SemiGreen1" />
-        </ResourceDictionary>
-    </UserControl.Resources>
-    <ScrollViewer>
-        <StackPanel>
-            <StackPanel Margin="10">
-                <StackPanel Margin="0,0,0,3">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            Classes="Block"
-                            FontSize="12"
-                            Text="[2025.03.11 11:22:33.123]" />
-                        <TextBlock
-                            Margin="10,0,10,0"
-                            Classes="Block"
-                            FontSize="12"
-                            FontWeight="Bold"
-                            Foreground="{DynamicResource SendColor}"
-                            Text="串口1 ==&gt; 本机" />
-                    </StackPanel>
-                    <SelectableTextBlock
-                        FontSize="16"
-                        Foreground="{DynamicResource SendColor}"
-                        Text="接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123"
-                        TextWrapping="Wrap" />
-                    <SelectableTextBlock
-                        Classes="Block"
-                        FontSize="12"
-                        Foreground="{DynamicResource SemiColorText2}"
-                        Text="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"
-                        TextWrapping="Wrap" />
-                </StackPanel>
-                <StackPanel Margin="0,0,0,3">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            Classes="Block"
-                            FontSize="12"
-                            Text="[2025.03.11 11:22:33.123]" />
-                        <TextBlock
-                            Margin="10,0,10,0"
-                            Classes="Block"
-                            FontSize="12"
-                            FontWeight="Bold"
-                            Foreground="{DynamicResource ReceiveColor}"
-                            Text="本机 &lt;== 串口1" />
-                    </StackPanel>
-                    <SelectableTextBlock
-                        Classes="Block"
-                        FontSize="16"
-                        Foreground="{DynamicResource ReceiveColor}"
-                        Text="接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123"
-                        TextWrapping="Wrap" />
-                    <SelectableTextBlock
-                        Classes="Block"
-                        FontSize="12"
-                        Foreground="{DynamicResource SemiColorText2}"
-                        Text="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"
-                        TextWrapping="Wrap" />
-                </StackPanel>
-            </StackPanel>
-            <StackPanel Margin="10">
-                <Border
-                    Margin="0,0,0,3"
-                    BorderBrush="{DynamicResource SendColor}"
-                    BorderThickness="1">
-                    <StackPanel>
-                        <StackPanel Background="{DynamicResource SendColor}" Orientation="Horizontal">
-                            <TextBlock
-                                Classes="Block"
-                                FontSize="12"
-                                Foreground="{DynamicResource SemiColorHighlight}"
-                                Text="[2025.03.11 11:22:33.123]" />
-                            <TextBlock
-                                Margin="10,0,10,0"
-                                Classes="Block"
-                                FontSize="12"
-                                FontWeight="Bold"
-                                Foreground="{DynamicResource SemiColorHighlight}"
-                                Text="串口1 ==&gt; 本机" />
-                        </StackPanel>
-                        <SelectableTextBlock
-                            Margin="5,5,5,0"
-                            Classes="Block"
-                            FontSize="16"
-                            Foreground="{DynamicResource SendColor}"
-                            Text="接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123"
-                            TextWrapping="Wrap" />
-                        <SelectableTextBlock
-                            Margin="5,0,5,5"
-                            Classes="Block"
-                            FontSize="12"
-                            Foreground="{DynamicResource SemiColorText2}"
-                            Text="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"
-                            TextWrapping="Wrap" />
-                    </StackPanel>
-                </Border>
-                <Border
-                    Margin="0,0,0,3"
-                    BorderBrush="{DynamicResource ReceiveColor}"
-                    BorderThickness="1">
-                    <StackPanel>
-                        <StackPanel Background="{DynamicResource ReceiveColor}" Orientation="Horizontal">
-                            <TextBlock
-                                Classes="Block"
-                                FontSize="12"
-                                Foreground="{DynamicResource SemiColorHighlight}"
-                                Text="[2025.03.11 11:22:33.123]" />
-                            <TextBlock
-                                Margin="10,0,10,0"
-                                Classes="Block"
-                                FontSize="12"
-                                FontWeight="Bold"
-                                Foreground="{DynamicResource SemiColorHighlight}"
-                                Text="本机 &lt;== 串口1" />
-                        </StackPanel>
-                        <SelectableTextBlock
-                            Margin="5,5,5,0"
-                            Classes="Block"
-                            FontSize="16"
-                            Foreground="{DynamicResource ReceiveColor}"
-                            Text="接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123"
-                            TextWrapping="Wrap" />
-                        <SelectableTextBlock
-                            Margin="5,0,5,5"
-                            Classes="Block"
-                            FontSize="12"
-                            Foreground="{DynamicResource SemiColorText2}"
-                            Text="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"
-                            TextWrapping="Wrap" />
-                    </StackPanel>
-                </Border>
-            </StackPanel>
-            <StackPanel Margin="10">
-                <StackPanel Margin="0,0,0,3" Background="{DynamicResource SendBackGround}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            Classes="Block"
-                            FontSize="12"
-                            Text="[2025.03.11 11:22:33.123]" />
-                        <TextBlock
-                            Margin="10,0,10,0"
-                            Classes="Block"
-                            FontSize="12"
-                            FontWeight="Bold"
-                            Text="串口1 ==&gt; 本机" />
-                    </StackPanel>
-                    <SelectableTextBlock
-                        Classes="Block"
-                        FontSize="16"
-                        Text="接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123"
-                        TextWrapping="Wrap" />
-                    <SelectableTextBlock
-                        Classes="Block"
-                        FontSize="12"
-                        Foreground="{DynamicResource SemiColorText2}"
-                        Text="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"
-                        TextWrapping="Wrap" />
-                </StackPanel>
-                <StackPanel Margin="0,0,0,3" Background="{DynamicResource ReceiveBackGround}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            Classes="Block"
-                            FontSize="12"
-                            Text="[2025.03.11 11:22:33.123]" />
-                        <TextBlock
-                            Margin="10,0,10,0"
-                            Classes="Block"
-                            FontSize="12"
-                            FontWeight="Bold"
-                            Text="本机 &lt;== 串口1" />
-                    </StackPanel>
-                    <SelectableTextBlock
-                        Classes="Block"
-                        FontSize="16"
-                        Text="接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123"
-                        TextWrapping="Wrap" />
-                    <SelectableTextBlock
-                        Classes="Block"
-                        FontSize="12"
-                        Foreground="{DynamicResource SemiColorText2}"
-                        Text="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"
-                        TextWrapping="Wrap" />
-                </StackPanel>
-            </StackPanel>
+    <ScrollViewer Margin="5,5,10,5">
+        <StackPanel Spacing="5">
+            <PacketDataControl
+                Extra="2025/03/11 - 11:22:33.123"
+                Header="本机 &lt;&lt; 串口1"
+                Hex="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"
+                MainColor="{DynamicResource SemiGreen8}"
+                Text="接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123" />
+            <PacketDataControl
+                Extra="2025/03/11 - 11:22:33.123"
+                Header="串口1 &gt;&gt; 本机"
+                Hex="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"
+                MainColor="{DynamicResource SemiRed8}"
+                Text="接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123" />
         </StackPanel>
     </ScrollViewer>
 </UserControl>
