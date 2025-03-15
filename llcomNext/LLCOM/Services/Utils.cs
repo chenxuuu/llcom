@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
@@ -20,7 +21,7 @@ public class Utils
             if (_version is null)
             {
                 var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version!;
-                _version = $"{version.Major}.{version.Minor}.{version.Build}";
+                _version = version.ToString();
             }
             return _version;
         }
@@ -45,6 +46,11 @@ public class Utils
         //初始化语言 TODO
     }
     
+    /// <summary>
+    /// 复制文本到剪贴板
+    /// </summary>
+    /// <param name="txt">文本数据</param>
+    /// <returns>是否复制成功</returns>
     public static async Task<bool> CopyString(string txt)
     {
         try
@@ -68,6 +74,27 @@ public class Utils
         catch
         {
             return false;
+        }
+    }
+    
+    /// <summary>
+    /// 打开网页链接
+    /// </summary>
+    /// <param name="url">网址</param>
+    public static void OpenWebLink(string url)
+    {
+        try
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            };
+            Process.Start(psi);
+        }
+        catch
+        {
+            // ignored
         }
     }
 }

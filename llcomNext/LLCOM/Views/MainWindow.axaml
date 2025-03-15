@@ -3,7 +3,7 @@
     Icon="/Assets/Images/logo.ico"
     MinHeight="300"
     MinWidth="400"
-    Title="LLCOM Next"
+    Title="{Binding Title}"
     Width="1200"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d"
