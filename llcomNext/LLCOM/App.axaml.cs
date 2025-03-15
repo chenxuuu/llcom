@@ -28,6 +28,7 @@ namespace LLCOM
             collection.AddSingleton<ToolsPageViewModel>();
             collection.AddSingleton<ScriptPageViewModel>();
             collection.AddSingleton<OnlinePageViewModel>();
+            collection.AddSingleton<LogPageViewModel>();
             collection.AddSingleton<SettingPageViewModel>();
             
             collection.AddSingleton<PacketDataViewModel>();

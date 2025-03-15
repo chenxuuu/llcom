@@ -44,6 +44,12 @@
                         Command="{Binding OnlinePageButtonCommand}"
                         Content="&#xE288;"
                         ToolTip.Tip="在线功能" />
+                    <Button
+                        Classes="IconButton Tertiary"
+                        Classes.IconButtonActive="{Binding IsLogPageActive}"
+                        Command="{Binding LogPageButtonCommand}"
+                        Content="&#xE94E;"
+                        ToolTip.Tip="历史日志" />
                 </StackPanel>
                 <Button
                     Classes="IconButton Tertiary"

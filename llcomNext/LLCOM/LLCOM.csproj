@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="Assets\Images\" />
-    <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
 
@@ -69,6 +68,10 @@
     </Compile>
     <Compile Update="Views\DataViews\PacketDataView.axaml.cs">
       <DependentUpon>PacketDataView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Pages\LogPageView.axaml.cs">
+      <DependentUpon>LogPageView.axaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

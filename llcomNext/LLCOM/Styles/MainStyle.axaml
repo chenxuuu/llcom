@@ -1,6 +1,6 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Design.PreviewWith>
-        <StackPanel>
+        <StackPanel Width="200">
             <Button Classes="IconButton Tertiary" Content="&#xEB56;" />
             <Button Classes="IconButtonActive Tertiary" Content="&#xEB56;" />
         </StackPanel>
@@ -33,4 +33,6 @@
         <Setter Property="Theme" Value="{DynamicResource LightButton}" />
         <Setter Property="Foreground" Value="{DynamicResource SemiColorSecondary}" />
     </Style>
+
+
 </Styles>

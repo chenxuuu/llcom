@@ -19,6 +19,7 @@ public partial class MainViewModel : ViewModelBase
         nameof(IsToolsPageActive),
         nameof(IsScriptPageActive),
         nameof(IsOnlinePageActive),
+        nameof(IsLogPageActive),
         nameof(IsSettingPageActive)
         )]
     private ViewModelBase _currentPage;
@@ -27,6 +28,7 @@ public partial class MainViewModel : ViewModelBase
     public bool IsToolsPageActive => CurrentPage is ToolsPageViewModel;
     public bool IsScriptPageActive => CurrentPage is ScriptPageViewModel;
     public bool IsOnlinePageActive => CurrentPage is OnlinePageViewModel;
+    public bool IsLogPageActive => CurrentPage is LogPageViewModel;
     public bool IsSettingPageActive => CurrentPage is SettingPageViewModel;
     
     //用于设计时预览，正式代码中无效
@@ -47,6 +49,8 @@ public partial class MainViewModel : ViewModelBase
     private void ScriptPageButton() => CurrentPage = _getService(typeof(ScriptPageViewModel));
     [RelayCommand]
     private void OnlinePageButton() => CurrentPage = _getService(typeof(OnlinePageViewModel));
+    [RelayCommand]
+    private void LogPageButton() => CurrentPage = _getService(typeof(LogPageViewModel));
     [RelayCommand]
     private void SettingPageButton() => CurrentPage = _getService(typeof(SettingPageViewModel));
     

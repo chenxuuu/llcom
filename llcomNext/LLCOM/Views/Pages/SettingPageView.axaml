@@ -1,14 +1,14 @@
 ﻿<UserControl
-    d:DesignHeight="800"
-    d:DesignWidth="381"
-    mc:Ignorable="d"
     x:Class="LLCOM.Views.SettingPageView"
-    x:DataType="vm:SettingPageViewModel"
     xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:LLCOM.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    d:DesignHeight="800"
+    d:DesignWidth="381"
+    x:DataType="vm:SettingPageViewModel"
+    mc:Ignorable="d">
     <Design.DataContext>
         <vm:SettingPageViewModel />
     </Design.DataContext>
@@ -23,29 +23,29 @@
         </TabItem>
         <TabItem Header="外观与字体" />
         <TabItem Header="日志与缓存" />
-        <TabItem Header="关于软件" IsSelected="True">
+        <TabItem Header="关于软件">
             <ScrollViewer>
                 <StackPanel Margin="10">
                     <Border
+                        Width="170"
+                        HorizontalAlignment="Center"
                         BorderBrush="{DynamicResource SemiColorBorder}"
                         BorderThickness="3"
-                        CornerRadius="5"
-                        HorizontalAlignment="Center"
-                        Width="170">
+                        CornerRadius="5">
                         <Svg Margin="10" Path="/Assets/Images/logo.svg" />
                     </Border>
-                    <TextBlock
-                        FontSize="25"
-                        HorizontalAlignment="Center"
+                    <SelectableTextBlock
                         Margin="0,10,0,0"
-                        Text="LLCOM - Next" />
-                    <TextBlock
-                        FontSize="15"
                         HorizontalAlignment="Center"
+                        FontSize="25"
+                        Text="LLCOM - Next" />
+                    <SelectableTextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="15"
                         Text="多功能调试工具" />
 
                     <Panel Margin="0,10,0,0">
-                        <Button Command="{Binding CheckUpdateCommand}" Name="CheckUpdateButton">
+                        <Button Name="CheckUpdateButton" Command="{Binding CheckUpdateCommand}">
                             <Panel>
                                 <TextBlock HorizontalAlignment="Center" IsVisible="{Binding !HasCheckedUpdate}">检查更新</TextBlock>
                                 <TextBlock HorizontalAlignment="Center" IsVisible="{Binding NoNewVersion}">已是最新版本</TextBlock>
@@ -53,44 +53,44 @@
                             </Panel>
                         </Button>
                         <ProgressBar
+                            Width="30"
                             Height="30"
                             IsIndeterminate="True"
                             IsVisible="{Binding ElementName=CheckUpdateButton, Path=!IsEffectivelyEnabled}"
                             Maximum="100"
                             Minimum="0"
-                            Theme="{DynamicResource ProgressRing}"
-                            Width="30" />
+                            Theme="{DynamicResource ProgressRing}" />
                     </Panel>
 
-                    <TextBlock Margin="0,20,0,0" TextWrapping="Wrap">
+                    <SelectableTextBlock Margin="0,20,0,0" TextWrapping="Wrap">
                         支持串口、网络、USB等调试工具与自动化脚本，提供一个简单易用的调试工具。
-                    </TextBlock>
-                    <TextBlock TextWrapping="Wrap">
+                    </SelectableTextBlock>
+                    <SelectableTextBlock TextWrapping="Wrap">
                         软件支持跨平台，为各平台用户提供一致的体验。
-                    </TextBlock>
+                    </SelectableTextBlock>
                     <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                        <TextBlock Text="本软件为开源项目：" />
+                        <SelectableTextBlock Text="本软件为开源项目：" />
                         <HyperlinkButton
+                            Height="20"
                             Classes="WithIcon Underline"
                             Content="GitHub源码仓库"
-                            Height="20"
                             NavigateUri="https://github.com/chenxuuu/llcom/tree/next" />
                     </StackPanel>
 
 
                     <Button
-                        Command="{Binding CopySystemInfoCommand}"
-                        Content="复制调试信息"
+                        Margin="0,20,0,0"
                         HorizontalAlignment="Stretch"
-                        Margin="0,20,0,0" />
+                        Command="{Binding CopySystemInfoCommand}"
+                        Content="复制调试信息" />
                     <TextBox
+                        Height="300"
+                        Margin="0,5,0,0"
+                        VerticalContentAlignment="Top"
                         AcceptsReturn="True"
                         FontSize="15"
-                        Height="300"
                         IsReadOnly="True"
-                        Margin="0,5,0,0"
-                        Text="{Binding SystemInfo}"
-                        VerticalContentAlignment="Top" />
+                        Text="{Binding SystemInfo}" />
                 </StackPanel>
             </ScrollViewer>
         </TabItem>
