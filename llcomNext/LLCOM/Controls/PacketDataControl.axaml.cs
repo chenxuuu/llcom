@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
@@ -47,5 +48,21 @@ public class PacketDataControl : TemplatedControl
     {
         get => GetValue(HexProperty);
         set => SetValue(HexProperty, value);
+    }
+    
+    public static readonly StyledProperty<bool?> ShowStringProperty = 
+        AvaloniaProperty.Register<PacketDataControl, bool?>(nameof(ShowString), defaultValue: true);
+    public bool? ShowString
+    {
+        get => GetValue(ShowStringProperty);
+        set => SetValue(ShowStringProperty, value);
+    }
+    
+    public static readonly StyledProperty<bool?> ShowHexProperty = 
+        AvaloniaProperty.Register<PacketDataControl, bool?>(nameof(ShowHex), defaultValue: true);
+    public bool? ShowHex
+    {
+        get => GetValue(ShowHexProperty);
+        set => SetValue(ShowHexProperty, value);
     }
 }

@@ -16,6 +16,21 @@
                 Hex="44 55 66 77 88 99 00 AA BB CC DD EE FF"
                 MainColor="{DynamicResource SemiGreen8}"
                 Text="接收到的xxx数据123123接" />
+            <controls:PacketDataControl
+                Extra="2025/03/11 - 11:22:33.123"
+                Header="本机 &lt;&lt; 串口1"
+                Hex="44 55 66 77 88 99 00 AA BB CC DD EE FF"
+                MainColor="{DynamicResource SemiGreen8}"
+                ShowHex="False"
+                ShowString="False"
+                Text="接收到的xxx数据123123接" />
+            <controls:PacketDataControl
+                Extra="2025/03/11 - 11:22:33.123"
+                Header="本机 &lt;&lt; 串口1"
+                Hex="44 55 66 77 88 99 00 AA BB CC DD EE FF"
+                MainColor="{DynamicResource SemiGreen8}"
+                ShowHex="False"
+                Text="接收到的xxx数据123123接" />
         </StackPanel>
     </Design.PreviewWith>
 
@@ -47,19 +62,26 @@
                         BorderBrush="{TemplateBinding MainColor}"
                         BorderThickness="1"
                         CornerRadius="0 5 5 5">
-                        <StackPanel>
+                        <StackPanel Margin="5" Spacing="2">
                             <SelectableTextBlock
-                                Margin="5,5,5,0"
                                 Background="Transparent"
                                 FontSize="16"
                                 Foreground="{TemplateBinding MainColor}"
+                                IsVisible="{Binding ShowString, RelativeSource={RelativeSource TemplatedParent}}"
                                 Text="{TemplateBinding Text}"
                                 TextWrapping="Wrap" />
                             <SelectableTextBlock
-                                Margin="5,0,5,3"
                                 Background="Transparent"
-                                FontSize="12"
+                                FontSize="16"
+                                Foreground="{TemplateBinding MainColor}"
+                                IsVisible="{Binding !ShowString, RelativeSource={RelativeSource TemplatedParent}}"
+                                Text="{TemplateBinding Hex}"
+                                TextWrapping="Wrap" />
+                            <SelectableTextBlock
+                                Background="Transparent"
+                                FontSize="10"
                                 Foreground="{DynamicResource SemiColorText2}"
+                                IsVisible="{TemplateBinding ShowHex}"
                                 Text="{TemplateBinding Hex}"
                                 TextWrapping="Wrap" />
                         </StackPanel>

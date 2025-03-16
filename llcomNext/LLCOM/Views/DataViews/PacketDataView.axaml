@@ -14,22 +14,6 @@
     <Design.DataContext>
         <vm:PacketDataViewModel />
     </Design.DataContext>
-    <!-- <ScrollViewer Margin="5,5,10,5"> -->
-    <!--     <StackPanel Spacing="5"> -->
-    <!--  <PacketDataControl  -->
-    <!--  Extra="2025/03/11 - 11:22:33.123"  -->
-    <!--  Header="本机 &lt;&lt; 串口1"  -->
-    <!--  Hex="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"  -->
-    <!--  MainColor="{DynamicResource SemiGreen8}"  -->
-    <!--  Text="接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123" />  -->
-    <!--  <PacketDataControl  -->
-    <!--  Extra="2025/03/11 - 11:22:33.123"  -->
-    <!--  Header="串口1 &gt;&gt; 本机"  -->
-    <!--  Hex="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"  -->
-    <!--  MainColor="{DynamicResource SemiRed8}"  -->
-    <!--  Text="接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123" />  -->
-    <!--     </StackPanel> -->
-    <!-- </ScrollViewer> -->
     <UserControl.Styles>
         <Style Selector="ListBoxItem">
             <Setter Property="Padding" Value="0 0 0 5" />
@@ -41,20 +25,43 @@
             <Setter Property="Background" Value="Transparent" />
         </Style>
     </UserControl.Styles>
-    <ListBox
-        Margin="5,5,10,5"
-        u:ScrollTo.ButtonTheme="{DynamicResource PrimaryScrollToButton}"
-        u:ScrollTo.Direction="Bottom"
-        ItemsSource="{Binding PacketData}">
-        <ListBox.ItemTemplate>
-            <DataTemplate>
-                <controls:PacketDataControl
-                    Extra="{Binding Extra}"
-                    Header="{Binding TagString}"
-                    Hex="{Binding HexString}"
-                    MainColor="{DynamicResource SemiGreen8}"
-                    Text="{Binding String}" />
-            </DataTemplate>
-        </ListBox.ItemTemplate>
-    </ListBox>
+    <Grid RowDefinitions="auto *">
+        <ListBox
+            Grid.Row="1"
+            Margin="0,5"
+            u:ScrollTo.ButtonTheme="{DynamicResource PrimaryScrollToButton}"
+            u:ScrollTo.Direction="Bottom"
+            ItemsSource="{Binding PacketData}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <controls:PacketDataControl
+                        Margin="5,0,10,0"
+                        Extra="{Binding Extra}"
+                        Header="{Binding TagString}"
+                        Hex="{Binding HexString}"
+                        MainColor="{DynamicResource SemiGreen8}"
+                        Text="{Binding String}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Border
+            Grid.Row="0"
+            Background="{DynamicResource SemiColorBackground2}"
+            BorderBrush="{DynamicResource SemiColorBorder}"
+            BorderThickness="0,0,0,1">
+            <StackPanel
+                Margin="5"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal"
+                Spacing="5">
+                <CheckBox VerticalAlignment="Center" Content="转义不可见字符" />
+                <CheckBox
+                    VerticalAlignment="Center"
+                    Content="Hex模式"
+                    IsThreeState="True" />
+                <CheckBox VerticalAlignment="Center" Content="自动滚动" />
+                <Button Content="清空数据" />
+            </StackPanel>
+        </Border>
+    </Grid>
 </UserControl>
