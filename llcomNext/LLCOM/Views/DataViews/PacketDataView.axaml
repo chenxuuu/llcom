@@ -5,6 +5,7 @@
     xmlns:controls="clr-namespace:LLCOM.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:u="https://irihi.tech/ursa"
     xmlns:vm="using:LLCOM.ViewModels"
     d:DesignHeight="757"
     d:DesignWidth="762"
@@ -13,20 +14,47 @@
     <Design.DataContext>
         <vm:PacketDataViewModel />
     </Design.DataContext>
-    <ScrollViewer Margin="5,5,10,5">
-        <StackPanel Spacing="5">
-            <PacketDataControl
-                Extra="2025/03/11 - 11:22:33.123"
-                Header="本机 &lt;&lt; 串口1"
-                Hex="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"
-                MainColor="{DynamicResource SemiGreen8}"
-                Text="接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123" />
-            <PacketDataControl
-                Extra="2025/03/11 - 11:22:33.123"
-                Header="串口1 &gt;&gt; 本机"
-                Hex="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"
-                MainColor="{DynamicResource SemiRed8}"
-                Text="接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123" />
-        </StackPanel>
-    </ScrollViewer>
+    <!-- <ScrollViewer Margin="5,5,10,5"> -->
+    <!--     <StackPanel Spacing="5"> -->
+    <!--  <PacketDataControl  -->
+    <!--  Extra="2025/03/11 - 11:22:33.123"  -->
+    <!--  Header="本机 &lt;&lt; 串口1"  -->
+    <!--  Hex="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"  -->
+    <!--  MainColor="{DynamicResource SemiGreen8}"  -->
+    <!--  Text="接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123" />  -->
+    <!--  <PacketDataControl  -->
+    <!--  Extra="2025/03/11 - 11:22:33.123"  -->
+    <!--  Header="串口1 &gt;&gt; 本机"  -->
+    <!--  Hex="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"  -->
+    <!--  MainColor="{DynamicResource SemiRed8}"  -->
+    <!--  Text="接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123" />  -->
+    <!--     </StackPanel> -->
+    <!-- </ScrollViewer> -->
+    <UserControl.Styles>
+        <Style Selector="ListBoxItem">
+            <Setter Property="Padding" Value="0 0 0 5" />
+        </Style>
+        <Style Selector="ListBoxItem:pointerover">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="ListBoxItem:selected">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+    </UserControl.Styles>
+    <ListBox
+        Margin="5,5,10,5"
+        u:ScrollTo.ButtonTheme="{DynamicResource PrimaryScrollToButton}"
+        u:ScrollTo.Direction="Bottom"
+        ItemsSource="{Binding PacketData}">
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <controls:PacketDataControl
+                    Extra="{Binding Extra}"
+                    Header="{Binding TagString}"
+                    Hex="{Binding HexString}"
+                    MainColor="{DynamicResource SemiGreen8}"
+                    Text="{Binding String}" />
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
 </UserControl>

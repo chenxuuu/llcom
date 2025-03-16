@@ -3,14 +3,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:LLCOM.Controls">
     <Design.PreviewWith>
-        <Grid Width="500">
+        <StackPanel Width="500">
             <controls:PacketDataControl
                 Extra="2025/03/11 - 11:22:33.123"
                 Header="本机 &lt;&lt; 串口1"
                 Hex="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"
                 MainColor="{DynamicResource SemiGreen8}"
                 Text="接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123" />
-        </Grid>
+            <controls:PacketDataControl
+                Extra="2025/03/11 - 11:22:33.123"
+                Header="本机 &lt;&lt; 串口1"
+                Hex="44 55 66 77 88 99 00 AA BB CC DD EE FF"
+                MainColor="{DynamicResource SemiGreen8}"
+                Text="接收到的xxx数据123123接" />
+        </StackPanel>
     </Design.PreviewWith>
 
     <Style Selector="controls|PacketDataControl">
@@ -30,12 +36,12 @@
                                 Foreground="{DynamicResource SemiColorHighlight}"
                                 Text="{TemplateBinding Header}" />
                         </Border>
-                        <TextBlock
+                        <SelectableTextBlock
                             Margin="0,2,10,0"
                             HorizontalAlignment="Right"
                             FontSize="12"
                             FontWeight="Bold"
-                            Text="{DynamicResource Extra}" />
+                            Text="{TemplateBinding Extra}" />
                     </Grid>
                     <Border
                         BorderBrush="{TemplateBinding MainColor}"
@@ -44,12 +50,14 @@
                         <StackPanel>
                             <SelectableTextBlock
                                 Margin="5,5,5,0"
+                                Background="Transparent"
                                 FontSize="16"
                                 Foreground="{TemplateBinding MainColor}"
                                 Text="{TemplateBinding Text}"
                                 TextWrapping="Wrap" />
                             <SelectableTextBlock
                                 Margin="5,0,5,3"
+                                Background="Transparent"
                                 FontSize="12"
                                 Foreground="{DynamicResource SemiColorText2}"
                                 Text="{TemplateBinding Hex}"

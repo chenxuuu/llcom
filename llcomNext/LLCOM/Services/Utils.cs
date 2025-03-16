@@ -11,7 +11,7 @@ namespace LLCOM.Services;
 
 public class Utils
 {
-    private static string? _version = null;
+    private static string? _version = "1.0.0.0";//null;
     /// <summary>
     /// 软件版本
     /// </summary>

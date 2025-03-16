@@ -2,11 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Avalonia.Media;
 
 namespace LLCOM.Models;
 
 public class PacketData
 {
+    public PacketData(byte[] data, MessageWay way, string channel, string? extra = null,
+        Encoding? encoding = null, bool readable = true, string? s = null, IBrush? brush = null)
+    {
+        Data = data;
+        Way = way;
+        Channel = channel;
+        Extra = extra ?? Time.ToString("yyyy/MM/dd HH:mm:ss.fff");
+        encoding ??= Encoding.UTF8;
+        String = s ?? GenerateString(Data, encoding, readable);
+        HexString = GenerateHexString(Data);
+    }
+
     /// <summary>
     /// 此包收到的时间
     /// </summary>
@@ -15,12 +28,14 @@ public class PacketData
     /// <summary>
     /// 包内的原始数据
     /// </summary>
-    public byte[] Data { get; set; } = [];
+    public byte[] Data { get; set; }
+
+    public string HexString { get; }
 
     /// <summary>
-    /// 包的额外信息
+    /// 包的额外信息，一般是日期时间的字符串展示
     /// </summary>
-    public string? Extra { get; set; } = null;
+    public string Extra { get; set; }
     
     /// <summary>
     /// 该包的字符串表示
@@ -36,19 +51,36 @@ public class PacketData
     /// 消息通道类型
     /// </summary>
     public string Channel { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 表示该包的方向和通道的字符串
+    /// </summary>
+    public string TagString
+    {
+        get
+        {
+            return Way switch
+            {
+                MessageWay.Unknown => $"{Channel}",
+                MessageWay.Send => $"本机 >> {Channel}",//TODO 多语言支持
+                MessageWay.Receive => $"{Channel} >> 本机",//TODO 多语言支持
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
+    }
     
     /// <summary>
     /// 根据Data生成一个十六进制字符串
     /// </summary>
-    public void GenerateHexString()
+    public static string GenerateHexString(byte[] data)
     {
         var sb = new StringBuilder();
-        foreach (var b in Data)
+        foreach (var b in data)
         {
             sb.Append(b.ToString("X2"));
             sb.Append(" ");
         }
-        String = sb.ToString();
+        return sb.ToString();
     }
 
     private static readonly byte[] BDel = "\u2421"u8.ToArray();
@@ -74,26 +106,25 @@ public class PacketData
     /// </summary>
     /// <param name="encoding">指定的编码</param>
     /// <param name="readable">是否将不可见字符转义为可见字符</param>
-    /// <returns></returns>
-    public void GenerateString(Encoding encoding, bool readable = true)
+    /// <returns>转换后的字符串</returns>
+    public static string GenerateString(byte[] data,Encoding encoding, bool readable = true)
     {
         //非utf8编码就不转义了
         if (!readable || encoding.CodePage != 65001)
         {
-            String = Byte2String(encoding, Data, true);
-            return;
+            return Byte2String(encoding, data, true);
         }
         var temp = new List<byte>();
-        for (int i = 0; i < Data.Length; i++)
+        for (int i = 0; i < data.Length; i++)
         {
-            switch(Data[i])
+            switch(data[i])
             {
                 case 0x00:
                     temp.AddRange(Symbols[0x00]);
                     break;
                 case 0x0d:
                     //遇到成对出现
-                    if(i < Data.Length - 1 && Data[i+1] == 0x0a)
+                    if(i < data.Length - 1 && data[i+1] == 0x0a)
                     {
                         temp.AddRange(Symbols[0x0d]);
                         temp.AddRange(Symbols[0x0a]);
@@ -104,26 +135,26 @@ public class PacketData
                     else
                     {
                         temp.AddRange(Symbols[0x0d]);
-                        temp.Add(Data[i]);
+                        temp.Add(data[i]);
                     }
                     break;
                 case 0x0a:
                 case 0x09://tab字符
-                    temp.AddRange(Symbols[Data[i]]);
-                    temp.Add(Data[i]);
+                    temp.AddRange(Symbols[data[i]]);
+                    temp.Add(data[i]);
                     break;
                 default:
                     //普通的字符
-                    if(Data[i] <= 0x1f)
-                        temp.AddRange(Symbols[Data[i]]);
-                    else if (Data[i] == 0x7f)//del
+                    if(data[i] <= 0x1f)
+                        temp.AddRange(Symbols[data[i]]);
+                    else if (data[i] == 0x7f)//del
                         temp.AddRange(BDel);
                     else
-                        temp.Add(Data[i]);
+                        temp.Add(data[i]);
                     break;
             }
         }
-        String = Byte2String(encoding, temp.ToArray());
+        return Byte2String(encoding, temp.ToArray());
     }
 
     /// <summary>

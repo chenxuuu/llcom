@@ -4,8 +4,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Notification = Ursa.Controls.Notification;
+using WindowNotificationManager = Ursa.Controls.WindowNotificationManager;
 
 namespace LLCOM.ViewModels;
 
@@ -39,13 +42,14 @@ public partial class MainViewModel : ViewModelBase
         _getService = getService;
         CurrentPage = _getService(typeof(DataPageViewModel));
         CurrentDataPage = _getService(typeof(PacketDataViewModel));
-        
-        Task.Run(async () =>
-        {
-            //检查下是否有新版本吧
-            if (await Services.Utils.CheckUpdate() != null)
-                ShowSettingDot = true;
-        });
+    }
+
+    [RelayCommand]
+    private async Task PageLoaded()
+    {
+        //检查下是否有新版本吧
+        if (await Services.Utils.CheckUpdate() != null)
+            ShowSettingDot = true;
     }
 
     [RelayCommand]

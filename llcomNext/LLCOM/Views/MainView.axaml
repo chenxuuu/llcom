@@ -9,6 +9,7 @@
     d:DesignHeight="800"
     d:DesignWidth="1200"
     x:DataType="vm:MainViewModel"
+    Loaded="Control_OnLoaded"
     mc:Ignorable="d">
     <Design.DataContext>
         <vm:MainViewModel />
