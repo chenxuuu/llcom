@@ -2,7 +2,6 @@
     x:Class="LLCOM.Views.PacketDataView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:LLCOM.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:u="https://irihi.tech/ursa"
@@ -15,14 +14,28 @@
         <vm:PacketDataViewModel />
     </Design.DataContext>
     <UserControl.Styles>
+        <!--  防止ListBoxItem被选中时背景色变化  -->
         <Style Selector="ListBoxItem">
-            <Setter Property="Padding" Value="0 0 0 5" />
+            <Setter Property="Padding" Value="0 0 0 3" />
         </Style>
         <Style Selector="ListBoxItem:pointerover">
             <Setter Property="Background" Value="Transparent" />
         </Style>
         <Style Selector="ListBoxItem:selected">
             <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <!--  几种颜色的样式  -->
+        <Style Selector="PacketDataControl.Green">
+            <Setter Property="MainColor" Value="{DynamicResource SemiGreen8}" />
+            <Setter Property="Icon" Value="&#xE12A;" />
+        </Style>
+        <Style Selector="PacketDataControl.Red">
+            <Setter Property="MainColor" Value="{DynamicResource SemiRed8}" />
+            <Setter Property="Icon" Value="&#xE128;" />
+        </Style>
+        <Style Selector="PacketDataControl.Black">
+            <Setter Property="MainColor" Value="{DynamicResource SemiGrey8}" />
+            <Setter Property="Icon" Value="&#xEAE8;" />
         </Style>
     </UserControl.Styles>
     <Grid RowDefinitions="auto *">
@@ -34,12 +47,14 @@
             ItemsSource="{Binding PacketData}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <controls:PacketDataControl
+                    <PacketDataControl
                         Margin="5,0,10,0"
+                        Classes.Black="{Binding IsWayUnknown}"
+                        Classes.Green="{Binding IsWaySend}"
+                        Classes.Red="{Binding IsWayReceive}"
                         Extra="{Binding Extra}"
-                        Header="{Binding TagString}"
+                        Header="{Binding Channel}"
                         Hex="{Binding HexString}"
-                        MainColor="{DynamicResource SemiGreen8}"
                         Text="{Binding String}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -53,8 +68,11 @@
                 Margin="5"
                 HorizontalAlignment="Right"
                 Orientation="Horizontal"
-                Spacing="5">
-                <CheckBox VerticalAlignment="Center" Content="转义不可见字符" />
+                Spacing="8">
+                <CheckBox
+                    VerticalAlignment="Center"
+                    Content="转义不可见字符"
+                    ToolTip.Tip="仅在UTF-8编码时生效" />
                 <CheckBox
                     VerticalAlignment="Center"
                     Content="Hex模式"

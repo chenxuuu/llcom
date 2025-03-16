@@ -40,34 +40,22 @@ public class PacketData
     /// <summary>
     /// 该包的字符串表示
     /// </summary>
-    public string String { get; set; } = string.Empty;
+    public string String { get; set; }
 
     /// <summary>
     /// 数据包的方向
     /// </summary>
-    public MessageWay Way { get; set; } = MessageWay.Unknown;
+    public MessageWay Way { get; set; }
 
     /// <summary>
     /// 消息通道类型
     /// </summary>
-    public string Channel { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 表示该包的方向和通道的字符串
-    /// </summary>
-    public string TagString
-    {
-        get
-        {
-            return Way switch
-            {
-                MessageWay.Unknown => $"{Channel}",
-                MessageWay.Send => $"本机 >> {Channel}",//TODO 多语言支持
-                MessageWay.Receive => $"{Channel} >> 本机",//TODO 多语言支持
-                _ => throw new ArgumentOutOfRangeException()
-            };
-        }
-    }
+    public string Channel { get; set; }
+    
+    public bool IsWayUnknown => Way == MessageWay.Unknown;
+    public bool IsWaySend => Way == MessageWay.Send;
+    public bool IsWayReceive => Way == MessageWay.Receive;
+    
     
     /// <summary>
     /// 根据Data生成一个十六进制字符串

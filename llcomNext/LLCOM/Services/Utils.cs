@@ -9,9 +9,9 @@ using RestSharp;
 
 namespace LLCOM.Services;
 
-public class Utils
+public static class Utils
 {
-    private static string? _version = "1.0.0.0";//null;
+    private static string? _version = null;
     /// <summary>
     /// 软件版本
     /// </summary>

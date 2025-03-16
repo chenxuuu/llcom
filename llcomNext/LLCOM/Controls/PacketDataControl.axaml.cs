@@ -17,6 +17,14 @@ public class PacketDataControl : TemplatedControl
         set => SetValue(MainColorProperty, value);
     }
     
+    public static readonly StyledProperty<string?> IconProperty = 
+        AvaloniaProperty.Register<PacketDataControl, string?>(nameof(Icon));
+    public string? Icon
+    {
+        get => GetValue(IconProperty);
+        set => SetValue(IconProperty, value);
+    }
+    
     public static readonly StyledProperty<string?> HeaderProperty = 
         AvaloniaProperty.Register<PacketDataControl, string?>(nameof(Header));
     public string? Header

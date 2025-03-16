@@ -6,19 +6,21 @@
         <StackPanel Width="500">
             <controls:PacketDataControl
                 Extra="2025/03/11 - 11:22:33.123"
-                Header="本机 &lt;&lt; 串口1"
+                Header="串口1"
                 Hex="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"
+                Icon="&#xE02E;"
                 MainColor="{DynamicResource SemiGreen8}"
                 Text="接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123接收到的xxx数据123123" />
             <controls:PacketDataControl
                 Extra="2025/03/11 - 11:22:33.123"
-                Header="本机 &lt;&lt; 串口1"
+                Header="串口1"
                 Hex="44 55 66 77 88 99 00 AA BB CC DD EE FF"
-                MainColor="{DynamicResource SemiGreen8}"
+                Icon="&#xE05A;"
+                MainColor="{DynamicResource SemiRed8}"
                 Text="接收到的xxx数据123123接" />
             <controls:PacketDataControl
                 Extra="2025/03/11 - 11:22:33.123"
-                Header="本机 &lt;&lt; 串口1"
+                Header="串口1"
                 Hex="44 55 66 77 88 99 00 AA BB CC DD EE FF"
                 MainColor="{DynamicResource SemiGreen8}"
                 ShowHex="False"
@@ -26,7 +28,7 @@
                 Text="接收到的xxx数据123123接" />
             <controls:PacketDataControl
                 Extra="2025/03/11 - 11:22:33.123"
-                Header="本机 &lt;&lt; 串口1"
+                Header="串口1"
                 Hex="44 55 66 77 88 99 00 AA BB CC DD EE FF"
                 MainColor="{DynamicResource SemiGreen8}"
                 ShowHex="False"
@@ -45,11 +47,21 @@
                             BorderBrush="{TemplateBinding MainColor}"
                             BorderThickness="1,1,1,0"
                             CornerRadius="5 5 0 0">
-                            <TextBlock
+                            <StackPanel
                                 Margin="6,2"
-                                FontSize="12"
-                                Foreground="{DynamicResource SemiColorHighlight}"
-                                Text="{TemplateBinding Header}" />
+                                Orientation="Horizontal"
+                                Spacing="4">
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontFamily="{DynamicResource Phosphor}"
+                                    FontSize="12"
+                                    Foreground="{DynamicResource SemiColorHighlight}"
+                                    Text="{TemplateBinding Icon}" />
+                                <TextBlock
+                                    FontSize="12"
+                                    Foreground="{DynamicResource SemiColorHighlight}"
+                                    Text="{TemplateBinding Header}" />
+                            </StackPanel>
                         </Border>
                         <SelectableTextBlock
                             Margin="0,2,10,0"
