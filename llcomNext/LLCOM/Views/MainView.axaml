@@ -52,13 +52,27 @@
                         Content="&#xE94E;"
                         ToolTip.Tip="历史日志" />
                 </StackPanel>
-                <Button
-                    VerticalAlignment="Bottom"
-                    Classes="IconButton Tertiary"
-                    Classes.IconButtonActive="{Binding IsSettingPageActive}"
-                    Command="{Binding SettingPageButtonCommand}"
-                    Content="&#xE270;"
-                    ToolTip.Tip="软件设置" />
+                <Panel VerticalAlignment="Bottom">
+                    <Button
+                        Classes="IconButton Tertiary"
+                        Classes.IconButtonActive="{Binding IsSettingPageActive}"
+                        Command="{Binding SettingPageButtonCommand}"
+                        ToolTip.Tip="软件设置">
+                        <Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="&#xE270;" />
+                            <u:Badge
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Classes="Danger"
+                                Dot="True"
+                                IsVisible="{Binding ShowSettingDot}" />
+                        </Panel>
+                    </Button>
+
+                </Panel>
             </Panel>
         </Border>
         <UserControl Grid.Column="1" Content="{Binding CurrentPage}" />

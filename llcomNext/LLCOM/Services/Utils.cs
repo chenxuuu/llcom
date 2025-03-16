@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using RestSharp;
 
 namespace LLCOM.Services;
 
@@ -97,4 +98,54 @@ public class Utils
             // ignored
         }
     }
+
+    private static string? _updateUrl = null;
+    /// <summary>
+    /// 检查更新
+    /// </summary>
+    /// <returns>是否有新版本，有的话返回下载地址</returns>
+    public static async Task<string?> CheckUpdate()
+    {
+        if(_updateUrl != null)
+            return _updateUrl;
+        
+        var versionNow = Services.Utils.Version;
+        //获取https://api.github.com/repos/chenxuuu/llcom/releases/latest的json结果
+        var client = new RestClient("https://api.github.com/repos/chenxuuu/llcom/releases/latest");
+        var request = new RestRequest();
+        var response = await client.ExecuteAsync(request);
+        if (!response.IsSuccessful || response.Content is null)
+            return null;
+        
+        var json = System.Text.Json.JsonDocument.Parse(response.Content);
+        var version = json.RootElement.GetProperty("tag_name").GetString();
+        if(version == null)
+            return null;
+        
+        //判断在线版本是否新于本地版本，按点分割后比较
+        var isBigger = true;
+        if(version == versionNow)
+            isBigger = false;
+        else
+        {
+            var versionNowSplit = versionNow.Split('.');
+            var versionSplit = version.Split('.');
+            for (int i = 0; i < versionNowSplit.Length; i++)
+            {
+                if (int.Parse(versionNowSplit[i]) > int.Parse(versionSplit[i]))
+                {
+                    isBigger = false;
+                    break;
+                }
+            }
+        }
+
+        //更新信息
+        if(isBigger)
+            _updateUrl = json.RootElement.GetProperty("html_url").GetString();
+
+        return _updateUrl;
+    }
+    
+    public static bool HasUpdate() => _updateUrl != null;
 }

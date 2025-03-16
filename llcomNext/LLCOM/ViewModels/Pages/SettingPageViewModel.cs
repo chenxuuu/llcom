@@ -19,8 +19,15 @@ public partial class SettingPageViewModel : ViewModelBase
         _getService = getService;
 
         //初始化系统信息
-        Task.Run(() =>
+        Task.Run(async () =>
         {
+            //是否已经检查过更新？
+            if (Services.Utils.HasUpdate())
+            {
+                _updateUrl = await Services.Utils.CheckUpdate();
+                HasCheckedUpdate = true;
+            }
+            
             var packagesInfo = new List<string>();
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
         
@@ -44,11 +51,13 @@ public partial class SettingPageViewModel : ViewModelBase
                 $"Packages \n{string.Join("\n", packagesInfo)}\n" +
                 $"Environment: {Environment.GetEnvironmentVariable("PATH")}";
         });
+
     }
 
     
     #region About
-    [ObservableProperty] private string _systemInfo = "Loading...";
+    [ObservableProperty]
+    private string _systemInfo = "Loading...";
 
     [RelayCommand]
     private async Task CopySystemInfo()
@@ -76,40 +85,11 @@ public partial class SettingPageViewModel : ViewModelBase
             return;
         }
 
-        var versionNow = Services.Utils.Version;
-        //获取https://api.github.com/repos/chenxuuu/llcom/releases/latest的json结果
-        var client = new RestClient("https://api.github.com/repos/chenxuuu/llcom/releases/latest");
-        var request = new RestRequest();
-        var response = await client.ExecuteAsync(request);
-        if (!response.IsSuccessful || response.Content is null)
-            return;
-        
-        var json = System.Text.Json.JsonDocument.Parse(response.Content);
-        var version = json.RootElement.GetProperty("tag_name").GetString();
-        if(version == null)
-            return;
-        
-        //判断在线版本是否新于本地版本，按点分割后比较
-        var isBigger = true;
-        if(version == versionNow)
-            isBigger = false;
-        else
-        {
-            var versionNowSplit = versionNow.Split('.');
-            var versionSplit = version.Split('.');
-            for (int i = 0; i < versionNowSplit.Length; i++)
-            {
-                if (int.Parse(versionNowSplit[i]) > int.Parse(versionSplit[i]))
-                {
-                    isBigger = false;
-                    break;
-                }
-            }
-        }
+        var url = await Services.Utils.CheckUpdate();
 
         //更新信息
-        if(isBigger)
-            _updateUrl = json.RootElement.GetProperty("html_url").GetString();
+        if(url != null)
+            _updateUrl = url;
         
         HasCheckedUpdate = true;
     }

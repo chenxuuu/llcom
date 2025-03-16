@@ -39,6 +39,13 @@ public partial class MainViewModel : ViewModelBase
         _getService = getService;
         CurrentPage = _getService(typeof(DataPageViewModel));
         CurrentDataPage = _getService(typeof(PacketDataViewModel));
+        
+        Task.Run(async () =>
+        {
+            //检查下是否有新版本吧
+            if (await Services.Utils.CheckUpdate() != null)
+                ShowSettingDot = true;
+        });
     }
 
     [RelayCommand]
@@ -53,7 +60,10 @@ public partial class MainViewModel : ViewModelBase
     private void LogPageButton() => CurrentPage = _getService(typeof(LogPageViewModel));
     [RelayCommand]
     private void SettingPageButton() => CurrentPage = _getService(typeof(SettingPageViewModel));
-    
+
+
+    [ObservableProperty] 
+    private bool _showSettingDot = false;
     
     //以下代码用于切换DataPage中的子页面
     [ObservableProperty]
@@ -71,4 +81,5 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private void WaveformButton() => CurrentDataPage = _getService(typeof(WaveformViewModel));
 
+    
 }

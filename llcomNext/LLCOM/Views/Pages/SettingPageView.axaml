@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:u="https://irihi.tech/ursa"
     xmlns:vm="using:LLCOM.ViewModels"
     d:DesignHeight="800"
     d:DesignWidth="381"
@@ -23,7 +24,19 @@
         </TabItem>
         <TabItem Header="外观与字体" />
         <TabItem Header="日志与缓存" />
-        <TabItem Header="关于软件">
+        <TabItem>
+            <TabItem.Header>
+                <Panel>
+                    <TextBlock>关于软件</TextBlock>
+                    <u:Badge
+                        Margin="0,0,-8,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Classes="Danger"
+                        Dot="True"
+                        IsVisible="{Binding HasNewVersion}" />
+                </Panel>
+            </TabItem.Header>
             <ScrollViewer>
                 <StackPanel Margin="10">
                     <Border
@@ -44,7 +57,14 @@
                         FontSize="15"
                         Text="多功能调试工具" />
 
-                    <Panel Margin="0,10,0,0">
+                    <Panel Margin="0,10,0,0" HorizontalAlignment="Center">
+                        <u:Badge
+                            Margin="0,-8,-20,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Classes="Danger"
+                            Header="NEW"
+                            IsVisible="{Binding HasNewVersion}" />
                         <Button Name="CheckUpdateButton" Command="{Binding CheckUpdateCommand}">
                             <Panel>
                                 <TextBlock HorizontalAlignment="Center" IsVisible="{Binding !HasCheckedUpdate}">检查更新</TextBlock>
