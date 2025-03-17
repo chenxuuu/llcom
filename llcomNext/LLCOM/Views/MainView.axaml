@@ -76,7 +76,15 @@
                 </Panel>
             </Panel>
         </Border>
-        <UserControl Grid.Column="1" Content="{Binding CurrentPage}" />
+        <TransitioningContentControl Grid.Column="1" Content="{Binding CurrentPage}">
+            <TransitioningContentControl.PageTransition>
+                <PageSlide
+                    Orientation="Vertical"
+                    SlideInEasing="ExponentialEaseInOut"
+                    SlideOutEasing="ExponentialEaseInOut"
+                    Duration="0:00:00.2" />
+            </TransitioningContentControl.PageTransition>
+        </TransitioningContentControl>
         <GridSplitter Grid.Column="2" ResizeDirection="Columns" />
         <Grid Grid.Column="3" RowDefinitions="Auto,*">
             <Border BorderBrush="{DynamicResource SemiColorBorder}" BorderThickness="0,0,0,1">
@@ -123,7 +131,15 @@
                     </Button>
                 </StackPanel>
             </Border>
-            <UserControl Grid.Row="1" Content="{Binding CurrentDataPage}" />
+            <TransitioningContentControl Grid.Row="1" Content="{Binding CurrentDataPage}">
+                <TransitioningContentControl.PageTransition>
+                    <PageSlide
+                        Orientation="Horizontal"
+                        SlideInEasing="ExponentialEaseInOut"
+                        SlideOutEasing="ExponentialEaseInOut"
+                        Duration="0:00:00.2" />
+                </TransitioningContentControl.PageTransition>
+            </TransitioningContentControl>
         </Grid>
     </Grid>
 </UserControl>
