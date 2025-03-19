@@ -34,5 +34,4 @@
         <Setter Property="Foreground" Value="{DynamicResource SemiColorSecondary}" />
     </Style>
 
-
 </Styles>

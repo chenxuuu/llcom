@@ -56,6 +56,10 @@ public class PacketData
     public bool IsWaySend => Way == MessageWay.Send;
     public bool IsWayReceive => Way == MessageWay.Receive;
     
+    /// <summary>
+    /// 是否显示hex（hex数组为空时就不显示）
+    /// </summary>
+    public bool IsHexVisible => Data.Length != 0;
     
     /// <summary>
     /// 根据Data生成一个十六进制字符串

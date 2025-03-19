@@ -37,6 +37,15 @@
             <Setter Property="MainColor" Value="{DynamicResource SemiGrey8}" />
             <Setter Property="Icon" Value="&#xEAE8;" />
         </Style>
+        <!--  折叠数据包标签  -->
+        <Style Selector="PacketDataControl.HideHeader">
+            <Setter Property="HeaderHeight" Value="0" />
+            <Setter Property="DataBorderCornerRadius" Value="5 5 5 5" />
+        </Style>
+        <Style Selector="PacketDataControl.HideHeader:pointerover">
+            <Setter Property="HeaderHeight" Value="22" />
+            <Setter Property="DataBorderCornerRadius" Value="5 5 5 0" />
+        </Style>
     </UserControl.Styles>
     <Grid RowDefinitions="auto *">
         <ListBox
@@ -51,10 +60,12 @@
                         Margin="5,0,10,0"
                         Classes.Black="{Binding IsWayUnknown}"
                         Classes.Green="{Binding IsWaySend}"
+                        Classes.HideHeader="{Binding ElementName=ShowHeaderCheckBox, Path=!IsChecked}"
                         Classes.Red="{Binding IsWayReceive}"
                         Extra="{Binding Extra}"
                         Header="{Binding Channel}"
                         Hex="{Binding HexString}"
+                        ShowHex="{Binding IsHexVisible}"
                         Text="{Binding String}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -70,14 +81,24 @@
                 Orientation="Horizontal"
                 Spacing="8">
                 <CheckBox
+                    Name="ShowHeaderCheckBox"
+                    VerticalAlignment="Center"
+                    Content="显示数据包标签"
+                    IsChecked="True" />
+                <CheckBox
                     VerticalAlignment="Center"
                     Content="转义不可见字符"
+                    IsChecked="True"
                     ToolTip.Tip="仅在UTF-8编码时生效" />
                 <CheckBox
                     VerticalAlignment="Center"
                     Content="Hex模式"
+                    IsChecked="{x:Null}"
                     IsThreeState="True" />
-                <CheckBox VerticalAlignment="Center" Content="自动滚动" />
+                <CheckBox
+                    VerticalAlignment="Center"
+                    Content="自动滚动"
+                    IsChecked="True" />
                 <Button Content="清空数据" />
             </StackPanel>
         </Border>
