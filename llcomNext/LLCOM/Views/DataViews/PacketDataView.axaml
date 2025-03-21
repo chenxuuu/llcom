@@ -83,7 +83,7 @@
                 <CheckBox
                     Name="ShowHeaderCheckBox"
                     VerticalAlignment="Center"
-                    Content="显示数据包标签"
+                    Content="始终显示标签"
                     IsChecked="True" />
                 <CheckBox
                     VerticalAlignment="Center"
