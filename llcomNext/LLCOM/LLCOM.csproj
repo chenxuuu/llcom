@@ -77,4 +77,8 @@
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
+
+  <ItemGroup>
+    <TrimmerRootAssembly Include="LLCOM" />
+  </ItemGroup>
 </Project>
