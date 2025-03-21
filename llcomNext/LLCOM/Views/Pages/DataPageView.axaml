@@ -1,19 +1,25 @@
 ﻿<UserControl
-    d:DesignHeight="800"
-    d:DesignWidth="381"
-    mc:Ignorable="d"
     x:Class="LLCOM.Views.DataPageView"
-    x:DataType="vm:DataPageViewModel"
     xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:LLCOM.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    d:DesignHeight="800"
+    d:DesignWidth="381"
+    x:DataType="vm:DataPageViewModel"
+    mc:Ignorable="d">
     <Design.DataContext>
         <vm:DataPageViewModel />
     </Design.DataContext>
-    <StackPanel>
-        <TextBlock Text="DataPageView" />
-        <ToggleSwitch />
-    </StackPanel>
+    <TabControl
+        DisplayMemberBinding="{Binding Header, x:DataType=vm:DataPageTabItemModel}"
+        ItemsSource="{Binding TabList}"
+        SelectedIndex="{Binding SelectedTabIndex}">
+        <TabControl.ContentTemplate>
+            <DataTemplate x:DataType="vm:DataPageTabItemModel">
+                <UserControl Content="{Binding Content}" />
+            </DataTemplate>
+        </TabControl.ContentTemplate>
+    </TabControl>
 </UserControl>
