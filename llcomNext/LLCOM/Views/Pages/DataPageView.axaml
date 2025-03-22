@@ -59,9 +59,28 @@
             VerticalAlignment="Top">
             <Button.Flyout>
                 <Flyout Placement="Bottom">
-                    <StackPanel Width="200" Height="200">
-                        <TextBlock Text="1213123" />
-                        <Button Command="{Binding AddTabItemCommand}" Content="add" />
+                    <StackPanel Spacing="5">
+                        <TextBlock Text="调试类型" />
+                        <ComboBox Width="200" SelectedIndex="0">
+                            <ComboBoxItem Content="串口" />
+                            <ComboBoxItem Content="TCP服务端" />
+                            <ComboBoxItem Content="TCP客户端" />
+                            <ComboBoxItem Content="MQTT客户端" />
+                            <ComboBoxItem Content="LibUSB/WinUSB" />
+                        </ComboBox>
+                        <TextBlock Text="自定义标签名" />
+                        <TextBox Watermark="留空则默认为类型名" />
+                        <Button HorizontalAlignment="Stretch" Command="{Binding AddTabItemCommand}">
+                            <StackPanel Orientation="Horizontal" Spacing="5">
+                                <TextBlock Text="添加调试项目" />
+                                <TextBlock
+                                    Padding="0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontFamily="{DynamicResource Phosphor}"
+                                    Text="&#xE542;" />
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </Flyout>
             </Button.Flyout>

@@ -14,7 +14,7 @@ namespace LLCOM.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
-    private Func<Type, ViewModelBase> _getService;
+    private readonly Func<Type, ViewModelBase> _getService;
     
     [ObservableProperty]
     [NotifyPropertyChangedFor(

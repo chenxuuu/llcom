@@ -9,7 +9,7 @@ namespace LLCOM.ViewModels;
 
 public partial class DataPageViewModel: ViewModelBase
 {
-    private Func<Type, ViewModelBase> _getService;
+    private readonly Func<Type, ViewModelBase> _getService;
     
     [ObservableProperty]
     private int _selectedTabIndex = 0;
