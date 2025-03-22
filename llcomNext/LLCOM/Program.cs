@@ -1,6 +1,6 @@
 ﻿using Avalonia;
 using System;
-using System.Text;
+using LLCOM.Services;
 
 namespace LLCOM
 {
@@ -12,7 +12,8 @@ namespace LLCOM
         [STAThread]
         public static void Main(string[] args)
         {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            //初始化
+            Utils.Initial();
             BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
         }
         

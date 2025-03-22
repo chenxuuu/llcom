@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -30,20 +31,24 @@ public static class Utils
 
     /// <summary>
     /// 用户配置文件路径
-    /// win：C:\Users\{username}\LLCOM_Next
-    /// linux：/home/{username}/LLCOM_Next
-    /// mac：/Users/{username}/LLCOM_Next
+    /// win：C:\Users\{username}\.LLCOM_Next
+    /// linux：/home/{username}/.LLCOM_Next
+    /// mac：/Users/{username}/.LLCOM_Next
     /// </summary>
     public readonly static string AppPath =
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "LLCOM_Next");
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".LLCOM_Next");
     
     /// <summary>
     /// 启动软件时的初始化操作
     /// </summary>
     public static void Initial()
     {
+        //初始化编码
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         if (!Directory.Exists(AppPath))
             Directory.CreateDirectory(AppPath);
+        //初始化全局设置
+        GlobalSetting.Initialize();
         //初始化语言 TODO
     }
     

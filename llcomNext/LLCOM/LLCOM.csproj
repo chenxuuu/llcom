@@ -34,6 +34,7 @@
     <PackageReference Include="NLua" Version="1.7.4" />
     <PackageReference Include="RestSharp" Version="112.1.0" />
     <PackageReference Include="Semi.Avalonia" Version="11.2.1.5" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.3" />
     <PackageReference Include="System.Text.Json" Version="9.0.3" />
   </ItemGroup>

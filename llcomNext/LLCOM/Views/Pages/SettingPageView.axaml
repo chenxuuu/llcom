@@ -72,14 +72,7 @@
                                 <TextBlock HorizontalAlignment="Center" IsVisible="{Binding HasNewVersion}">下载新版本</TextBlock>
                             </Panel>
                         </Button>
-                        <ProgressBar
-                            Width="30"
-                            Height="30"
-                            IsIndeterminate="True"
-                            IsVisible="{Binding ElementName=CheckUpdateButton, Path=!IsEffectivelyEnabled}"
-                            Maximum="100"
-                            Minimum="0"
-                            Theme="{DynamicResource ProgressRing}" />
+                        <u:LoadingIcon IsVisible="{Binding ElementName=CheckUpdateButton, Path=!IsEffectivelyEnabled}" />
                     </Panel>
 
                     <SelectableTextBlock Margin="0,20,0,0" TextWrapping="Wrap">
