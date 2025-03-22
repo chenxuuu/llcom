@@ -12,6 +12,9 @@
     <Design.DataContext>
         <vm:DataPageViewModel />
     </Design.DataContext>
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/TabControlWithSpace.axaml" />
+    </UserControl.Styles>
     <Grid>
         <TabControl ItemsSource="{Binding TabList}" SelectedIndex="{Binding SelectedTabIndex}">
             <TabControl.ItemTemplate>
@@ -47,9 +50,22 @@
         </TabControl>
 
         <Button
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Bottom"
-            Command="{Binding AddTabItemCommand}"
-            Content="ADD" />
+            Width="30"
+            Height="30"
+            MinWidth="0"
+            MinHeight="0"
+            Padding="0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top">
+            <Button.Flyout>
+                <Flyout Placement="Bottom">
+                    <StackPanel Width="200" Height="200">
+                        <TextBlock Text="1213123" />
+                        <Button Command="{Binding AddTabItemCommand}" Content="add" />
+                    </StackPanel>
+                </Flyout>
+            </Button.Flyout>
+            <TextBlock FontFamily="{DynamicResource Phosphor}" Text="&#xE3D4;" />
+        </Button>
     </Grid>
 </UserControl>
