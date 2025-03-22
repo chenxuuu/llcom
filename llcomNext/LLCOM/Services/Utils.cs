@@ -12,31 +12,30 @@ namespace LLCOM.Services;
 
 public static class Utils
 {
-    private static string? _version = null;
+    private static string? _version;
+    
     /// <summary>
     /// 软件版本
     /// </summary>
-    public static string Version
-    {
-        get
-        {
-            if (_version is null)
-            {
-                var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version!;
-                _version = version.ToString();
-            }
-            return _version;
-        }
-    }
+    public static string Version => _version ??= System.Reflection.Assembly.GetExecutingAssembly().GetName().Version!.ToString();
 
+    private static string? _appPath;
     /// <summary>
     /// 用户配置文件路径
     /// win：C:\Users\{username}\.LLCOM_Next
     /// linux：/home/{username}/.LLCOM_Next
     /// mac：/Users/{username}/.LLCOM_Next
     /// </summary>
-    public readonly static string AppPath =
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".LLCOM_Next");
+    public static string AppPath => _appPath ??= InitializeAppPath();
+    private static string InitializeAppPath()
+    {
+        var path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var appPath = Path.Combine(path, ".LLCOM_Next");
+        if (!Directory.Exists(appPath))
+            Directory.CreateDirectory(appPath);
+        return appPath;
+    }
+        
     
     /// <summary>
     /// 启动软件时的初始化操作
@@ -45,8 +44,6 @@ public static class Utils
     {
         //初始化编码
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        if (!Directory.Exists(AppPath))
-            Directory.CreateDirectory(AppPath);
         //初始化全局设置
         GlobalSetting.Initialize();
         //初始化语言 TODO
