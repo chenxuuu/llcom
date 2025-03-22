@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Ursa.Controls;
 
 namespace LLCOM.ViewModels;
 
@@ -21,8 +24,24 @@ public partial class DataPageViewModel: ViewModelBase
     {
         _getService = getService;
         
-        _tabList.Add(new DataPageTabItemModel("test1", _getService(typeof(LogPageViewModel))));
-        _tabList.Add(new DataPageTabItemModel("test2", _getService(typeof(OnlinePageViewModel))));
+        TabList.Add(new DataPageTabItemModel("(1)串口", _getService(typeof(LogPageViewModel))));
+        TabList.Add(new DataPageTabItemModel("(2)TCP服务端", _getService(typeof(OnlinePageViewModel))));
+    }
+    
+    [RelayCommand]
+    private void AddTabItem()
+    {
+        var name = $"({TabList.Count + 1})测试xx";
+        TabList.Add(new DataPageTabItemModel(name, _getService(typeof(OnlinePageViewModel))));
+    }
+
+    [RelayCommand]
+    private async Task RemoveTabItem(DataPageTabItemModel model)
+    {
+        var r = await MessageBox.ShowAsync("确定要删除这个测试卡吗？", "删除提示",
+            icon: MessageBoxIcon.Warning, button: MessageBoxButton.YesNo);
+        if(r == MessageBoxResult.Yes)
+            TabList.Remove(model);
     }
 }
 

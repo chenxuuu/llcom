@@ -12,14 +12,44 @@
     <Design.DataContext>
         <vm:DataPageViewModel />
     </Design.DataContext>
-    <TabControl
-        DisplayMemberBinding="{Binding Header, x:DataType=vm:DataPageTabItemModel}"
-        ItemsSource="{Binding TabList}"
-        SelectedIndex="{Binding SelectedTabIndex}">
-        <TabControl.ContentTemplate>
-            <DataTemplate x:DataType="vm:DataPageTabItemModel">
-                <UserControl Content="{Binding Content}" />
-            </DataTemplate>
-        </TabControl.ContentTemplate>
-    </TabControl>
+    <Grid>
+        <TabControl ItemsSource="{Binding TabList}" SelectedIndex="{Binding SelectedTabIndex}">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="0">
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Header}" />
+                        <Button
+                            Width="20"
+                            Height="20"
+                            MinWidth="0"
+                            MinHeight="0"
+                            Margin="0"
+                            Padding="0"
+                            VerticalAlignment="Center"
+                            Command="{Binding $parent[UserControl].((vm:DataPageViewModel)DataContext).RemoveTabItemCommand}"
+                            CommandParameter="{Binding}"
+                            Theme="{DynamicResource BorderlessButton}">
+                            <TextBlock
+                                Padding="0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontFamily="{DynamicResource Phosphor}"
+                                Text="&#xE4F6;" />
+                        </Button>
+                    </StackPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate x:DataType="vm:DataPageTabItemModel">
+                    <UserControl Content="{Binding Content}" />
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+
+        <Button
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Bottom"
+            Command="{Binding AddTabItemCommand}"
+            Content="ADD" />
+    </Grid>
 </UserControl>
