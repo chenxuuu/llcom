@@ -35,7 +35,8 @@ public static class Utils
             Directory.CreateDirectory(appPath);
         return appPath;
     }
-        
+
+    public static Setting Setting { get; } = new();
     
     /// <summary>
     /// 启动软件时的初始化操作
@@ -44,8 +45,6 @@ public static class Utils
     {
         //初始化编码
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        //初始化全局设置
-        GlobalSetting.Initialize();
         //初始化语言 TODO
     }
     

@@ -5,7 +5,7 @@ using SQLite;
 
 namespace LLCOM.Services;
 
-public class GlobalSetting
+public class Database : IDisposable
 {
     public class Setting
     {
@@ -14,12 +14,12 @@ public class GlobalSetting
         public string Value { get; set; }
     }
     
-    private static SQLiteAsyncConnection? _db = null;
+    private SQLiteAsyncConnection? _db = null;
     
     /// <summary>
     /// 初始化全局设置的数据库
     /// </summary>
-    public static void Initialize(string dbFileName = "setting.db")
+    public Database(string dbFileName)
     {
         if(_db is not null)
             return;
@@ -38,7 +38,7 @@ public class GlobalSetting
         _db = new SQLiteAsyncConnection(dbPath);
     }
     
-    private static async Task _update(string key, string value)
+    private async Task _update(string key, string value)
     {
         if (_db is null)
             throw new Exception("GlobalSetting not initialized");
@@ -49,7 +49,7 @@ public class GlobalSetting
         });
     }
     
-    private static async Task<string?> _get(string key)
+    private async Task<string?> _get(string key)
     {
         if (_db is null)
             throw new Exception("GlobalSetting not initialized");
@@ -57,12 +57,17 @@ public class GlobalSetting
         return setting?.Value;
     }
     
-    public static async Task Set<T>(string key, T value) => await _update(key, value!.ToString()!);
+    public async Task Set<T>(string key, T value) => await _update(key, value!.ToString()!);
     
-    public static async Task<string> Get(string key, string defaultValue = "") => await _get(key) ?? defaultValue;
-    public static async Task<int> Get(string key, int defaultValue = 0) => int.TryParse(await _get(key), out var result) ? result : defaultValue;
-    public static async Task<bool> Get(string key, bool defaultValue = false) => bool.TryParse(await _get(key), out var result) ? result : defaultValue;
-    public static async Task<double> Get(string key, double defaultValue = 0) => double.TryParse(await _get(key), out var result) ? result : defaultValue;
-    public static async Task<long> Get(string key, long defaultValue = 0) => long.TryParse(await _get(key), out var result) ? result : defaultValue;
-    
+    public async Task<string> Get(string key, string defaultValue = "") => await _get(key) ?? defaultValue;
+    public async Task<int> Get(string key, int defaultValue = 0) => int.TryParse(await _get(key), out var result) ? result : defaultValue;
+    public async Task<bool> Get(string key, bool defaultValue = false) => bool.TryParse(await _get(key), out var result) ? result : defaultValue;
+    public async Task<double> Get(string key, double defaultValue = 0) => double.TryParse(await _get(key), out var result) ? result : defaultValue;
+    public async Task<long> Get(string key, long defaultValue = 0) => long.TryParse(await _get(key), out var result) ? result : defaultValue;
+
+    public void Dispose()
+    {
+        if (_db is not null)
+            Task.Run(async() => await _db.CloseAsync());
+    }
 }
