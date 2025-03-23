@@ -36,7 +36,7 @@ public static class Utils
         return appPath;
     }
 
-    public static Setting Setting { get; set; }
+    public static Setting Setting = null!;
     
     /// <summary>
     /// 启动软件时的初始化操作
@@ -45,6 +45,7 @@ public static class Utils
     {
         //初始化编码
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        //初始化设置
         Setting = new Setting();
         //初始化语言 TODO
     }
@@ -101,7 +102,7 @@ public static class Utils
         }
     }
 
-    private static string? _updateUrl = null;
+    private static string? _updateUrl;
     /// <summary>
     /// 检查更新
     /// </summary>

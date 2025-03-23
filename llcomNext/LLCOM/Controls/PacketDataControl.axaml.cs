@@ -75,25 +75,12 @@ public class PacketDataControl : TemplatedControl
     }
     
     
-    //用于样式的，不提供给用户
-    
-    //响应时为0，不显示标题栏
-    public static readonly StyledProperty<int?> HeaderHeightProperty = 
-        AvaloniaProperty.Register<PacketDataControl, int?>(nameof(HeaderHeight), defaultValue: 22);
-    public int? HeaderHeight
+    public static readonly StyledProperty<bool?> HideHeaderProperty = 
+        AvaloniaProperty.Register<PacketDataControl, bool?>(nameof(HideHeader), defaultValue: false);
+    public bool? HideHeader
     {
-        get => GetValue(HeaderHeightProperty);
-        set => SetValue(HeaderHeightProperty, value);
-    }
-    
-    //响应时为5 5 5 5，四角圆角
-    public static readonly StyledProperty<CornerRadius?> DataBorderCornerRadiusProperty = 
-        AvaloniaProperty.Register<PacketDataControl, CornerRadius?>(nameof(DataBorderCornerRadius), 
-            defaultValue: new CornerRadius(5,5,5,0));
-    public CornerRadius? DataBorderCornerRadius
-    {
-        get => GetValue(DataBorderCornerRadiusProperty);
-        set => SetValue(DataBorderCornerRadiusProperty, value);
+        get => GetValue(HideHeaderProperty);
+        set => SetValue(HideHeaderProperty, value);
     }
 
     public PacketDataControl()

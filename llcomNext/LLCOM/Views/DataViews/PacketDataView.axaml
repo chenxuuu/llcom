@@ -41,15 +41,6 @@
             <Setter Property="Icon" Value="&#xEAE8;" />
             <Setter Property="ShowHex" Value="False" />
         </Style>
-        <!--  折叠数据包标签  -->
-        <Style Selector="PacketDataControl.HideHeader">
-            <Setter Property="HeaderHeight" Value="0" />
-            <Setter Property="DataBorderCornerRadius" Value="5 5 5 5" />
-        </Style>
-        <Style Selector="PacketDataControl.HideHeader:pointerover">
-            <Setter Property="HeaderHeight" Value="22" />
-            <Setter Property="DataBorderCornerRadius" Value="5 5 5 0" />
-        </Style>
     </UserControl.Styles>
     <Grid RowDefinitions="auto *">
         <ListBox
@@ -64,11 +55,11 @@
                         Margin="5,0,10,0"
                         Classes.Black="{Binding IsWayUnknown}"
                         Classes.Green="{Binding IsWaySend}"
-                        Classes.HideHeader="{Binding !IsPacketShowHeader, Source={x:Static services:Utils.Setting}}"
                         Classes.Red="{Binding IsWayReceive}"
                         Extra="{Binding Extra}"
                         Header="{Binding Channel}"
                         Hex="{Binding HexString}"
+                        HideHeader="{Binding !IsPacketShowHeader, Source={x:Static services:Utils.Setting}}"
                         ShowString="{Binding IsShowString, Source={x:Static services:Utils.Setting}}"
                         Text="{Binding String}" />
                 </DataTemplate>

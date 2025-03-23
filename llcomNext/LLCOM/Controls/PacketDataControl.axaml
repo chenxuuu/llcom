@@ -36,6 +36,13 @@
         </StackPanel>
     </Design.PreviewWith>
 
+    <Style Selector="Border.ShowHeader">
+        <Setter Property="CornerRadius" Value="5 5 5 0" />
+    </Style>
+    <Style Selector="Border.HideHeader">
+        <Setter Property="CornerRadius" Value="5 5 5 5" />
+    </Style>
+
     <Style Selector="controls|PacketDataControl">
         <Setter Property="Template">
             <ControlTemplate>
@@ -43,32 +50,58 @@
                     <Border
                         BorderBrush="{TemplateBinding MainColor}"
                         BorderThickness="1"
-                        CornerRadius="{TemplateBinding DataBorderCornerRadius}">
-                        <StackPanel Margin="5" Spacing="2">
-                            <SelectableTextBlock
+                        Classes.HideHeader="{TemplateBinding HideHeader}"
+                        Classes.ShowHeader="{Binding !HideHeader, RelativeSource={RelativeSource TemplatedParent}}">
+                        <Panel>
+                            <StackPanel
+                                Margin="5"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                IsVisible="{TemplateBinding HideHeader}"
+                                Opacity="0.2"
+                                Orientation="Horizontal"
+                                Spacing="4">
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    FontWeight="Bold"
+                                    Text="{TemplateBinding Extra}" />
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontFamily="{DynamicResource Phosphor}"
+                                    FontSize="12"
+                                    Text="{TemplateBinding Icon}" />
+                                <TextBlock Text="{TemplateBinding Header}" />
+                            </StackPanel>
+                            <StackPanel
+                                Margin="5"
                                 Background="Transparent"
-                                FontSize="16"
-                                Foreground="{TemplateBinding MainColor}"
-                                IsVisible="{Binding ShowString, RelativeSource={RelativeSource TemplatedParent}}"
-                                Text="{TemplateBinding Text}"
-                                TextWrapping="Wrap" />
-                            <SelectableTextBlock
-                                Background="Transparent"
-                                FontSize="16"
-                                Foreground="{TemplateBinding MainColor}"
-                                IsVisible="{Binding !ShowString, RelativeSource={RelativeSource TemplatedParent}}"
-                                Text="{TemplateBinding Hex}"
-                                TextWrapping="Wrap" />
-                            <SelectableTextBlock
-                                Background="Transparent"
-                                FontSize="10"
-                                Foreground="{DynamicResource SemiColorText2}"
-                                IsVisible="{TemplateBinding ShowHex}"
-                                Text="{TemplateBinding Hex}"
-                                TextWrapping="Wrap" />
-                        </StackPanel>
+                                Spacing="2">
+                                <SelectableTextBlock
+                                    Background="Transparent"
+                                    FontSize="16"
+                                    Foreground="{TemplateBinding MainColor}"
+                                    IsVisible="{Binding ShowString, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Text="{TemplateBinding Text}"
+                                    TextWrapping="Wrap" />
+                                <SelectableTextBlock
+                                    Background="Transparent"
+                                    FontSize="16"
+                                    Foreground="{TemplateBinding MainColor}"
+                                    IsVisible="{Binding !ShowString, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Text="{TemplateBinding Hex}"
+                                    TextWrapping="Wrap" />
+                                <SelectableTextBlock
+                                    Background="Transparent"
+                                    FontSize="10"
+                                    Foreground="{DynamicResource SemiColorText2}"
+                                    IsVisible="{TemplateBinding ShowHex}"
+                                    Text="{TemplateBinding Hex}"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Panel>
                     </Border>
-                    <Grid Height="{TemplateBinding HeaderHeight}">
+                    <Grid IsVisible="{Binding !HideHeader, RelativeSource={RelativeSource TemplatedParent}}">
                         <Grid.Transitions>
                             <Transitions>
                                 <DoubleTransition Property="Height" Duration="0:0:0.05" />

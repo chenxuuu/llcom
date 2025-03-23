@@ -7,14 +7,14 @@ namespace LLCOM.Services;
 
 public class Database : IDisposable
 {
-    public class Setting
+    private class Setting
     {
         [PrimaryKey]
         public string Key { get; set; }
         public string Value { get; set; }
     }
     
-    private SQLiteAsyncConnection? _db = null;
+    private readonly SQLiteAsyncConnection? _db = null;
     
     /// <summary>
     /// 初始化全局设置的数据库

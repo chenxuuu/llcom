@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LLCOM.Models;
 
@@ -15,8 +16,19 @@ public partial class PacketDataViewModel : ViewModelBase
     public PacketDataViewModel(Func<Type, ViewModelBase> getService)
     {
         _getService = getService;
-        
 
+        Task.Run(async () =>
+        {
+            for(int i=0; i<100; i++)
+            {
+                await Task.Delay(100);
+                for(int j=0; j<100; j++)
+                {
+                    PacketData.Add(new PacketData(new byte[]{0x30, 0x31, 0x32, 0x33}, MessageWay.Send, "串口1"));
+                    PacketData.Add(new PacketData(new byte[]{0x30, 0x31, 0x32, 0x33}, MessageWay.Receive, "串口1"));
+                }
+            }
+        });
     }
     
     [ObservableProperty]
