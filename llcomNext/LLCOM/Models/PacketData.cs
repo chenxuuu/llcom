@@ -17,7 +17,7 @@ public class PacketData
         Extra = extra ?? Time.ToString("yyyy/MM/dd HH:mm:ss.fff");
         encoding ??= Encoding.UTF8;
         String = s ?? GenerateString(Data, encoding, readable);
-        HexString = GenerateHexString(Data);
+        HexString = way == MessageWay.Unknown ? String : GenerateHexString(Data);
     }
 
     /// <summary>
@@ -55,11 +55,6 @@ public class PacketData
     public bool IsWayUnknown => Way == MessageWay.Unknown;
     public bool IsWaySend => Way == MessageWay.Send;
     public bool IsWayReceive => Way == MessageWay.Receive;
-    
-    /// <summary>
-    /// 是否显示hex（hex数组为空时就不显示）
-    /// </summary>
-    public bool IsHexVisible => Data.Length != 0;
     
     /// <summary>
     /// 根据Data生成一个十六进制字符串

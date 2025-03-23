@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:LLCOM"
     xmlns:semi="https://irihi.tech/semi"
+    xmlns:services="clr-namespace:LLCOM.Services"
     xmlns:u-semi="https://irihi.tech/ursa/themes/semi"
     RequestedThemeVariant="Default">
 
@@ -19,6 +20,8 @@
     </Application.Styles>
 
     <Application.Resources>
-        <FontFamily x:Key="Phosphor">/Assets/Fonts/Phosphor.ttf#Phosphor</FontFamily>
+        <ResourceDictionary>
+            <FontFamily x:Key="Phosphor">/Assets/Fonts/Phosphor.ttf#Phosphor</FontFamily>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

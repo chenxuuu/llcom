@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:services="clr-namespace:LLCOM.Services"
     xmlns:u="https://irihi.tech/ursa"
     xmlns:vm="using:LLCOM.ViewModels"
     d:DesignHeight="757"
@@ -28,14 +29,17 @@
         <Style Selector="PacketDataControl.Green">
             <Setter Property="MainColor" Value="{DynamicResource SemiGreen8}" />
             <Setter Property="Icon" Value="&#xE12A;" />
+            <Setter Property="ShowHex" Value="{Binding IsShowHexSmall, Source={x:Static services:Utils.Setting}}" />
         </Style>
         <Style Selector="PacketDataControl.Red">
             <Setter Property="MainColor" Value="{DynamicResource SemiRed8}" />
             <Setter Property="Icon" Value="&#xE128;" />
+            <Setter Property="ShowHex" Value="{Binding IsShowHexSmall, Source={x:Static services:Utils.Setting}}" />
         </Style>
         <Style Selector="PacketDataControl.Black">
             <Setter Property="MainColor" Value="{DynamicResource SemiGrey8}" />
             <Setter Property="Icon" Value="&#xEAE8;" />
+            <Setter Property="ShowHex" Value="False" />
         </Style>
         <!--  折叠数据包标签  -->
         <Style Selector="PacketDataControl.HideHeader">
@@ -60,12 +64,12 @@
                         Margin="5,0,10,0"
                         Classes.Black="{Binding IsWayUnknown}"
                         Classes.Green="{Binding IsWaySend}"
-                        Classes.HideHeader="{Binding ElementName=ShowHeaderCheckBox, Path=!IsChecked}"
+                        Classes.HideHeader="{Binding !IsPacketShowHeader, Source={x:Static services:Utils.Setting}}"
                         Classes.Red="{Binding IsWayReceive}"
                         Extra="{Binding Extra}"
                         Header="{Binding Channel}"
                         Hex="{Binding HexString}"
-                        ShowHex="{Binding IsHexVisible}"
+                        ShowString="{Binding IsShowString, Source={x:Static services:Utils.Setting}}"
                         Text="{Binding String}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -81,24 +85,23 @@
                 Orientation="Horizontal"
                 Spacing="8">
                 <CheckBox
-                    Name="ShowHeaderCheckBox"
                     VerticalAlignment="Center"
                     Content="始终显示标签"
-                    IsChecked="True" />
+                    IsChecked="{Binding IsPacketShowHeader, Source={x:Static services:Utils.Setting}}" />
                 <CheckBox
                     VerticalAlignment="Center"
                     Content="转义不可见字符"
-                    IsChecked="True"
+                    IsChecked="{Binding IsEscapeInvisibleChar, Source={x:Static services:Utils.Setting}}"
                     ToolTip.Tip="仅在UTF-8编码时生效" />
                 <CheckBox
                     VerticalAlignment="Center"
                     Content="Hex模式"
-                    IsChecked="{x:Null}"
+                    IsChecked="{Binding IsHexMode, Source={x:Static services:Utils.Setting}}"
                     IsThreeState="True" />
                 <CheckBox
                     VerticalAlignment="Center"
                     Content="自动滚动"
-                    IsChecked="True" />
+                    IsChecked="{Binding AutoScroll}" />
                 <Button Content="清空数据" />
             </StackPanel>
         </Border>

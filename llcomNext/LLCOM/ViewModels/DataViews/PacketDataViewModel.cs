@@ -38,4 +38,8 @@ public partial class PacketDataViewModel : ViewModelBase
         new PacketData([0x30, 0x31, 0x32, 0x33], MessageWay.Send, "串口1"),
         new PacketData([0x30, 0x31, 0x32, 0x33], MessageWay.Receive, "串口1"),
     ];
+    
+    //自动滚到底部
+    [ObservableProperty]
+    private bool _autoScroll = true;
 }

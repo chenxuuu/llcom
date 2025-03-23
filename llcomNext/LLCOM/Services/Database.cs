@@ -62,6 +62,7 @@ public class Database : IDisposable
     public async Task<string> Get(string key, string defaultValue = "") => await _get(key) ?? defaultValue;
     public async Task<int> Get(string key, int defaultValue = 0) => int.TryParse(await _get(key), out var result) ? result : defaultValue;
     public async Task<bool> Get(string key, bool defaultValue = false) => bool.TryParse(await _get(key), out var result) ? result : defaultValue;
+    public async Task<bool?> Get(string key, bool? defaultValue = null) => bool.TryParse(await _get(key), out var result) ? result : defaultValue;
     public async Task<double> Get(string key, double defaultValue = 0) => double.TryParse(await _get(key), out var result) ? result : defaultValue;
     public async Task<long> Get(string key, long defaultValue = 0) => long.TryParse(await _get(key), out var result) ? result : defaultValue;
 
