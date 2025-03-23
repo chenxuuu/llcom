@@ -63,15 +63,15 @@
                                 Spacing="4">
                                 <TextBlock
                                     VerticalAlignment="Center"
-                                    FontSize="12"
-                                    FontWeight="Bold"
-                                    Text="{TemplateBinding Extra}" />
-                                <TextBlock
-                                    VerticalAlignment="Center"
                                     FontFamily="{DynamicResource Phosphor}"
                                     FontSize="12"
                                     Text="{TemplateBinding Icon}" />
                                 <TextBlock Text="{TemplateBinding Header}" />
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    FontWeight="Bold"
+                                    Text="{TemplateBinding Extra}" />
                             </StackPanel>
                             <StackPanel
                                 Margin="5"
