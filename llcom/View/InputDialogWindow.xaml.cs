@@ -15,7 +15,6 @@ using System.Windows.Shapes;
 
 namespace llcom
 {
-    
     public partial class InputDialogWindow : Window
     {
         private const int WM_NCLBUTTONDBLCLK = 0xA3;

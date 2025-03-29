@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -75,7 +75,7 @@ namespace llcom.Pages
             Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
             {
                 title = $"🗑 local udp server: {title}",
-                data = data ?? new byte[0],
+                data = data ?? Array.Empty<byte>(),
                 color = send ? Brushes.DarkRed : Brushes.DarkGreen,
             });
         }
@@ -97,7 +97,7 @@ namespace llcom.Pages
             IPEndPoint IpEndPoint = new IPEndPoint(localAddr, port);
             Server = new UdpClient(IpEndPoint);
 
-            var isV6 = ip.Contains(":");
+            var isV6 = ip.Contains(':');
             ShowData($"🗑 {(isV6 ? "[" : "")}{ip}{(isV6 ? "]" : "")}:{port}");
 
             AsyncCallback newConnectionCb = null;
@@ -109,7 +109,7 @@ namespace llcom.Pages
                     IPEndPoint e = ((UdpState)(ar.AsyncState)).e;
 
                     byte[] receiveBytes = u.EndReceive(ar, ref e);
-                    var isV6 = e.Address.ToString().Contains(":");
+                    var isV6 = e.Address.ToString().Contains(':');
                     ShowData($"{(isV6 ? "[" : "")}{e.Address}{(isV6 ? "]" : "")}:{e.Port}", receiveBytes);
                     Server.BeginReceive(newConnectionCb, ar.AsyncState);
                 }

@@ -1,4 +1,4 @@
-﻿using llcom.LuaEnv;
+using llcom.LuaEnv;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -223,7 +223,9 @@ package.cpath = package.cpath..
                     v.Value.Cancel();//取消所有timer
                 }
                 timerPool.Clear();//清空timer信息池子
-                while (toRun.TryTake(out _)) ;//清空待运行池子
+                while (toRun.TryTake(out _))
+                {
+                }//清空待运行池子
             }
             StopEvent?.Invoke(null, true);
         }

@@ -1,4 +1,4 @@
-﻿using llcom.LuaEnv;
+using llcom.LuaEnv;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -85,7 +85,7 @@ namespace llcom.Pages
             Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
             {
                 title = $"🔗 socket client: {title}",
-                data = data ?? new byte[0],
+                data = data ?? Array.Empty<byte>(),
                 color = send ? Brushes.DarkRed : Brushes.DarkGreen,
             });
         }
@@ -254,7 +254,6 @@ namespace llcom.Pages
             Socket s = so.workSocket;
             try
             {
-
                 int read = s.EndReceive(ar);
 
                 if (read > 0)
@@ -353,7 +352,6 @@ namespace llcom.Pages
                 {
                     sslStream.Write(buff);
                 }
-                    
             }
 
             public void Close()

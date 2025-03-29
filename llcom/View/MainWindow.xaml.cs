@@ -273,7 +273,6 @@ namespace llcom
                     {
                         this.Dispatcher.Invoke(() => RefreshScriptList());
                     };
-
                 }));
             });
         }
@@ -590,7 +589,7 @@ namespace llcom
                 }
                 catch(Exception e)
                 {
-                    ports = new string[0];
+                    ports = Array.Empty<string>();
                     Tools.Logger.AddUartLogDebug($"[openPort]GetPortNames Exception:{e.Message}");
                 }
                 string port = "";//最终串口名
@@ -643,7 +642,6 @@ namespace llcom
                         isOpeningPort = false;
                         Tools.Logger.AddUartLogDebug($"[openPort]all done");
                     });
-
                 }
             }
         }
@@ -677,7 +675,6 @@ namespace llcom
                 Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]change show done");
                 refreshPortList(lastPort);
             }
-
         }
 
         private void ClearLogButton_Click(object sender, RoutedEventArgs e)

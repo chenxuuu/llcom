@@ -27,7 +27,7 @@ namespace llcom.LuaEnv
         /// <returns></returns>
         public static string Utf8ToAsciiHex(string input)
         {
-            return BitConverter.ToString(Encoding.GetEncoding("GB2312").GetBytes(input)).Replace("-","");
+            return Convert.ToHexString(Encoding.GetEncoding("GB2312").GetBytes(input));
         }
 
 

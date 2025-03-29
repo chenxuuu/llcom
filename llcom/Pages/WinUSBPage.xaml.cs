@@ -1,4 +1,4 @@
-﻿using CoAP.Net;
+using CoAP.Net;
 using LibUsbDotNet;
 using LibUsbDotNet.Info;
 using LibUsbDotNet.LibUsb;
@@ -49,7 +49,7 @@ namespace llcom.Pages
             Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
             {
                 title = $"🔌 WinUSB: {title}",
-                data = data ?? new byte[0],
+                data = data ?? Array.Empty<byte>(),
                 color = send ? Brushes.DarkRed : Brushes.DarkGreen,
             });
         }
@@ -287,7 +287,6 @@ namespace llcom.Pages
                                                     true);
                                             sent += len;
                                         }
-                                            
                                     }
                                     catch(Exception serr)
                                     {

@@ -10,7 +10,6 @@ namespace llcom.LuaEnv
 {
     class LuaLoader
     {
-
         /// <summary>
         /// 初始化lua对象
         /// </summary>
@@ -93,7 +92,7 @@ end
         {
             //文件不存在
             if (!File.Exists(Tools.Global.ProfilePath + path + file))
-                return new byte[] { };
+                return Array.Empty<byte>();
 
             if (luaRunner == null)
             {

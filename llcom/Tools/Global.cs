@@ -392,7 +392,7 @@ namespace llcom.Tools
             if (mHex.Length <= 0) return "";
             byte[] vBytes = new byte[mHex.Length / 2];
             for (int i = 0; i < mHex.Length; i += 2)
-                if (!byte.TryParse(mHex.Substring(i, 2), NumberStyles.HexNumber, null, out vBytes[i / 2]))
+                if (!byte.TryParse(mHex.AsSpan(i, 2), NumberStyles.HexNumber, null, out vBytes[i / 2]))
                     vBytes[i / 2] = 0;
             return GetEncoding().GetString(vBytes);
         }
@@ -489,10 +489,10 @@ namespace llcom.Tools
             mHex = Regex.Replace(mHex, "[^0-9A-Fa-f]", "");
             if (mHex.Length % 2 != 0)
                 mHex = mHex.Remove(mHex.Length - 1, 1);
-            if (mHex.Length <= 0) return new byte[0];
+            if (mHex.Length <= 0) return Array.Empty<byte>();
             byte[] vBytes = new byte[mHex.Length / 2];
             for (int i = 0; i < mHex.Length; i += 2)
-                if (!byte.TryParse(mHex.Substring(i, 2), NumberStyles.HexNumber, null, out vBytes[i / 2]))
+                if (!byte.TryParse(mHex.AsSpan(i, 2), NumberStyles.HexNumber, null, out vBytes[i / 2]))
                     vBytes[i / 2] = 0;
             return vBytes;
         }
@@ -596,7 +596,6 @@ namespace llcom.Tools
                     Source = new Uri("pack://application:,,,/languages/en-US.xaml", UriKind.RelativeOrAbsolute)
                 };
             }
-
         }
 
         private static string GitHubToken = null;
@@ -670,6 +669,5 @@ namespace llcom.Tools
             }
             return scripts;
         }
-
     }
 }

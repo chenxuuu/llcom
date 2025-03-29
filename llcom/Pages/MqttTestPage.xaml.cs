@@ -78,7 +78,7 @@ namespace llcom.Pages
                 Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
                 {
                     title = $"MQTT event: ✔ connected",
-                    data = new byte[0],
+                    data = Array.Empty<byte>(),
                     color = Brushes.DarkGreen
                 });
             });
@@ -93,7 +93,7 @@ namespace llcom.Pages
                 Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
                 {
                     title = $"MQTT event: ❌ disconnected",
-                    data = new byte[0],
+                    data = Array.Empty<byte>(),
                     color = Brushes.DarkGreen
                 });
             });
@@ -200,7 +200,7 @@ namespace llcom.Pages
                                         Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
                                         {
                                             title = $"MQTT event: ‼ ssl error {eventArgs.SslPolicyErrors}",
-                                            data = new byte[0],
+                                            data = Array.Empty<byte>(),
                                             color = Brushes.DarkGreen
                                         });
                                     }
@@ -217,7 +217,7 @@ namespace llcom.Pages
                             Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
                             {
                                 title = $"MQTT error: ‼ ssl certificate pfx file error",
-                                data = new byte[0],
+                                data = Array.Empty<byte>(),
                                 color = Brushes.DarkGreen
                             });
                             return;
@@ -314,7 +314,7 @@ namespace llcom.Pages
                 Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
                 {
                     title = $"MQTT ← {message.Topic}({(int)message.QualityOfServiceLevel})",
-                    data = message.Payload ?? new byte[0],
+                    data = message.Payload ?? Array.Empty<byte>(),
                     color = Brushes.DarkRed
                 });
                 return true;

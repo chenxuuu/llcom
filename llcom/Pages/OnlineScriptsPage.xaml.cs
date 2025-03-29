@@ -1,4 +1,4 @@
-﻿using llcom.Model;
+using llcom.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -162,7 +162,6 @@ namespace llcom.Pages
                 }
                 return;
             }
-
         }
 
         private void UrlButton_Click(object sender, RoutedEventArgs e)

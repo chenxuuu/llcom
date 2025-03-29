@@ -71,7 +71,7 @@ namespace llcom
                 //是文件
                 if (file != null && file.Name.EndsWith(".lua"))
                 {
-                    string name = file.Name.Substring(0, file.Name.Length - 4); ;
+                    string name = file.Name.Substring(0, file.Name.Length - 4);
                     luaFileList.Items.Add(name);
                     if (name == Tools.Global.setting.sendScript)
                     {
@@ -115,7 +115,7 @@ namespace llcom
                 //是文件
                  if (file != null && file.Name.EndsWith(".lua"))
                 {
-                    string name = file.Name.Substring(0, file.Name.Length - 4); ;
+                    string name = file.Name.Substring(0, file.Name.Length - 4);
                     luaFileListRev.Items.Add(name);
                     if (name== Tools.Global.setting.recvScript)
                     {
@@ -324,7 +324,6 @@ namespace llcom
                 {
                     Tools.MessageBox.Show($"{TryFindResource("ErrorScript") as string ?? "?!"}\r\n" + ex.ToString());
                 }
-
             }
         }
 

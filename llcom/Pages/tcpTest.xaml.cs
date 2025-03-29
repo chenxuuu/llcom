@@ -257,7 +257,7 @@ namespace llcom.Pages
             Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
             {
                 title = $"🚀 public socket server: {title}",
-                data = data ?? new byte[0],
+                data = data ?? Array.Empty<byte>(),
                 color = send ? Brushes.DarkRed : Brushes.DarkGreen,
             });
         }

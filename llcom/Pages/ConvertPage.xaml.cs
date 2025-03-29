@@ -78,7 +78,7 @@ namespace llcom.Pages
         Dictionary<string, Func<byte[], byte[]>> converters = new Dictionary<string, Func<byte[], byte[]>>
         {
             ["String to Hex(with space)"] = (e) => Encoding.Default.GetBytes(BitConverter.ToString(e).Replace("-", " ")),
-            ["String to Hex(without space)"] = (e) => Encoding.Default.GetBytes(BitConverter.ToString(e).Replace("-", "")),
+            ["String to Hex(without space)"] = (e) => Encoding.Default.GetBytes(c.ToHexString(e)),
             ["Hex to String"] = (e) => Hex2byte(Encoding.Default.GetString(e)),
             ["String to Base64"] = (e) => { try { return Encoding.Default.GetBytes(c.ToBase64String(e)); } catch (Exception ee) { return Encoding.Default.GetBytes(ee.Message); } },
             ["Base64 to String"] = (e) => { try { return c.FromBase64String(Encoding.Default.GetString(e)); } catch (Exception ee) { return Encoding.Default.GetBytes(ee.Message); } },
@@ -88,10 +88,10 @@ namespace llcom.Pages
             ["HTML decode"] = (e) => Encoding.Default.GetBytes(System.Web.HttpUtility.HtmlDecode(Encoding.Default.GetString(e))),
             ["String to Unicode"] = (e) => Encoding.Default.GetBytes(String2Unicode(Encoding.Default.GetString(e))),
             ["Unicode to String"] = (e) => Encoding.Default.GetBytes(Unicode2String(Encoding.Default.GetString(e))),
-            ["String to MD5 (Hex)"] = (e) => Encoding.Default.GetBytes(BitConverter.ToString(MD5Encrypt(e)).Replace("-", "")),
-            ["String to SHA-1 (Hex)"] = (e) => Encoding.Default.GetBytes(BitConverter.ToString(Sha1Encrypt(e)).Replace("-", "")),
-            ["String to SHA-256 (Hex)"] = (e) => Encoding.Default.GetBytes(BitConverter.ToString(Sha256Encrypt(e)).Replace("-", "")),
-            ["String to SHA-512 (Hex)"] = (e) => Encoding.Default.GetBytes(BitConverter.ToString(Sha512Encrypt(e)).Replace("-", "")),
+            ["String to MD5 (Hex)"] = (e) => Encoding.Default.GetBytes(c.ToHexString(MD5Encrypt(e))),
+            ["String to SHA-1 (Hex)"] = (e) => Encoding.Default.GetBytes(c.ToHexString(Sha1Encrypt(e))),
+            ["String to SHA-256 (Hex)"] = (e) => Encoding.Default.GetBytes(c.ToHexString(Sha256Encrypt(e))),
+            ["String to SHA-512 (Hex)"] = (e) => Encoding.Default.GetBytes(c.ToHexString(Sha512Encrypt(e))),
         };
 
         public static byte[] Hex2byte(string mHex)
@@ -99,40 +99,36 @@ namespace llcom.Pages
             mHex = Regex.Replace(mHex, "[^0-9A-Fa-f]", "");
             if (mHex.Length % 2 != 0)
                 mHex = mHex.Remove(mHex.Length - 1, 1);
-            if (mHex.Length <= 0) return new byte[] { };
+            if (mHex.Length <= 0) return Array.Empty<byte>();
             byte[] vBytes = new byte[mHex.Length / 2];
             for (int i = 0; i < mHex.Length; i += 2)
-                if (!byte.TryParse(mHex.Substring(i, 2), NumberStyles.HexNumber, null, out vBytes[i / 2]))
+                if (!byte.TryParse(mHex.AsSpan(i, 2), NumberStyles.HexNumber, null, out vBytes[i / 2]))
                     vBytes[i / 2] = 0;
             return vBytes;
         }
 
         public static byte[] MD5Encrypt(byte[] b)
         {
-            MD5CryptoServiceProvider md5Hasher = new MD5CryptoServiceProvider();
             byte[] hashedDataBytes;
-            hashedDataBytes = md5Hasher.ComputeHash(b);
+            hashedDataBytes = MD5.HashData(b);
             return hashedDataBytes;
         }
         public static byte[] Sha1Encrypt(byte[] b)
         {
-            SHA1CryptoServiceProvider md5Hasher = new SHA1CryptoServiceProvider();
             byte[] hashedDataBytes;
-            hashedDataBytes = md5Hasher.ComputeHash(b);
+            hashedDataBytes = SHA1.HashData(b);
             return hashedDataBytes;
         }
         public static byte[] Sha256Encrypt(byte[] b)
         {
-            SHA256CryptoServiceProvider md5Hasher = new SHA256CryptoServiceProvider();
             byte[] hashedDataBytes;
-            hashedDataBytes = md5Hasher.ComputeHash(b);
+            hashedDataBytes = SHA256.HashData(b);
             return hashedDataBytes;
         }
         public static byte[] Sha512Encrypt(byte[] b)
         {
-            SHA512CryptoServiceProvider md5Hasher = new SHA512CryptoServiceProvider();
             byte[] hashedDataBytes;
-            hashedDataBytes = md5Hasher.ComputeHash(b);
+            hashedDataBytes = SHA512.HashData(b);
             return hashedDataBytes;
         }
         public static string String2Unicode(string source)

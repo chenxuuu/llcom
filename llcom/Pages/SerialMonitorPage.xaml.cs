@@ -63,7 +63,7 @@ namespace llcom.Pages
                     break;
                 default:
                     break;
-            };
+            }
             Tools.Logger.ShowDataRaw(new Tools.DataShowRaw
             {
                 title = $"monitor COM{d.ComPort} {show}",
