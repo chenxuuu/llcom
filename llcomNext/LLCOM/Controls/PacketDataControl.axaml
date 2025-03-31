@@ -18,18 +18,24 @@
                 Icon="&#xE05A;"
                 MainColor="{DynamicResource SemiRed8}"
                 Text="接收到的xxx数据123123接" />
+            <Border BorderBrush="Red" BorderThickness="1">
+                <controls:PacketDataControl
+                    Extra="2025/03/11 - 11:22:33.123"
+                    Header="串口1"
+                    Hex="44 55 66 77 88 99 00 AA BB CC DD EE FF"
+                    Icon="&#xE02E;"
+                    MainColor="{DynamicResource SemiGreen8}"
+                    PureText="True"
+                    ShowHex="False"
+                    ShowString="False"
+                    Text="接收到的xxx数据123123接" />
+            </Border>
+
             <controls:PacketDataControl
                 Extra="2025/03/11 - 11:22:33.123"
                 Header="串口1"
                 Hex="44 55 66 77 88 99 00 AA BB CC DD EE FF"
-                MainColor="{DynamicResource SemiGreen8}"
-                ShowHex="False"
-                ShowString="False"
-                Text="接收到的xxx数据123123接" />
-            <controls:PacketDataControl
-                Extra="2025/03/11 - 11:22:33.123"
-                Header="串口1"
-                Hex="44 55 66 77 88 99 00 AA BB CC DD EE FF"
+                Icon="&#xE02E;"
                 MainColor="{DynamicResource SemiGreen8}"
                 ShowHex="False"
                 Text="接收到的xxx数据123123接" />
@@ -42,6 +48,19 @@
     <Style Selector="Border.HideHeader">
         <Setter Property="CornerRadius" Value="5 5 5 5" />
     </Style>
+    <Style Selector="Border.PureText">
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
+    <Style Selector="Grid.HideHeader">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="Grid.PureText">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="StackPanel.PureText">
+        <Setter Property="Margin" Value="5 0" />
+    </Style>
 
     <Style Selector="controls|PacketDataControl">
         <Setter Property="Template">
@@ -51,6 +70,7 @@
                         BorderBrush="{TemplateBinding MainColor}"
                         BorderThickness="1"
                         Classes.HideHeader="{TemplateBinding HideHeader}"
+                        Classes.PureText="{TemplateBinding PureText}"
                         Classes.ShowHeader="{Binding !HideHeader, RelativeSource={RelativeSource TemplatedParent}}">
                         <Panel>
                             <StackPanel
@@ -76,7 +96,29 @@
                             <StackPanel
                                 Margin="5"
                                 Background="Transparent"
-                                Spacing="2">
+                                Classes.PureText="{TemplateBinding PureText}"
+                                Spacing="0">
+                                <StackPanel IsVisible="{TemplateBinding PureText}" Orientation="Horizontal">
+                                    <SelectableTextBlock
+                                        VerticalAlignment="Center"
+                                        Background="Transparent"
+                                        FontSize="12"
+                                        FontWeight="Bold"
+                                        Text="{TemplateBinding Extra}"
+                                        TextWrapping="Wrap" />
+                                    <TextBlock
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Center"
+                                        FontFamily="{DynamicResource Phosphor}"
+                                        FontSize="12"
+                                        Foreground="{TemplateBinding MainColor}"
+                                        Text="{TemplateBinding Icon}" />
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        FontSize="12"
+                                        Foreground="{TemplateBinding MainColor}"
+                                        Text="{TemplateBinding Header}" />
+                                </StackPanel>
                                 <SelectableTextBlock
                                     Background="Transparent"
                                     FontSize="16"
@@ -101,12 +143,7 @@
                             </StackPanel>
                         </Panel>
                     </Border>
-                    <Grid IsVisible="{Binding !HideHeader, RelativeSource={RelativeSource TemplatedParent}}">
-                        <Grid.Transitions>
-                            <Transitions>
-                                <DoubleTransition Property="Height" Duration="0:0:0.05" />
-                            </Transitions>
-                        </Grid.Transitions>
+                    <Grid Classes.HideHeader="{TemplateBinding HideHeader}" Classes.PureText="{TemplateBinding PureText}">
                         <Border
                             HorizontalAlignment="Left"
                             Background="{TemplateBinding MainColor}"

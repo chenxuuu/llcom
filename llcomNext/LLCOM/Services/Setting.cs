@@ -12,8 +12,15 @@ public partial class Setting : ObservableObject
     private static readonly Database Database = new("setting.db");
     
     //是否折叠分包数据的标签
+    //全显示、折叠头、纯文本
     [ObservableProperty]
-    private bool _isPacketShowHeader = Database.Get(nameof(IsPacketShowHeader), true).Result;
+    [NotifyPropertyChangedFor(nameof(ShowHeader),nameof(PureText))]
+    private bool? _isPacketShowHeader = Database.Get(nameof(IsPacketShowHeader), true).Result;
+    
+    //是否显示分包头
+    public bool ShowHeader => IsPacketShowHeader is null;
+    //是否纯文本
+    public bool PureText => IsPacketShowHeader is false;
 
     //是否转义不可见字符
     [ObservableProperty]
@@ -28,6 +35,7 @@ public partial class Setting : ObservableObject
     public bool IsShowString => IsHexMode is null || !IsHexMode.Value;
     //是否显示hex小字，给Hex显示模式使用，不存储
     public bool IsShowHexSmall => IsHexMode is null;
+    
 
     public Setting()
     {

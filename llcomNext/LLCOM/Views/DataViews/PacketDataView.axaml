@@ -59,9 +59,11 @@
                         Extra="{Binding Extra}"
                         Header="{Binding Channel}"
                         Hex="{Binding HexString}"
-                        HideHeader="{Binding !IsPacketShowHeader, Source={x:Static services:Utils.Setting}}"
+                        HideHeader="{Binding ShowHeader, Source={x:Static services:Utils.Setting}}"
+                        PureText="{Binding PureText, Source={x:Static services:Utils.Setting}}"
                         ShowString="{Binding IsShowString, Source={x:Static services:Utils.Setting}}"
                         Text="{Binding String}" />
+
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
@@ -77,8 +79,9 @@
                 Spacing="8">
                 <CheckBox
                     VerticalAlignment="Center"
-                    Content="始终显示标签"
-                    IsChecked="{Binding IsPacketShowHeader, Source={x:Static services:Utils.Setting}}" />
+                    Content="分包样式"
+                    IsChecked="{Binding IsPacketShowHeader, Source={x:Static services:Utils.Setting}}"
+                    IsThreeState="True" />
                 <CheckBox
                     VerticalAlignment="Center"
                     Content="转义不可见字符"

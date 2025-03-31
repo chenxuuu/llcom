@@ -82,6 +82,15 @@ public class PacketDataControl : TemplatedControl
         get => GetValue(HideHeaderProperty);
         set => SetValue(HideHeaderProperty, value);
     }
+    
+    public static readonly StyledProperty<bool?> PureTextProperty = 
+        AvaloniaProperty.Register<PacketDataControl, bool?>(nameof(PureText), defaultValue: false);
+
+    public bool? PureText
+    {
+        get => GetValue(PureTextProperty);
+        set => SetValue(PureTextProperty, value);
+    }
 
     public PacketDataControl()
     {
