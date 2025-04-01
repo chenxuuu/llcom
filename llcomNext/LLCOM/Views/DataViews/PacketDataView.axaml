@@ -57,6 +57,7 @@
                         Classes.Green="{Binding IsWaySend}"
                         Classes.Red="{Binding IsWayReceive}"
                         Extra="{Binding Extra}"
+                        FontFamily="{Binding PacketFontFamily, Source={x:Static services:Utils.Setting}}"
                         Header="{Binding Channel}"
                         Hex="{Binding HexString}"
                         HideHeader="{Binding ShowHeader, Source={x:Static services:Utils.Setting}}"
@@ -69,7 +70,6 @@
         </ListBox>
         <Border
             Grid.Row="0"
-            Background="{DynamicResource SemiColorBackground2}"
             BorderBrush="{DynamicResource SemiColorBorder}"
             BorderThickness="0,0,0,1">
             <StackPanel

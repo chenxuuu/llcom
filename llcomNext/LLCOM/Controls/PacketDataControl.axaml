@@ -33,12 +33,13 @@
 
             <controls:PacketDataControl
                 Extra="2025/03/11 - 11:22:33.123"
+                FontFamily="Consolas"
                 Header="串口1"
                 Hex="44 55 66 77 88 99 00 AA BB CC DD EE FF"
                 Icon="&#xE02E;"
                 MainColor="{DynamicResource SemiGreen8}"
                 ShowHex="False"
-                Text="接收到的xxx数据123123接" />
+                Text="abcdefgilI10oOpqbd[]!" />
         </StackPanel>
     </Design.PreviewWith>
 
@@ -98,7 +99,10 @@
                                 Background="Transparent"
                                 Classes.PureText="{TemplateBinding PureText}"
                                 Spacing="0">
-                                <StackPanel IsVisible="{TemplateBinding PureText}" Orientation="Horizontal">
+                                <StackPanel
+                                    IsVisible="{TemplateBinding PureText}"
+                                    Orientation="Horizontal"
+                                    Spacing="4">
                                     <SelectableTextBlock
                                         VerticalAlignment="Center"
                                         Background="Transparent"
@@ -107,7 +111,6 @@
                                         Text="{TemplateBinding Extra}"
                                         TextWrapping="Wrap" />
                                     <TextBlock
-                                        Margin="5,0,0,0"
                                         VerticalAlignment="Center"
                                         FontFamily="{DynamicResource Phosphor}"
                                         FontSize="12"
@@ -121,6 +124,7 @@
                                 </StackPanel>
                                 <SelectableTextBlock
                                     Background="Transparent"
+                                    FontFamily="{TemplateBinding FontFamily}"
                                     FontSize="16"
                                     Foreground="{TemplateBinding MainColor}"
                                     IsVisible="{Binding ShowString, RelativeSource={RelativeSource TemplatedParent}}"
@@ -128,6 +132,7 @@
                                     TextWrapping="Wrap" />
                                 <SelectableTextBlock
                                     Background="Transparent"
+                                    FontFamily="{TemplateBinding FontFamily}"
                                     FontSize="16"
                                     Foreground="{TemplateBinding MainColor}"
                                     IsVisible="{Binding !ShowString, RelativeSource={RelativeSource TemplatedParent}}"

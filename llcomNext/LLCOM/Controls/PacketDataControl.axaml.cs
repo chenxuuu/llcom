@@ -85,11 +85,18 @@ public class PacketDataControl : TemplatedControl
     
     public static readonly StyledProperty<bool?> PureTextProperty = 
         AvaloniaProperty.Register<PacketDataControl, bool?>(nameof(PureText), defaultValue: false);
-
     public bool? PureText
     {
         get => GetValue(PureTextProperty);
         set => SetValue(PureTextProperty, value);
+    }
+    
+    public static readonly StyledProperty<FontFamily?> FontFamilyProperty = 
+        AvaloniaProperty.Register<PacketDataControl, FontFamily?>(nameof(FontFamily));
+    public FontFamily? FontFamily
+    {
+        get => GetValue(FontFamilyProperty);
+        set => SetValue(FontFamilyProperty, value);
     }
 
     public PacketDataControl()

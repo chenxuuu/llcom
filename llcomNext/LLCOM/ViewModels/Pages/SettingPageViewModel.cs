@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RestSharp;
@@ -18,9 +21,29 @@ public partial class SettingPageViewModel : ViewModelBase
     {
         _getService = getService;
 
+
+        
         //初始化系统信息
         Task.Run(async () =>
         {
+            //用skia接口获取系统字体列表
+            var fontMgr = SkiaSharp.SKFontManager.Default;
+            var fonts = new List<string>();
+            foreach (var f in fontMgr.FontFamilies)
+            {
+                fonts.Add(f);
+            }
+            //把列表内容按字母排序
+            fonts.Sort();
+            //添加到系统字体列表
+            foreach (var f in fonts)
+            {
+                SystemFontList.Add(f);
+            }
+            //找找看当前设置的是什么字体
+            var font = Services.Utils.Setting.PacketFont;
+            SystemFontIndex = SystemFontList.IndexOf(font);
+            
             //是否已经检查过更新？
             if (Services.Utils.HasUpdate())
             {
@@ -54,6 +77,14 @@ public partial class SettingPageViewModel : ViewModelBase
 
     }
 
+    #region FontSettings
+
+    [ObservableProperty]
+    private ObservableCollection<FontFamily> _SystemFontList = new();
+    [ObservableProperty]
+    private int _systemFontIndex;
+
+    #endregion
     
     #region About
     [ObservableProperty]

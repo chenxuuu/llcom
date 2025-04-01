@@ -15,7 +15,7 @@
         <vm:MainViewModel />
     </Design.DataContext>
 
-    <Grid Background="{DynamicResource SemiColorBackground1}" ColumnDefinitions="auto,*,auto,2*">
+    <Grid ColumnDefinitions="auto,*,auto,2*">
         <Border
             Background="{DynamicResource SemiColorBackground2}"
             BorderBrush="{DynamicResource SemiColorBorder}"

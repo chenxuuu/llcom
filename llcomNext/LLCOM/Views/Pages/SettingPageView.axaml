@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:services="clr-namespace:LLCOM.Services"
     xmlns:u="https://irihi.tech/ursa"
     xmlns:vm="using:LLCOM.ViewModels"
     d:DesignHeight="800"
@@ -15,15 +16,74 @@
     </Design.DataContext>
     <TabControl>
         <TabItem Header="常规设置">
-            <ScrollViewer>
+            <ScrollViewer Background="{DynamicResource SemiGrey0}">
                 <StackPanel>
-                    <TextBlock Text="常规设置" />
                     <ToggleSwitch />
                 </StackPanel>
             </ScrollViewer>
         </TabItem>
-        <TabItem Header="外观与字体" />
-        <TabItem Header="日志与缓存" />
+        <TabItem Header="外观与字体" IsSelected="True">
+            <ScrollViewer Background="{DynamicResource SemiGrey0}">
+                <StackPanel Margin="10" Spacing="5">
+                    <StackPanel
+                        Margin="5,0"
+                        Orientation="Horizontal"
+                        Spacing="10">
+                        <TextBlock VerticalAlignment="Center" Text="分包数据字体" />
+                        <ComboBox
+                            Width="250"
+                            ItemsSource="{Binding SystemFontList}"
+                            SelectedIndex="{Binding SystemFontIndex}"
+                            SelectedItem="{Binding PacketFontFamily, Source={x:Static services:Utils.Setting}}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock FontFamily="{Binding}" Text="{Binding}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                    <Border
+                        Margin="0"
+                        Background="{DynamicResource SemiColorBackground0}"
+                        Classes="Hover"
+                        Theme="{StaticResource CardBorder}">
+                        <StackPanel Spacing="3">
+                            <PacketDataControl
+                                Extra="2025/01/01 12:00:00.123"
+                                FontFamily="{Binding PacketFontFamily, Source={x:Static services:Utils.Setting}}"
+                                Header="Example"
+                                HideHeader="False"
+                                Icon="&#xEAE8;"
+                                MainColor="{DynamicResource SemiRed8}"
+                                PureText="True"
+                                ShowHex="False"
+                                ShowString="True"
+                                Text="Test Data.测试数据。1234567890&#x0a;(){}[]+ - * / = .,;:!? #$%@|^&#x0a;&lt;!-- -- != := === &gt;= &gt;- &gt;=&gt; -&gt;" />
+                            <Separator Margin="0,10" />
+                            <PacketDataControl
+                                Extra="2025/01/01 12:00:00.123"
+                                FontFamily="{Binding PacketFontFamily, Source={x:Static services:Utils.Setting}}"
+                                Header="Example"
+                                Hex="11 22 33 44 55 66 77 88 99 00 AA BB CC DD EE FF"
+                                HideHeader="False"
+                                Icon="&#xEAE8;"
+                                MainColor="{DynamicResource SemiGreen8}"
+                                PureText="False"
+                                ShowHex="True"
+                                ShowString="True"
+                                Text="Test Data.测试数据。1234567890&#x0a;(){}[]+ - * / = .,;:!? #$%@|^&#x0a;&lt;!-- -- != := === &gt;= &gt;- &gt;=&gt; -&gt;" />
+                        </StackPanel>
+                    </Border>
+                    <Separator Margin="0,10" />
+
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="日志与缓存">
+            <ScrollViewer Background="{DynamicResource SemiGrey0}">
+                <StackPanel />
+            </ScrollViewer>
+        </TabItem>
         <TabItem>
             <TabItem.Header>
                 <Panel>
@@ -37,7 +97,7 @@
                         IsVisible="{Binding HasNewVersion}" />
                 </Panel>
             </TabItem.Header>
-            <ScrollViewer>
+            <ScrollViewer Background="{DynamicResource SemiGrey0}">
                 <StackPanel Margin="10">
                     <Border
                         Width="170"
