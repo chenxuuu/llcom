@@ -12,16 +12,35 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, windows-2022, ubuntu-24.04-arm, macos-13, macos-14]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - name: environment prepare
+
+      - name: Set up .NET on Linux
+        if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install -y apt-transport-https
           sudo apt-get update
           sudo apt-get install -y dotnet-sdk-8.0
-      - name: test
+
+      - name: Set up .NET on Windows
+        if: runner.os == 'Windows'
+        run: choco install dotnet-sdk --version=8.0.407
+
+      - name: Set up .NET on macOS
+        if: runner.os == 'macOS'
+        run: |
+          brew update
+          brew install --cask dotnet-sdk@8
+          export DOTNET_ROOT=$(brew --prefix)/opt/dotnet-sdk
+          export PATH=$DOTNET_ROOT/bin:$PATH
+          dotnet --version
+
+      - name: Test
         run: |
           cd llcomNext
           dotnet test
