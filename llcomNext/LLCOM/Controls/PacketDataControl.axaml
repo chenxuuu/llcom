@@ -32,8 +32,8 @@
             </Border>
 
             <controls:PacketDataControl
+                DataFontFamily="Consolas"
                 Extra="2025/03/11 - 11:22:33.123"
-                FontFamily="Consolas"
                 Header="串口1"
                 Hex="44 55 66 77 88 99 00 AA BB CC DD EE FF"
                 Icon="&#xE02E;"
@@ -87,9 +87,10 @@
                                     FontFamily="{DynamicResource Phosphor}"
                                     FontSize="12"
                                     Text="{TemplateBinding Icon}" />
-                                <TextBlock Text="{TemplateBinding Header}" />
+                                <TextBlock FontFamily="{TemplateBinding HeaderFontFamily}" Text="{TemplateBinding Header}" />
                                 <TextBlock
                                     VerticalAlignment="Center"
+                                    FontFamily="{TemplateBinding ExtraFontFamily}"
                                     FontSize="12"
                                     FontWeight="Bold"
                                     Text="{TemplateBinding Extra}" />
@@ -106,6 +107,7 @@
                                     <SelectableTextBlock
                                         VerticalAlignment="Center"
                                         Background="Transparent"
+                                        FontFamily="{TemplateBinding ExtraFontFamily}"
                                         FontSize="12"
                                         FontWeight="Bold"
                                         Text="{TemplateBinding Extra}"
@@ -118,13 +120,14 @@
                                         Text="{TemplateBinding Icon}" />
                                     <TextBlock
                                         VerticalAlignment="Center"
+                                        FontFamily="{TemplateBinding HeaderFontFamily}"
                                         FontSize="12"
                                         Foreground="{TemplateBinding MainColor}"
                                         Text="{TemplateBinding Header}" />
                                 </StackPanel>
                                 <SelectableTextBlock
                                     Background="Transparent"
-                                    FontFamily="{TemplateBinding FontFamily}"
+                                    FontFamily="{TemplateBinding DataFontFamily}"
                                     FontSize="16"
                                     Foreground="{TemplateBinding MainColor}"
                                     IsVisible="{Binding ShowString, RelativeSource={RelativeSource TemplatedParent}}"
@@ -132,7 +135,7 @@
                                     TextWrapping="Wrap" />
                                 <SelectableTextBlock
                                     Background="Transparent"
-                                    FontFamily="{TemplateBinding FontFamily}"
+                                    FontFamily="{TemplateBinding DataFontFamily}"
                                     FontSize="16"
                                     Foreground="{TemplateBinding MainColor}"
                                     IsVisible="{Binding !ShowString, RelativeSource={RelativeSource TemplatedParent}}"
@@ -140,6 +143,7 @@
                                     TextWrapping="Wrap" />
                                 <SelectableTextBlock
                                     Background="Transparent"
+                                    FontFamily="{TemplateBinding HexFontFamily}"
                                     FontSize="10"
                                     Foreground="{DynamicResource SemiColorText2}"
                                     IsVisible="{TemplateBinding ShowHex}"
@@ -166,6 +170,7 @@
                                     Text="{TemplateBinding Icon}" />
                                 <TextBlock
                                     VerticalAlignment="Center"
+                                    FontFamily="{TemplateBinding HeaderFontFamily}"
                                     FontSize="12"
                                     Foreground="{DynamicResource SemiColorHighlight}"
                                     Text="{TemplateBinding Header}" />
@@ -175,6 +180,7 @@
                             Margin="0,0,10,0"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
+                            FontFamily="{TemplateBinding ExtraFontFamily}"
                             FontSize="12"
                             FontWeight="Bold"
                             Text="{TemplateBinding Extra}" />

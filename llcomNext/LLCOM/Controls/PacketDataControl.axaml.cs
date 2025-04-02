@@ -91,13 +91,39 @@ public class PacketDataControl : TemplatedControl
         set => SetValue(PureTextProperty, value);
     }
     
-    public static readonly StyledProperty<FontFamily?> FontFamilyProperty = 
-        AvaloniaProperty.Register<PacketDataControl, FontFamily?>(nameof(FontFamily));
-    public FontFamily? FontFamily
+    public static readonly StyledProperty<FontFamily?> DataFontFamilyProperty = 
+        AvaloniaProperty.Register<PacketDataControl, FontFamily?>(nameof(DataFontFamily));
+    public FontFamily? DataFontFamily
     {
-        get => GetValue(FontFamilyProperty);
-        set => SetValue(FontFamilyProperty, value);
+        get => GetValue(DataFontFamilyProperty);
+        set => SetValue(DataFontFamilyProperty, value);
     }
+    
+    public static readonly StyledProperty<FontFamily?> HexFontFamilyProperty = 
+        AvaloniaProperty.Register<PacketDataControl, FontFamily?>(nameof(HexFontFamily));
+    public FontFamily? HexFontFamily
+    {
+        get => GetValue(HexFontFamilyProperty);
+        set => SetValue(HexFontFamilyProperty, value);
+    }
+    
+    public static readonly StyledProperty<FontFamily?> HeaderFontFamilyProperty = 
+        AvaloniaProperty.Register<PacketDataControl, FontFamily?>(nameof(HeaderFontFamily));
+    public FontFamily? HeaderFontFamily
+    {
+        get => GetValue(HeaderFontFamilyProperty);
+        set => SetValue(HeaderFontFamilyProperty, value);
+    }
+    
+    public static readonly StyledProperty<FontFamily?> ExtraFontFamilyProperty = 
+        AvaloniaProperty.Register<PacketDataControl, FontFamily?>(nameof(ExtraFontFamily));
+    public FontFamily? ExtraFontFamily
+    {
+        get => GetValue(ExtraFontFamilyProperty);
+        set => SetValue(ExtraFontFamilyProperty, value);
+    }
+    
+    
 
     public PacketDataControl()
     {

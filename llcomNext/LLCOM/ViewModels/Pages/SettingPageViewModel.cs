@@ -40,9 +40,11 @@ public partial class SettingPageViewModel : ViewModelBase
             {
                 SystemFontList.Add(f);
             }
-            //找找看当前设置的是什么字体
-            var font = Services.Utils.Setting.PacketFont;
-            SystemFontIndex = SystemFontList.IndexOf(font);
+            //找找看当前设置的是什么字体，对应上
+            PacketFontIndex = SystemFontList.IndexOf(Services.Utils.Setting.PacketFont);
+            PacketHexFontIndex = SystemFontList.IndexOf(Services.Utils.Setting.PacketHexFont);
+            PacketHeaderFontIndex = SystemFontList.IndexOf(Services.Utils.Setting.PacketHeaderFont);
+            PacketExtraFontIndex = SystemFontList.IndexOf(Services.Utils.Setting.PacketExtraFont);
             
             //是否已经检查过更新？
             if (Services.Utils.HasUpdate())
@@ -82,7 +84,13 @@ public partial class SettingPageViewModel : ViewModelBase
     [ObservableProperty]
     private ObservableCollection<FontFamily> _SystemFontList = new();
     [ObservableProperty]
-    private int _systemFontIndex;
+    private int _packetFontIndex;
+    [ObservableProperty]
+    private int _packetHexFontIndex;
+    [ObservableProperty]
+    private int _packetHeaderFontIndex;
+    [ObservableProperty]
+    private int _packetExtraFontIndex;
 
     #endregion
     

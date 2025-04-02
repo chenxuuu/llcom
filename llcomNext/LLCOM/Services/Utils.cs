@@ -151,4 +151,13 @@ public static class Utils
     }
     
     public static bool HasUpdate() => _updateUrl != null;
+
+    /// <summary>
+    /// 获取字体名称，会根据字体名称返回一个可用的字体名称
+    /// 如果字体名称不存在，则返回默认字体名称
+    /// </summary>
+    /// <param name="name">字体名</param>
+    /// <returns>可用的字体名</returns>
+    public static string CheckFontName(string name) =>
+        (SkiaSharp.SKFontManager.Default.MatchFamily(name) ?? SkiaSharp.SKTypeface.Default).FamilyName;
 }

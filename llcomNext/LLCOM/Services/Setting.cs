@@ -38,40 +38,102 @@ public partial class Setting : ObservableObject
     public bool IsShowHexSmall => IsHexMode is null;
     
     //分包数据的字体
+    ///////////数据包的字体
+    public FontFamily? PacketFontFamily
+    {
+        get
+        {
+            if(string.IsNullOrEmpty(PacketFont))
+                PacketFont = Utils.CheckFontName(PacketFont);
+            return PacketFont;
+        }
+        set
+        {
+            if (value is null)
+                return;
+            PacketFont = value.Name;
+            OnPropertyChanged();
+        }
+    }
+    //字体名称
     [ObservableProperty]
-    private FontFamily _packetFontFamily;
-    
-    //分包数据的字体名称
     private string _packetFont = Database.Get(nameof(PacketFont), "").Result;
-    public string PacketFont => _packetFont;
+    //////////Hex小字的字体
+    public FontFamily? PacketHexFontFamily
+    {
+        get
+        {
+            if(string.IsNullOrEmpty(PacketHexFont))
+                PacketHexFont = Utils.CheckFontName(PacketHexFont);
+            return PacketHexFont;
+        }
+        set
+        {
+            if (value is null)
+                return;
+            PacketHexFont = value.Name;
+            OnPropertyChanged();
+        }
+    }
+    //字体名称
+    [ObservableProperty]
+    private string _packetHexFont = Database.Get(nameof(PacketHexFont), "").Result;
+    //////////标题头的字体
+    public FontFamily? PacketHeaderFontFamily
+    {
+        get
+        {
+            if(string.IsNullOrEmpty(PacketHeaderFont))
+                PacketHeaderFont = Utils.CheckFontName(PacketHeaderFont);
+            return PacketHeaderFont;
+        }
+        set
+        {
+            if (value is null)
+                return;
+            PacketHeaderFont = value.Name;
+            OnPropertyChanged();
+        }
+    }
+    //字体名称
+    [ObservableProperty]
+    private string _packetHeaderFont = Database.Get(nameof(PacketHeaderFont), "").Result;
+    //////////时间标记的字体
+    public FontFamily? PacketExtraFontFamily
+    {
+        get
+        {
+            if(string.IsNullOrEmpty(PacketExtraFont))
+                PacketExtraFont = Utils.CheckFontName(PacketExtraFont);
+            return PacketExtraFont;
+        }
+        set
+        {
+            if (value is null)
+                return;
+            PacketExtraFont = value.Name;
+            OnPropertyChanged();
+        }
+    }
+    //字体名称
+    [ObservableProperty]
+    private string _packetExtraFont = Database.Get(nameof(PacketExtraFont), "").Result;
     
-
+    
     public Setting()
     {
-        var font = SkiaSharp.SKFontManager.Default.MatchFamily(PacketFont);
-        font ??= SkiaSharp.SKTypeface.Default;
-        PacketFontFamily = font.FamilyName;
-        if(string.IsNullOrEmpty(PacketFont))
-            _packetFont = font.FamilyName;
-        
         PropertyChanged += async (sender, e) =>
         {
             //某个变量被更改
             var name = e.PropertyName;
             
-            //需要特殊处理的变量
-            switch (name)
-            {
-                case nameof(PacketFontFamily):
-                    _packetFont = PacketFontFamily.Name;
-                    await Database.Set(nameof(PacketFont), PacketFont);
-                    break;
-            }
-            
             //不需要存储的变量
             string[] dismissList = 
             [
                 nameof(PacketFontFamily),
+                nameof(PacketHexFontFamily),
+                nameof(PacketHeaderFontFamily),
+                nameof(PacketExtraFontFamily),
             ];
             if (name == null || dismissList.Contains(name))
                 return;
