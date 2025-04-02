@@ -29,22 +29,24 @@ public partial class SettingPageViewModel : ViewModelBase
             //用skia接口获取系统字体列表
             var fontMgr = SkiaSharp.SKFontManager.Default;
             var fonts = new List<string>();
+            var monoFonts = new List<string>();
             foreach (var f in fontMgr.FontFamilies)
             {
                 fonts.Add(f);
+                using var typeface = fontMgr.MatchFamily(f) ;
+                if (typeface.IsFixedPitch)
+                    monoFonts.Add(f);
             }
             //把列表内容按字母排序
             fonts.Sort();
+            monoFonts.Sort();
             //添加到系统字体列表
             foreach (var f in fonts)
-            {
                 SystemFontList.Add(f);
-            }
+            foreach (var f in monoFonts)
+                MonoFontList.Add(f);
             //找找看当前设置的是什么字体，对应上
-            PacketFontIndex = SystemFontList.IndexOf(Services.Utils.Setting.PacketFont);
-            PacketHexFontIndex = SystemFontList.IndexOf(Services.Utils.Setting.PacketHexFont);
-            PacketHeaderFontIndex = SystemFontList.IndexOf(Services.Utils.Setting.PacketHeaderFont);
-            PacketExtraFontIndex = SystemFontList.IndexOf(Services.Utils.Setting.PacketExtraFont);
+            RefreshFontIndexCommand.Execute(null);
             
             //是否已经检查过更新？
             if (Services.Utils.HasUpdate())
@@ -82,7 +84,9 @@ public partial class SettingPageViewModel : ViewModelBase
     #region FontSettings
 
     [ObservableProperty]
-    private ObservableCollection<FontFamily> _SystemFontList = new();
+    private ObservableCollection<FontFamily> _systemFontList = new();
+    [ObservableProperty]
+    private ObservableCollection<FontFamily> _monoFontList = new();
     [ObservableProperty]
     private int _packetFontIndex;
     [ObservableProperty]
@@ -91,7 +95,20 @@ public partial class SettingPageViewModel : ViewModelBase
     private int _packetHeaderFontIndex;
     [ObservableProperty]
     private int _packetExtraFontIndex;
+    [ObservableProperty]
+    private bool _useMonoFont;
 
+    [RelayCommand]
+    private void RefreshFontIndex()
+    {
+        var list = UseMonoFont ? MonoFontList : SystemFontList;
+        //刷新字体索引
+        PacketFontIndex = list.IndexOf(Services.Utils.Setting.PacketFont);
+        PacketHexFontIndex = list.IndexOf(Services.Utils.Setting.PacketHexFont);
+        PacketHeaderFontIndex = list.IndexOf(Services.Utils.Setting.PacketHeaderFont);
+        PacketExtraFontIndex = list.IndexOf(Services.Utils.Setting.PacketExtraFont);
+    }
+    
     #endregion
     
     #region About

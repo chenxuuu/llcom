@@ -14,6 +14,14 @@
     <Design.DataContext>
         <vm:SettingPageViewModel />
     </Design.DataContext>
+    <UserControl.Styles>
+        <Style Selector="ComboBox.ListFontAll">
+            <Setter Property="ItemsSource" Value="{Binding SystemFontList}" />
+        </Style>
+        <Style Selector="ComboBox.ListFontMono">
+            <Setter Property="ItemsSource" Value="{Binding MonoFontList}" />
+        </Style>
+    </UserControl.Styles>
     <TabControl>
         <TabItem Header="常规设置">
             <ScrollViewer Background="{DynamicResource SemiGrey0}">
@@ -25,6 +33,12 @@
         <TabItem Header="外观与字体" IsSelected="True">
             <ScrollViewer Background="{DynamicResource SemiGrey0}">
                 <StackPanel Margin="10" Spacing="5">
+                    <CheckBox
+                        Margin="5,5,5,0"
+                        Command="{Binding RefreshFontIndexCommand}"
+                        Content="限制使用等宽字体"
+                        IsChecked="{Binding UseMonoFont}" />
+                    <Separator Margin="0,10" />
                     <Grid
                         Margin="5,0"
                         ColumnDefinitions="*, 250"
@@ -38,7 +52,8 @@
                             Grid.Row="0"
                             Grid.Column="1"
                             Width="250"
-                            ItemsSource="{Binding SystemFontList}"
+                            Classes.ListFontAll="{Binding !UseMonoFont}"
+                            Classes.ListFontMono="{Binding UseMonoFont}"
                             SelectedIndex="{Binding PacketFontIndex}"
                             SelectedItem="{Binding PacketFontFamily, Source={x:Static services:Utils.Setting}}">
                             <ComboBox.ItemTemplate>
@@ -56,7 +71,8 @@
                             Grid.Row="2"
                             Grid.Column="1"
                             Width="250"
-                            ItemsSource="{Binding SystemFontList}"
+                            Classes.ListFontAll="{Binding !UseMonoFont}"
+                            Classes.ListFontMono="{Binding UseMonoFont}"
                             SelectedIndex="{Binding PacketHexFontIndex}"
                             SelectedItem="{Binding PacketHexFontFamily, Source={x:Static services:Utils.Setting}}">
                             <ComboBox.ItemTemplate>
@@ -74,7 +90,8 @@
                             Grid.Row="4"
                             Grid.Column="1"
                             Width="250"
-                            ItemsSource="{Binding SystemFontList}"
+                            Classes.ListFontAll="{Binding !UseMonoFont}"
+                            Classes.ListFontMono="{Binding UseMonoFont}"
                             SelectedIndex="{Binding PacketHeaderFontIndex}"
                             SelectedItem="{Binding PacketHeaderFontFamily, Source={x:Static services:Utils.Setting}}">
                             <ComboBox.ItemTemplate>
@@ -92,7 +109,8 @@
                             Grid.Row="6"
                             Grid.Column="1"
                             Width="250"
-                            ItemsSource="{Binding SystemFontList}"
+                            Classes.ListFontAll="{Binding !UseMonoFont}"
+                            Classes.ListFontMono="{Binding UseMonoFont}"
                             SelectedIndex="{Binding PacketExtraFontIndex}"
                             SelectedItem="{Binding PacketExtraFontFamily, Source={x:Static services:Utils.Setting}}">
                             <ComboBox.ItemTemplate>
