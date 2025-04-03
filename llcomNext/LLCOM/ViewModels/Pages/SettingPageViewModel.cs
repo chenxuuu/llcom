@@ -46,7 +46,7 @@ public partial class SettingPageViewModel : ViewModelBase
             foreach (var f in monoFonts)
                 MonoFontList.Add(f);
             //找找看当前设置的是什么字体，对应上
-            RefreshFontIndexCommand.Execute(null);
+            RefreshFontIndex();
             
             //是否已经检查过更新？
             if (Services.Utils.HasUpdate())
@@ -95,18 +95,16 @@ public partial class SettingPageViewModel : ViewModelBase
     private int _packetHeaderFontIndex;
     [ObservableProperty]
     private int _packetExtraFontIndex;
-    [ObservableProperty]
-    private bool _useMonoFont;
 
     [RelayCommand]
     private void RefreshFontIndex()
     {
-        var list = UseMonoFont ? MonoFontList : SystemFontList;
+        var list = SystemFontList;
         //刷新字体索引
-        PacketFontIndex = list.IndexOf(Services.Utils.Setting.PacketFont);
-        PacketHexFontIndex = list.IndexOf(Services.Utils.Setting.PacketHexFont);
-        PacketHeaderFontIndex = list.IndexOf(Services.Utils.Setting.PacketHeaderFont);
-        PacketExtraFontIndex = list.IndexOf(Services.Utils.Setting.PacketExtraFont);
+        PacketFontIndex = list.IndexOf(Services.Utils.Setting.PacketFontFamily ?? "");
+        PacketHexFontIndex = list.IndexOf(Services.Utils.Setting.PacketHexFontFamily?? "");
+        PacketHeaderFontIndex = list.IndexOf(Services.Utils.Setting.PacketHeaderFontFamily?? "");
+        PacketExtraFontIndex = list.IndexOf(Services.Utils.Setting.PacketExtraFontFamily?? "");
     }
     
     #endregion
