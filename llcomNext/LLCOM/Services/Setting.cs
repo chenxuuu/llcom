@@ -118,6 +118,31 @@ public partial class Setting : ObservableObject
     //字体名称
     [ObservableProperty]
     private string _packetExtraFont = Database.Get(nameof(PacketExtraFont), "").Result;
+    ///////////终端模式下的字体
+    public FontFamily? TerminalFontFamily
+    {
+        get
+        {
+            if(string.IsNullOrEmpty(TerminalFont))
+                TerminalFont = Utils.CheckFontName(TerminalFont);
+            return TerminalFont;
+        }
+        set
+        {
+            if (value is null)
+                return;
+            TerminalFont = value.Name;
+            OnPropertyChanged();
+        }
+    }
+    //字体名称
+    [ObservableProperty]
+    private string _terminalFont = Database.Get(nameof(TerminalFont), "").Result;
+    
+    //终端模式的主题
+    [ObservableProperty]
+    private int _terminalTheme = Database.Get(nameof(TerminalTheme), 0).Result;
+    
     
     
     public Setting()
@@ -134,6 +159,7 @@ public partial class Setting : ObservableObject
                 nameof(PacketHexFontFamily),
                 nameof(PacketHeaderFontFamily),
                 nameof(PacketExtraFontFamily),
+                nameof(TerminalFontFamily),
             ];
             if (name == null || dismissList.Contains(name))
                 return;

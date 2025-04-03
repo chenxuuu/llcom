@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="using:LLCOM.Models"
     xmlns:services="clr-namespace:LLCOM.Services"
     xmlns:u="https://irihi.tech/ursa"
     xmlns:vm="using:LLCOM.ViewModels"
@@ -33,7 +34,7 @@
                     <Separator Margin="0,10" />
                     <Grid
                         Margin="5,0"
-                        ColumnDefinitions="*, 250"
+                        ColumnDefinitions="auto 5 *"
                         RowDefinitions="auto 5 auto 5 auto 5 auto">
                         <TextBlock
                             Grid.Row="0"
@@ -42,8 +43,8 @@
                             Text="包数据字体" />
                         <ComboBox
                             Grid.Row="0"
-                            Grid.Column="1"
-                            Width="250"
+                            Grid.Column="2"
+                            HorizontalAlignment="Stretch"
                             ItemsSource="{Binding FontList}"
                             SelectedIndex="{Binding PacketFontIndex}"
                             SelectedItem="{Binding PacketFontFamily, Source={x:Static services:Utils.Setting}}">
@@ -60,8 +61,8 @@
                             Text="Hex小字字体" />
                         <ComboBox
                             Grid.Row="2"
-                            Grid.Column="1"
-                            Width="250"
+                            Grid.Column="2"
+                            HorizontalAlignment="Stretch"
                             ItemsSource="{Binding FontList}"
                             SelectedIndex="{Binding PacketHexFontIndex}"
                             SelectedItem="{Binding PacketHexFontFamily, Source={x:Static services:Utils.Setting}}">
@@ -78,8 +79,8 @@
                             Text="包标题字体" />
                         <ComboBox
                             Grid.Row="4"
-                            Grid.Column="1"
-                            Width="250"
+                            Grid.Column="2"
+                            HorizontalAlignment="Stretch"
                             ItemsSource="{Binding FontList}"
                             SelectedIndex="{Binding PacketHeaderFontIndex}"
                             SelectedItem="{Binding PacketHeaderFontFamily, Source={x:Static services:Utils.Setting}}">
@@ -96,8 +97,8 @@
                             Text="包时间字体" />
                         <ComboBox
                             Grid.Row="6"
-                            Grid.Column="1"
-                            Width="250"
+                            Grid.Column="2"
+                            HorizontalAlignment="Stretch"
                             ItemsSource="{Binding FontList}"
                             SelectedIndex="{Binding PacketExtraFontIndex}"
                             SelectedItem="{Binding PacketExtraFontFamily, Source={x:Static services:Utils.Setting}}">
@@ -147,7 +148,47 @@
                         </StackPanel>
                     </Border>
                     <Separator Margin="0,10" />
-
+                    <Grid ColumnDefinitions="auto 5 *" RowDefinitions="auto 5 auto">
+                        <TextBlock
+                            Grid.Row="0"
+                            Margin="5,0"
+                            VerticalAlignment="Center"
+                            Text="终端模式字体" />
+                        <ComboBox
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding FontList}"
+                            SelectedIndex="{Binding TerminalFontIndex}"
+                            SelectedItem="{Binding TerminalFontFamily, Source={x:Static services:Utils.Setting}}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock FontFamily="{Binding}" Text="{Binding}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock
+                            Grid.Row="2"
+                            Margin="5,0"
+                            VerticalAlignment="Center"
+                            Text="终端模式主题" />
+                        <ComboBox
+                            Name="TerminalThemeComboBox"
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{x:Static services:TerminalColorSchemes.TerminalColorSchemesList}"
+                            SelectedIndex="{Binding TerminalTheme, Source={x:Static services:Utils.Setting}}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TerminalColorPriview MainColor="{Binding}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+                    <Separator Margin="0,10" />
                 </StackPanel>
             </ScrollViewer>
         </TabItem>

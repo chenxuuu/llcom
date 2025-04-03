@@ -65,6 +65,8 @@ public partial class SettingPageViewModel : ViewModelBase
     #region FontSettings
 
     [ObservableProperty]
+    private bool _isMonoFont = false;
+    [ObservableProperty]
     private ObservableCollection<FontFamily> _fontList = new();
     [ObservableProperty]
     private int _packetFontIndex;
@@ -75,7 +77,7 @@ public partial class SettingPageViewModel : ViewModelBase
     [ObservableProperty]
     private int _packetExtraFontIndex;
     [ObservableProperty]
-    private bool _isMonoFont = false;
+    private int _terminalFontIndex;
 
     [RelayCommand]
     private void RefreshFontIndex()
@@ -108,6 +110,7 @@ public partial class SettingPageViewModel : ViewModelBase
         PacketHexFontIndex = FontList.IndexOf(Services.Utils.Setting.PacketHexFontFamily?? "");
         PacketHeaderFontIndex = FontList.IndexOf(Services.Utils.Setting.PacketHeaderFontFamily?? "");
         PacketExtraFontIndex = FontList.IndexOf(Services.Utils.Setting.PacketExtraFontFamily?? "");
+        TerminalFontIndex = FontList.IndexOf(Services.Utils.Setting.TerminalFontFamily?? "");
     }
     
     #endregion

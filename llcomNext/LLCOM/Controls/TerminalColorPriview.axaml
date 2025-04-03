@@ -1,0 +1,134 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:LLCOM.Controls"
+    xmlns:services="clr-namespace:LLCOM.Services">
+    <Design.PreviewWith>
+        <Panel Background="LightSalmon">
+            <StackPanel
+                Width="250"
+                Margin="5"
+                Spacing="2">
+                <TerminalColorPriview MainColor="{x:Static services:TerminalColorSchemes.Campbell_Powershell}" />
+                <TerminalColorPriview MainColor="{x:Static services:TerminalColorSchemes.One_Half_Dark}" />
+                <TerminalColorPriview MainColor="{x:Static services:TerminalColorSchemes.Campbell}" />
+                <TerminalColorPriview MainColor="{x:Static services:TerminalColorSchemes.One_Half_Light}" />
+                <TerminalColorPriview MainColor="{x:Static services:TerminalColorSchemes.IBM_5153}" />
+                <TerminalColorPriview MainColor="{x:Static services:TerminalColorSchemes.Tango_Light}" />
+            </StackPanel>
+        </Panel>
+    </Design.PreviewWith>
+
+    <Style Selector="Border.PreviewSquare">
+        <Setter Property="CornerRadius" Value="1" />
+        <Setter Property="Margin" Value="1.2 1.1 0 0" />
+    </Style>
+    <Style Selector="controls|TerminalColorPriview">
+        <!--  Set Defaults  -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    Height="30"
+                    MinWidth="200"
+                    Background="{Binding MainColor.Background, RelativeSource={RelativeSource TemplatedParent}}"
+                    CornerRadius="4">
+                    <Grid ColumnDefinitions="Auto *">
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            FontFamily="{Binding TerminalFontFamily, Source={x:Static services:Utils.Setting}}"
+                            Foreground="{Binding MainColor.Foreground, RelativeSource={RelativeSource TemplatedParent}}"
+                            Text="{Binding MainColor.Name, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <Grid
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            ColumnDefinitions="9 9 9 9 9 9 9 9"
+                            RowDefinitions="9 9">
+                            <Border
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Background="{Binding MainColor.Code40, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Background="{Binding MainColor.Code41, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                Background="{Binding MainColor.Code42, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="0"
+                                Grid.Column="3"
+                                Background="{Binding MainColor.Code43, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="0"
+                                Grid.Column="4"
+                                Background="{Binding MainColor.Code44, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="0"
+                                Grid.Column="5"
+                                Background="{Binding MainColor.Code45, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="0"
+                                Grid.Column="6"
+                                Background="{Binding MainColor.Code46, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="0"
+                                Grid.Column="7"
+                                Background="{Binding MainColor.Code47, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Background="{Binding MainColor.Code30, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Background="{Binding MainColor.Code31, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Background="{Binding MainColor.Code32, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="3"
+                                Background="{Binding MainColor.Code33, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="4"
+                                Background="{Binding MainColor.Code34, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="5"
+                                Background="{Binding MainColor.Code35, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="6"
+                                Background="{Binding MainColor.Code36, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="7"
+                                Background="{Binding MainColor.Code37, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                        </Grid>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

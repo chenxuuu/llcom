@@ -17,6 +17,7 @@
         <u-semi:SemiTheme Locale="zh-CN" />
         <StyleInclude Source="/Styles/MainStyle.axaml" />
         <StyleInclude Source="/Controls/PacketDataControl.axaml" />
+        <StyleInclude Source="/Controls/TerminalColorPriview.axaml" />
     </Application.Styles>
 
     <Application.Resources>
