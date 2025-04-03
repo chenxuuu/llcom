@@ -26,25 +26,6 @@ public partial class SettingPageViewModel : ViewModelBase
         //初始化系统信息
         Task.Run(async () =>
         {
-            //用skia接口获取系统字体列表
-            var fontMgr = SkiaSharp.SKFontManager.Default;
-            var fonts = new List<string>();
-            var monoFonts = new List<string>();
-            foreach (var f in fontMgr.FontFamilies)
-            {
-                fonts.Add(f);
-                using var typeface = fontMgr.MatchFamily(f) ;
-                if (typeface.IsFixedPitch)
-                    monoFonts.Add(f);
-            }
-            //把列表内容按字母排序
-            fonts.Sort();
-            monoFonts.Sort();
-            //添加到系统字体列表
-            foreach (var f in fonts)
-                SystemFontList.Add(f);
-            foreach (var f in monoFonts)
-                MonoFontList.Add(f);
             //找找看当前设置的是什么字体，对应上
             RefreshFontIndex();
             
@@ -84,9 +65,7 @@ public partial class SettingPageViewModel : ViewModelBase
     #region FontSettings
 
     [ObservableProperty]
-    private ObservableCollection<FontFamily> _systemFontList = new();
-    [ObservableProperty]
-    private ObservableCollection<FontFamily> _monoFontList = new();
+    private ObservableCollection<FontFamily> _fontList = new();
     [ObservableProperty]
     private int _packetFontIndex;
     [ObservableProperty]
@@ -95,16 +74,40 @@ public partial class SettingPageViewModel : ViewModelBase
     private int _packetHeaderFontIndex;
     [ObservableProperty]
     private int _packetExtraFontIndex;
+    [ObservableProperty]
+    private bool _isMonoFont = false;
 
     [RelayCommand]
     private void RefreshFontIndex()
     {
-        var list = SystemFontList;
+        //用skia接口获取系统字体列表
+        var fontMgr = SkiaSharp.SKFontManager.Default;
+        var fonts = new List<string>();
+        foreach (var f in fontMgr.FontFamilies)
+        {
+            if (IsMonoFont)
+            {
+                using var typeface = fontMgr.MatchFamily(f) ;
+                if (typeface.IsFixedPitch)
+                    fonts.Add(f);
+            }
+            else
+            {
+                fonts.Add(f);
+            }
+        }
+        //把列表内容按字母排序
+        fonts.Sort();
+        //添加到系统字体列表
+        FontList.Clear();
+        foreach (var f in fonts)
+            FontList.Add(f);
+        
         //刷新字体索引
-        PacketFontIndex = list.IndexOf(Services.Utils.Setting.PacketFontFamily ?? "");
-        PacketHexFontIndex = list.IndexOf(Services.Utils.Setting.PacketHexFontFamily?? "");
-        PacketHeaderFontIndex = list.IndexOf(Services.Utils.Setting.PacketHeaderFontFamily?? "");
-        PacketExtraFontIndex = list.IndexOf(Services.Utils.Setting.PacketExtraFontFamily?? "");
+        PacketFontIndex = FontList.IndexOf(Services.Utils.Setting.PacketFontFamily ?? "");
+        PacketHexFontIndex = FontList.IndexOf(Services.Utils.Setting.PacketHexFontFamily?? "");
+        PacketHeaderFontIndex = FontList.IndexOf(Services.Utils.Setting.PacketHeaderFontFamily?? "");
+        PacketExtraFontIndex = FontList.IndexOf(Services.Utils.Setting.PacketExtraFontFamily?? "");
     }
     
     #endregion
