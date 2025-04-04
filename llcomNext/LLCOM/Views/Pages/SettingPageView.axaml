@@ -160,7 +160,7 @@
                             Grid.Row="0"
                             Grid.Column="2"
                             HorizontalAlignment="Stretch"
-                            ItemsSource="{Binding FontList}"
+                            ItemsSource="{Binding MonoFontList}"
                             SelectedIndex="{Binding TerminalFontIndex}"
                             SelectedItem="{Binding TerminalFontFamily, Source={x:Static services:Utils.Setting}}">
                             <ComboBox.ItemTemplate>
@@ -194,56 +194,51 @@
                         Background="{Binding TerminalTheme.Background, Source={x:Static services:Utils.Setting}}"
                         Classes="Hover"
                         Theme="{StaticResource CardBorder}">
-                        <Border.Styles>
-                            <Style Selector="SelectableTextBlock">
-                                <Setter Property="FontFamily" Value="{Binding TerminalFontFamily, Source={x:Static services:Utils.Setting}}" />
-                                <Setter Property="SelectionBrush" Value="{Binding TerminalTheme.SelectionBackground, Source={x:Static services:Utils.Setting}}" />
-                                <Setter Property="SelectionForegroundBrush" Value="{Binding TerminalTheme.Background, Source={x:Static services:Utils.Setting}}" />
-                            </Style>
-                        </Border.Styles>
-                        <StackPanel>
-                            <SelectableTextBlock Background="Transparent">
-                                <Span Foreground="{Binding TerminalTheme.Foreground, Source={x:Static services:Utils.Setting}}">
-                                    LLCOM Terminan Mode 终端模式预览
-                                </Span>
-                                <LineBreak />
-                                <Span Foreground="{Binding TerminalTheme.Code93, Source={x:Static services:Utils.Setting}}">
-                                    >&#x0020;
-                                </Span>
-                                <Span Foreground="{Binding TerminalTheme.Foreground, Source={x:Static services:Utils.Setting}}">
-                                    git diff&#x0020;
-                                </Span>
-                                <Span Foreground="{Binding TerminalTheme.Code90, Source={x:Static services:Utils.Setting}}">
-                                    -w
-                                </Span>
-                                <LineBreak />
-                                <Span Foreground="{Binding TerminalTheme.Foreground, Source={x:Static services:Utils.Setting}}">
-                                    diff --git a/win b/win
-                                </Span>
-                                <LineBreak />
-                                <Span Foreground="{Binding TerminalTheme.Code36, Source={x:Static services:Utils.Setting}}">
-                                    @@ -1 +1 @@
-                                </Span>
-                                <LineBreak />
-                                <Span Foreground="{Binding TerminalTheme.Code31, Source={x:Static services:Utils.Setting}}">
-                                    -    Console Mode Preview
-                                </Span>
-                                <LineBreak />
-                                <Span Foreground="{Binding TerminalTheme.Code32, Source={x:Static services:Utils.Setting}}">
-                                    +    Console Mode Preview
-                                </Span>
-                                <LineBreak />
-                                <Span Foreground="{Binding TerminalTheme.Code93, Source={x:Static services:Utils.Setting}}">
-                                    >&#x0020;
-                                </Span>
-                                <Span Foreground="{Binding TerminalTheme.Foreground, Source={x:Static services:Utils.Setting}}">
-                                    echo&#x0020;
-                                </Span>
-                                <Span Foreground="{Binding TerminalTheme.Code36, Source={x:Static services:Utils.Setting}}">
-                                    "🍥🥢"
-                                </Span>
-                            </SelectableTextBlock>
-                        </StackPanel>
+                        <SelectableTextBlock
+                            Background="Transparent"
+                            FontFamily="{Binding TerminalFontFamily, Source={x:Static services:Utils.Setting}}"
+                            SelectionBrush="{Binding TerminalTheme.SelectionBackground, Source={x:Static services:Utils.Setting}}"
+                            SelectionForegroundBrush="{Binding TerminalTheme.Background, Source={x:Static services:Utils.Setting}}">
+                            <Span Foreground="{Binding TerminalTheme.Foreground, Source={x:Static services:Utils.Setting}}">
+                                LLCOM Terminan Mode 终端模式预览
+                            </Span>
+                            <LineBreak />
+                            <Span Foreground="{Binding TerminalTheme.Code93, Source={x:Static services:Utils.Setting}}">
+                                >&#x0020;
+                            </Span>
+                            <Span Foreground="{Binding TerminalTheme.Foreground, Source={x:Static services:Utils.Setting}}">
+                                git diff&#x0020;
+                            </Span>
+                            <Span Foreground="{Binding TerminalTheme.Code90, Source={x:Static services:Utils.Setting}}">
+                                -w
+                            </Span>
+                            <LineBreak />
+                            <Span Foreground="{Binding TerminalTheme.Foreground, Source={x:Static services:Utils.Setting}}">
+                                diff --git a/win b/win
+                            </Span>
+                            <LineBreak />
+                            <Span Foreground="{Binding TerminalTheme.Code36, Source={x:Static services:Utils.Setting}}">
+                                @@ -1 +1 @@
+                            </Span>
+                            <LineBreak />
+                            <Span Foreground="{Binding TerminalTheme.Code31, Source={x:Static services:Utils.Setting}}">
+                                -    Console Mode Preview
+                            </Span>
+                            <LineBreak />
+                            <Span Foreground="{Binding TerminalTheme.Code32, Source={x:Static services:Utils.Setting}}">
+                                +    Terminal Mode Preview
+                            </Span>
+                            <LineBreak />
+                            <Span Foreground="{Binding TerminalTheme.Code93, Source={x:Static services:Utils.Setting}}">
+                                >&#x0020;
+                            </Span>
+                            <Span Foreground="{Binding TerminalTheme.Foreground, Source={x:Static services:Utils.Setting}}">
+                                echo&#x0020;
+                            </Span>
+                            <Span Foreground="{Binding TerminalTheme.Code36, Source={x:Static services:Utils.Setting}}">
+                                "🍥🥢"
+                            </Span>
+                        </SelectableTextBlock>
                     </Border>
                     <Separator Margin="0,10" />
                 </StackPanel>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -125,7 +126,7 @@ public partial class Setting : ObservableObject
         get
         {
             if(string.IsNullOrEmpty(TerminalFont))
-                TerminalFont = Utils.CheckFontName(TerminalFont);
+                TerminalFont = Utils.CheckMonoFontName(TerminalFont);
             return TerminalFont;
         }
         set
@@ -136,10 +137,29 @@ public partial class Setting : ObservableObject
             OnPropertyChanged();
         }
     }
-    //字体名称
+    //终端模式字体名称
     [ObservableProperty]
     private string _terminalFont = Database.Get(nameof(TerminalFont), "").Result;
-    
+    //终端模式的缓冲区行数
+    [ObservableProperty]
+    private int _terminalBufferLines = Database.Get(nameof(TerminalBufferLines), 5000).Result;
+    //终端模式的字体大小
+    private int _terminalFontSize = Database.Get(nameof(TerminalFontSize), 16).Result;
+    [Range(14,50)]
+    public int TerminalFontSize
+    {
+        get => _terminalFontSize;
+        set
+        {
+            _terminalFontSize = value;
+            OnPropertyChanged();
+            TerminalChangedEvent?.Invoke(this, EventArgs.Empty);
+        }
+    }
+    //用于通知字体大小改变的事件
+    public EventHandler? TerminalChangedEvent = null;
+    partial void OnTerminalFontChanged(string _) => TerminalChangedEvent?.Invoke(this, EventArgs.Empty);
+
     
     //终端模式的主题
     private TerminalColorScheme? _terminalTheme = null;
@@ -182,6 +202,7 @@ public partial class Setting : ObservableObject
                 nameof(PacketHeaderFontFamily),
                 nameof(PacketExtraFontFamily),
                 nameof(TerminalFontFamily),
+                nameof(TerminalChangedEvent),
             ];
             if (name == null || dismissList.Contains(name))
                 return;

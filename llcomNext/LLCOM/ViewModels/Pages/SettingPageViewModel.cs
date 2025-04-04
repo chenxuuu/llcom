@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -69,6 +70,8 @@ public partial class SettingPageViewModel : ViewModelBase
     [ObservableProperty]
     private ObservableCollection<FontFamily> _fontList = new();
     [ObservableProperty]
+    private ObservableCollection<FontFamily> _monoFontList = new();
+    [ObservableProperty]
     private int _packetFontIndex;
     [ObservableProperty]
     private int _packetHexFontIndex;
@@ -85,32 +88,42 @@ public partial class SettingPageViewModel : ViewModelBase
         //用skia接口获取系统字体列表
         var fontMgr = SkiaSharp.SKFontManager.Default;
         var fonts = new List<string>();
+        var monoFonts = new List<string>();
         foreach (var f in fontMgr.FontFamilies)
         {
-            if (IsMonoFont)
-            {
-                using var typeface = fontMgr.MatchFamily(f) ;
-                if (typeface.IsFixedPitch)
-                    fonts.Add(f);
-            }
-            else
-            {
-                fonts.Add(f);
-            }
+            using var typeface = fontMgr.MatchFamily(f) ;
+            if (typeface.IsFixedPitch)
+                monoFonts.Add(f);
+            fonts.Add(f);
         }
         //把列表内容按字母排序
         fonts.Sort();
+        monoFonts.Sort();
         //添加到系统字体列表
         FontList.Clear();
-        foreach (var f in fonts)
-            FontList.Add(f);
+        if (IsMonoFont)
+        {
+            foreach (var f in monoFonts)
+                FontList.Add(f);
+        }
+        else
+        {
+            foreach (var f in fonts)
+                FontList.Add(f);
+        }
+
+        if (MonoFontList.Count == 0)
+        {
+            foreach (var f in monoFonts)
+                MonoFontList.Add(f);
+        }
         
         //刷新字体索引
         PacketFontIndex = FontList.IndexOf(Services.Utils.Setting.PacketFontFamily ?? "");
         PacketHexFontIndex = FontList.IndexOf(Services.Utils.Setting.PacketHexFontFamily?? "");
         PacketHeaderFontIndex = FontList.IndexOf(Services.Utils.Setting.PacketHeaderFontFamily?? "");
         PacketExtraFontIndex = FontList.IndexOf(Services.Utils.Setting.PacketExtraFontFamily?? "");
-        TerminalFontIndex = FontList.IndexOf(Services.Utils.Setting.TerminalFontFamily?? "");
+        TerminalFontIndex = MonoFontList.IndexOf(Services.Utils.Setting.TerminalFontFamily?? "");
     }
     
     #endregion

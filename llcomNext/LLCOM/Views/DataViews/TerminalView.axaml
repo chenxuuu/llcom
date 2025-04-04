@@ -1,16 +1,41 @@
 ﻿<UserControl
-    d:DesignHeight="757"
-    d:DesignWidth="762"
-    mc:Ignorable="d"
     x:Class="LLCOM.Views.TerminalView"
-    x:DataType="vm:TerminalViewModel"
     xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:services="clr-namespace:LLCOM.Services"
     xmlns:vm="using:LLCOM.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    d:DesignHeight="757"
+    d:DesignWidth="762"
+    x:DataType="vm:TerminalViewModel"
+    Background="{Binding TerminalTheme.Background, Source={x:Static services:Utils.Setting}}"
+    Loaded="Control_OnLoaded"
+    mc:Ignorable="d">
     <Design.DataContext>
         <vm:TerminalViewModel />
     </Design.DataContext>
-    TerminalView
+    <!--
+        目前不打算支持操作光标位置、退格
+        终端只负责不断打印新数据
+    -->
+    <Panel
+        Name="MainArea"
+        Margin="5"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        PointerWheelChanged="MainArea_OnPointerWheelChanged">
+        <SelectableTextBlock
+            Name="MainTextBlock"
+            Background="Transparent"
+            FontFamily="{Binding TerminalFontFamily, Source={x:Static services:Utils.Setting}}"
+            FontSize="{Binding TerminalFontSize, Source={x:Static services:Utils.Setting}}"
+            SelectionBrush="{Binding TerminalTheme.SelectionBackground, Source={x:Static services:Utils.Setting}}"
+            SelectionForegroundBrush="{Binding TerminalTheme.Background, Source={x:Static services:Utils.Setting}}" />
+        <ScrollBar
+            Name="MainScrollBar"
+            HorizontalAlignment="Right"
+            Scroll="MainScrollBar_OnScroll"
+            Visibility="Visible" />
+    </Panel>
 </UserControl>

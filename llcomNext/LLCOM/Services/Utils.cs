@@ -160,4 +160,89 @@ public static class Utils
     /// <returns>可用的字体名</returns>
     public static string CheckFontName(string name) =>
         (SkiaSharp.SKFontManager.Default.MatchFamily(name) ?? SkiaSharp.SKTypeface.Default).FamilyName;
+
+    /// <summary>
+    /// 获取字体名称，会根据字体名称返回一个可用的字体名称
+    /// 如果字体名称不存在，则返回默认字体名称
+    /// </summary>
+    /// <param name="name">字体名</param>
+    /// <returns>可用的字体名</returns>
+    public static string CheckMonoFontName(string name)
+    {
+        var fontMgr = SkiaSharp.SKFontManager.Default;
+        var font = fontMgr.MatchFamily(name) ?? SkiaSharp.SKTypeface.Default;
+        if (font.IsFixedPitch)//是等宽字体
+            return font.FamilyName;
+
+        //不同的操作系统下的等宽字体都试试
+        string[] defaultFontList =
+        [
+            "Consolas",
+            "Menlo",
+            "Monaco",
+            "DejaVu Sans Mono",
+            "Liberation Mono",
+            "Ubuntu Mono",
+            "Source Code Pro",
+            "Fira Code",
+            "Courier New",
+            "Courier",
+        ];
+        foreach (var defaultFont in defaultFontList)
+        {
+            font = fontMgr.MatchFamily(defaultFont);
+            if (font == null)
+                continue;
+            if (font.IsFixedPitch)
+                return font.FamilyName;
+        }
+        //如果没有找到等宽字体，返回第一个等宽字体
+        foreach (var f in fontMgr.FontFamilies)
+        {
+            font = fontMgr.MatchFamily(f);
+            if (font.IsFixedPitch)
+                return font.FamilyName;
+        }
+        //如果还是没有找到，返回默认字体
+        return SkiaSharp.SKTypeface.Default.FamilyName;
+    }
+
+    /// <summary>
+    /// 计算终端窗口可以显示的行数和列数
+    /// </summary>
+    /// <param name="width">窗口宽度</param>
+    /// <param name="height">窗口高度</param>
+    /// <param name="font">字体名称</param>
+    /// <param name="fontSize">字体大小</param>
+    /// <returns>(列数宽度,行数高度)</returns>
+    public static (int, int) CalculateSize(double width, double height, string font,double fontSize)
+    {
+        //根据当前字体大小和窗口大小，计算出可以显示的行数和列数
+        //按实际的字符宽度和高度来计算
+        var fontFamily = SkiaSharp.SKFontManager.Default.MatchFamily(font) ?? SkiaSharp.SKTypeface.Default;
+
+        //计算出每个字符的宽度和高度，用skiasharp的接口来计算
+        //主要字符之间会有间距，所以需要用实际的字符来计算
+        var paint = new SkiaSharp.SKPaint
+        {
+            Typeface = fontFamily,
+            TextSize = (float)fontSize
+        };
+
+        //计算出一行能放下多少个字符，暂时用最宽的字符来计算
+        var charWidth = paint.MeasureText("W");
+        var charSpacing = paint.FontMetrics.Leading;
+        int columns = (int)(width / (charWidth + charSpacing));
+            
+        //计算出能放下多少行
+        var charHeight = Math.Abs(paint.FontMetrics.Ascent - paint.FontMetrics.Descent + paint.FontMetrics.Leading);
+        int rows = (int)(height / charHeight);
+        
+        //注意不要让行数和列数为0
+        if (rows <= 0) rows = 1;
+        if (columns <= 0) columns = 1;
+        
+        //返回
+        return (columns, rows);
+    }
 }
