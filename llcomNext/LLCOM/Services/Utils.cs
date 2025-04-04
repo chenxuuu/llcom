@@ -230,9 +230,16 @@ public static class Utils
         };
 
         //计算出一行能放下多少个字符，暂时用最宽的字符来计算
-        var charWidth = paint.MeasureText("W");
-        var charSpacing = paint.FontMetrics.Leading;
-        int columns = (int)(width / (charWidth + charSpacing));
+        int columns = 1;
+        for(columns = 1; columns < 9999; columns++)
+        {
+            var realWidth = paint.MeasureText(new string('W', columns));
+            if (realWidth > width)
+            {
+                columns--;
+                break;
+            }
+        }
             
         //计算出能放下多少行
         var charHeight = Math.Abs(paint.FontMetrics.Ascent - paint.FontMetrics.Descent + paint.FontMetrics.Leading);

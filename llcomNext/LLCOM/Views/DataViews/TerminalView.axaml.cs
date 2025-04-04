@@ -37,6 +37,11 @@ public partial class TerminalView : UserControl
                 (WindowWidth, WindowHeight) = Utils.CalculateSize(
                     MainArea.Bounds.Width, MainArea.Bounds.Height,
                     Utils.Setting.TerminalFont, Utils.Setting.TerminalFontSize);
+                //TEST
+                // var line = new List<TerminalBlock>();
+                // line.Add(new TerminalBlock(new string('A',WindowWidth), 0, 0, false, false, false));
+                // AddLine(line);
+                //TEST END
                 RefreshText();
             });
         };
@@ -71,21 +76,26 @@ public partial class TerminalView : UserControl
         //如果不是最底部，则可视范围向上移动
         if (CurrentLine != 0)
             MoveUp(1);
+        
+        //TODO))
+        //RefreshText();
     }
     //向上移动的行数
-    private void MoveUp(int delta)
+    private bool MoveUp(int delta)
     {
+        var lastCurrentLine = CurrentLine;
         CurrentLine += delta;
         if(CurrentLine > CacheLines.Count - WindowHeight)
             CurrentLine = CacheLines.Count - WindowHeight;
         if(CurrentLine < 0)
             CurrentLine = 0;
+        return lastCurrentLine != CurrentLine;
     }    
     //滚轮事件
     private void MainArea_OnPointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
-        MoveUp((int)e.Delta.Y * 3);
-        RefreshText();
+        if(MoveUp((int)e.Delta.Y * 3))
+            RefreshText();
     }
     
     
