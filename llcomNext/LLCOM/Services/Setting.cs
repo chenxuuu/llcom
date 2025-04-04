@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
+using LLCOM.Models;
 
 namespace LLCOM.Services;
 
@@ -139,12 +140,33 @@ public partial class Setting : ObservableObject
     [ObservableProperty]
     private string _terminalFont = Database.Get(nameof(TerminalFont), "").Result;
     
+    
     //终端模式的主题
+    private TerminalColorScheme? _terminalTheme = null;
+    public TerminalColorScheme TerminalTheme
+    {
+        get
+        {
+            if (_terminalTheme == null)
+            {
+                _terminalTheme = new TerminalColorScheme("");
+                if (TerminalThemeIndex < 0 || TerminalThemeIndex >= TerminalColorSchemes.List.Length)
+                    _terminalTheme.RefreshData(TerminalColorSchemes.List[0]);
+                else
+                    _terminalTheme.RefreshData(TerminalColorSchemes.List[TerminalThemeIndex]);
+            }
+            return _terminalTheme;
+        }
+    }
     [ObservableProperty]
-    private int _terminalTheme = Database.Get(nameof(TerminalTheme), 0).Result;
-    
-    
-    
+    private int _terminalThemeIndex = Database.Get(nameof(TerminalThemeIndex), 0).Result;
+    //主题配置变了，更新一下
+    partial void OnTerminalThemeIndexChanged(int value)
+    {
+        TerminalTheme.RefreshData(TerminalColorSchemes.List[value]);
+    }
+
+
     public Setting()
     {
         PropertyChanged += async (sender, e) =>

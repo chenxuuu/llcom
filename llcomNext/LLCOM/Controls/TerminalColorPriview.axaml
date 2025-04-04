@@ -48,82 +48,82 @@
                             <Border
                                 Grid.Row="0"
                                 Grid.Column="0"
-                                Background="{Binding MainColor.Code40, RelativeSource={RelativeSource TemplatedParent}}"
-                                Classes="PreviewSquare" />
-                            <Border
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Background="{Binding MainColor.Code41, RelativeSource={RelativeSource TemplatedParent}}"
-                                Classes="PreviewSquare" />
-                            <Border
-                                Grid.Row="0"
-                                Grid.Column="2"
-                                Background="{Binding MainColor.Code42, RelativeSource={RelativeSource TemplatedParent}}"
-                                Classes="PreviewSquare" />
-                            <Border
-                                Grid.Row="0"
-                                Grid.Column="3"
-                                Background="{Binding MainColor.Code43, RelativeSource={RelativeSource TemplatedParent}}"
-                                Classes="PreviewSquare" />
-                            <Border
-                                Grid.Row="0"
-                                Grid.Column="4"
-                                Background="{Binding MainColor.Code44, RelativeSource={RelativeSource TemplatedParent}}"
-                                Classes="PreviewSquare" />
-                            <Border
-                                Grid.Row="0"
-                                Grid.Column="5"
-                                Background="{Binding MainColor.Code45, RelativeSource={RelativeSource TemplatedParent}}"
-                                Classes="PreviewSquare" />
-                            <Border
-                                Grid.Row="0"
-                                Grid.Column="6"
-                                Background="{Binding MainColor.Code46, RelativeSource={RelativeSource TemplatedParent}}"
-                                Classes="PreviewSquare" />
-                            <Border
-                                Grid.Row="0"
-                                Grid.Column="7"
-                                Background="{Binding MainColor.Code47, RelativeSource={RelativeSource TemplatedParent}}"
-                                Classes="PreviewSquare" />
-                            <Border
-                                Grid.Row="1"
-                                Grid.Column="0"
                                 Background="{Binding MainColor.Code30, RelativeSource={RelativeSource TemplatedParent}}"
                                 Classes="PreviewSquare" />
                             <Border
-                                Grid.Row="1"
+                                Grid.Row="0"
                                 Grid.Column="1"
                                 Background="{Binding MainColor.Code31, RelativeSource={RelativeSource TemplatedParent}}"
                                 Classes="PreviewSquare" />
                             <Border
-                                Grid.Row="1"
+                                Grid.Row="0"
                                 Grid.Column="2"
                                 Background="{Binding MainColor.Code32, RelativeSource={RelativeSource TemplatedParent}}"
                                 Classes="PreviewSquare" />
                             <Border
-                                Grid.Row="1"
+                                Grid.Row="0"
                                 Grid.Column="3"
                                 Background="{Binding MainColor.Code33, RelativeSource={RelativeSource TemplatedParent}}"
                                 Classes="PreviewSquare" />
                             <Border
-                                Grid.Row="1"
+                                Grid.Row="0"
                                 Grid.Column="4"
                                 Background="{Binding MainColor.Code34, RelativeSource={RelativeSource TemplatedParent}}"
                                 Classes="PreviewSquare" />
                             <Border
-                                Grid.Row="1"
+                                Grid.Row="0"
                                 Grid.Column="5"
                                 Background="{Binding MainColor.Code35, RelativeSource={RelativeSource TemplatedParent}}"
                                 Classes="PreviewSquare" />
                             <Border
-                                Grid.Row="1"
+                                Grid.Row="0"
                                 Grid.Column="6"
                                 Background="{Binding MainColor.Code36, RelativeSource={RelativeSource TemplatedParent}}"
                                 Classes="PreviewSquare" />
                             <Border
-                                Grid.Row="1"
+                                Grid.Row="0"
                                 Grid.Column="7"
                                 Background="{Binding MainColor.Code37, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Background="{Binding MainColor.Code90, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Background="{Binding MainColor.Code91, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Background="{Binding MainColor.Code92, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="3"
+                                Background="{Binding MainColor.Code93, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="4"
+                                Background="{Binding MainColor.Code94, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="5"
+                                Background="{Binding MainColor.Code95, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="6"
+                                Background="{Binding MainColor.Code96, RelativeSource={RelativeSource TemplatedParent}}"
+                                Classes="PreviewSquare" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="7"
+                                Background="{Binding MainColor.Code97, RelativeSource={RelativeSource TemplatedParent}}"
                                 Classes="PreviewSquare" />
                         </Grid>
                     </Grid>
