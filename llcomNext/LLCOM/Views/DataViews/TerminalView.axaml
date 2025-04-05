@@ -15,27 +15,44 @@
     <Design.DataContext>
         <vm:TerminalViewModel />
     </Design.DataContext>
-    <!--
-        目前不打算支持操作光标位置、退格
-        终端只负责不断打印新数据
-    -->
-    <Panel
-        Name="MainArea"
-        Margin="5"
-        HorizontalAlignment="Stretch"
-        VerticalAlignment="Stretch"
-        PointerWheelChanged="MainArea_OnPointerWheelChanged">
-        <SelectableTextBlock
-            Name="MainTextBlock"
-            Background="Transparent"
-            FontFamily="{Binding TerminalFontFamily, Source={x:Static services:Utils.Setting}}"
-            FontSize="{Binding TerminalFontSize, Source={x:Static services:Utils.Setting}}"
-            SelectionBrush="{Binding TerminalTheme.SelectionBackground, Source={x:Static services:Utils.Setting}}"
-            SelectionForegroundBrush="{Binding TerminalTheme.Background, Source={x:Static services:Utils.Setting}}" />
-        <ScrollBar
-            Name="MainScrollBar"
-            HorizontalAlignment="Right"
-            Scroll="MainScrollBar_OnScroll"
-            Visibility="Visible" />
-    </Panel>
+    <Grid RowDefinitions="auto *">
+        <Border
+            Grid.Row="0"
+            BorderBrush="{DynamicResource SemiColorBorder}"
+            BorderThickness="0,0,0,1">
+            <StackPanel
+                Margin="5"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal"
+                Spacing="8">
+                <TextBlock VerticalAlignment="Center" Text="选择数据输入源" />
+                <ComboBox Width="200" SelectedIndex="0">
+                    <ComboBoxItem Content="串口1" />
+                </ComboBox>
+                <Button Content="清空数据" />
+            </StackPanel>
+        </Border>
+        <Panel
+            Name="MainArea"
+            Grid.Row="1"
+            Margin="5"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            PointerWheelChanged="MainArea_OnPointerWheelChanged">
+            <SelectableTextBlock
+                Name="MainTextBlock"
+                Background="Transparent"
+                FontFamily="{Binding TerminalFontFamily, Source={x:Static services:Utils.Setting}}"
+                FontSize="{Binding TerminalFontSize, Source={x:Static services:Utils.Setting}}"
+                SelectionBrush="{Binding TerminalTheme.SelectionBackground, Source={x:Static services:Utils.Setting}}"
+                SelectionForegroundBrush="{Binding TerminalTheme.Background, Source={x:Static services:Utils.Setting}}" />
+            <ScrollBar
+                Name="MainScrollBar"
+                HorizontalAlignment="Right"
+                AllowAutoHide="False"
+                Scroll="MainScrollBar_OnScroll"
+                Visibility="Visible"
+                Value="100" />
+        </Panel>
+    </Grid>
 </UserControl>

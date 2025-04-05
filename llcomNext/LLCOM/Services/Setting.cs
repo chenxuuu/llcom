@@ -140,9 +140,9 @@ public partial class Setting : ObservableObject
     //终端模式字体名称
     [ObservableProperty]
     private string _terminalFont = Database.Get(nameof(TerminalFont), "").Result;
-    //终端模式的缓冲区行数
+    //终端模式的缓冲区行数，重启后生效
     [ObservableProperty]
-    private int _terminalBufferLines = Database.Get(nameof(TerminalBufferLines), 5000).Result;
+    private int _terminalBufferLines = Database.Get(nameof(TerminalBufferLines), 9000).Result;
     //终端模式的字体大小
     private int _terminalFontSize = Database.Get(nameof(TerminalFontSize), 16).Result;
     [Range(14,50)]

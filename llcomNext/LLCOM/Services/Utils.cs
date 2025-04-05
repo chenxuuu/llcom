@@ -229,7 +229,7 @@ public static class Utils
             TextSize = (float)fontSize
         };
 
-// 使用二分法计算出一行能放下多少个字符
+        // 使用二分法计算出一行能放下多少个字符
         int columns = 1;
         int low = 1, high = 9999;
         char testChar = 'W'; // 测试字符
@@ -253,8 +253,12 @@ public static class Utils
         int rows = (int)(height / charHeight);
         
         //注意不要让行数和列数为0
-        if (rows <= 0) rows = 1;
-        if (columns <= 0) columns = 1;
+        var minRows = 1;
+        var minColumns = 20;
+        if (rows < minRows)
+            rows = minRows;
+        if (columns < minColumns)
+            columns = minColumns;
         
         //返回
         return (columns, rows);

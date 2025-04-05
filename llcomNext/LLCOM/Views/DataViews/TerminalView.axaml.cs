@@ -23,8 +23,15 @@ public partial class TerminalView : UserControl
     {
         InitializeComponent();
         MainArea.PropertyChanged += MainArea_PropertyChanged;
+        Debug.WriteLine("TerminalView initialized.");
     }
     
+    //被销毁后的事件
+    protected override void OnUnloaded(RoutedEventArgs e)
+    {
+        base.OnUnloaded(e);
+        Debug.WriteLine("TerminalView unloaded.");
+    }
     
     private void Control_OnLoaded(object? sender, RoutedEventArgs e)
     {
@@ -37,11 +44,6 @@ public partial class TerminalView : UserControl
                 (WindowWidth, WindowHeight) = Utils.CalculateSize(
                     MainArea.Bounds.Width, MainArea.Bounds.Height,
                     Utils.Setting.TerminalFont, Utils.Setting.TerminalFontSize);
-                //TEST
-                // var line = new List<TerminalBlock>();
-                // line.Add(new TerminalBlock(new string('A',WindowWidth), 0, 0, false, false, false));
-                // AddLine(line);
-                //TEST END
                 RefreshText();
             });
         };
@@ -63,7 +65,17 @@ public partial class TerminalView : UserControl
     //用于存放终端数据的缓存
     private List<List<TerminalBlock>> CacheLines { get; set; } = new();
     //当前所在的行数相比较于终端最底部的行数，0表示在最底部，其余数字表示向上挪动的行数
-    private int CurrentLine { get; set; } = 0;
+    private int _currentLine = 0;
+
+    private int CurrentLine
+    {
+        get => _currentLine;
+        set
+        {
+            _currentLine = value;
+            RefreshScrollBar();
+        }
+    }
 
     private void AddLine(List<TerminalBlock> line)
     {
@@ -153,10 +165,24 @@ public partial class TerminalView : UserControl
         }
     }
 
+    //更新滚动条的位置
+    private void RefreshScrollBar()
+    {
+        if(_currentLine == 0 || CacheLines.Count < WindowHeight)
+            MainScrollBar.Value = 100;
+        else
+            MainScrollBar.Value = 100.0 - (double)_currentLine / (CacheLines.Count - WindowHeight) * 100.0;
+    }
     private void MainScrollBar_OnScroll(object? sender, ScrollEventArgs e)
     {
         var value = e.NewValue;
         //计算出要显示的行数范围
         //TODO)) 还要关联上CurrentLine的变化
+        if(Math.Abs(value - 100.0) < 0.001 || CacheLines.Count < WindowHeight)
+            _currentLine = 0;
+        else
+            _currentLine = (int)(CacheLines.Count - WindowHeight - value * (CacheLines.Count - WindowHeight) / 100.0);
+        //刷新文本
+        RefreshText();
     }
 }
