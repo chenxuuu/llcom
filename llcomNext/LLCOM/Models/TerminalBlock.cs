@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Avalonia.Media;
 using Wcwidth;
 
@@ -49,7 +50,43 @@ public class TerminalBlock
 
     public int Length => _length;
     
-
+    /// <summary>
+    /// 生成一个新的终端块
+    /// 格式和当前的终端块一致
+    /// </summary>
+    public TerminalBlock MakeNew(string text) =>
+        new TerminalBlock(text, Background, Foreground, IsBold, IsUnderLine, IsItalic);
+    
+    //合并样式相同的数据块，优化性能
+    public static void OptimizeBlocks(List<TerminalBlock> blocks)
+    {
+        if (blocks.Count == 0)
+            return;
+        var newBlocks = new List<TerminalBlock>();
+        var currentBlock = blocks[0];
+        foreach (var block in blocks)
+        {
+            if(block == currentBlock)//第一个块是自己
+                continue;
+            if (block.Background != currentBlock.Background ||
+                block.Foreground != currentBlock.Foreground ||
+                block.IsBold != currentBlock.IsBold ||
+                block.IsUnderLine != currentBlock.IsUnderLine ||
+                block.IsItalic != currentBlock.IsItalic)
+            {
+                newBlocks.Add(currentBlock);
+                currentBlock = block;
+            }
+            else
+            {
+                currentBlock.Text += block.Text;
+            }
+        }
+        newBlocks.Add(currentBlock);
+        blocks.Clear();
+        blocks.AddRange(newBlocks);
+    }
+    
     /// <summary>
     /// 一个终端块，包含各项信息
     /// </summary>
