@@ -248,12 +248,12 @@ public static class Utils
             }
         }
             
-        //计算出能放下多少行 TODO)) 待修正
+        //计算出能放下多少行
         var charHeight = paint.FontSpacing;
         int rows = (int)(height / charHeight);
         
         //注意不要让行数和列数为0
-        var minRows = 1;
+        var minRows = 2;
         var minColumns = 20;
         if (rows < minRows)
             rows = minRows;

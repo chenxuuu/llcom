@@ -140,25 +140,16 @@ public partial class Setting : ObservableObject
     //终端模式字体名称
     [ObservableProperty]
     private string _terminalFont = Database.Get(nameof(TerminalFont), "").Result;
+    //终端模式的字体大小
+    [ObservableProperty]
+    private double _terminalFontSize = Database.Get(nameof(TerminalFontSize), 14).Result;
+    //用于通知字体大小改变的事件
+    public EventHandler? TerminalChangedEvent = null;
+    partial void OnTerminalFontChanged(string s) => TerminalChangedEvent?.Invoke(this, EventArgs.Empty);
+    partial void OnTerminalFontSizeChanged(double n) => TerminalChangedEvent?.Invoke(this, EventArgs.Empty);
     //终端模式的缓冲区行数，重启后生效
     [ObservableProperty]
     private int _terminalBufferLines = Database.Get(nameof(TerminalBufferLines), 9000).Result;
-    //终端模式的字体大小
-    private int _terminalFontSize = Database.Get(nameof(TerminalFontSize), 16).Result;
-    [Range(14,50)]
-    public int TerminalFontSize
-    {
-        get => _terminalFontSize;
-        set
-        {
-            _terminalFontSize = value;
-            OnPropertyChanged();
-            TerminalChangedEvent?.Invoke(this, EventArgs.Empty);
-        }
-    }
-    //用于通知字体大小改变的事件
-    public EventHandler? TerminalChangedEvent = null;
-    partial void OnTerminalFontChanged(string _) => TerminalChangedEvent?.Invoke(this, EventArgs.Empty);
 
     
     //终端模式的主题

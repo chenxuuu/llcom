@@ -9,7 +9,6 @@
     d:DesignHeight="757"
     d:DesignWidth="762"
     x:DataType="vm:TerminalViewModel"
-    Background="{Binding TerminalTheme.Background, Source={x:Static services:Utils.Setting}}"
     Loaded="Control_OnLoaded"
     mc:Ignorable="d">
     <Design.DataContext>
@@ -35,12 +34,13 @@
         <Panel
             Name="MainArea"
             Grid.Row="1"
-            Margin="5"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
+            Background="{Binding TerminalTheme.Background, Source={x:Static services:Utils.Setting}}"
             PointerWheelChanged="MainArea_OnPointerWheelChanged">
             <SelectableTextBlock
                 Name="MainTextBlock"
+                Margin="5"
                 Background="Transparent"
                 FontFamily="{Binding TerminalFontFamily, Source={x:Static services:Utils.Setting}}"
                 FontSize="{Binding TerminalFontSize, Source={x:Static services:Utils.Setting}}"
