@@ -229,20 +229,27 @@ public static class Utils
             TextSize = (float)fontSize
         };
 
-        //计算出一行能放下多少个字符，暂时用最宽的字符来计算
+// 使用二分法计算出一行能放下多少个字符
         int columns = 1;
-        for(columns = 1; columns < 9999; columns++)
+        int low = 1, high = 9999;
+        char testChar = 'W'; // 测试字符
+        while (low <= high)
         {
-            var realWidth = paint.MeasureText(new string('W', columns));
+            int mid = (low + high) / 2;
+            var realWidth = paint.MeasureText(new string(testChar, mid));
             if (realWidth > width)
             {
-                columns--;
-                break;
+                high = mid - 1;
+            }
+            else
+            {
+                columns = mid;
+                low = mid + 1;
             }
         }
             
-        //计算出能放下多少行
-        var charHeight = Math.Abs(paint.FontMetrics.Ascent - paint.FontMetrics.Descent + paint.FontMetrics.Leading);
+        //计算出能放下多少行 TODO)) 待修正
+        var charHeight = paint.FontSpacing;
         int rows = (int)(height / charHeight);
         
         //注意不要让行数和列数为0
