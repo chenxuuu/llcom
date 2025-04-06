@@ -155,28 +155,100 @@ public class TerminalObject
             }
             else
             {
-                //TODO)) 这里需要处理光标重叠的情况
-                // //查找一下看开始的位置是重叠到哪个元素了
-                // var hitIndex = 0;
-                // var hitLength = 0;
-                // foreach (var block in oldLine)
-                // {
-                //     if (hitLength + block.Length > oldX)
-                //         break;
-                //     hitLength += block.Length;
-                //     hitIndex++;
-                // }
-                // //查找看看结束的位置是重叠到哪个元素了
-                // var endIndex = hitIndex;
-                // var endLength = hitLength;
-                // for(int i = hitIndex; i < oldLine.Count; i++)
-                // {
-                //     if (endLength + oldLine[i].Length > _positionX)
-                //         break;
-                //     endLength += oldLine[i].Length;
-                //     endIndex++;
-                // }
+                //把这一行按字符拆碎
+                var tempLine = new List<TerminalBlock>();
+                foreach (var block in needChangeLine)
+                {
+                    //拆碎
+                    var tempChars = block.Text.ToCharArray();
+                    foreach (var c in tempChars)
+                    {
+                        var length = UnicodeCalculator.GetWidth(c);
+                        //塞到临时行中
+                        tempLine.Add(block.MakeNew(c.ToString()));
+                        //如果字符宽度超过1，加入空白填位
+                        length--;
+                        while (length > 0)
+                        {
+                            tempLine.Add(block.MakeNew(string.Empty));
+                            length--;
+                        }
+                    }
+                }
+                
+                //待添加的字符列表
+                //null表示前一个字符占据了这个位置
+                List<char?> charsForInsert = [];
+                foreach (var c in line.Text.ToCharArray())
+                {
+                    charsForInsert.Add(c);
+                    var length = UnicodeCalculator.GetWidth(c);
+                    length--;
+                    while (length > 0)
+                    {
+                        charsForInsert.Add(null);
+                        length--;
+                    }
+                }
+                //一个个替换或者添加，从oldX开始
+                var currentX = oldX;
+                //先判断第一个位置是否是空字符
+                if (string.IsNullOrEmpty(tempLine[currentX].Text))
+                {
+                    //如果是空字符，则表示往前找可以找到一个占位符
+                    var charIndex = currentX;
+                    while (charIndex > 0)
+                    {
+                        charIndex--;
+                        //如果找到的不是空字符，说明可以替换
+                        if (!string.IsNullOrEmpty(tempLine[charIndex].Text))
+                            break;
+                    }
+                    //将找到的字符全部替换成空格
+                    for (int i = charIndex; i < currentX; i++)
+                    {
+                        //替换成空格
+                        tempLine[i].Text = " ";
+                    }
+                }
+                //开始替换
+                while (charsForInsert.Count > 0)
+                {
+                    var s = string.Empty;
+                    if(charsForInsert[0] != null)
+                        s = charsForInsert[0].ToString();
+                    charsForInsert.RemoveAt(0);
                     
+                    //看看当前位置有没有字符，没有的话就新建一个
+                    if (currentX >= tempLine.Count)
+                    {
+                        //添加一个新的块
+                        tempLine.Add(line.MakeNew(s));
+                    }
+                    else
+                    {
+                        //有东西的话就替换掉
+                        tempLine[currentX] = line.MakeNew(s);
+                    }
+                    currentX++;
+                }
+                //检查下currentX后面有没有空字符
+                //如果有空字符，需要替换成空格
+                while (currentX < tempLine.Count)
+                {
+                    //替换成空格
+                    if (string.IsNullOrEmpty(tempLine[currentX].Text))
+                        tempLine[currentX].Text = " ";
+                    else
+                        break;
+                    currentX++;
+                }
+                
+                //处理完了，把needChangeLine替换掉
+                needChangeLine.Clear();
+                //添加数据
+                foreach (var block in tempLine)
+                    needChangeLine.Add(block);
             }
             
             //优化当前这一行数据块
