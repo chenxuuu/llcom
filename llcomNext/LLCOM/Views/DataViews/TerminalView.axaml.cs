@@ -32,17 +32,14 @@ public partial class TerminalView : UserControl
     {
         base.OnUnloaded(e);
         MainArea.PropertyChanged -= MainArea_PropertyChanged;
+        Utils.Setting.TerminalChangedEvent -= TerminalChangedEvent;
         ((TerminalViewModel)DataContext!).TerminalChangedEvent -= TerminalChangedEvent;
         Debug.WriteLine("TerminalView unloaded.");
     }
     
     private void Control_OnLoaded(object? sender, RoutedEventArgs e)
     {
-        Utils.Setting.TerminalChangedEvent += (sender, args) =>
-        {
-            //在UI线程中执行
-            Dispatcher.UIThread.Post(RefreshWindowSize);
-        };
+        Utils.Setting.TerminalChangedEvent += TerminalChangedEvent;
         ((TerminalViewModel)DataContext!).TerminalChangedEvent += TerminalChangedEvent;
         //加载完触发一次，顺便初始化窗口大小数据
         RefreshWindowSize();
@@ -61,7 +58,13 @@ public partial class TerminalView : UserControl
         var (w, h) = Utils.CalculateSize(
             MainArea.Bounds.Width - margin * 2, MainArea.Bounds.Height - margin * 2,
             Utils.Setting.TerminalFont, Utils.Setting.TerminalFontSize);
-        ((TerminalViewModel)DataContext!).ChangeWindowSize((w,h));
+        (DataContext as TerminalViewModel)?.ChangeWindowSize((w,h));
+    }
+
+    private void TerminalChangedEvent(object? sender, EventArgs e)
+    {
+        //在UI线程中执行
+        Dispatcher.UIThread.Post(RefreshWindowSize);
     }
     
     //滚轮事件

@@ -32,14 +32,12 @@ public partial class TerminalViewModel : ViewModelBase
     [RelayCommand]
     private void Test()
     {
-        TerminalObject.ChangePosition(0, 0);
-        TerminalObject.AddText($"A".ToCharArray());
-        TerminalObject.ChangePosition(20, 0);
-        TerminalObject.AddText($"B".ToCharArray());
-        TerminalObject.ChangePosition(0, 20);
-        TerminalObject.AddText($"C".ToCharArray());
         TerminalObject.ChangePosition(20, 20);
-        TerminalObject.AddText($"D".ToCharArray());
+        TerminalObject.AddText($">>>start:".ToCharArray());
+        for(int i = 0; i < 100; i++)
+        {
+            TerminalObject.AddText($"Hello World {i} 测试字".ToCharArray());
+        }
         
         TerminalChangedEvent?.Invoke(this, TerminalObject.GetShowLines());
     }

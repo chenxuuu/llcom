@@ -105,6 +105,12 @@ public class TerminalObject
                 //光标位置往后挪动
                 _positionX += length;
             }
+            if(space < 0)
+            {
+                //如果剩余空间不足，说明最后一格放不下这个宽字符
+                //直接把X位置打到头，交够下一轮来处理
+                _positionX = _windowWidth;
+            }
             //添加文本
             var text = sb.ToString();
             var line = _currentState.MakeNew(text);
