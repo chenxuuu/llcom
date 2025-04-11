@@ -8,9 +8,9 @@ namespace LLCOM.Models;
 /// <summary>
 /// 一个终端块，包含各项信息
 /// </summary>
-public class TerminalBlock
+public class TerminalBlock : ICloneable
 {
-    //颜色均只存储颜色值，30~37、90~97为颜色值，0为默认颜色
+    //颜色均只存储颜色值，30~37、90~97为颜色值，0为默认颜色，-1表示反转
     
     public int Background { get; set; }
     public int Foreground { get; set; }
@@ -19,6 +19,8 @@ public class TerminalBlock
     {
         if(color == 0)
             return isForeground ? "TerminalTheme.Foreground" : "TerminalTheme.Background";
+        if (color == -1)
+            return isForeground ? "TerminalTheme.Background" : "TerminalTheme.Foreground";
         return "TerminalTheme.Code" + color.ToString();
     }
     public string ForegroundBindingName => Color2BindingName(Foreground, true);
@@ -56,6 +58,8 @@ public class TerminalBlock
     /// </summary>
     public TerminalBlock MakeNew(string text) =>
         new TerminalBlock(text, Background, Foreground, IsBold, IsUnderLine, IsItalic);
+    
+    public object Clone() => new TerminalBlock(Text, Background, Foreground, IsBold, IsUnderLine, IsItalic);
     
     //合并样式相同的数据块，优化性能
     public static void OptimizeBlocks(List<TerminalBlock> blocks)
@@ -104,4 +108,5 @@ public class TerminalBlock
         IsUnderLine = isUnderLine;
         IsItalic = isItalic;
     }
+
 }

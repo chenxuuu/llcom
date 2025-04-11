@@ -26,16 +26,16 @@ public class TerminalObject
     }
     
     //用于存放终端数据的缓存
-    private readonly List<List<TerminalBlock>> _cacheLines = [];
+    private List<List<TerminalBlock>> CacheLines { get; } = [];
     
     //当前光标位置
     //X从0开始，最大可到达窗口宽度（再增加就需要换行了）
     //Y从0开始，最大可到达窗口高度-1
-    private int _positionX = 0;
-    private int _positionY = 0;
+    private int PositionX { get; set; } = 0;
+    private int PositionY { get; set; } = 0;
     
     //当前的颜色、字体等信息，存到TerminalBlock中
-    private TerminalBlock _currentState = new(String.Empty);
+    private TerminalBlock CurrentState { get; set; } = new(String.Empty);
     
     //MaxCacheLines表示终端缓存的行数，超过这个行数后会删除最上面的行
     private readonly int _maxCacheLines = Utils.Setting.TerminalBufferLines;
@@ -48,17 +48,17 @@ public class TerminalObject
     private void AddLine()
     {
         //添加行
-        _cacheLines.Add([]);
+        CacheLines.Add([]);
         //如果超过了最大行数，删除最上面的行
-        if (_cacheLines.Count > _maxCacheLines)
-            _cacheLines.RemoveAt(0);
-        if (_currentLine != 0)
+        if (CacheLines.Count > _maxCacheLines)
+            CacheLines.RemoveAt(0);
+        if (CurrentLine != 0)
         {
-            _currentLine--;
+            CurrentLine--;
             //如果当前行数超过了最大行数，设置为最大行数
-            if (_currentLine > _cacheLines.Count - _windowHeight)
-                _currentLine = _cacheLines.Count - _windowHeight;
-            if (_currentLine < 0) _currentLine = 0;
+            if (CurrentLine > CacheLines.Count - _windowHeight)
+                CurrentLine = CacheLines.Count - _windowHeight;
+            if (CurrentLine < 0) CurrentLine = 0;
         }
     }
 
@@ -66,7 +66,7 @@ public class TerminalObject
     /// 基于当前光标，往后追加文本
     /// 文本不得包含不可见字符
     /// </summary>
-    /// <param name="text">待添加的文本</param>
+    /// <param name="texts">待添加的文本</param>
     public void AddText(char[] texts)//TODO)) 保持private
     {
         //防止没有设置窗口大小的时候就添加数据
@@ -77,16 +77,16 @@ public class TerminalObject
         while (chars.Length > 0)
         {
             //当前光标位置后还有多少个字符的空间
-            var space = _windowWidth - _positionX;
+            var space = _windowWidth - PositionX;
             //剩余空间不足，添加新行
             if (space <= 0)
             {
-                _positionX = 0;
-                _positionY++;//超过高度后面再管
+                PositionX = 0;
+                PositionY++;//超过高度后面再管
                 space = _windowWidth;
             }
             //记录一下修改前的X光标位置
-            var oldX = _positionX;
+            var oldX = PositionX;
             
             //放置文本
             var sb = new StringBuilder();
@@ -103,45 +103,45 @@ public class TerminalObject
                 //去除掉已经添加的字符
                 chars = chars[1..];
                 //光标位置往后挪动
-                _positionX += length;
+                PositionX += length;
             }
             if(space < 0)
             {
                 //如果剩余空间不足，说明最后一格放不下这个宽字符
                 //直接把X位置打到头，交够下一轮来处理
-                _positionX = _windowWidth;
+                PositionX = _windowWidth;
             }
             //添加文本
             var text = sb.ToString();
-            var line = _currentState.MakeNew(text);
+            var line = CurrentState.MakeNew(text);
 
             //这一行数据要修改
             List<TerminalBlock> needChangeLine;
             
             //超过了最大高度，说明要新开一行
-            if (_positionY >= _windowHeight)
+            if (PositionY >= _windowHeight)
             {
-                _positionY = _windowHeight - 1;
+                PositionY = _windowHeight - 1;
                 AddLine();
-                needChangeLine = _cacheLines[^1];
+                needChangeLine = CacheLines[^1];
             }
             //当前缓存的行数还没有达到显示行高，也开新行
-            else if (_cacheLines.Count - 1 < _positionY)
+            else if (CacheLines.Count - 1 < PositionY)
             {
-                var needLineCount = _positionY - _cacheLines.Count + 1;
+                var needLineCount = PositionY - CacheLines.Count + 1;
                 for (int i = 0; i < needLineCount; i++)
                     AddLine();
-                needChangeLine = _cacheLines[^1];
+                needChangeLine = CacheLines[^1];
             }
             //不是新行，需要更改当前行的数据
             else
             {
                 //计算开始行下标的偏移量
-                var lineStartOffset = _cacheLines.Count - _windowHeight;
+                var lineStartOffset = CacheLines.Count - _windowHeight;
                 if(lineStartOffset < 0)
                     lineStartOffset = 0;
                 //使用当前行
-                needChangeLine = _cacheLines[_positionY + lineStartOffset];
+                needChangeLine = CacheLines[PositionY + lineStartOffset];
             }
             
             var allLength = needChangeLine.Sum(l => l.Length);
@@ -259,8 +259,8 @@ public class TerminalObject
     //TODO)) 仅用于测试
     public void ChangePosition(int x, int y)
     {
-        _positionX = x;
-        _positionY = y;
+        PositionX = x;
+        PositionY = y;
     }
     
     /// <summary>
@@ -272,9 +272,9 @@ public class TerminalObject
         List<List<TerminalBlock>> cacheLines = new();
         
         //计算出要显示的行数范围
-        int allLines = _cacheLines.Count;
+        int allLines = CacheLines.Count;
         //起始行和结束行，闭区间，从0开始，代表CacheLines的项目下标
-        int startLine = allLines - _windowHeight - _currentLine;
+        int startLine = allLines - _windowHeight - CurrentLine;
         if (startLine < 0)
             startLine = 0;
         int endLine = startLine + _windowHeight - 1;
@@ -285,7 +285,7 @@ public class TerminalObject
         for (int i = startLine; i <= endLine; i++)
         {
             //添加行
-            var line = _cacheLines[i];
+            var line = CacheLines[i];
             cacheLines.Add(line);
         }
         
@@ -296,10 +296,60 @@ public class TerminalObject
             cacheLines.Add([]);
         }
         //把当前光标位置背景和前景色反色处理
-        var posY = _positionY;
-        if (posY < _cacheLines.Count)
+        if (PositionY < cacheLines.Count)
         {
-            //TODO)) 这里需要处理光标位置
+            //这里需要处理光标位置
+            //复制一个新的行来替换掉现有的行用来展示
+            var tempLine = new List<TerminalBlock>();
+            foreach (var block in cacheLines[PositionY])
+            {
+                tempLine.Add((TerminalBlock)block.Clone());
+            }
+            
+            var allLength = tempLine.Sum(l => l.Length);
+            //光标没有重叠，说明光标位置在当前行的后面
+            if (allLength <= PositionX)
+            {
+                //加几个空格，直到光标位置
+                if(allLength < PositionX)
+                    tempLine.Add(new TerminalBlock(new string(' ', allLength - PositionX)));
+                tempLine.Add(new TerminalBlock(new string(' ', 1),-1,-1));
+            }
+            else
+            {
+                var charLine = new List<TerminalBlock>();
+                var count = 0;
+                //把这一行按字符拆碎
+                foreach (var block in tempLine)
+                {
+                    //拆碎
+                    var tempChars = block.Text.ToCharArray();
+                    foreach (var c in tempChars)
+                    {
+                        var start = count;
+                        var length = UnicodeCalculator.GetWidth(c);
+                        var end = start + length - 1;
+                        //如果posx在当前字符范围内，说明光标在这个字符上
+                        if (PositionX >= start && PositionX <= end)
+                            charLine.Add(new TerminalBlock(c.ToString(), -1, -1));
+                        else
+                            charLine.Add(block.MakeNew(c.ToString()));
+                        count += length;
+                        //如果字符宽度超过1，加入空白填位
+                        length--;
+                        while (length > 0)
+                        {
+                            charLine.Add(block.MakeNew(string.Empty));
+                            length--;
+                        }
+                    }
+                }
+                tempLine = charLine;//替换掉当前行为拆字后的行
+            }
+            //优化当前这一行数据块
+            TerminalBlock.OptimizeBlocks(tempLine);
+            //替换掉当前行
+            cacheLines[PositionY] = tempLine;
         }
         
         return cacheLines;
@@ -314,23 +364,23 @@ public class TerminalObject
     }
     
     //当前所在的行数相比较于终端最底部的行数，0表示在最底部，其余数字表示向上挪动的行数
-    private int _currentLine = 0;
+    private int CurrentLine { get; set; } = 0;
 
     private double CurrentLine2ScrollValue =>
-        (_currentLine == 0 || _cacheLines.Count < _windowHeight)
+        (CurrentLine == 0 || CacheLines.Count < _windowHeight)
             ? 100
-            : 100.0 - (double)_currentLine / (_cacheLines.Count - _windowHeight) * 100.0;
+            : 100.0 - (double)CurrentLine / (CacheLines.Count - _windowHeight) * 100.0;
     //向上移动的行数
     public double CurrentLineMoveUp(int delta)
     {
-        var lastCurrentLine = _currentLine;
-        _currentLine += delta;
-        if(_currentLine > _cacheLines.Count - _windowHeight)
-            _currentLine = _cacheLines.Count - _windowHeight;
-        if(_currentLine < 0)
-            _currentLine = 0;
+        var lastCurrentLine = CurrentLine;
+        CurrentLine += delta;
+        if(CurrentLine > CacheLines.Count - _windowHeight)
+            CurrentLine = CacheLines.Count - _windowHeight;
+        if(CurrentLine < 0)
+            CurrentLine = 0;
         
-        if(lastCurrentLine != _currentLine)
+        if(lastCurrentLine != CurrentLine)
             TerminalChanged();
         
         return CurrentLine2ScrollValue;
@@ -338,13 +388,13 @@ public class TerminalObject
     //滚轮事件
     public void ScrollBarChanged(double value)
     {
-        var lastCurrentLine = _currentLine;
-        if(Math.Abs(value - 100.0) < 0.001 || _cacheLines.Count < _windowHeight)
-            _currentLine = 0;
+        var lastCurrentLine = CurrentLine;
+        if(Math.Abs(value - 100.0) < 0.001 || CacheLines.Count < _windowHeight)
+            CurrentLine = 0;
         else
-            _currentLine = (int)(_cacheLines.Count - _windowHeight - value * (_cacheLines.Count - _windowHeight) / 100.0);
+            CurrentLine = (int)(CacheLines.Count - _windowHeight - value * (CacheLines.Count - _windowHeight) / 100.0);
         
-        if(lastCurrentLine != _currentLine)
+        if(lastCurrentLine != CurrentLine)
             TerminalChanged();
     }
 }
