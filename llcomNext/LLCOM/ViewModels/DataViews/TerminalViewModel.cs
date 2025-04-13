@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LLCOM.Models;
@@ -30,13 +31,18 @@ public partial class TerminalViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void Test()
+    private async Task Test()
     {
-        TerminalObject.AddText($"中文测试abcdefghijklmnopqrstuvwxyz".ToCharArray());
-        TerminalObject.ChangePosition(1, 0);
-        TerminalObject.AddText($"12345".ToCharArray());
-        
-        TerminalChangedEvent?.Invoke(this, TerminalObject.GetShowLines());
+        var random = new Random();
+        var testChars = "测试Test".ToCharArray();
+        for(int i=0; i<1000; i++)
+        {
+            TerminalObject.ChangeStyle(random.Next(30,38),random.Next(30,38));
+            TerminalObject.ChangePosition(random.Next(0,TerminalObject.WindowWidth), random.Next(0,TerminalObject.WindowHeight));
+            TerminalObject.AddText([testChars[random.Next(0, testChars.Length)]]); 
+            TerminalChangedEvent?.Invoke(this, TerminalObject.GetShowLines());
+            await Task.Delay(1);
+        }
     }
 
     //终端对象，  TODO)) 后续需要为每项操作加锁

@@ -42,7 +42,9 @@ public class TerminalObject
     
     //可视范围内的宽高
     private int _windowWidth;
+    public int WindowWidth => _windowWidth;
     private int _windowHeight;
+    public int WindowHeight => _windowHeight;
     
     //添加新的一行上去
     private void AddLine()
@@ -261,6 +263,26 @@ public class TerminalObject
     {
         PositionX = x;
         PositionY = y;
+    }
+
+    //TODO)) 仅用于测试
+    public void ChangeStyle(
+        int? foreground = null, 
+        int? background = null, 
+        bool? isBold = null, 
+        bool? isItalic = null, 
+        bool? isUnderLine = null)
+    {
+        if (foreground != null)
+            CurrentState.Foreground = foreground.Value;
+        if (background != null)
+            CurrentState.Background = background.Value;
+        if (isBold != null)
+            CurrentState.IsBold = isBold.Value;
+        if (isItalic != null)
+            CurrentState.IsItalic = isItalic.Value;
+        if (isUnderLine != null)
+            CurrentState.IsUnderLine = isUnderLine.Value;
     }
     
     /// <summary>
