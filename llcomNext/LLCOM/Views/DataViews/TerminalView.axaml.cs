@@ -53,30 +53,34 @@ public partial class TerminalView : UserControl
         {
             if (_dataChanged)
             {
+                _dataChanged = false; // 重置标记
+                var tempLines = new List<List<TerminalBlock>>();
                 lock (_terminalBlocks)
                 {
-                    // 执行更新逻辑
-                    //清空文本
-                    MainTextBlock.Inlines!.Clear();
-                    foreach (var line in _terminalBlocks)
-                    {
-                        foreach (var block in line)
-                        {
-                            //添加块
-                            var run = new Run(block.Text)
-                            {
-                                [!Span.ForegroundProperty] = new Binding(block.ForegroundBindingName) { Source = Utils.Setting },
-                                [!Span.BackgroundProperty] = new Binding(block.BackgroundBindingName) { Source = Utils.Setting },
-                                FontWeight = block.IsBold ? FontWeight.Bold : FontWeight.Normal,
-                                FontStyle = block.IsItalic ? FontStyle.Italic : FontStyle.Normal,
-                                TextDecorations = block.IsUnderLine ? TextDecorations.Underline : null,
-                            };
-                            MainTextBlock.Inlines.Add(run);
-                        }
-                        MainTextBlock.Inlines.Add(new LineBreak());
-                    }
+                    //克隆数据
+                    tempLines.AddRange(CloneAllLines(_terminalBlocks));
                 }
-                _dataChanged = false; // 重置标记
+
+                // 执行更新逻辑
+                //清空文本
+                MainTextBlock.Inlines!.Clear();
+                foreach (var line in tempLines)
+                {
+                    foreach (var block in line)
+                    {
+                        //添加块
+                        var run = new Run(block.Text)
+                        {
+                            [!Span.ForegroundProperty] = new Binding(block.ForegroundBindingName) { Source = Utils.Setting },
+                            [!Span.BackgroundProperty] = new Binding(block.BackgroundBindingName) { Source = Utils.Setting },
+                            FontWeight = block.IsBold ? FontWeight.Bold : FontWeight.Normal,
+                            FontStyle = block.IsItalic ? FontStyle.Italic : FontStyle.Normal,
+                            TextDecorations = block.IsUnderLine ? TextDecorations.Underline : null,
+                        };
+                        MainTextBlock.Inlines.Add(run);
+                    }
+                    MainTextBlock.Inlines.Add(new LineBreak());
+                }
             }
         };
         _updateTimer.Start();
@@ -125,16 +129,24 @@ public partial class TerminalView : UserControl
         lock (_terminalBlocks)
         {
             _terminalBlocks.Clear();
-            foreach (var line in e)
-            {
-                var newLine = new List<TerminalBlock>();
-                foreach (var block in line)
-                {
-                    newLine.Add((TerminalBlock)block.Clone());
-                }
-                _terminalBlocks.Add(newLine);
-            }
+            //克隆数据
+            _terminalBlocks.AddRange(CloneAllLines(e));
         }
         _dataChanged = true;
+    }
+    
+    private List<List<TerminalBlock>> CloneAllLines(List<List<TerminalBlock>> lines)
+    {
+        var newLines = new List<List<TerminalBlock>>();
+        foreach (var line in lines)
+        {
+            var newLine = new List<TerminalBlock>();
+            foreach (var block in line)
+            {
+                newLine.Add((TerminalBlock)block.Clone());
+            }
+            newLines.Add(newLine);
+        }
+        return newLines;
     }
 }
