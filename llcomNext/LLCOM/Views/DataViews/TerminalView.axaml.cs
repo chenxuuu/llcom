@@ -23,7 +23,6 @@ public partial class TerminalView : UserControl
 {
     private readonly CancellationTokenSource _cts = new CancellationTokenSource();
     private readonly EventWaitHandle _dataChangeWaitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
-    private readonly List<List<TerminalBlock>> _terminalBlocks = [];
     
     public TerminalView()
     {
@@ -38,7 +37,7 @@ public partial class TerminalView : UserControl
         base.OnUnloaded(e);
         MainArea.PropertyChanged -= MainArea_PropertyChanged;
         Utils.Setting.TerminalChangedEvent -= TerminalChangedEvent;
-        ((TerminalViewModel)DataContext!).TerminalChangedEvent -= TerminalChangedEvent;
+        ((TerminalViewModel)DataContext!).TerminalRefreshEvent -= TerminalRefreshEvent;
         _cts.Cancel();
         _dataChangeWaitHandle.Set();
         Debug.WriteLine("TerminalView unloaded.");
@@ -55,17 +54,11 @@ public partial class TerminalView : UserControl
                 _dataChangeWaitHandle.Reset();
                 if(_cts.Token.IsCancellationRequested)
                     break;
-                
-                var tempLines = new List<List<TerminalBlock>>();
-                lock (_terminalBlocks)
-                {
-                    //克隆数据
-                    tempLines.AddRange(CloneAllLines(_terminalBlocks));
-                }
 
                 // 执行更新逻辑
                 Dispatcher.UIThread.Post(() =>
-                {                
+                {         
+                    var tempLines = ((TerminalViewModel)DataContext!).GetShowLines();       
                     //清空文本
                     MainTextBlock.Inlines!.Clear();
                     foreach (var line in tempLines)
@@ -91,7 +84,7 @@ public partial class TerminalView : UserControl
         }).Start();
         
         Utils.Setting.TerminalChangedEvent += TerminalChangedEvent;
-        ((TerminalViewModel)DataContext!).TerminalChangedEvent += TerminalChangedEvent;
+        ((TerminalViewModel)DataContext!).TerminalRefreshEvent += TerminalRefreshEvent;
         //加载完触发一次，顺便初始化窗口大小数据
         RefreshWindowSize();
     }
@@ -129,29 +122,8 @@ public partial class TerminalView : UserControl
         ((TerminalViewModel)DataContext!).ScrollBarChanged(e.NewValue);
     }
     
-    private void TerminalChangedEvent(object? sender, List<List<TerminalBlock>> e)
+    private void TerminalRefreshEvent(object? sender, EventArgs e)
     {
-        lock (_terminalBlocks)
-        {
-            _terminalBlocks.Clear();
-            //克隆数据
-            _terminalBlocks.AddRange(CloneAllLines(e));
-        }
         _dataChangeWaitHandle.Set();
-    }
-    
-    private List<List<TerminalBlock>> CloneAllLines(List<List<TerminalBlock>> lines)
-    {
-        var newLines = new List<List<TerminalBlock>>();
-        foreach (var line in lines)
-        {
-            var newLine = new List<TerminalBlock>();
-            foreach (var block in line)
-            {
-                newLine.Add((TerminalBlock)block.Clone());
-            }
-            newLines.Add(newLine);
-        }
-        return newLines;
     }
 }

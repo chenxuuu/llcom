@@ -16,13 +16,13 @@ public class TerminalObject
     }
     
     //展示画面变化时的事件
-    public EventHandler<List<List<TerminalBlock>>>? TerminalChangedEvent { get; set; }
+    public EventHandler? TerminalChangedEvent { get; set; }
     private void TerminalChanged()
     {
         if(TerminalChangedEvent is null)
             return;
         //触发更新事件
-        TerminalChangedEvent?.Invoke(this, GetShowLines());
+        TerminalChangedEvent?.Invoke(this, EventArgs.Empty);
     }
     
     //用于存放终端数据的缓存

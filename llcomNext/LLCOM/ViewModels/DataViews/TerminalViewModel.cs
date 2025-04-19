@@ -23,10 +23,10 @@ public partial class TerminalViewModel : ViewModelBase
         
         TerminalObject.TerminalChangedEvent += (sender, args) =>
         {
-            if(TerminalChangedEvent == null)
+            if(TerminalRefreshEvent == null)
                 return;
             //更新数据
-            TerminalChangedEvent?.Invoke(this, args);
+            TerminalRefreshEvent?.Invoke(this, args);
         };
     }
 
@@ -42,7 +42,7 @@ public partial class TerminalViewModel : ViewModelBase
                 TerminalObject.ChangeStyle(random.Next(30,38),random.Next(30,38));
                 TerminalObject.ChangePosition(random.Next(0,TerminalObject.WindowWidth), random.Next(0,TerminalObject.WindowHeight));
                 TerminalObject.AddText([testChars[random.Next(0, testChars.Length)]]); 
-                TerminalChangedEvent?.Invoke(this, TerminalObject.GetShowLines());
+                TerminalRefreshEvent?.Invoke(this, EventArgs.Empty);
             }
             await Task.Delay(1);
         }
@@ -72,5 +72,24 @@ public partial class TerminalViewModel : ViewModelBase
             TerminalObject.ScrollBarChanged(value);
     }
     //接管更新事件
-    public EventHandler<List<List<TerminalBlock>>>? TerminalChangedEvent;
+    public EventHandler? TerminalRefreshEvent;
+    
+    public List<List<TerminalBlock>> GetShowLines()
+    {
+        lock (TerminalObject)
+        {
+            var newLines = new List<List<TerminalBlock>>();
+            var lines = TerminalObject.GetShowLines();
+            foreach (var line in lines)
+            {
+                var newLine = new List<TerminalBlock>();
+                foreach (var block in line)
+                {
+                    newLine.Add((TerminalBlock)block.Clone());
+                }
+                newLines.Add(newLine);
+            }
+            return newLines;
+        }
+    }
 }
