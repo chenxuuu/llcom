@@ -37,10 +37,13 @@ public partial class TerminalViewModel : ViewModelBase
         var testChars = "测试Test".ToCharArray();
         for(int i=0; i<1000; i++)
         {
-            TerminalObject.ChangeStyle(random.Next(30,38),random.Next(30,38));
-            TerminalObject.ChangePosition(random.Next(0,TerminalObject.WindowWidth), random.Next(0,TerminalObject.WindowHeight));
-            TerminalObject.AddText([testChars[random.Next(0, testChars.Length)]]); 
-            TerminalChangedEvent?.Invoke(this, TerminalObject.GetShowLines());
+            lock (TerminalObject)
+            {
+                TerminalObject.ChangeStyle(random.Next(30,38),random.Next(30,38));
+                TerminalObject.ChangePosition(random.Next(0,TerminalObject.WindowWidth), random.Next(0,TerminalObject.WindowHeight));
+                TerminalObject.AddText([testChars[random.Next(0, testChars.Length)]]); 
+                TerminalChangedEvent?.Invoke(this, TerminalObject.GetShowLines());
+            }
             await Task.Delay(1);
         }
     }
@@ -51,13 +54,23 @@ public partial class TerminalViewModel : ViewModelBase
     //窗口大小变化
     public void ChangeWindowSize((int, int) size)
     {
-        TerminalObject.ChangeWindowSize(size.Item1, size.Item2);
+        lock(TerminalObject)
+            TerminalObject.ChangeWindowSize(size.Item1, size.Item2);
     }
     
     //滚轮事件
-    public double MoveUp(int delta) => TerminalObject.CurrentLineMoveUp(delta);
+    public double MoveUp(int delta)
+    {
+        lock(TerminalObject)
+            return TerminalObject.CurrentLineMoveUp(delta);
+    }
+    
     //滚动条变化
-    public void ScrollBarChanged(double value) => TerminalObject.ScrollBarChanged(value);
+    public void ScrollBarChanged(double value)
+    {
+        lock(TerminalObject)
+            TerminalObject.ScrollBarChanged(value);
+    }
     //接管更新事件
     public EventHandler<List<List<TerminalBlock>>>? TerminalChangedEvent;
 }

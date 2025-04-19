@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
@@ -20,9 +21,9 @@ namespace LLCOM.Views;
 
 public partial class TerminalView : UserControl
 {
-    private DispatcherTimer _updateTimer;
-    private bool _dataChanged = false;
-    readonly List<List<TerminalBlock>> _terminalBlocks = [];
+    private readonly CancellationTokenSource _cts = new CancellationTokenSource();
+    private readonly EventWaitHandle _dataChangeWaitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
+    private readonly List<List<TerminalBlock>> _terminalBlocks = [];
     
     public TerminalView()
     {
@@ -38,22 +39,23 @@ public partial class TerminalView : UserControl
         MainArea.PropertyChanged -= MainArea_PropertyChanged;
         Utils.Setting.TerminalChangedEvent -= TerminalChangedEvent;
         ((TerminalViewModel)DataContext!).TerminalChangedEvent -= TerminalChangedEvent;
-        _updateTimer.Stop();
+        _cts.Cancel();
+        _dataChangeWaitHandle.Set();
         Debug.WriteLine("TerminalView unloaded.");
     }
     
     private void Control_OnLoaded(object? sender, RoutedEventArgs e)
     {
-        //搞个定时器来更新UI，防止阻塞
-        _updateTimer = new DispatcherTimer
+        //搞个单独线程来更新UI，防止阻塞
+        new Thread(() =>
         {
-            Interval = TimeSpan.FromMilliseconds(100)
-        };
-        _updateTimer.Tick += (s, e) =>
-        {
-            if (_dataChanged)
+            while (_cts.Token.IsCancellationRequested == false)
             {
-                _dataChanged = false; // 重置标记
+                _dataChangeWaitHandle.WaitOne();
+                _dataChangeWaitHandle.Reset();
+                if(_cts.Token.IsCancellationRequested)
+                    break;
+                
                 var tempLines = new List<List<TerminalBlock>>();
                 lock (_terminalBlocks)
                 {
@@ -62,28 +64,31 @@ public partial class TerminalView : UserControl
                 }
 
                 // 执行更新逻辑
-                //清空文本
-                MainTextBlock.Inlines!.Clear();
-                foreach (var line in tempLines)
-                {
-                    foreach (var block in line)
+                Dispatcher.UIThread.Post(() =>
+                {                
+                    //清空文本
+                    MainTextBlock.Inlines!.Clear();
+                    foreach (var line in tempLines)
                     {
-                        //添加块
-                        var run = new Run(block.Text)
+                        foreach (var block in line)
                         {
-                            [!Span.ForegroundProperty] = new Binding(block.ForegroundBindingName) { Source = Utils.Setting },
-                            [!Span.BackgroundProperty] = new Binding(block.BackgroundBindingName) { Source = Utils.Setting },
-                            FontWeight = block.IsBold ? FontWeight.Bold : FontWeight.Normal,
-                            FontStyle = block.IsItalic ? FontStyle.Italic : FontStyle.Normal,
-                            TextDecorations = block.IsUnderLine ? TextDecorations.Underline : null,
-                        };
-                        MainTextBlock.Inlines.Add(run);
+                            //添加块
+                            var run = new Run(block.Text)
+                            {
+                                [!Span.ForegroundProperty] = new Binding(block.ForegroundBindingName) { Source = Utils.Setting },
+                                [!Span.BackgroundProperty] = new Binding(block.BackgroundBindingName) { Source = Utils.Setting },
+                                FontWeight = block.IsBold ? FontWeight.Bold : FontWeight.Normal,
+                                FontStyle = block.IsItalic ? FontStyle.Italic : FontStyle.Normal,
+                                TextDecorations = block.IsUnderLine ? TextDecorations.Underline : null,
+                            };
+                            MainTextBlock.Inlines.Add(run);
+                        }
+                        MainTextBlock.Inlines.Add(new LineBreak());
                     }
-                    MainTextBlock.Inlines.Add(new LineBreak());
-                }
+                });
+                Thread.Sleep(150);
             }
-        };
-        _updateTimer.Start();
+        }).Start();
         
         Utils.Setting.TerminalChangedEvent += TerminalChangedEvent;
         ((TerminalViewModel)DataContext!).TerminalChangedEvent += TerminalChangedEvent;
@@ -132,7 +137,7 @@ public partial class TerminalView : UserControl
             //克隆数据
             _terminalBlocks.AddRange(CloneAllLines(e));
         }
-        _dataChanged = true;
+        _dataChangeWaitHandle.Set();
     }
     
     private List<List<TerminalBlock>> CloneAllLines(List<List<TerminalBlock>> lines)

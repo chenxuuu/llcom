@@ -334,7 +334,7 @@ public class TerminalObject
             {
                 //加几个空格，直到光标位置
                 if(allLength < PositionX)
-                    tempLine.Add(new TerminalBlock(new string(' ', allLength - PositionX)));
+                    tempLine.Add(new TerminalBlock(new string(' ', PositionX - allLength)));
                 tempLine.Add(new TerminalBlock(new string(' ', 1),-1,-1));
             }
             else

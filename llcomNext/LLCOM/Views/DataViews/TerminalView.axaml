@@ -46,10 +46,15 @@
                 FontSize="{Binding TerminalFontSize, Source={x:Static services:Utils.Setting}}"
                 SelectionBrush="{Binding TerminalTheme.SelectionBackground, Source={x:Static services:Utils.Setting}}"
                 SelectionForegroundBrush="{Binding TerminalTheme.Background, Source={x:Static services:Utils.Setting}}" />
+            <Panel
+                Width="{Binding #MainScrollBar.Width}"
+                HorizontalAlignment="Right"
+                Background="{DynamicResource SemiColorBackground2}" />
             <ScrollBar
                 Name="MainScrollBar"
                 HorizontalAlignment="Right"
                 AllowAutoHide="False"
+                Background="{DynamicResource SemiColorBackground2}"
                 Scroll="MainScrollBar_OnScroll"
                 Visibility="Visible"
                 Value="100" />
