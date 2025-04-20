@@ -35,11 +35,11 @@ public partial class TerminalViewModel : ViewModelBase
     {
         var random = new Random();
         var testChars = "测试Test".ToCharArray();
-        for(int i=0; i<1000; i++)
+        for(int i=0; i<100; i++)
         {
             lock (TerminalObject)
             {
-                TerminalObject.ChangeStyle(random.Next(30,38),random.Next(30,38));
+                //TerminalObject.ChangeStyle(random.Next(30,38),random.Next(30,38));
                 TerminalObject.ChangePosition(random.Next(0,TerminalObject.WindowWidth), random.Next(0,TerminalObject.WindowHeight));
                 TerminalObject.AddText([testChars[random.Next(0, testChars.Length)]]); 
                 TerminalRefreshEvent?.Invoke(this, EventArgs.Empty);

@@ -317,13 +317,18 @@ public class TerminalObject
             //添加空行
             cacheLines.Add([]);
         }
+        
         //把当前光标位置背景和前景色反色处理
-        if (PositionY < cacheLines.Count)
+        
+        //实际光标在哪一行，会跟随currentLine变化
+        var lineIndex = PositionY + CurrentLine;
+        
+        if (PositionY < cacheLines.Count && lineIndex < cacheLines.Count)
         {
             //这里需要处理光标位置
             //复制一个新的行来替换掉现有的行用来展示
             var tempLine = new List<TerminalBlock>();
-            foreach (var block in cacheLines[PositionY])
+            foreach (var block in cacheLines[lineIndex])
             {
                 tempLine.Add((TerminalBlock)block.Clone());
             }
@@ -371,7 +376,7 @@ public class TerminalObject
             //优化当前这一行数据块
             TerminalBlock.OptimizeBlocks(tempLine);
             //替换掉当前行
-            cacheLines[PositionY] = tempLine;
+            cacheLines[lineIndex] = tempLine;
         }
         
         return cacheLines;
@@ -381,7 +386,19 @@ public class TerminalObject
     public void ChangeWindowSize(int width, int height)
     {
         _windowWidth = width;
+        var oldHeight = _windowHeight;
         _windowHeight = height;
+        
+        //高度变化后，光标位置需要重新计算
+        if (oldHeight != _windowHeight)
+        {
+            PositionY += _windowHeight - oldHeight;
+            //如果光标位置超过了最大高度，设置为最大高度
+            if (PositionY >= _windowHeight)
+                PositionY = _windowHeight - 1;
+            if (PositionY < 0)
+                PositionY = 0;
+        }
         TerminalChanged();
     }
     

@@ -23,6 +23,7 @@ public partial class TerminalView : UserControl
 {
     private readonly CancellationTokenSource _cts = new CancellationTokenSource();
     private readonly EventWaitHandle _dataChangeWaitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
+    private Func<List<List<TerminalBlock>>>? _getShowLines = null;
     
     public TerminalView()
     {
@@ -45,6 +46,7 @@ public partial class TerminalView : UserControl
     
     private void Control_OnLoaded(object? sender, RoutedEventArgs e)
     {
+        _getShowLines = ((TerminalViewModel)DataContext!).GetShowLines;
         //搞个单独线程来更新UI，防止阻塞
         new Thread(() =>
         {
@@ -55,10 +57,10 @@ public partial class TerminalView : UserControl
                 if(_cts.Token.IsCancellationRequested)
                     break;
 
+                var tempLines = _getShowLines();
                 // 执行更新逻辑
                 Dispatcher.UIThread.Post(() =>
-                {         
-                    var tempLines = ((TerminalViewModel)DataContext!).GetShowLines();       
+                {
                     //清空文本
                     MainTextBlock.Inlines!.Clear();
                     foreach (var line in tempLines)
@@ -79,7 +81,7 @@ public partial class TerminalView : UserControl
                         MainTextBlock.Inlines.Add(new LineBreak());
                     }
                 });
-                Thread.Sleep(150);
+                Thread.Sleep(100);
             }
         }).Start();
         
