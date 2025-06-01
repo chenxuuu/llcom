@@ -1,20 +1,18 @@
-# LLCOM (in progress)
+# LLCOM （编写中）
 
-[中文点我](README-zh_Hans.md)
+这是一款跨平台的多功能调试工具，并且支持使用Lua脚本，灵活自动处理接收与发送的数据，也可以直接运行独立的Lua脚本进行自动化测试。
 
-This is a cross-platform multi-functional debugging tool, and supports the use of Lua scripts, flexible and automatic processing of incoming and outgoing data, you can also directly run standalone Lua scripts for automated testing.
+## 特性
 
-## Features
-
-- Cross-platform, supports Windows, Linux, macOS
-- Supports serial port, LibUSB, TCP, UDP, WebSocket and other slave communication methods
-- Support TCP, UDP, WebSocket and other server-side mode
-- Support MQTT protocol
-- Multiple serial ports, LibUSB, TCP, UDP, WebSocket, MQTT, etc. can be enabled/connected at the same time.
-- In all modes, data sending and receiving can be configured with customized processing scripts.
-- A standalone Lua environment for automated testing.
-- Scripts can be shared , providing an official application marketplace .
-- Support for custom plug-in functionality, you can write your own plug-ins (low priority)
-  - Plug-ins can be used to customize data processing, custom UI, custom communication methods , etc.
-- Support for custom themes
-- Multi-language support
+- 跨平台，支持Windows、Linux、macOS
+- 支持串口、LibUSB、TCP、UDP、WebSocket等多种从机通信方式
+- 支持TCP、UDP、WebSocket等多种服务端模式
+- 支持MQTT协议
+- 可同时开启/连接多个串口、LibUSB、TCP、UDP、WebSocket、MQTT等
+- 所有模式下，数据收发均可配置自定义的处理脚本
+- 一个可独立运行的Lua环境，可用于自动化测试
+- 脚本可共享，提供了官方的应用市场
+- 支持自定义插件功能，可自行编写插件（低优先级）
+  - 插件可用于自定义数据处理、自定义UI、自定义通信方式等
+- 支持自定义主题
+- 支持多国语言
