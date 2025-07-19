@@ -82,8 +82,8 @@ public class TerminalCommandCheck
         //\x1b[{数字}{字母} 数字可能是2个字符也可能不存在
         int code = 0;
         char cmd = '\0';
-        int i = 2; //从第三个字符开始分析，最多分析到第四个字符
-        while (i < slice.Length && i < 5 && char.IsDigit(slice[i]))
+        int i = 2; //从第三个字符开始分析，最多分析到第10个字符
+        while (i < slice.Length && i < 10 && char.IsDigit(slice[i]))
         {
             code = code * 10 + (slice[i] - '0'); //将数字字符转换为数字
             i++;
@@ -160,12 +160,10 @@ public class TerminalCommandCheck
                     return ((mr, (code,0)), i);
                 }
                 break;
-            default:
-                return ((TerminalCommand.Unknown, (0,0)), i); //未知命令
         }
         //检查是不是匹配\x1b[{n};{m}H
         if(cmd != ';')
-            return ((TerminalCommand.None,(0,0)), 0);
+            return ((TerminalCommand.Unknown, (0,0)), i); //未知命令
         //如果是分号，说明可能是光标移动到指定位置
         //需要检查后面的数字
         int col = code, row = 0;
