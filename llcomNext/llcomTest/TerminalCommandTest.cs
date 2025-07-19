@@ -41,6 +41,8 @@ public class TerminalCommandTest
             ("\x1b[7m", TerminalCommand.Reverse, (7, 0), 4),
             ("\x1b[31m", TerminalCommand.ForegroundColor, (31, 0), 5),
             ("\x1b[43m", TerminalCommand.BackgroundColor, (43, 0), 5),
+            ("\x1b[2004l", TerminalCommand.Unknown, (0, 0), 7),
+            ("\x1b[2004h", TerminalCommand.Unknown, (0, 0), 7),
         };
 
         foreach (var (input, expectedCmd, expectedPos, expectedLength) in testCases)

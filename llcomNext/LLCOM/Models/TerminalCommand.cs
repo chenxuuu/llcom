@@ -6,6 +6,7 @@ namespace LLCOM.Models;
 public enum TerminalCommand
 {
     None, //没匹配上任何命令
+    Unknown, //未知命令
     
     Bs, //退格 0x08
     Ht, //水平制表符 0x09
@@ -159,6 +160,8 @@ public class TerminalCommandCheck
                     return ((mr, (code,0)), i);
                 }
                 break;
+            default:
+                return ((TerminalCommand.Unknown, (0,0)), i); //未知命令
         }
         //检查是不是匹配\x1b[{n};{m}H
         if(cmd != ';')
