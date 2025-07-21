@@ -5,40 +5,68 @@ namespace LLCOM.Models;
 
 public enum TerminalCommand
 {
-    None, //没匹配上任何命令
-    Unknown, //未知命令
+/// <summary>没匹配上任何命令</summary>
+    None,
+    /// <summary>未知命令</summary>
+    Unknown,
     
-    Bs, //退格 0x08
-    Ht, //水平制表符 0x09
-    Lf, //换行 0x0A
-    Cr, //回车 0x0D
+    /// <summary>退格 0x08</summary>
+    Bs,
+    /// <summary>水平制表符 0x09</summary>
+    Ht,
+    /// <summary>换行 0x0A</summary>
+    Lf,
+    /// <summary>回车 0x0D</summary>
+    Cr,
     
-    Hide, //隐藏光标 \x1b[?25l
-    Show, //显示光标 \x1b[?25h
+    /// <summary>隐藏光标 \x1b[?25l</summary>
+    Hide,
+    /// <summary>显示光标 \x1b[?25h</summary>
+    Show,
     
-    ClearLineEnd, //清除光标到行尾 \x1b[K
-    ClearLineStart, //清除光标到行首 \x1b[1K
-    ClearLine, //清除当前行 \x1b[2K
+    /// <summary>清除光标到行尾 \x1b[K</summary>
+    ClearLineEnd,
+    /// <summary>清除光标到行首 \x1b[1K</summary>
+    ClearLineStart,
+    /// <summary>清除当前行 \x1b[2K</summary>
+    ClearLine,
     
-    ClearScreenEnd, //清除光标到屏幕末尾 \x1b[J
-    ClearScreenStart, //清除光标到屏幕开头 \x1b[1J
-    ClearScreen, //清除屏幕 \x1b[2J
+    /// <summary>清除光标到屏幕末尾 \x1b[J</summary>
+    ClearScreenEnd,
+    /// <summary>清除光标到屏幕开头 \x1b[1J</summary>
+    ClearScreenStart,
+    /// <summary>清除屏幕 \x1b[2J</summary>
+    ClearScreen,
     
-    MoveCursorUp, //光标上移 \x1b[{n}A
-    MoveCursorDown, //光标下移 \x1b[{n}B
-    MoveCursorRight, //光标右移 \x1b[{n}C
-    MoveCursorLeft, //光标左移 \x1b[{n}D
-    ResetCursor, //光标移动到左上角 \x1b[H
-    MoveCursorTo, //光标移动到指定位置 \x1b[{n};{m}H
-    SaveCursor, //保存光标位置 \x1b[s
-    RestoreCursor, //恢复光标位置 \x1b[u
+    /// <summary>光标上移 \x1b&#123;n&#125;A</summary>
+    MoveCursorUp,
+    /// <summary>光标下移 \x1b&#123;n&#125;B</summary>
+    MoveCursorDown,
+    /// <summary>光标右移 \x1b&#123;n&#125;C</summary>
+    MoveCursorRight,
+    /// <summary>光标左移 \x1b&#123;n&#125;D</summary>
+    MoveCursorLeft,
+    /// <summary>光标移动到左上角 \x1b[H</summary>
+    ResetCursor,
+    /// <summary>光标移动到指定位置 \x1b&#123;n&#125;;&#123;m&#125;H</summary>
+    MoveCursorTo,
+    /// <summary>保存光标位置 \x1b[s</summary>
+    SaveCursor,
+    /// <summary>恢复光标位置 \x1b[u</summary>
+    RestoreCursor,
     
-    ResetStyle, //重置样式 \x1b[m
-    Bold, //加粗 \x1b[1m
-    Underline, //下划线 \x1b[4m
-    Reverse, //反转颜色 \x1b[7m
-    ForegroundColor, //前景色 \x1b[3{n}m
-    BackgroundColor, //背景色 \x1b[4{n}m
+    /// <summary>重置样式 \x1b[m</summary>
+    ResetStyle,
+    /// <summary>加粗 \x1b[1m</summary>
+    Bold,
+    /// <summary>下划线 \x1b[4m</summary>
+    Underline,
+    /// <summary>反转颜色 \x1b[7m</summary>
+    Reverse,
+    /// <summary>前景色 \x1b[3&#123;n&#125;m</summary>
+    ForegroundColor,
+    /// <summary>背景色 \x1b[4&#123;n&#125;m</summary>
+    BackgroundColor,
 }
 
 public class TerminalCommandCheck

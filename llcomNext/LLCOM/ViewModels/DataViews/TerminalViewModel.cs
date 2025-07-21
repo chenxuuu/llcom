@@ -33,19 +33,14 @@ public partial class TerminalViewModel : ViewModelBase
     [RelayCommand]
     private async Task Test()
     {
-        var random = new Random();
-        var testChars = "测试Test".ToCharArray();
-        for(int i=0; i<100; i++)
+        //测试显示数据
+        await Task.Run(() =>
         {
             lock (TerminalObject)
             {
-                //TerminalObject.ChangeStyle(random.Next(30,38),random.Next(30,38));
-                TerminalObject.ChangePosition(random.Next(0,TerminalObject.WindowWidth), random.Next(0,TerminalObject.WindowHeight));
-                TerminalObject.AddText([testChars[random.Next(0, testChars.Length)]]); 
-                TerminalRefreshEvent?.Invoke(this, EventArgs.Empty);
+                TerminalObject.AddChars("123456\b123456\b测试\b");
             }
-            await Task.Delay(1);
-        }
+        });
     }
 
     //终端对象，  TODO)) 后续需要为每项操作加锁

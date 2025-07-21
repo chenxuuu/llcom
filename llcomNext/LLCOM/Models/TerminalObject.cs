@@ -69,7 +69,7 @@ public class TerminalObject
     /// 文本不得包含不可见字符
     /// </summary>
     /// <param name="texts">待添加的文本</param>
-    public void AddText(char[] texts)//TODO)) 保持private
+    private void AddText(char[] texts)//TODO)) 保持private
     {
         //防止没有设置窗口大小的时候就添加数据
         if(_windowWidth == 0 || _windowHeight == 0)
@@ -259,14 +259,14 @@ public class TerminalObject
     }
     
     //TODO)) 仅用于测试
-    public void ChangePosition(int x, int y)
+    private void ChangePosition(int x, int y)
     {
         PositionX = x;
         PositionY = y;
     }
 
     //TODO)) 仅用于测试
-    public void ChangeStyle(
+    private void ChangeStyle(
         int? foreground = null, 
         int? background = null, 
         bool? isBold = null, 
@@ -435,5 +435,138 @@ public class TerminalObject
         
         if(lastCurrentLine != CurrentLine)
             TerminalChanged();
+    }
+    
+    
+    
+    public void AddChars(ReadOnlySpan<char> chars)
+    {
+        //如果没有设置窗口大小，直接返回
+        if(_windowWidth == 0 || _windowHeight == 0)
+            return;
+
+        var ptr = 0;
+        var lastPos = 0;
+        while (ptr < chars.Length)
+        {
+            //分析当前文本块有没有匹配到命令
+            var ((cmd, (p1,p2)) ,len) = TerminalCommandCheck.Do(chars[ptr..]);
+            //没匹配到就继续下一个
+            if (cmd == TerminalCommand.None)
+            {
+                ptr++;
+                continue;
+            }
+            else//匹配到了，动作之前先打印没输出的文本
+            {
+                var slice = chars[lastPos..ptr];
+                if (slice.Length > 0)
+                {
+                    //添加文本
+                    AddText(slice.ToArray());
+                }
+                lastPos = ptr + len;
+                ptr += len;
+            }
+
+            //匹配对应命令
+            switch (cmd)
+            {
+                case TerminalCommand.Unknown://未知命令，直接跳过
+                    break;
+                case TerminalCommand.Bs:
+                    //退格，光标往前挪一个字符，并且删除当前字符
+                    //先把光标往前挪一个字符
+                    if (PositionX > 0)
+                        PositionX--;
+                    else if (PositionY > 0)
+                    {
+                        //如果光标在行首，往上一行挪
+                        PositionY--;
+                        PositionX = _windowWidth - 1; //挪到行尾
+                    }
+                    //样式恢复默认
+                    var lastState = CurrentState;
+                    CurrentState = new TerminalBlock("");
+                    //加一个空格来覆盖掉当前字符
+                    AddText(new[] { ' ' });
+                    //样式恢复到上一个状态
+                    CurrentState = lastState;
+                    //先把光标往前挪一个字符
+                    if (PositionX > 0)
+                        PositionX--;
+                    else if (PositionY > 0)
+                    {
+                        //如果光标在行首，往上一行挪
+                        PositionY--;
+                        PositionX = _windowWidth - 1; //挪到行尾
+                    }
+                    break;
+                case TerminalCommand.Ht:
+                    break;
+                case TerminalCommand.Lf:
+                    break;
+                case TerminalCommand.Cr:
+                    break;
+                case TerminalCommand.Hide:
+                    break;
+                case TerminalCommand.Show:
+                    break;
+                case TerminalCommand.ClearLineEnd:
+                    break;
+                case TerminalCommand.ClearLineStart:
+                    break;
+                case TerminalCommand.ClearLine:
+                    break;
+                case TerminalCommand.ClearScreenEnd:
+                    break;
+                case TerminalCommand.ClearScreenStart:
+                    break;
+                case TerminalCommand.ClearScreen:
+                    break;
+                case TerminalCommand.MoveCursorUp:
+                    break;
+                case TerminalCommand.MoveCursorDown:
+                    break;
+                case TerminalCommand.MoveCursorRight:
+                    break;
+                case TerminalCommand.MoveCursorLeft:
+                    break;
+                case TerminalCommand.ResetCursor:
+                    break;
+                case TerminalCommand.MoveCursorTo:
+                    break;
+                case TerminalCommand.SaveCursor:
+                    break;
+                case TerminalCommand.RestoreCursor:
+                    break;
+                case TerminalCommand.ResetStyle:
+                    break;
+                case TerminalCommand.Bold:
+                    break;
+                case TerminalCommand.Underline:
+                    break;
+                case TerminalCommand.Reverse:
+                    break;
+                case TerminalCommand.ForegroundColor:
+                    break;
+                case TerminalCommand.BackgroundColor:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            //指针往后挪
+            ptr += len;
+        }
+        
+        //如果最后还有未处理的文本
+        if (lastPos < chars.Length)
+        {
+            //添加文本
+            AddText(chars[lastPos..].ToArray());
+        }
+        
+        //触发更新事件
+        TerminalChanged();
     }
 }
