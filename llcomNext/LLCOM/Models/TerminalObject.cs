@@ -25,26 +25,25 @@ public class TerminalObject
         TerminalChangedEvent?.Invoke(this, EventArgs.Empty);
     }
     
-    //用于存放终端数据的缓存
+    /// 用于存放终端数据的缓存
     private List<List<TerminalBlock>> CacheLines { get; } = [];
     
     //当前光标位置
-    //X从0开始，最大可到达窗口宽度（再增加就需要换行了）
-    //Y从0开始，最大可到达窗口高度-1
+    /// X从0开始，最大可到达窗口宽度（再增加就需要换行了）
     private int PositionX { get; set; } = 0;
+    /// Y从0开始，最大可到达窗口高度-1
     private int PositionY { get; set; } = 0;
     
-    //当前的颜色、字体等信息，存到TerminalBlock中
+    /// 当前的颜色、字体等信息，存到TerminalBlock中
     private TerminalBlock CurrentState { get; set; } = new(String.Empty);
     
-    //MaxCacheLines表示终端缓存的行数，超过这个行数后会删除最上面的行
+    /// MaxCacheLines表示终端缓存的行数，超过这个行数后会删除最上面的行
     private readonly int _maxCacheLines = Utils.Setting.TerminalBufferLines;
     
-    //可视范围内的宽高
+    /// 可视范围内的宽
     private int _windowWidth;
-    public int WindowWidth => _windowWidth;
+    /// 可视范围内的高
     private int _windowHeight;
-    public int WindowHeight => _windowHeight;
     
     //添加新的一行上去
     private void AddLine()
@@ -469,6 +468,8 @@ public class TerminalObject
                 ptr += len;
             }
 
+            //当前的样式备份一下
+            var lastState = CurrentState;
             //匹配对应命令
             switch (cmd)
             {
@@ -486,7 +487,6 @@ public class TerminalObject
                         PositionX = _windowWidth - 1; //挪到行尾
                     }
                     //样式恢复默认
-                    var lastState = CurrentState;
                     CurrentState = new TerminalBlock("");
                     //加一个空格来覆盖掉当前字符
                     AddText(new[] { ' ' });
@@ -503,20 +503,84 @@ public class TerminalObject
                     }
                     break;
                 case TerminalCommand.Ht:
+                    //水平制表符，光标往后挪到下一个制表符位置，制表符位置是8的倍数
+                    //计算一下需要几个空格
+                    var nextTabStop = (PositionX / 8 + 1) * 8;
+                    //如果下一个制表符位置超过了窗口宽度，就直接挪到窗口宽度
+                    if (nextTabStop >= _windowWidth)
+                        nextTabStop = _windowWidth - 1;
+                    //添加空格
+                    var spaces = nextTabStop - PositionX;
+                    if (spaces > 0)
+                    {
+                        //添加空格
+                        AddText(new string(' ', spaces).ToCharArray());
+                        //光标位置往后挪
+                        PositionX += spaces;
+                    }
                     break;
                 case TerminalCommand.Lf:
+                    //换行，光标往下一行挪
+                    PositionY++;
+                    if(PositionY >= _windowHeight)
+                    {
+                        //如果超过了最大高度，添加新行
+                        AddLine();
+                        PositionY = _windowHeight - 1; //光标位置挪到最后一行
+                    }
                     break;
                 case TerminalCommand.Cr:
+                    //回车，光标位置挪到行首
+                    PositionX = 0;
                     break;
                 case TerminalCommand.Hide:
+                    //隐藏光标，TODO
                     break;
                 case TerminalCommand.Show:
+                    //显示光标，TODO
                     break;
                 case TerminalCommand.ClearLineEnd:
+                    //清除光标到行尾
+                    //样式恢复默认
+                    CurrentState = new TerminalBlock("");
+                    //添加空格到行尾
+                    var spacesToEnd = _windowWidth - PositionX;
+                    if (spacesToEnd > 0)
+                    {
+                        AddText(new string(' ', spacesToEnd).ToCharArray());
+                    }
+                    //样式恢复到上一个状态
+                    CurrentState = lastState;
                     break;
                 case TerminalCommand.ClearLineStart:
+                    //清除光标到行首
+                    //样式恢复默认
+                    CurrentState = new TerminalBlock("");
+                    //存一下上次的光标位置
+                    var oldXLineStartCmd = PositionX;
+                    //光标位置挪到行首
+                    PositionX = 0;
+                    //添加空格到行首
+                    if (oldXLineStartCmd > 0)
+                    {
+                        AddText(new string(' ', oldXLineStartCmd).ToCharArray());
+                    }
+                    //样式恢复到上一个状态
+                    CurrentState = lastState;
                     break;
                 case TerminalCommand.ClearLine:
+                    //清除当前行
+                    //样式恢复默认
+                    CurrentState = new TerminalBlock("");
+                    //移动光标到行首
+                    PositionX = 0;
+                    //添加一行空格
+                    if (_windowWidth > 0)
+                    {
+                        AddText(new string(' ', _windowWidth).ToCharArray());
+                    }
+                    //样式恢复到上一个状态
+                    CurrentState = lastState;
                     break;
                 case TerminalCommand.ClearScreenEnd:
                     break;
