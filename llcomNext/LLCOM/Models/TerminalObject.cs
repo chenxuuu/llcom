@@ -436,7 +436,14 @@ public class TerminalObject
             TerminalChanged();
     }
     
-    
+    /// <summary>
+    /// 保存的光标位置
+    /// </summary>
+    private int _saveCursorX = 0;
+    /// <summary>
+    /// 保存的光标位置
+    /// </summary>
+    private int _saveCursorY = 0;
     
     public void AddChars(ReadOnlySpan<char> chars)
     {
@@ -583,38 +590,168 @@ public class TerminalObject
                     CurrentState = lastState;
                     break;
                 case TerminalCommand.ClearScreenEnd:
+                    //清除光标到行尾
+                    //样式恢复默认
+                    CurrentState = new TerminalBlock("");
+                    //添加空格到行尾
+                    var spacesToScreenEndLine = _windowWidth - PositionX;
+                    if (spacesToScreenEndLine > 0)
+                    {
+                        AddText(new string(' ', spacesToScreenEndLine).ToCharArray());
+                    }
+                    //把后面的行全部清空
+                    for (int i = PositionY + 1; i < _windowHeight; i++)
+                    {
+                        PositionX = 0; //光标位置挪到行首
+                        PositionY = i; //光标位置挪到这一行
+                        //添加一行空格
+                        AddText(new string(' ', _windowWidth).ToCharArray());
+                    }
+                    //样式恢复到上一个状态
+                    CurrentState = lastState;
                     break;
                 case TerminalCommand.ClearScreenStart:
+                    //清除光标到行首
+                    //样式恢复默认
+                    CurrentState = new TerminalBlock("");
+                    //存一下上次的光标位置
+                    var oldXLineScreenStartCmd = PositionX;
+                    //光标位置挪到行首
+                    PositionX = 0;
+                    //添加空格到行首
+                    if (oldXLineScreenStartCmd > 0)
+                    {
+                        AddText(new string(' ', oldXLineScreenStartCmd).ToCharArray());
+                    }
+                    //把前面的行全部清空
+                    for (int i = 0; i < PositionY; i++)
+                    {
+                        PositionX = 0; //光标位置挪到行首
+                        PositionY = i; //光标位置挪到这一行
+                        //添加一行空格
+                        AddText(new string(' ', _windowWidth).ToCharArray());
+                    }
+                    //样式恢复到上一个状态
+                    CurrentState = lastState;
                     break;
                 case TerminalCommand.ClearScreen:
+                    //清除屏幕
+                    //样式恢复默认
+                    CurrentState = new TerminalBlock("");
+                    //直接加数行，盖住之前的内容
+                    for (int i = 0; i < _windowHeight; i++)
+                        AddLine();
+                    //样式恢复到上一个状态
+                    CurrentState = lastState;
                     break;
                 case TerminalCommand.MoveCursorUp:
+                    //光标上移
+                    if (p1 > 0)
+                    {
+                        PositionY -= p1;
+                        if (PositionY < 0)
+                            PositionY = 0; //不能小于0
+                    }
                     break;
                 case TerminalCommand.MoveCursorDown:
+                    //光标下移
+                    if (p1 > 0)
+                    {
+                        PositionY += p1;
+                        if (PositionY >= _windowHeight) //如果超过了窗口高度，挪到最后一行
+                            PositionY = _windowHeight - 1;
+                    }
                     break;
                 case TerminalCommand.MoveCursorRight:
+                    //光标右移
+                    if (p1 > 0)
+                    {
+                        PositionX += p1;
+                        if (PositionX >= _windowWidth) //如果超过了窗口宽度，挪到行尾
+                            PositionX = _windowWidth - 1;
+                    }
                     break;
                 case TerminalCommand.MoveCursorLeft:
+                    //光标左移
+                    if (p1 > 0)
+                    {
+                        PositionX -= p1;
+                        if (PositionX < 0) //不能小于0
+                            PositionX = 0;
+                    }
                     break;
                 case TerminalCommand.ResetCursor:
+                    //光标移动到左上角
+                    PositionX = 0;
+                    PositionY = 0;
                     break;
                 case TerminalCommand.MoveCursorTo:
+                    //光标移动到指定位置
+                    //p1表示行数，p2表示列数
+                    PositionX = p1 - 1;
+                    PositionY = p2 - 1;
+                    if(PositionX < 0)
+                        PositionX = 0; //不能小于0
+                    if(PositionX >= _windowWidth)
+                        PositionX = _windowWidth - 1; //不能超过窗口宽度
+                    if(PositionY < 0)
+                        PositionY = 0; //不能小于0
+                    if(PositionY >= _windowHeight)
+                        PositionY = _windowHeight - 1; //不能超过窗口高度
                     break;
                 case TerminalCommand.SaveCursor:
+                    //保存光标位置
+                    _saveCursorX = PositionX;
+                    _saveCursorY = PositionY;
                     break;
                 case TerminalCommand.RestoreCursor:
+                    //恢复光标位置
+                    PositionX = _saveCursorX;
+                    PositionY = _saveCursorY;
                     break;
                 case TerminalCommand.ResetStyle:
+                    //重置样式
+                    CurrentState = new TerminalBlock("");
                     break;
                 case TerminalCommand.Bold:
+                    //加粗
+                    CurrentState.IsBold = true;
                     break;
                 case TerminalCommand.Underline:
+                    //下划线
+                    CurrentState.IsUnderLine = true;
                     break;
                 case TerminalCommand.Reverse:
+                    //反转颜色
+                    (CurrentState.Foreground, CurrentState.Background) = (CurrentState.Background, CurrentState.Foreground);
                     break;
                 case TerminalCommand.ForegroundColor:
+                    //前景色
+                    //p1表示颜色代码
+                    if (p1 is >= 30 and <= 37)
+                    {
+                        //设置前景色
+                        CurrentState.Foreground = p1 - 30;
+                    }
+                    else if (p1 == 39)
+                    {
+                        //重置前景色
+                        CurrentState.Foreground = -1;
+                    }
                     break;
                 case TerminalCommand.BackgroundColor:
+                    //背景色
+                    //p1表示颜色代码
+                    if (p1 is >= 40 and <= 47)
+                    {
+                        //设置背景色
+                        CurrentState.Background = p1 - 40;
+                    }
+                    else if (p1 == 49)
+                    {
+                        //重置背景色
+                        CurrentState.Background = -1;
+                    }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

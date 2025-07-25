@@ -194,10 +194,10 @@ public class TerminalCommandCheck
             return ((TerminalCommand.Unknown, (0,0)), i); //未知命令
         //如果是分号，说明可能是光标移动到指定位置
         //需要检查后面的数字
-        int col = code, row = 0;
+        int row = code, col = 0;
         while (i < slice.Length && char.IsDigit(slice[i]))
         {
-            row = row * 10 + (slice[i] - '0'); //将数字字符转换为数字
+            col = col * 10 + (slice[i] - '0'); //将数字字符转换为数字
             i++;
         }
         if (i < slice.Length && slice[i] == 'H')
