@@ -31,7 +31,7 @@ public class TerminalCommandTest
             ("\x1b[?25h", TerminalCommand.Show, (25, 0), 6),
             ("\x1b[2J", TerminalCommand.ClearScreen, (2, 0), 4),
             ("\x1b[H", TerminalCommand.ResetCursor, (0, 0), 3),
-            ("\x1b[10;20H", TerminalCommand.MoveCursorTo, (10, 20), 8),
+            ("\x1b[10;20H", TerminalCommand.MoveCursorTo, (20, 10), 8),
             ("\x1b[2A", TerminalCommand.MoveCursorUp, (2, 0), 4),
             ("\x1b[10A", TerminalCommand.MoveCursorUp, (10, 0), 5),
             ("\x1b[m", TerminalCommand.ResetStyle, (0, 0), 3),
