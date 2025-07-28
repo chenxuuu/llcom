@@ -71,7 +71,7 @@ public enum TerminalCommand
     MultipleStyle,
 }
 
-public class TerminalCommandCheck
+public static class TerminalCommandCheck
 {
     /// <summary>
     /// 分析给定的字符切片，判断是否为终端命令
@@ -95,6 +95,9 @@ public class TerminalCommandCheck
         {
             return ((singleCmd, (0,0)), 1);
         }
+        //判断下是不是\x1b(?或\x1b)?
+        if(slice.Length >= 3 && slice[0] == '\x1b' && (slice[1] == '(' || slice[1] == ')'))
+            return ((TerminalCommand.Unknown, (0,0)), 3); //先当成未知命令处理
         //判断是否为转义字符
         if(slice[0] != '\x1b' || slice[1] != '[' || slice.Length < 3)
         {
@@ -113,9 +116,10 @@ public class TerminalCommandCheck
         int code = 0;
         char cmd = '\0';
         int i = 2; //从第三个字符开始分析，最多分析到第10个字符
-        while (i < slice.Length && i < 10 && char.IsDigit(slice[i]))
+        while (i < slice.Length && i < 10 && (char.IsDigit(slice[i]) || slice[i] == '?'))
         {
-            code = code * 10 + (slice[i] - '0'); //将数字字符转换为数字
+            if(slice[i] != '?')
+                code = code * 10 + (slice[i] - '0'); //将数字字符转换为数字
             i++;
         }
         if (i < slice.Length)
@@ -181,10 +185,10 @@ public class TerminalCommandCheck
                     1 => TerminalCommand.Bold, //加粗
                     4 => TerminalCommand.Underline, //下划线
                     7 => TerminalCommand.Reverse, //反转颜色
-                    _ when code >= 30 && code <= 37 => TerminalCommand.ForegroundColor, //前景色
-                    _ when code >= 90 && code <= 97 => TerminalCommand.ForegroundColor, //前景色
-                    _ when code >= 40 && code <= 47 => TerminalCommand.BackgroundColor, //背景色
-                    _ when code >= 100 && code <= 107 => TerminalCommand.BackgroundColor, //背景色
+                    _ when code is >= 30 and <= 37 => TerminalCommand.ForegroundColor, //前景色
+                    _ when code is >= 90 and <= 97 => TerminalCommand.ForegroundColor, //前景色
+                    _ when code is >= 40 and <= 47 => TerminalCommand.BackgroundColor, //背景色
+                    _ when code is >= 100 and <= 107 => TerminalCommand.BackgroundColor, //背景色
                     _ => TerminalCommand.None //不匹配
                 };
                 if (mr != TerminalCommand.None)

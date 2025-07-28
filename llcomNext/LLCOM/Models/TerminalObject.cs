@@ -27,10 +27,11 @@ public class TerminalObject
     
     /// 用于存放终端数据的缓存
     private List<List<TerminalBlock>> CacheLines { get; } = [];
-    
+
     //当前光标位置
     /// X从0开始，最大可到达窗口宽度（再增加就需要换行了）
     private int PositionX { get; set; } = 0;
+
     /// Y从0开始，最大可到达窗口高度-1
     private int PositionY { get; set; } = 0;
     
@@ -95,6 +96,8 @@ public class TerminalObject
             {
                 //获取实际的字符宽度
                 var length = UnicodeCalculator.GetWidth(chars[0]);
+                if (length < 0)
+                    length = 0;
                 //挖去可用空间
                 space -= length;
                 if(space < 0)//剩余空间不足，别添加了
@@ -687,9 +690,9 @@ public class TerminalObject
                     break;
                 case TerminalCommand.MoveCursorTo:
                     //光标移动到指定位置
-                    //p1表示行数，p2表示列数
-                    PositionX = p1 - 1;
-                    PositionY = p2 - 1;
+                    //p1表示列数，p2表示行数
+                    PositionY = p1 - 1;
+                    PositionX = p2 - 1;
                     if(PositionX < 0)
                         PositionX = 0; //不能小于0
                     if(PositionX >= _windowWidth)
@@ -723,41 +726,58 @@ public class TerminalObject
                     break;
                 case TerminalCommand.Reverse:
                     //反转颜色
-                    (CurrentState.Foreground, CurrentState.Background) = (CurrentState.Background, CurrentState.Foreground);
+                    CurrentState.Background = -1;
+                    CurrentState.Foreground = -1;
                     break;
                 case TerminalCommand.ForegroundColor:
                     //前景色
                     //p1表示颜色代码
-                    if (p1 is >= 30 and <= 37)
-                    {
-                        //设置前景色
-                        CurrentState.Foreground = p1 - 30;
-                    }
-                    else if (p1 == 39)
-                    {
-                        //重置前景色
+                    if (p1 == 39) //重置前景色
                         CurrentState.Foreground = -1;
-                    }
+                    else//设置前景色
+                        CurrentState.Foreground = p1;
                     break;
                 case TerminalCommand.BackgroundColor:
                     //背景色
                     //p1表示颜色代码
-                    if (p1 is >= 40 and <= 47)
-                    {
-                        //设置背景色
-                        CurrentState.Background = p1 - 40;
-                    }
-                    else if (p1 == 49)
-                    {
-                        //重置背景色
+                    if (p1 == 49) //重置背景色
                         CurrentState.Background = -1;
+                    else//设置背景色
+                        CurrentState.Background = p1;
+                    break;
+                case TerminalCommand.MultipleStyle:
+                    //多重样式
+                    switch (p1)
+                    {
+                        case 0://重置样式
+                            CurrentState = new TerminalBlock("");
+                            break;
+                        case 1://加粗
+                            CurrentState.IsBold = true;
+                            break;
+                        case 4://下划线
+                            CurrentState.IsUnderLine = true;
+                            break;
+                        case 7://反转颜色
+                            CurrentState.Background = -1;
+                            CurrentState.Foreground = -1;
+                            break;
+                    }
+                    if(p2 is >= 30 and <= 37) CurrentState.Foreground = p2; //前景色
+                    if(p2 is >= 90 and <= 97) CurrentState.Foreground = p2; //前景色
+                    if(p2 is >= 40 and <= 47 )CurrentState.Background = p2; //背景色
+                    if(p2 is >= 100 and <= 107)CurrentState.Background = p2; //背景色
+                    if(p2 == 1) CurrentState.IsBold = true; //加粗
+                    if(p2 == 4) CurrentState.IsUnderLine = true; //下划
+                    if (p2 == 7)    //反转颜色
+                    {
+                        CurrentState.Background = -1;
+                        CurrentState.Foreground = -1;
                     }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            //指针往后挪
-            ptr += len;
         }
         
         //如果最后还有未处理的文本
