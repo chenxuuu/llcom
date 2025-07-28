@@ -67,6 +67,8 @@ public enum TerminalCommand
     ForegroundColor,
     /// <summary>背景色 \x1b[4&#123;n&#125;m</summary>
     BackgroundColor,
+    /// <summary>多种样式组合，字体样式+颜色 </summary>
+    MultipleStyle,
 }
 
 public class TerminalCommandCheck
@@ -180,7 +182,9 @@ public class TerminalCommandCheck
                     4 => TerminalCommand.Underline, //下划线
                     7 => TerminalCommand.Reverse, //反转颜色
                     _ when code >= 30 && code <= 37 => TerminalCommand.ForegroundColor, //前景色
+                    _ when code >= 90 && code <= 97 => TerminalCommand.ForegroundColor, //前景色
                     _ when code >= 40 && code <= 47 => TerminalCommand.BackgroundColor, //背景色
+                    _ when code >= 100 && code <= 107 => TerminalCommand.BackgroundColor, //背景色
                     _ => TerminalCommand.None //不匹配
                 };
                 if (mr != TerminalCommand.None)
@@ -194,15 +198,24 @@ public class TerminalCommandCheck
             return ((TerminalCommand.Unknown, (0,0)), i); //未知命令
         //如果是分号，说明可能是光标移动到指定位置
         //需要检查后面的数字
-        int row = code, col = 0;
+        int p1 = code, p2 = 0;
         while (i < slice.Length && char.IsDigit(slice[i]))
         {
-            col = col * 10 + (slice[i] - '0'); //将数字字符转换为数字
+            p2 = p2 * 10 + (slice[i] - '0'); //将数字字符转换为数字
             i++;
         }
-        if (i < slice.Length && slice[i] == 'H')
+
+        if (i < slice.Length)
         {
-            return ((TerminalCommand.MoveCursorTo, (col, row)), i + 1);
+            switch (slice[i])
+            {
+                case 'H'://光标移动到指定位置
+                    return ((TerminalCommand.MoveCursorTo, (p1, p2)), i + 1);
+                case 'm'://样式
+                    return ((TerminalCommand.MultipleStyle, (p1, p2)), i + 1);
+                default:
+                    return ((TerminalCommand.Unknown, (0,0)), i);//未知命令
+            }
         }
         return ((TerminalCommand.None,(0,0)), 0);
     }
