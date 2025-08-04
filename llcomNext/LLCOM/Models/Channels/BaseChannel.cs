@@ -12,9 +12,64 @@ public class BaseChannel(int bufferSize = 1024 * 10)
     private int _bufferLength = 0;
     
     /// <summary>
-    /// 当数据被添加之后，被触发
+    /// 通道事件
     /// </summary>
-    public EventHandler<int>? DataAddedEvent;
+    public EventHandler<ChannelEvent>? ChannelEvent;
+    
+
+    /// <summary>
+    /// 获取当前buffer的长度
+    /// </summary>
+    public virtual int BufferSize => bufferSize;
+    
+    /// <summary>
+    /// 获取当前buffer中已存储的数据长度
+    /// </summary>
+    public virtual int BufferToRead => _bufferLength;
+
+    /// <summary>
+    /// 是否打开了通道
+    /// </summary>
+    public virtual bool IsOpen { get; set; } = false;
+
+    /// <summary>
+    /// 打开通道
+    /// </summary>
+    public virtual void Open()
+    {
+        IsOpen = true;
+        _bufferLength = 0; // Reset buffer length when opening
+        ChannelEvent?.Invoke(this, Channels.ChannelEvent.Opened);
+    }
+
+    /// <summary>
+    /// 关闭通道
+    /// </summary>
+    public virtual void Close()
+    {
+        IsOpen = false;
+        _bufferLength = 0; // Clear buffer when closing
+        ChannelEvent?.Invoke(this, Channels.ChannelEvent.Closed);
+    }
+    
+    /// <summary>
+    /// 发送数据到通道
+    /// </summary>
+    /// <param name="data">数据</param>
+    /// <param name="options">选项，给mqtt之类的用</param>
+    /// <returns>是否发送成功</returns>
+    public virtual bool SendData(Span<byte> data, Object? options = null)
+    {
+        if (!IsOpen)
+            return false;
+        
+        if (data.Length == 0)
+            return true; // Nothing to send
+        
+        // Simulate sending data
+        ChannelEvent?.Invoke(this, Channels.ChannelEvent.DataSent);
+        return true; // Assume sending is always successful for this base class
+    }
     
     /// <summary>
     /// 向buffer中添加数据
@@ -34,7 +89,9 @@ public class BaseChannel(int bufferSize = 1024 * 10)
         data[..lengthToCopy].CopyTo(_buffer.AsSpan(_bufferLength));
         _bufferLength += lengthToCopy;
 
-        DataAddedEvent?.Invoke(this, lengthToCopy); // Trigger the event after data is added
+        ChannelEvent?.Invoke(this, Channels.ChannelEvent.DataReceived); // Trigger the event after data is added
+        if(_bufferLength == BufferSize)
+            ChannelEvent?.Invoke(this, Channels.ChannelEvent.BufferFull); // Trigger the event if buffer is full
         return lengthToCopy;
     }
 
