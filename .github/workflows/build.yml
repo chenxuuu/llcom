@@ -27,23 +27,10 @@ jobs:
       fail-fast: true
     steps:
       - uses: actions/checkout@v4
-      - name: environment prepare
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y apt-transport-https
-          sudo apt-get update
-          sudo apt-get install -y dotnet-sdk-8.0
-          sudo apt-get install -y p7zip-full
-      - name: build
-        env:
-          DOTNETOS: ${{ matrix.dotnetos }}
-          DOTNETARCH: ${{ matrix.dotnetarch }}
-        run: |
-          cd llcomNext/LLCOM
-          dotnet publish -r $DOTNETOS-$DOTNETARCH --configuration Release -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true -p:PublishTrimmed=true -p:TrimMode=link
-          mkdir pkg
-          mv bin/Release/net8.0/$DOTNETOS-$DOTNETARCH/publish/* pkg/
-          if [[ "$DOTNETOS-$DOTNETARCH" =~ "win-" ]]; then :; else mv pkg/ llcom/; tar -cvf llcom.tar llcom/; mkdir pkg; mv llcom.tar pkg/; fi
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
 
       - uses: actions/upload-artifact@v4
         with:
