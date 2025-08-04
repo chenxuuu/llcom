@@ -24,31 +24,31 @@ public partial class PacketDataViewModel : ViewModelBase
                 await Task.Delay(100);
                 for(int j=0; j<100; j++)
                 {
-                    PacketData.Add(new PacketData(new byte[]{0x30, 0x31, 0x32, 0x33}, MessageWay.Send, "串口1"));
-                    PacketData.Add(new PacketData(new byte[]{0x30, 0x31, 0x32, 0x33}, MessageWay.Receive, "串口1"));
+                    PacketData.Add(new StringHelper(new byte[]{0x30, 0x31, 0x32, 0x33}, MessageWay.Send, "串口1"));
+                    PacketData.Add(new StringHelper(new byte[]{0x30, 0x31, 0x32, 0x33}, MessageWay.Receive, "串口1"));
                 }
             }
         });
     }
     
     [ObservableProperty]
-    private ObservableCollection<PacketData> _packetData =         [
-        new PacketData([], MessageWay.Unknown, "MQTT1",null,null,true,"已连接"),
-        new PacketData([0x30, 0x31, 0x32, 0x33], MessageWay.Send, "串口1"),
-        new PacketData([0x30, 0x31, 0x32, 0x33], MessageWay.Receive, "串口1"),
-        new PacketData([0x30, 0x31, 0x32, 0x33], MessageWay.Receive, "串口1"),
-        new PacketData([0x30, 0x31, 0x32, 0x33], MessageWay.Send, "串口1"),
-        new PacketData([0x30, 0x31, 0x32, 0x33], MessageWay.Receive, "串口1"),
-        new PacketData([0x30, 0x31, 0x32, 0x33], MessageWay.Send, "串口1"),
-        new PacketData([0x30, 0x31, 0x32, 0x33], MessageWay.Receive, "串口1"),
-        new PacketData([0x30, 0x31, 0x32, 0x33], MessageWay.Send, "串口1"),
-        new PacketData([0x30, 0x31, 0x32, 0x33], MessageWay.Receive, "串口1"),
-        new PacketData([0x30, 0x31, 0x32, 0x33], MessageWay.Send, "串口1"),
-        new PacketData([0x30, 0x31, 0x32, 0x33], MessageWay.Receive, "串口1"),
-        new PacketData([0x30, 0x31, 0x32, 0x33], MessageWay.Send, "串口1"),
-        new PacketData([0x30, 0x31, 0x32, 0x33], MessageWay.Receive, "串口1"),
-        new PacketData([0x30, 0x31, 0x32, 0x33], MessageWay.Send, "串口1"),
-        new PacketData([0x30, 0x31, 0x32, 0x33], MessageWay.Receive, "串口1"),
+    private ObservableCollection<StringHelper> _packetData =         [
+        new StringHelper([], MessageWay.Unknown, "MQTT1",null,null,true,"已连接"),
+        new StringHelper([0x30, 0x31, 0x32, 0x33], MessageWay.Send, "串口1"),
+        new StringHelper([0x30, 0x31, 0x32, 0x33], MessageWay.Receive, "串口1"),
+        new StringHelper([0x30, 0x31, 0x32, 0x33], MessageWay.Receive, "串口1"),
+        new StringHelper([0x30, 0x31, 0x32, 0x33], MessageWay.Send, "串口1"),
+        new StringHelper([0x30, 0x31, 0x32, 0x33], MessageWay.Receive, "串口1"),
+        new StringHelper([0x30, 0x31, 0x32, 0x33], MessageWay.Send, "串口1"),
+        new StringHelper([0x30, 0x31, 0x32, 0x33], MessageWay.Receive, "串口1"),
+        new StringHelper([0x30, 0x31, 0x32, 0x33], MessageWay.Send, "串口1"),
+        new StringHelper([0x30, 0x31, 0x32, 0x33], MessageWay.Receive, "串口1"),
+        new StringHelper([0x30, 0x31, 0x32, 0x33], MessageWay.Send, "串口1"),
+        new StringHelper([0x30, 0x31, 0x32, 0x33], MessageWay.Receive, "串口1"),
+        new StringHelper([0x30, 0x31, 0x32, 0x33], MessageWay.Send, "串口1"),
+        new StringHelper([0x30, 0x31, 0x32, 0x33], MessageWay.Receive, "串口1"),
+        new StringHelper([0x30, 0x31, 0x32, 0x33], MessageWay.Send, "串口1"),
+        new StringHelper([0x30, 0x31, 0x32, 0x33], MessageWay.Receive, "串口1"),
     ];
     
     //自动滚到底部
