@@ -7,9 +7,9 @@ using LLCOM.Services;
 
 namespace LLCOM.Models;
 
-public class StringHelper
+public class PackData
 {
-    public StringHelper(byte[] data, MessageWay way, string channel, string? extra = null,
+    public PackData(byte[] data, MessageWay way, string channel, string? extra = null,
         Encoding? encoding = null, bool readable = true, string? s = null, IBrush? brush = null)
     {
         Data = data;
@@ -17,8 +17,8 @@ public class StringHelper
         Channel = channel;
         Extra = extra ?? Time.ToString("yyyy/MM/dd HH:mm:ss.fff");
         encoding ??= Encoding.UTF8;
-        String = s ?? Services.StringHelper.GenerateString(Data, encoding, readable);
-        HexString = way == MessageWay.Unknown ? String : Services.StringHelper.GenerateHexString(Data);
+        String = s ?? StringHelper.GenerateString(Data, encoding, readable);
+        HexString = way == MessageWay.Unknown ? String : StringHelper.GenerateHexString(Data);
     }
 
     /// <summary>

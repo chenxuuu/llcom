@@ -10,12 +10,12 @@ public class Database : IDisposable
     private class Setting
     {
         public int Id { get; set; }
-        public string Key { get; set; }
-        public string Value { get; set; }
+        public required string Key { get; init; }
+        public required string Value { get; set; }
     }
     
-    private readonly LiteDatabase? _db = null;
-    private readonly ILiteCollection<Setting>? _collection = null;
+    private readonly LiteDatabase? _db;
+    private readonly ILiteCollection<Setting>? _collection;
     
     /// <summary>
     /// 初始化全局设置的数据库

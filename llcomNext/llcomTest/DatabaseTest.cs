@@ -16,6 +16,11 @@ public class DatabaseTest
     {
         using var db = new Database("test.db");
         await db.Set("test", "test");
+        var value = await db.Get("test", "default");
+        Assert.AreEqual("test", value);
+        await db.Set("test", "test2");
+        value = await db.Get("test", "default");
+        Assert.AreEqual("test2", value);
     }
     
     [TestMethod]

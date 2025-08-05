@@ -67,7 +67,6 @@
                         PureText="{Binding PureText, Source={x:Static services:Utils.Setting}}"
                         ShowString="{Binding IsShowString, Source={x:Static services:Utils.Setting}}"
                         Text="{Binding String}" />
-
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
