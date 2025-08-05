@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using SQLite;
+using LiteDB;
 
 namespace LLCOM.Services;
 
@@ -9,12 +9,13 @@ public class Database : IDisposable
 {
     private class Setting
     {
-        [PrimaryKey]
+        public int Id { get; set; }
         public string Key { get; set; }
         public string Value { get; set; }
     }
     
-    private readonly SQLiteAsyncConnection? _db = null;
+    private readonly LiteDatabase? _db = null;
+    private readonly ILiteCollection<Setting>? _collection = null;
     
     /// <summary>
     /// 初始化全局设置的数据库
@@ -24,37 +25,46 @@ public class Database : IDisposable
         if(_db is not null)
             return;
         // Initialize the global setting
-        // 指定路径的sqlite数据库
+        // 指定路径的数据库
         var dbPath = Path.Combine(Utils.AppPath, dbFileName);
-        //检查数据库是否存在
-        if (!File.Exists(dbPath))
-        {
-            //创建数据库
-            using var dbNew = new SQLiteConnection(dbPath);
-            //创建表
-            dbNew.CreateTable<Setting>();
-        }
-        //创建数据库连接
-        _db = new SQLiteAsyncConnection(dbPath);
+        _db = new LiteDatabase(dbPath);
+        _collection = _db.GetCollection<Setting>("settings");
     }
     
     private async Task _update(string key, string value)
     {
-        if (_db is null)
+        if (_db is null || _collection is null)
             throw new Exception("GlobalSetting not initialized");
-        await _db.InsertOrReplaceAsync(new Setting
+        await Task.Run(() =>
         {
-            Key = key,
-            Value = value
+            var v = _collection?.FindOne(x => x.Key == key);
+            if (v is null)
+            {
+                // Insert new setting
+                v = new Setting { Key = key, Value = value };
+                _collection?.Insert(v);
+            }
+            else
+            {
+                // Update existing setting
+                v.Value = value;
+                _collection?.Update(v);
+            }
+            _db.Commit();
         });
     }
     
     private async Task<string?> _get(string key)
     {
-        if (_db is null)
+        if (_db is null || _collection is null)
             throw new Exception("GlobalSetting not initialized");
-        var setting = await _db.Table<Setting>().Where(s => s.Key == key).FirstOrDefaultAsync();
-        return setting?.Value;
+        string? value = null;
+        await Task.Run(() =>
+        {
+            var v = _collection?.FindOne(x => x.Key == key);
+            value = v?.Value;
+        });
+        return value;
     }
     
     public async Task Set<T>(string key, T value) => await _update(key, value!.ToString()!);
@@ -69,6 +79,6 @@ public class Database : IDisposable
     public void Dispose()
     {
         if (_db is not null)
-            Task.Run(async() => await _db.CloseAsync());
+            _db.Dispose();
     }
 }
