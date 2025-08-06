@@ -10,6 +10,7 @@
     d:DesignHeight="757"
     d:DesignWidth="762"
     x:DataType="vm:PacketDataViewModel"
+    Loaded="Control_OnLoaded"
     mc:Ignorable="d">
     <Design.DataContext>
         <vm:PacketDataViewModel />
@@ -44,6 +45,7 @@
     </UserControl.Styles>
     <Grid RowDefinitions="auto *">
         <ListBox
+            Name="MainListBox"
             Grid.Row="1"
             Margin="0,5"
             u:ScrollTo.ButtonTheme="{DynamicResource PrimaryScrollToButton}"
@@ -98,7 +100,7 @@
                     VerticalAlignment="Center"
                     Content="自动滚动"
                     IsChecked="{Binding AutoScroll}" />
-                <Button Content="清空数据" />
+                <Button Command="{Binding ClearPacketDataCommand}" Content="清空数据" />
             </StackPanel>
         </Border>
     </Grid>

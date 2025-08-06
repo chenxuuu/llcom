@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using LLCOM.Models;
 using RestSharp;
 
 namespace LLCOM.Services;
@@ -36,7 +37,15 @@ public static class Utils
         return appPath;
     }
 
+    /// <summary>
+    /// 全局设置
+    /// </summary>
     public static Setting Setting = null!;
+
+    /// <summary>
+    /// 添加数据包到分包数据界面
+    /// </summary>
+    public static Action<PackData> AddPacketDataAction = null!;
     
     /// <summary>
     /// 启动软件时的初始化操作

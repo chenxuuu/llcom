@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using LLCOM.Models;
 
 namespace LLCOM.ViewModels;
@@ -17,41 +18,32 @@ public partial class PacketDataViewModel : ViewModelBase
     {
         _getService = getService;
 
-        Task.Run(async () =>
+        //添加数据包到分包数据界面的操作
+        Services.Utils.AddPacketDataAction = data =>
         {
-            for(int i=0; i<100; i++)
-            {
-                await Task.Delay(100);
-                for(int j=0; j<100; j++)
-                {
-                    PacketData.Add(new ("0123"u8.ToArray(), MessageWay.Send, "串口1"));
-                    PacketData.Add(new ("0123"u8.ToArray(), MessageWay.Receive, "串口1"));
-                }
-            }
-        });
+            lock (PacketData)
+                PacketData.Add(data);
+            if(AutoScroll)
+                ScrollToBottomAction?.Invoke();
+        };
     }
     
     [ObservableProperty]
-    private ObservableCollection<PackData> _packetData =         [
-        new ([], MessageWay.Unknown, "MQTT1",null,null,true,"已连接"),
-        new ("0123"u8.ToArray(), MessageWay.Send, "串口1"),
-        new ("0123"u8.ToArray(), MessageWay.Receive, "串口1"),
-        new ("0123"u8.ToArray(), MessageWay.Receive, "串口1"),
-        new ("0123"u8.ToArray(), MessageWay.Send, "串口1"),
-        new ("0123"u8.ToArray(), MessageWay.Receive, "串口1"),
-        new ("0123"u8.ToArray(), MessageWay.Send, "串口1"),
-        new ("0123"u8.ToArray(), MessageWay.Receive, "串口1"),
-        new ("0123"u8.ToArray(), MessageWay.Send, "串口1"),
-        new ("0123"u8.ToArray(), MessageWay.Receive, "串口1"),
-        new ("0123"u8.ToArray(), MessageWay.Send, "串口1"),
-        new ("0123"u8.ToArray(), MessageWay.Receive, "串口1"),
-        new ("0123"u8.ToArray(), MessageWay.Send, "串口1"),
-        new ("0123"u8.ToArray(), MessageWay.Receive, "串口1"),
-        new ("0123"u8.ToArray(), MessageWay.Send, "串口1"),
-        new ("0123"u8.ToArray(), MessageWay.Receive, "串口1"),
-    ];
+    private ObservableCollection<PackData> _packetData = [];
     
     //自动滚到底部
     [ObservableProperty]
     private bool _autoScroll = true;
+    
+    public Action? ScrollToBottomAction { get; set; }
+    
+    [RelayCommand]
+    private async Task ClearPacketData()
+    {
+        await Task.Run(() =>
+        {
+            lock (PacketData)
+                PacketData.Clear();
+        });
+    }
 }
