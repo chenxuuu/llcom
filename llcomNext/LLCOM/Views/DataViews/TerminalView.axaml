@@ -28,6 +28,12 @@
                 <ComboBox Width="200" SelectedIndex="0">
                     <ComboBoxItem Content="串口1" />
                 </ComboBox>
+                <CheckBox
+                    VerticalAlignment="Center"
+                    Content="严格换行"
+                    IsChecked="{Binding IsTerminalStrictLineBreak, Source={x:Static services:Utils.Setting}}"
+                    IsThreeState="True"
+                    ToolTip.Tip="开启后，终端将严格区分换行与回车操作" />
                 <Button Command="{Binding TestCommand}" Content="清空数据" />
             </StackPanel>
         </Border>

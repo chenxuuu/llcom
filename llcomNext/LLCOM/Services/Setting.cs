@@ -177,6 +177,10 @@ public partial class Setting : ObservableObject
         TerminalTheme.RefreshData(TerminalColorSchemes.List[value]);
     }
 
+    
+    //终端严格换行（关闭后\n会被处理为\r\n）
+    [ObservableProperty]
+    private bool _isTerminalStrictLineBreak = Database.Get(nameof(IsTerminalStrictLineBreak), false).Result;
 
     public Setting()
     {

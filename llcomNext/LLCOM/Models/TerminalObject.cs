@@ -538,6 +538,12 @@ public class TerminalObject
                         AddLine();
                         PositionY = _windowHeight - 1; //光标位置挪到最后一行
                     }
+                    //如果没开启严格换行模式，顺便就处理一下光标位置
+                    if (!Utils.Setting.IsTerminalStrictLineBreak)
+                    {
+                        //光标位置挪到行首
+                        PositionX = 0;
+                    }
                     break;
                 case TerminalCommand.Cr:
                     //回车，光标位置挪到行首
