@@ -81,56 +81,47 @@ public partial class TerminalViewModel : ViewModelBase
         //测试显示数据
         await Task.Run(() =>
         {
-            lock (TerminalObject)
-            {
-                TerminalObject.AddChars(_cmdList[_cmdIndex]);
-            }
+            TerminalObject.AddChars(_cmdList[_cmdIndex]);
         });
         _cmdIndex++;
     }
 
-    //终端对象，  TODO)) 后续需要为每项操作加锁
+    //终端对象
     public readonly TerminalObject TerminalObject = new TerminalObject();
     
     //窗口大小变化
     public void ChangeWindowSize((int, int) size)
     {
-        lock(TerminalObject)
-            TerminalObject.ChangeWindowSize(size.Item1, size.Item2);
+        TerminalObject.ChangeWindowSize(size.Item1, size.Item2);
     }
     
     //滚轮事件
     public double MoveUp(int delta)
     {
-        lock(TerminalObject)
-            return TerminalObject.CurrentLineMoveUp(delta);
+        return TerminalObject.CurrentLineMoveUp(delta);
     }
     
     //滚动条变化
     public void ScrollBarChanged(double value)
     {
-        lock(TerminalObject)
-            TerminalObject.ScrollBarChanged(value);
+        TerminalObject.ScrollBarChanged(value);
     }
     //接管更新事件
     public EventHandler? TerminalRefreshEvent;
     
     public List<List<TerminalBlock>> GetShowLines()
     {
-        lock (TerminalObject)
+        var newLines = new List<List<TerminalBlock>>();
+        var lines = TerminalObject.GetShowLines();
+        foreach (var line in lines)
         {
-            var newLines = new List<List<TerminalBlock>>();
-            var lines = TerminalObject.GetShowLines();
-            foreach (var line in lines)
+            var newLine = new List<TerminalBlock>();
+            foreach (var block in line)
             {
-                var newLine = new List<TerminalBlock>();
-                foreach (var block in line)
-                {
-                    newLine.Add((TerminalBlock)block.Clone());
-                }
-                newLines.Add(newLine);
+                newLine.Add((TerminalBlock)block.Clone());
             }
-            return newLines;
+            newLines.Add(newLine);
         }
+        return newLines;
     }
 }

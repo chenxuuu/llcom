@@ -14,7 +14,9 @@ public class TerminalObject
     {
 
     }
-    
+
+    private object _lock = new object();
+
     //展示画面变化时的事件
     public EventHandler? TerminalChangedEvent { get; set; }
     private void TerminalChanged()
@@ -69,7 +71,7 @@ public class TerminalObject
     /// 文本不得包含不可见字符
     /// </summary>
     /// <param name="texts">待添加的文本</param>
-    private void AddText(char[] texts)//TODO)) 保持private
+    private void AddText(char[] texts)//保持private
     {
         //防止没有设置窗口大小的时候就添加数据
         if(_windowWidth == 0 || _windowHeight == 0)
@@ -260,14 +262,14 @@ public class TerminalObject
         }
     }
     
-    //TODO)) 仅用于测试
+    //仅用于测试
     private void ChangePosition(int x, int y)
     {
         PositionX = x;
         PositionY = y;
     }
 
-    //TODO)) 仅用于测试
+    //仅用于测试
     private void ChangeStyle(
         int? foreground = null, 
         int? background = null, 
@@ -286,12 +288,19 @@ public class TerminalObject
         if (isUnderLine != null)
             CurrentState.IsUnderLine = isUnderLine.Value;
     }
-    
+
     /// <summary>
-    /// 获取可以显示的行数据
+    /// Retrieves the current collection of show lines, where each line is represented as a list of terminal blocks.
     /// </summary>
-    /// <returns>一行行的数据</returns>
+    /// <remarks>This method is thread-safe.</remarks>
+    /// <returns>A list of lists containing <see cref="TerminalBlock"/> objects, with each inner list representing a single show
+    /// line. Returns an empty list if there are no show lines available.</returns>
     public List<List<TerminalBlock>> GetShowLines()
+    {
+        lock (_lock)
+            return GetShowLinesPrivate();
+    }
+    private List<List<TerminalBlock>> GetShowLinesPrivate()
     {
         List<List<TerminalBlock>> cacheLines = new();
         
@@ -384,8 +393,17 @@ public class TerminalObject
         return cacheLines;
     }
     
-    //窗口大小变化
+    /// <summary>
+    /// Changes the size of the window to the specified width and height.
+    /// </summary>
+    /// <param name="width">The new width of the window, in pixels. Must be a positive integer.</param>
+    /// <param name="height">The new height of the window, in pixels. Must be a positive integer.</param>
     public void ChangeWindowSize(int width, int height)
+    {
+        lock (_lock)
+            ChangeWindowSizePrivate(width, height);
+    }
+    private void ChangeWindowSizePrivate(int width, int height)
     {
         _windowWidth = width;
         var oldHeight = _windowHeight;
@@ -411,8 +429,19 @@ public class TerminalObject
         (CurrentLine == 0 || CacheLines.Count < _windowHeight)
             ? 100
             : 100.0 - (double)CurrentLine / (CacheLines.Count - _windowHeight) * 100.0;
-    //向上移动的行数
+
+    /// <summary>
+    /// Moves the current line position up by the specified number of lines and returns the new vertical position.
+    /// </summary>
+    /// <param name="delta">The number of lines to move up. Must be a positive integer.</param>
+    /// <returns>The new vertical position after moving up by the specified number of lines.</returns>
     public double CurrentLineMoveUp(int delta)
+    {
+        lock (_lock)
+            return CurrentLineMoveUpPrivate(delta);
+    }
+    //向上移动的行数
+    private double CurrentLineMoveUpPrivate(int delta)
     {
         var lastCurrentLine = CurrentLine;
         CurrentLine += delta;
@@ -426,8 +455,18 @@ public class TerminalObject
         
         return CurrentLine2ScrollValue;
     }
-    //滚轮事件
+
+    /// <summary>
+    /// Handles changes to the scroll bar position by updating the associated state or view.
+    /// </summary>
+    /// <param name="value">The new position of the scroll bar. Typically represents a value within the scrollable range.</param>
     public void ScrollBarChanged(double value)
+    {
+        lock (_lock)
+            ScrollBarChangedPrivate(value);
+    }
+    //滚轮事件
+    private void ScrollBarChangedPrivate(double value)
     {
         var lastCurrentLine = CurrentLine;
         if(Math.Abs(value - 100.0) < 0.001 || CacheLines.Count < _windowHeight)
@@ -447,8 +486,17 @@ public class TerminalObject
     /// 保存的光标位置
     /// </summary>
     private int _saveCursorY = 0;
-    
+
+    /// <summary>
+    /// Appends the specified sequence of characters to the current instance.
+    /// </summary>
+    /// <param name="chars">A read-only span of characters to add. The contents of the span are appended in order.</param>
     public void AddChars(ReadOnlySpan<char> chars)
+    {
+        lock (_lock)
+            AddCharsPrivate(chars);
+    }
+    private void AddCharsPrivate(ReadOnlySpan<char> chars)
     {
         //如果没有设置窗口大小，直接返回
         if(_windowWidth == 0 || _windowHeight == 0)
