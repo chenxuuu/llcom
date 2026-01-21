@@ -35,10 +35,10 @@ jobs:
       - name: Build
         run: |
           cd llcomNext/LLCOM/
-          dotnet publish -r $dotnetos-$dotnetarch --configuration Release --self-contained true -p:PublishTrimmed=true -p:TrimMode=link -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
-          rm bin/Release/net10.0/$dotnetos-$dotnetarch/publish/*.pdb
+          dotnet publish -r ${{ matrix.dotnetos }}-${{ matrix.dotnetarch }} --configuration Release --self-contained true -p:PublishTrimmed=true -p:TrimMode=link -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+          rm bin/Release/net10.0/${{ matrix.dotnetos }}-${{ matrix.dotnetarch }}/publish/*.pdb
           mkdir pkg
-          mv bin/Release/net10.0/$dotnetos-$dotnetarch/publish/* pkg/
+          mv bin/Release/net10.0/${{ matrix.dotnetos }}-${{ matrix.dotnetarch }}/publish/* pkg/
 
       - uses: actions/upload-artifact@v4
         with:
