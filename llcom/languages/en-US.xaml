@@ -164,6 +164,7 @@
     <system:String x:Key="AddExtraEnterTip">before do this, alse will use Lua script for data to send</system:String>
     <system:String x:Key="LockLogButton">Lock logs and disable auto scroll</system:String>
     <system:String x:Key="LockLogText">Locked</system:String>
+    <system:String x:Key="SaveLogButton">Click to save received logs</system:String>
     <system:String x:Key="ShowHexFormat">Hex format</system:String>
     <system:String x:Key="ShowHexFormatTip">modes: Only Hex/Only Text/Both Hex and Text</system:String>
     <system:String x:Key="HexSendMode">Send Hex</system:String>

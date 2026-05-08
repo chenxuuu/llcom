@@ -164,6 +164,7 @@
     <system:String x:Key="AddExtraEnterTip">加回车换行前，同样会经过脚本处理数据</system:String>
     <system:String x:Key="LockLogButton">锁定视图禁止滚动</system:String>
     <system:String x:Key="LockLogText">已锁定</system:String>
+    <system:String x:Key="SaveLogButton">点击按钮保存接收日志</system:String>
     <system:String x:Key="ShowHexFormat">Hex显示</system:String>
     <system:String x:Key="ShowHexFormatTip">切换为：只显示Hex/只显示文本数据/同时显示Hex与文本数据</system:String>
     <system:String x:Key="HexSendMode">发Hex</system:String>

@@ -204,7 +204,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Click="SaveLogButton_Click"
-            ToolTip="{DynamicResource LockLogButton}"
+            ToolTip="{DynamicResource SaveLogButton}"
             Visibility="{Binding Path=IsMouseOver, ElementName=mainGrid, Converter={StaticResource boolVisibeConverter}}" BorderBrush="Black">
             <fa:FontAwesome Icon="Save" HorizontalAlignment="Center" FontSize="12"/>
         </Button>
