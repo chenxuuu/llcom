@@ -20,7 +20,8 @@ windows = { version = "0.58", features = [
 ] }
 once_cell = "1.19"
 parking_lot = "0.12"
-retour = { version = "0.3", features = ["static-detour"] }
+# Use ilhook which works on stable Rust, unlike retour which requires nightly
+ilhook = "0.6"
 
 [profile.release]
 opt-level = "z"

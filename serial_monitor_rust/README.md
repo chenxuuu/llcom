@@ -8,7 +8,7 @@ This is a Rust rewrite of the serial port monitoring DLL for llcom. It provides 
 
 - ✅ Monitor serial port read/write operations in any Windows process
 - ✅ Compatible with both x86 and x64 architectures
-- ✅ Safe API hooking using the `retour` crate
+- ✅ Safe API hooking using the `ilhook` crate (works on stable Rust)
 - ✅ Drop-in replacement for the original `serial_monitor.dll`
 - ✅ Open source and maintainable
 
@@ -91,7 +91,7 @@ struct Udata {
 
 ### Hooking Mechanism
 
-The implementation uses the `retour` crate which provides safe Rust bindings for function detouring. It hooks three kernel32.dll functions:
+The implementation uses the `ilhook` crate which provides reliable inline hooking on stable Rust. It hooks three kernel32.dll functions:
 
 1. **ReadFile** - Intercepts data reads from serial port
 2. **WriteFile** - Intercepts data writes to serial port

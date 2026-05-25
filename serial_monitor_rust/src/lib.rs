@@ -10,7 +10,6 @@
 
 use once_cell::sync::Lazy;
 use parking_lot::Mutex;
-use retour::static_detour;
 use std::ffi::c_void;
 use std::ptr;
 use std::sync::atomic::{AtomicPtr, Ordering};
@@ -63,23 +62,25 @@ static SHARED_COM_PORT: Mutex<u32> = Mutex::new(0);
 // Track COM port file handles
 static COM_HANDLES: Lazy<Mutex<Vec<(HANDLE, u32)>>> = Lazy::new(|| Mutex::new(Vec::new()));
 
-// Define detours for the API functions
-static_detour! {
-    static ReadFileDetour: unsafe extern "system" fn(HANDLE, *mut c_void, u32, *mut u32, *mut OVERLAPPED) -> BOOL;
-    static WriteFileDetour: unsafe extern "system" fn(HANDLE, *const c_void, u32, *mut u32, *mut OVERLAPPED) -> BOOL;
-    static CreateFileWDetour: unsafe extern "system" fn(PCWSTR, FILE_ACCESS_FLAGS, FILE_SHARE_MODE, *const SECURITY_ATTRIBUTES, FILE_CREATION_DISPOSITION, FILE_FLAGS_AND_ATTRIBUTES, HANDLE) -> HANDLE;
-}
+// Store hooks so they don't get dropped
+static HOOKS: Lazy<Mutex<Vec<Box<dyn std::any::Any + Send>>>> = Lazy::new(|| Mutex::new(Vec::new()));
+
+// Original function types
+type ReadFileFn = unsafe extern "system" fn(HANDLE, *mut c_void, u32, *mut u32, *mut OVERLAPPED) -> BOOL;
+type WriteFileFn = unsafe extern "system" fn(HANDLE, *const c_void, u32, *mut u32, *mut OVERLAPPED) -> BOOL;
+type CreateFileWFn = unsafe extern "system" fn(PCWSTR, FILE_ACCESS_FLAGS, FILE_SHARE_MODE, *const SECURITY_ATTRIBUTES, FILE_CREATION_DISPOSITION, FILE_FLAGS_AND_ATTRIBUTES, HANDLE) -> HANDLE;
 
 /// Hook for ReadFile
-unsafe extern "system" fn read_file_hook(
+unsafe extern "system" fn ReadFile_Hook(
     hFile: HANDLE,
     lpBuffer: *mut c_void,
     nNumberOfBytesToRead: u32,
     lpNumberOfBytesRead: *mut u32,
     lpOverlapped: *mut OVERLAPPED,
+    original: ReadFileFn,
 ) -> BOOL {
     // Call the original function
-    let result = ReadFileDetour.call(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
+    let result = original(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
 
     // Check if this is a COM port handle we're monitoring
     if result.as_bool() && !lpBuffer.is_null() && !lpNumberOfBytesRead.is_null() {
@@ -97,12 +98,13 @@ unsafe extern "system" fn read_file_hook(
 }
 
 /// Hook for WriteFile
-unsafe extern "system" fn write_file_hook(
+unsafe extern "system" fn WriteFile_Hook(
     hFile: HANDLE,
     lpBuffer: *const c_void,
     nNumberOfBytesToWrite: u32,
     lpNumberOfBytesWritten: *mut u32,
     lpOverlapped: *mut OVERLAPPED,
+    original: WriteFileFn,
 ) -> BOOL {
     // Check if this is a COM port handle we're monitoring before the write
     let mut should_monitor = false;
@@ -117,7 +119,7 @@ unsafe extern "system" fn write_file_hook(
     }
 
     // Call the original function
-    let result = WriteFileDetour.call(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
+    let result = original(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
 
     // Call callback with sent data
     if should_monitor && result.as_bool() && !lpNumberOfBytesWritten.is_null() {
@@ -131,7 +133,7 @@ unsafe extern "system" fn write_file_hook(
 }
 
 /// Hook for CreateFileW to track COM port handles
-unsafe extern "system" fn create_file_w_hook(
+unsafe extern "system" fn CreateFileW_Hook(
     lpFileName: PCWSTR,
     dwDesiredAccess: FILE_ACCESS_FLAGS,
     dwShareMode: FILE_SHARE_MODE,
@@ -139,9 +141,10 @@ unsafe extern "system" fn create_file_w_hook(
     dwCreationDisposition: FILE_CREATION_DISPOSITION,
     dwFlagsAndAttributes: FILE_FLAGS_AND_ATTRIBUTES,
     hTemplateFile: HANDLE,
+    original: CreateFileWFn,
 ) -> HANDLE {
     // Call the original function
-    let result = CreateFileWDetour.call(
+    let result = original(
         lpFileName,
         dwDesiredAccess,
         dwShareMode,
@@ -224,34 +227,165 @@ unsafe fn install_hooks() -> Result<()> {
     let create_file_w_addr = GetProcAddress(kernel32, s!("CreateFileW"))
         .ok_or_else(|| Error::from(E_FAIL))?;
 
-    // Initialize detours
-    ReadFileDetour
-        .initialize(std::mem::transmute(read_file_addr), read_file_hook)
-        .map_err(|_| Error::from(E_FAIL))?
-        .enable()
-        .map_err(|_| Error::from(E_FAIL))?;
+    #[cfg(target_arch = "x86_64")]
+    {
+        use ilhook::x64::Hooker;
 
-    WriteFileDetour
-        .initialize(std::mem::transmute(write_file_addr), write_file_hook)
-        .map_err(|_| Error::from(E_FAIL))?
-        .enable()
-        .map_err(|_| Error::from(E_FAIL))?;
+        // Hook ReadFile
+        let read_hooker = Hooker::new(
+            read_file_addr as usize,
+            ilhook::x64::HookType::JmpToRet(read_file_trampoline as usize),
+            ilhook::x64::CallbackOption::None,
+            ilhook::x64::HookFlags::empty(),
+        );
 
-    CreateFileWDetour
-        .initialize(std::mem::transmute(create_file_w_addr), create_file_w_hook)
-        .map_err(|_| Error::from(E_FAIL))?
-        .enable()
-        .map_err(|_| Error::from(E_FAIL))?;
+        // Hook WriteFile
+        let write_hooker = Hooker::new(
+            write_file_addr as usize,
+            ilhook::x64::HookType::JmpToRet(write_file_trampoline as usize),
+            ilhook::x64::CallbackOption::None,
+            ilhook::x64::HookFlags::empty(),
+        );
+
+        // Hook CreateFileW
+        let create_hooker = Hooker::new(
+            create_file_w_addr as usize,
+            ilhook::x64::HookType::JmpToRet(create_file_w_trampoline as usize),
+            ilhook::x64::CallbackOption::None,
+            ilhook::x64::HookFlags::empty(),
+        );
+
+        let mut hooks = HOOKS.lock();
+        hooks.push(Box::new(read_hooker));
+        hooks.push(Box::new(write_hooker));
+        hooks.push(Box::new(create_hooker));
+    }
+
+    #[cfg(target_arch = "x86")]
+    {
+        use ilhook::x86::Hooker;
+
+        // Hook ReadFile
+        let read_hooker = Hooker::new(
+            read_file_addr as usize,
+            ilhook::x86::HookType::JmpToRet(read_file_trampoline as usize),
+            ilhook::x86::CallbackOption::None,
+            ilhook::x86::HookFlags::empty(),
+        );
+
+        // Hook WriteFile
+        let write_hooker = Hooker::new(
+            write_file_addr as usize,
+            ilhook::x86::HookType::JmpToRet(write_file_trampoline as usize),
+            ilhook::x86::CallbackOption::None,
+            ilhook::x86::HookFlags::empty(),
+        );
+
+        // Hook CreateFileW
+        let create_hooker = Hooker::new(
+            create_file_w_addr as usize,
+            ilhook::x86::HookType::JmpToRet(create_file_w_trampoline as usize),
+            ilhook::x86::CallbackOption::None,
+            ilhook::x86::HookFlags::empty(),
+        );
+
+        let mut hooks = HOOKS.lock();
+        hooks.push(Box::new(read_hooker));
+        hooks.push(Box::new(write_hooker));
+        hooks.push(Box::new(create_hooker));
+    }
 
     Ok(())
 }
 
+// Trampoline functions to bridge ilhook to our hook functions
+#[cfg(target_arch = "x86_64")]
+unsafe extern "system" fn read_file_trampoline(
+    hFile: HANDLE,
+    lpBuffer: *mut c_void,
+    nNumberOfBytesToRead: u32,
+    lpNumberOfBytesRead: *mut u32,
+    lpOverlapped: *mut OVERLAPPED,
+) -> BOOL {
+    // Get original function
+    let kernel32 = GetModuleHandleW(w!("kernel32.dll")).unwrap();
+    let original: ReadFileFn = std::mem::transmute(GetProcAddress(kernel32, s!("ReadFile")).unwrap());
+    ReadFile_Hook(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped, original)
+}
+
+#[cfg(target_arch = "x86")]
+unsafe extern "system" fn read_file_trampoline(
+    hFile: HANDLE,
+    lpBuffer: *mut c_void,
+    nNumberOfBytesToRead: u32,
+    lpNumberOfBytesRead: *mut u32,
+    lpOverlapped: *mut OVERLAPPED,
+) -> BOOL {
+    // Get original function
+    let kernel32 = GetModuleHandleW(w!("kernel32.dll")).unwrap();
+    let original: ReadFileFn = std::mem::transmute(GetProcAddress(kernel32, s!("ReadFile")).unwrap());
+    ReadFile_Hook(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped, original)
+}
+
+#[cfg(target_arch = "x86_64")]
+unsafe extern "system" fn write_file_trampoline(
+    hFile: HANDLE,
+    lpBuffer: *const c_void,
+    nNumberOfBytesToWrite: u32,
+    lpNumberOfBytesWritten: *mut u32,
+    lpOverlapped: *mut OVERLAPPED,
+) -> BOOL {
+    let kernel32 = GetModuleHandleW(w!("kernel32.dll")).unwrap();
+    let original: WriteFileFn = std::mem::transmute(GetProcAddress(kernel32, s!("WriteFile")).unwrap());
+    WriteFile_Hook(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped, original)
+}
+
+#[cfg(target_arch = "x86")]
+unsafe extern "system" fn write_file_trampoline(
+    hFile: HANDLE,
+    lpBuffer: *const c_void,
+    nNumberOfBytesToWrite: u32,
+    lpNumberOfBytesWritten: *mut u32,
+    lpOverlapped: *mut OVERLAPPED,
+) -> BOOL {
+    let kernel32 = GetModuleHandleW(w!("kernel32.dll")).unwrap();
+    let original: WriteFileFn = std::mem::transmute(GetProcAddress(kernel32, s!("WriteFile")).unwrap());
+    WriteFile_Hook(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped, original)
+}
+
+#[cfg(target_arch = "x86_64")]
+unsafe extern "system" fn create_file_w_trampoline(
+    lpFileName: PCWSTR,
+    dwDesiredAccess: FILE_ACCESS_FLAGS,
+    dwShareMode: FILE_SHARE_MODE,
+    lpSecurityAttributes: *const SECURITY_ATTRIBUTES,
+    dwCreationDisposition: FILE_CREATION_DISPOSITION,
+    dwFlagsAndAttributes: FILE_FLAGS_AND_ATTRIBUTES,
+    hTemplateFile: HANDLE,
+) -> HANDLE {
+    let kernel32 = GetModuleHandleW(w!("kernel32.dll")).unwrap();
+    let original: CreateFileWFn = std::mem::transmute(GetProcAddress(kernel32, s!("CreateFileW")).unwrap());
+    CreateFileW_Hook(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile, original)
+}
+
+#[cfg(target_arch = "x86")]
+unsafe extern "system" fn create_file_w_trampoline(
+    lpFileName: PCWSTR,
+    dwDesiredAccess: FILE_ACCESS_FLAGS,
+    dwShareMode: FILE_SHARE_MODE,
+    lpSecurityAttributes: *const SECURITY_ATTRIBUTES,
+    dwCreationDisposition: FILE_CREATION_DISPOSITION,
+    dwFlagsAndAttributes: FILE_FLAGS_AND_ATTRIBUTES,
+    hTemplateFile: HANDLE,
+) -> HANDLE {
+    let kernel32 = GetModuleHandleW(w!("kernel32.dll")).unwrap();
+    let original: CreateFileWFn = std::mem::transmute(GetProcAddress(kernel32, s!("CreateFileW")).unwrap());
+    CreateFileW_Hook(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile, original)
+}
+
 /// Remove hooks
 unsafe fn remove_hooks() {
-    let _ = ReadFileDetour.disable();
-    let _ = WriteFileDetour.disable();
-    let _ = CreateFileWDetour.disable();
-
+    HOOKS.lock().clear();
     COM_HANDLES.lock().clear();
 }
 
