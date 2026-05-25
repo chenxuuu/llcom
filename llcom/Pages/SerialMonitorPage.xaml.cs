@@ -21,12 +21,40 @@ namespace llcom.Pages
 {
     /// <summary>
     /// SerialMonitorPage.xaml 的交互逻辑
+    ///
+    /// Serial Monitor功能通过DLL注入和API Hook实现对其他进程串口通信的监听
+    /// DLL实现已从闭源Delphi版本迁移到开源Rust版本 (serial_monitor_rust/)
+    ///
+    /// 新实现的优势：
+    /// - 完全支持x86和x64架构
+    /// - 更稳定的Hook机制，减少目标程序崩溃
+    /// - 开源可维护的代码
+    /// - 更好的兼容性
+    ///
+    /// 详细文档见: serial_monitor_rust/MIGRATION.md
     /// </summary>
     public partial class SerialMonitorPage : Page
     {
+        /// <summary>
+        /// 回调函数委托，当监听到串口数据时被调用
+        /// </summary>
         public delegate int CallbackDelegate(IntPtr param);
+
+        /// <summary>
+        /// 停止监听串口通信
+        /// 由serial_monitor.dll导出 (Rust实现)
+        /// </summary>
         [DllImport("serial_monitor.dll")]
         static extern bool UnMonitorComm();
+
+        /// <summary>
+        /// 开始监听指定进程的串口通信
+        /// 由serial_monitor.dll导出 (Rust实现)
+        /// </summary>
+        /// <param name="Pid">目标进程ID</param>
+        /// <param name="ComIndex">串口号 (例如: 1 表示 COM1)</param>
+        /// <param name="lpCallFunc">回调函数指针</param>
+        /// <returns>成功返回true，失败返回false</returns>
         [DllImport("serial_monitor.dll")]
         static extern bool MonitorComm(uint Pid, uint ComIndex, CallbackDelegate lpCallFunc);
 
@@ -89,22 +117,31 @@ namespace llcom.Pages
                 {
                     UnMonitorComm();
                 }
-                catch
+                catch (Exception ex)
                 {
                     MonitorButton.IsEnabled = false;
-                    Tools.MessageBox.Show("插件加载失败，目前该功能还不兼容x64版本的LLCOM。\r\n" +
-                        "如需使用该功能，可自行编译32位x86版本。");
+                    Tools.MessageBox.Show($"串口监听插件加载失败:\r\n{ex.Message}\r\n\r\n" +
+                        "请确保serial_monitor.dll存在且未被占用。");
                 }
             }
         }
 
+        /// <summary>
+        /// 串口监听数据结构，与DLL中的定义保持一致
+        /// 使用Pack=1确保内存布局与Rust #[repr(C, packed(1))]匹配
+        /// </summary>
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct Udata
         {
+            /// <summary>串口号</summary>
             public byte ComPort;
+            /// <summary>通信状态 (2=断开, 3=接收, 4=发送)</summary>
             public byte CommState;
+            /// <summary>文件句柄</summary>
             public int FileHandle;
+            /// <summary>数据大小 (最大8192字节)</summary>
             public int DataSize;
+            /// <summary>数据缓冲区</summary>
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8192)]
             public byte[] Data;
         }

@@ -1,0 +1,74 @@
+name: Build Serial Monitor DLL
+
+on:
+  push:
+    paths:
+      - 'serial_monitor_rust/**'
+      - '.github/workflows/build-serial-monitor.yml'
+  pull_request:
+    paths:
+      - 'serial_monitor_rust/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build DLLs
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: i686-pc-windows-msvc,x86_64-pc-windows-msvc
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache cargo index
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/git
+          key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache cargo build
+        uses: actions/cache@v4
+        with:
+          path: serial_monitor_rust/target
+          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Build x86 (32-bit)
+        working-directory: serial_monitor_rust
+        run: cargo build --release --target i686-pc-windows-msvc
+
+      - name: Build x64 (64-bit)
+        working-directory: serial_monitor_rust
+        run: cargo build --release --target x86_64-pc-windows-msvc
+
+      - name: Copy DLLs to project
+        run: |
+          copy serial_monitor_rust\target\i686-pc-windows-msvc\release\serial_monitor.dll llcom\costura32\serial_monitor.dll
+          copy serial_monitor_rust\target\x86_64-pc-windows-msvc\release\serial_monitor.dll llcom\costura64\serial_monitor.dll
+
+      - name: Upload x86 DLL
+        uses: actions/upload-artifact@v4
+        with:
+          name: serial_monitor_x86.dll
+          path: serial_monitor_rust/target/i686-pc-windows-msvc/release/serial_monitor.dll
+
+      - name: Upload x64 DLL
+        uses: actions/upload-artifact@v4
+        with:
+          name: serial_monitor_x64.dll
+          path: serial_monitor_rust/target/x86_64-pc-windows-msvc/release/serial_monitor.dll
+
+      - name: List DLL exports (x86)
+        run: dumpbin /EXPORTS serial_monitor_rust\target\i686-pc-windows-msvc\release\serial_monitor.dll
+
+      - name: List DLL exports (x64)
+        run: dumpbin /EXPORTS serial_monitor_rust\target\x86_64-pc-windows-msvc\release\serial_monitor.dll
