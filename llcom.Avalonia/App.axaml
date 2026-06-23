@@ -3,13 +3,20 @@
              x:Class="llcom.Avalonia.App"
              xmlns:local="using:llcom.Avalonia"
              RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+             <!-- "Default" follows system theme variant (light/dark). -->
 
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
-  
+
     <Application.Styles>
-        <FluentTheme />
+        <FluentTheme DensityStyle="Compact" />
+        <Style Selector="TextBlock">
+            <Setter Property="FontFamily" Value="Microsoft YaHei,SimHei,WenQuanYi Micro Hei,Noto Sans CJK SC,sans-serif"/>
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="FontFamily" Value="Microsoft YaHei,SimHei,WenQuanYi Micro Hei,Noto Sans CJK SC,sans-serif"/>
+        </Style>
+        <!-- 等宽字体控件（TextEditor, ListBox 数据区等）不做覆盖，由各自控件指定 -->
     </Application.Styles>
 </Application>

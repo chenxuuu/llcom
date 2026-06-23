@@ -4,7 +4,7 @@
              x:Class="llcom.Avalonia.Views.MqttPageView"
              x:DataType="vm:MqttViewModel">
     <Grid RowDefinitions="Auto,*">
-        <TabControl Grid.Row="0" Height="400">
+        <TabControl Grid.Row="0">
             <TabItem Header="{DynamicResource MQTTHeardr1}">
                 <Grid RowDefinitions="Auto,Auto,*,*,Auto" Margin="4">
                     <!-- Subscribe -->
@@ -17,11 +17,12 @@
                                   SelectedIndex="{Binding SubscribeQos}" Width="60"/>
                     </Grid>
                     <TextBlock Grid.Row="1" Text="Subscribed:" FontWeight="Bold"/>
-                    <ListBox Grid.Row="2" ItemsSource="{Binding SubscribedTopics}" Background="LightGray"/>
+                    <ListBox Grid.Row="2" ItemsSource="{Binding SubscribedTopics}"
+                             Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"/>
                     <!-- Publish area -->
                     <ScrollViewer Grid.Row="3">
                         <TextBox Text="{Binding PublishPayload}"
-                                 AcceptsReturn="True" TextWrapping="Wrap" FontFamily="Consolas"/>
+                                 AcceptsReturn="True" TextWrapping="Wrap" FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace"/>
                     </ScrollViewer>
                     <Grid Grid.Row="4" ColumnDefinitions="*,Auto,Auto,Auto,Auto">
                         <TextBox Text="{Binding PublishTopic}" Watermark="topic"/>
@@ -74,6 +75,6 @@
         </TabControl>
         <!-- Log -->
         <TextBox Grid.Row="1" Text="{Binding Log}" IsReadOnly="True"
-                 AcceptsReturn="True" TextWrapping="Wrap" FontFamily="Consolas" Margin="4"/>
+                 AcceptsReturn="True" TextWrapping="Wrap" FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace" Margin="4"/>
     </Grid>
 </UserControl>

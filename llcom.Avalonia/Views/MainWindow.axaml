@@ -37,7 +37,9 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate x:DataType="vm:DataLineItem">
                         <TextBlock Text="{Binding DisplayText}"
-                                   FontFamily="Consolas" TextWrapping="Wrap"
+                                   FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace"
+                                   TextWrapping="Wrap"
+                                   LineHeight="18"
                                    Background="Transparent"
                                    Foreground="{Binding Foreground}"/>
                     </DataTemplate>
@@ -80,10 +82,10 @@
 
             <!-- 数据发送框 -->
             <TextBox Name="toSendDataTextBox" Grid.RowSpan="2" Grid.Column="2"
-                     Height="50" Margin="2"
+                     MinHeight="48" Margin="2"
                      VerticalContentAlignment="Top"
                      AcceptsReturn="True"
-                     FontFamily="Consolas"
+                     FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace"
                      Text="{Binding DataToSend}"
                      TextWrapping="Wrap"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"/>
@@ -117,10 +119,7 @@
 
             <TabControl Grid.Row="1" SelectedIndex="{Binding SelectedTabIndex}">
                 <!-- 快捷发送 Tab -->
-                <TabItem>
-                    <TabItem.Header>
-                        <TextBlock Text="{DynamicResource QuickSendCard}"/>
-                    </TabItem.Header>
+                <TabItem Header="{DynamicResource QuickSendCard}">
                     <v:QuickSendView DataContext="{Binding QuickSendPage}"/>
                 </TabItem>
 
@@ -194,20 +193,20 @@
                           ItemsSource="{Binding PortNames}" SelectedItem="{Binding SelectedPort}"
                           MinWidth="120" MaxWidth="250" Margin="0,0,4,0"/>
 
-                <Separator Width="1" Height="14" Background="Gray" Margin="4,0"/>
+                <Separator Width="1" Height="14" Background="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" Margin="4,0"/>
 
                 <TextBlock DockPanel.Dock="Left" Text="{DynamicResource ShowBaudRate}" VerticalAlignment="Center" Margin="4,0"/>
                 <ComboBox Name="baudRateComboBox" DockPanel.Dock="Left"
                           ItemsSource="{Binding BaudRates}" SelectedItem="{Binding SelectedBaudRate}"
                           Width="85" Margin="0,0,4,0"/>
 
-                <Separator Width="1" Height="14" Background="Gray" Margin="4,0"/>
+                <Separator Width="1" Height="14" Background="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" Margin="4,0"/>
 
                 <TextBlock DockPanel.Dock="Left" Text="{DynamicResource ShowStatus}" VerticalAlignment="Center" Margin="4,0"/>
                 <TextBlock Name="statusTextBlock" DockPanel.Dock="Left"
                            Text="{Binding StatusText}" VerticalAlignment="Center" Margin="0,0,4,0"/>
 
-                <Separator Width="1" Height="14" Background="Gray" Margin="4,0"/>
+                <Separator Width="1" Height="14" Background="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" Margin="4,0"/>
 
                 <TextBlock DockPanel.Dock="Right" Cursor="Cross" VerticalAlignment="Center"
                            Text="{DynamicResource ReceivedCount}" Margin="4,0"
@@ -217,7 +216,7 @@
                            Margin="0,0,4,0"
                            ToolTip.Tip="{DynamicResource ClearCountTip}"/>
 
-                <Separator Width="1" Height="14" Background="Gray" Margin="4,0"/>
+                <Separator Width="1" Height="14" Background="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" Margin="4,0"/>
 
                 <TextBlock DockPanel.Dock="Right" Cursor="Cross" VerticalAlignment="Center"
                            Text="{DynamicResource SentCount}" Margin="4,0"

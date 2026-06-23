@@ -36,12 +36,12 @@
         <ScrollViewer Grid.Row="2">
             <TextBox Text="{Binding SendText}" Margin="0,3"
                      AcceptsReturn="True" TextWrapping="Wrap"
-                     FontFamily="Consolas" Watermark="Data to send..."/>
+                     FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace" Watermark="Data to send..."/>
         </ScrollViewer>
 
         <Grid Grid.Row="3" ColumnDefinitions="*,Auto">
             <TextBlock Text="{Binding ReceiveText}" VerticalAlignment="Center"
-                       TextTrimming="CharacterEllipsis"/>
+                       TextWrapping="Wrap"/>
             <Button Grid.Column="1" Content="{DynamicResource NetSendDataButton}"
                     Command="{Binding SendCommand}"
                     IsEnabled="{Binding IsConnected}"/>

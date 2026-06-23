@@ -10,8 +10,9 @@
                   SelectedIndex="{Binding SelectedConverterIndex}" Margin="2"/>
 
         <Border Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Margin="2"
-                BorderBrush="LightGray" BorderThickness="1">
-            <ListBox ItemsSource="{Binding ConvertJobs}" Background="White">
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" BorderThickness="1">
+            <ListBox ItemsSource="{Binding ConvertJobs}"
+                     Background="{DynamicResource SystemControlBackgroundChromeWhiteBrush}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}"/>
@@ -33,8 +34,8 @@
                    VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2"/>
 
         <TextBox Grid.Row="4" Grid.Column="0" Text="{Binding RawText}" Margin="2"
-                 AcceptsReturn="True" TextWrapping="Wrap" FontFamily="Consolas"/>
+                 AcceptsReturn="True" TextWrapping="Wrap" FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace"/>
         <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding ResultText}" Margin="2"
-                 IsReadOnly="True" TextWrapping="Wrap" FontFamily="Consolas"/>
+                 IsReadOnly="True" TextWrapping="Wrap" FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace"/>
     </Grid>
 </UserControl>

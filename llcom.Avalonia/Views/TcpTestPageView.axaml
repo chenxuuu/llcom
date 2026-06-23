@@ -3,7 +3,7 @@
              xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
              x:Class="llcom.Avalonia.Views.TcpTestPageView"
              x:DataType="vm:TcpTestViewModel">
-    <Grid RowDefinitions="60,30,*,30" Margin="4">
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="4">
         <!-- Create buttons -->
         <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*"
               IsVisible="{Binding !IsConnected}">
@@ -31,7 +31,7 @@
 
         <ScrollViewer Grid.Row="2">
             <TextBox Text="{Binding SendText}" AcceptsReturn="True"
-                     TextWrapping="Wrap" Margin="2" FontFamily="Consolas"/>
+                     TextWrapping="Wrap" Margin="2" FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace"/>
         </ScrollViewer>
 
         <Grid Grid.Row="3" ColumnDefinitions="150,*,Auto,Auto">

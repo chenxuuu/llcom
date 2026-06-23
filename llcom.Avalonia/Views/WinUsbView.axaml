@@ -30,7 +30,7 @@
 
     <!-- Raw data display -->
     <TextBox Grid.Row="4" Text="{Binding ReceivedData}" IsReadOnly="True"
-             FontFamily="Consolas" FontSize="13" TextWrapping="Wrap"
+             FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace" FontSize="13" TextWrapping="Wrap"
              AcceptsReturn="True" />
   </Grid>
 </UserControl>

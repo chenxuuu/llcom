@@ -4,11 +4,11 @@
              x:Class="llcom.Avalonia.Views.PlotPageView"
              x:DataType="vm:PlotViewModel">
     <Grid RowDefinitions="Auto,*" Margin="4">
-        <StackPanel Orientation="Horizontal" Spacing="4">
-            <Button Content="{DynamicResource PlotFit}" Command="{Binding FitCommand}"/>
-            <Button Content="{DynamicResource PlotClear}" Command="{Binding ClearCommand}"/>
-            <Button Content="{DynamicResource PlotTheme}" Command="{Binding CycleThemeCommand}"/>
-        </StackPanel>
+        <WrapPanel Orientation="Horizontal">
+            <Button Content="{DynamicResource PlotFit}" Command="{Binding FitCommand}" Margin="0,0,4,4"/>
+            <Button Content="{DynamicResource PlotClear}" Command="{Binding ClearCommand}" Margin="0,0,4,4"/>
+            <Button Content="{DynamicResource PlotTheme}" Command="{Binding CycleThemeCommand}" Margin="0,0,4,4"/>
+        </WrapPanel>
         <Image Grid.Row="1" Source="{Binding PlotImageSource}" Stretch="Uniform"/>
     </Grid>
 </UserControl>

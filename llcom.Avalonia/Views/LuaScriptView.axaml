@@ -13,7 +13,8 @@
             <Button Name="newScriptButton" Margin="3,0,0,0"
                     Command="{Binding NewScriptCommand}"
                     ToolTip.Tip="{DynamicResource LuaNewScript}">
-                <TextBlock Text="+" FontWeight="Bold" Foreground="SkyBlue"/>
+                <TextBlock Text="+" FontWeight="Bold"
+                           Foreground="{DynamicResource SystemAccentColor}"/>
             </Button>
             <Button Name="runScriptButton" Margin="2,0,0,0"
                     Command="{Binding ToggleRunCommand}"
@@ -28,7 +29,7 @@
             <Button Name="refreshScriptListButton" Margin="2,0,0,0"
                     Command="{Binding RefreshScriptListCommand}"
                     ToolTip.Tip="{DynamicResource LuaRefreshList}">
-                <TextBlock Text="↻" Foreground="Green"/>
+                <TextBlock Text="↻" Foreground="{DynamicResource SystemControlForegroundAccentBrush}"/>
             </Button>
             <Button Name="apiDocumentButton" Margin="2,0,0,0"
                     Command="{Binding OpenApiDocCommand}"
@@ -73,8 +74,8 @@
                   RowDefinitions="*">
                 <avalonEdit:TextEditor Name="textEditor"
                                        Document="{Binding Document}"
-                                       FontFamily="Consolas"
-                                       FontSize="11"
+                                       FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace"
+                                       FontSize="13"
                                        ShowLineNumbers="True"
                                        WordWrap="True"
                                        IsReadOnly="{Binding !IsEditorEnabled}"/>
@@ -85,7 +86,7 @@
                   RowDefinitions="*,Auto">
                 <TextBox Grid.Row="0"
                          Text="{Binding LogOutput}" IsReadOnly="True"
-                         FontFamily="Consolas" FontSize="11"
+                         FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace" FontSize="13"
                          VerticalContentAlignment="Top"
                          TextWrapping="Wrap"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"/>
@@ -93,13 +94,13 @@
                 <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto,*,Auto">
                     <Button Name="stopLuaButton" Grid.Column="0" Margin="0,3,3,3"
                             Command="{Binding StopLuaCommand}"
-                            Foreground="DarkRed"
+                            Foreground="{DynamicResource SystemErrorTextColor}"
                             ToolTip.Tip="{DynamicResource LuaStop}">
                         <TextBlock Text="■"/>
                     </Button>
                     <Button Name="pauseLuaPrintButton" Grid.Column="1" Margin="0,3,3,3"
                             Command="{Binding TogglePauseLogCommand}"
-                            Foreground="ForestGreen"
+                            Foreground="{DynamicResource SystemControlForegroundAccentBrush}"
                             ToolTip.Tip="{DynamicResource LuaPause}">
                         <TextBlock Text="{Binding PauseButtonText}"/>
                     </Button>
@@ -109,7 +110,7 @@
                              KeyDown="RunOneLineTextBox_KeyDown"/>
                     <Button Name="sendLuaScriptButton" Grid.Column="3" Margin="3,3,0,3"
                             Command="{Binding RunCommandCommand}"
-                            Foreground="DeepSkyBlue"
+                            Foreground="{DynamicResource SystemAccentColor}"
                             ToolTip.Tip="{DynamicResource LuaSendScript}">
                         <TextBlock Text="↑"/>
                     </Button>

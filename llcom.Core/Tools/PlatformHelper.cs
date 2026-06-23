@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace llcom.Tools;
 
@@ -35,6 +36,12 @@ public static class PlatformHelper
 
     /// <summary>Callback for showing input dialogs (set by UI layer).</summary>
     public static Func<string, string, string, (bool, string)>? InputDialogCallback { get; set; }
+
+    /// <summary>Callback for opening file picker (set by UI layer). Returns selected file path or null.</summary>
+    public static Func<string, Task<string?>>? OpenFilePickerCallback { get; set; }
+
+    /// <summary>Callback for saving file picker (set by UI layer). Returns save path or null.</summary>
+    public static Func<string, string, Task<string?>>? SaveFilePickerCallback { get; set; }
 
     /// <summary>Show a message to the user.</summary>
     public static void ShowMessage(string message)

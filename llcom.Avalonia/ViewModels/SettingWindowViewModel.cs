@@ -52,6 +52,8 @@ public partial class SettingWindowViewModel : ViewModelBase
     [ObservableProperty] private string _sendTestResult = "";
     [ObservableProperty] private string _recvTestInput = "";
     [ObservableProperty] private string _recvTestResult = "";
+    [ObservableProperty] private bool _sendTestHex;
+    [ObservableProperty] private bool _recvTestHex;
     [ObservableProperty] private string _sendTestPara = "";
     [ObservableProperty] private string _recvTestPara = "0";
 
@@ -89,6 +91,41 @@ public partial class SettingWindowViewModel : ViewModelBase
                 RecvScriptDocument = new TextDocument(File.ReadAllText(recvPath));
         }
         catch (Exception) { /* ignore */ }
+    }
+
+    [RelayCommand]
+    private void TestSendScript()
+    {
+        try
+        {
+            var raw = SendTestInput ?? "";
+            byte[] data = SendTestHex
+                ? ByteConvert.Hex2Byte(raw)
+                : System.Text.Encoding.UTF8.GetBytes(raw);
+            // pass to Lua engine (placeholder: return hex representation)
+            SendTestResult = BitConverter.ToString(data).Replace("-", " ");
+        }
+        catch (Exception ex)
+        {
+            SendTestResult = $"Error: {ex.Message}";
+        }
+    }
+
+    [RelayCommand]
+    private void TestRecvScript()
+    {
+        try
+        {
+            var raw = RecvTestInput ?? "";
+            byte[] data = RecvTestHex
+                ? ByteConvert.Hex2Byte(raw)
+                : System.Text.Encoding.UTF8.GetBytes(raw);
+            RecvTestResult = BitConverter.ToString(data).Replace("-", " ");
+        }
+        catch (Exception ex)
+        {
+            RecvTestResult = $"Error: {ex.Message}";
+        }
     }
 
     [RelayCommand]

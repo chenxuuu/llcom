@@ -37,12 +37,14 @@
                         Tag="{Binding}">
                   <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
                     <TextBlock Text="{Binding Author}" FontSize="14"
-                               Foreground="Gray" Margin="0,0,8,0" />
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                               Margin="0,0,8,0" />
                     <TextBlock Grid.Column="1" Text="{Binding Name}"
                                FontSize="16" FontWeight="Bold" />
                     <TextBlock Grid.Row="1" Grid.ColumnSpan="2"
                                Text="{Binding Description}" FontSize="13"
-                               TextWrapping="Wrap" Foreground="#666" />
+                               TextWrapping="Wrap"
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
                   </Grid>
                 </Button>
               </DataTemplate>
@@ -73,7 +75,7 @@
                      TextWrapping="Wrap" Margin="4" FontSize="14" />
 
           <TextBox Grid.Row="3" Text="{Binding SelectedScript.Script}"
-                   IsReadOnly="True" FontFamily="Consolas" FontSize="13"
+                   IsReadOnly="True" FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace" FontSize="13"
                    TextWrapping="Wrap" AcceptsReturn="True" Margin="4" />
 
           <Button Grid.Row="4" Content="下载脚本" Command="{Binding DownloadScriptCommand}"

@@ -17,7 +17,7 @@
 
     <Grid>
         <TabControl>
-            <!-- 串口基本设置 -->
+            <!-- ====== 串口基本设置 ====== -->
             <TabItem Header="{DynamicResource SettingBasic}">
                 <ScrollViewer>
                     <StackPanel Spacing="6" Margin="8">
@@ -35,6 +35,10 @@
 
                         <CheckBox Content="{DynamicResource SettingShowSend}"
                                   IsChecked="{Binding ShowSendData}"/>
+                        <CheckBox Content="{DynamicResource SettingShowSendRaw}"
+                                  IsChecked="{Binding ShowSendRaw}"/>
+                        <CheckBox Content="{DynamicResource SettingKeepTop}"
+                                  IsChecked="{Binding KeepTop}"/>
                         <CheckBox Content="终端模式（键盘直发串口）"
                                   IsChecked="{Binding TerminalMode}"/>
 
@@ -67,49 +71,89 @@
                         <ComboBox ItemsSource="{Binding EncodingList}"
                                   SelectedItem="{Binding SelectedEncoding}" Width="120"/>
 
-                        <Button Content="打开串口日志目录"
+                        <Button Content="{DynamicResource SettingOpenLogFolder}"
                                 Command="{Binding OpenLogFolderCommand}" Margin="0,8"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
 
-            <!-- 发送脚本 -->
-            <TabItem Header="发送处理脚本">
-                <Grid RowDefinitions="Auto,*,Auto" Margin="4">
+            <!-- ====== 发送脚本 ====== -->
+            <TabItem Header="{DynamicResource SettingSendLuaScript}">
+                <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="4">
+                    <!-- 顶部提示 -->
                     <TextBlock Text="发送数据前执行的Lua脚本（传入 uartData，返回处理后的数据）"
                                TextWrapping="Wrap" Margin="0,4"/>
-                    <avalonEdit:TextEditor Grid.Row="1"
-                                           Document="{Binding SendScriptDocument}"
-                                           FontFamily="Consolas" FontSize="11"
-                                           ShowLineNumbers="True" WordWrap="True"/>
-                    <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto,*,Auto" Margin="0,4">
-                        <TextBlock Text="测试:" VerticalAlignment="Center"/>
+
+                    <!-- 测试面板 -->
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto" Margin="0,0,0,6">
+                        <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                                   Text="{DynamicResource SettingLuaTestInput}"/>
                         <TextBox Grid.Column="1" Text="{Binding SendTestInput}" Width="120" Margin="4,0"/>
-                        <CheckBox Grid.Column="2" Content="Hex" IsChecked="{Binding SendTestPara, FallbackValue=false}"/>
-                        <Button Grid.Column="3" Content="测试输入">
-                            <Button.Command> 
-                                <!-- Placeholder test command -->
-                            </Button.Command>
-                        </Button>
+                        <CheckBox Grid.Column="2" Content="HEX"
+                                  IsChecked="{Binding SendTestHex}" Margin="4,0"
+                                  VerticalAlignment="Center"/>
+                        <Button Grid.Column="3" Content="{DynamicResource SettingLuaTestButton}"
+                                Command="{Binding TestSendScriptCommand}"
+                                Margin="4,0"
+                                ToolTip.Tip="{DynamicResource SettingLuaTestButton}"/>
+                        <TextBlock Grid.Column="4" VerticalAlignment="Center" Margin="8,0,4,0"
+                                   Text="{DynamicResource SettingLuaRunResult}"/>
+                        <TextBox Grid.Column="5" Text="{Binding SendTestResult}" IsReadOnly="True"
+                                 Width="120"/>
                     </Grid>
+
+                    <!-- 编辑器 -->
+                    <avalonEdit:TextEditor Grid.Row="2"
+                                           Document="{Binding SendScriptDocument}"
+                                           FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace" FontSize="13"
+                                           ShowLineNumbers="True" WordWrap="True"/>
+
+                    <!-- 底部提示 -->
+                    <WrapPanel Grid.Row="3" Margin="0,4">
+                        <TextBlock Text="传入数据为uartData，传出数据为你脚本return的结果。" TextWrapping="Wrap"/>
+                        <TextBlock Text=" 此处脚本对快捷发送区也生效，对脚本输出数据无效。" TextWrapping="Wrap"/>
+                        <TextBlock Text=" 查看接口文档，可点击接口文档按钮。" TextWrapping="Wrap"/>
+                    </WrapPanel>
                 </Grid>
             </TabItem>
 
-            <!-- 接收脚本 -->
-            <TabItem Header="接收处理脚本">
-                <Grid RowDefinitions="Auto,*,Auto" Margin="4">
+            <!-- ====== 接收脚本 ====== -->
+            <TabItem Header="{DynamicResource SettingRecvLuaScript}">
+                <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="4">
+                    <!-- 顶部提示 -->
                     <TextBlock Text="接收数据后执行的处理脚本（传入 uartData，返回处理后的显示文本）"
                                TextWrapping="Wrap" Margin="0,4"/>
-                    <avalonEdit:TextEditor Grid.Row="1"
-                                           Document="{Binding RecvScriptDocument}"
-                                           FontFamily="Consolas" FontSize="11"
-                                           ShowLineNumbers="True" WordWrap="True"/>
-                    <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto,*,Auto" Margin="0,4">
-                        <TextBlock Text="测试:" VerticalAlignment="Center"/>
+
+                    <!-- 测试面板 -->
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto" Margin="0,0,0,6">
+                        <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                                   Text="{DynamicResource SettingLuaTestInput}"/>
                         <TextBox Grid.Column="1" Text="{Binding RecvTestInput}" Width="120" Margin="4,0"/>
-                        <CheckBox Grid.Column="2" Content="Hex" IsChecked="{Binding RecvTestPara, FallbackValue=false}"/>
-                        <Button Grid.Column="3" Content="测试输入"/>
+                        <CheckBox Grid.Column="2" Content="HEX"
+                                  IsChecked="{Binding RecvTestHex}" Margin="4,0"
+                                  VerticalAlignment="Center"/>
+                        <Button Grid.Column="3" Content="{DynamicResource SettingLuaTestButton}"
+                                Command="{Binding TestRecvScriptCommand}"
+                                Margin="4,0"
+                                ToolTip.Tip="{DynamicResource SettingLuaTestButton}"/>
+                        <TextBlock Grid.Column="4" VerticalAlignment="Center" Margin="8,0,4,0"
+                                   Text="{DynamicResource SettingLuaRunResult}"/>
+                        <TextBox Grid.Column="5" Text="{Binding RecvTestResult}" IsReadOnly="True"
+                                 Width="120"/>
                     </Grid>
+
+                    <!-- 编辑器 -->
+                    <avalonEdit:TextEditor Grid.Row="2"
+                                           Document="{Binding RecvScriptDocument}"
+                                           FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace" FontSize="13"
+                                           ShowLineNumbers="True" WordWrap="True"/>
+
+                    <!-- 底部提示 -->
+                    <WrapPanel Grid.Row="3" Margin="0,4">
+                        <TextBlock Text="传入数据为uartData，传出数据为你脚本return的结果。" TextWrapping="Wrap"/>
+                        <TextBlock Text=" 此处脚本仅对数据显示页面有效，对脚本接收接口的数据无影响。" TextWrapping="Wrap"/>
+                        <TextBlock Text=" 查看接口文档，可点击接口文档按钮。" TextWrapping="Wrap"/>
+                    </WrapPanel>
                 </Grid>
             </TabItem>
         </TabControl>
