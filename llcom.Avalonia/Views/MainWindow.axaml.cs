@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using llcom.Avalonia.ViewModels;
 
@@ -10,15 +11,12 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-    protected override void OnClosing(WindowClosingEventArgs e)
+    protected override void OnClosed(EventArgs e)
     {
-        // Clean up serial port on close
-        try
+        base.OnClosed(e);
+        if (DataContext is MainWindowViewModel vm)
         {
-            Tools.UartManager.Instance.Stop();
+            vm.Cleanup();
         }
-        catch { }
-
-        base.OnClosing(e);
     }
 }

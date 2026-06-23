@@ -8,13 +8,13 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <AssemblyName>llcom</AssemblyName>
     <ApplicationIcon>Assets\llcom.ico</ApplicationIcon>
-    <!-- Enable Linux/Win/macOS build -->
     <RuntimeIdentifiers>win-x64;linux-x64;osx-x64;osx-arm64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Include="languages\**" />
   </ItemGroup>
 
   <ItemGroup>

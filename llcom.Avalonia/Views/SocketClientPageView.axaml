@@ -1,0 +1,50 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
+             x:Class="llcom.Avalonia.Views.SocketClientPageView"
+             x:DataType="vm:SocketClientViewModel">
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="4">
+        <!-- Connection -->
+        <Grid ColumnDefinitions="Auto,*,*,Auto" IsEnabled="{Binding !IsConnected}">
+            <TextBlock Text="{DynamicResource TcpServerAddr}" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" Text="{Binding Server}" Margin="5,0" Watermark="addr"/>
+            <TextBox Grid.Column="2" Text="{Binding Port}" Margin="5,0" Watermark="port"/>
+            <ComboBox Grid.Column="3" ItemsSource="{Binding ProtocolTypes}"
+                      SelectedIndex="{Binding SelectedProtocolType}" Width="100"/>
+        </Grid>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="{DynamicResource ConnectButton}"
+                    Command="{Binding ToggleConnectCommand}"
+                    IsVisible="{Binding !IsConnected}"/>
+            <Button Content="{DynamicResource DisconnectButton}"
+                    Command="{Binding ToggleConnectCommand}"
+                    IsVisible="{Binding IsConnected}"/>
+        </StackPanel>
+
+        <!-- Send options -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="4">
+            <TextBlock Text="Data:" VerticalAlignment="Center"/>
+            <CheckBox Content="Hex" IsChecked="{Binding HexMode}"/>
+            <CheckBox Content="Auto reconnect" IsChecked="{Binding AutoReconnect}"/>
+            <TextBlock Text="Interval:" VerticalAlignment="Center"
+                       IsVisible="{Binding AutoReconnect}"/>
+            <TextBox Text="{Binding ReconnectInterval}" Width="50"
+                     IsVisible="{Binding AutoReconnect}"/>
+        </StackPanel>
+
+        <!-- Data area -->
+        <ScrollViewer Grid.Row="2">
+            <TextBox Text="{Binding SendText}" Margin="0,3"
+                     AcceptsReturn="True" TextWrapping="Wrap"
+                     FontFamily="Consolas" Watermark="Data to send..."/>
+        </ScrollViewer>
+
+        <Grid Grid.Row="3" ColumnDefinitions="*,Auto">
+            <TextBlock Text="{Binding ReceiveText}" VerticalAlignment="Center"
+                       TextTrimming="CharacterEllipsis"/>
+            <Button Grid.Column="1" Content="{DynamicResource NetSendDataButton}"
+                    Command="{Binding SendCommand}"
+                    IsEnabled="{Binding IsConnected}"/>
+        </Grid>
+    </Grid>
+</UserControl>

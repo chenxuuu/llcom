@@ -1,97 +1,138 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:llcom.Avalonia.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="600"
+        xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
+        xmlns:v="clr-namespace:llcom.Avalonia.Views"
         x:Class="llcom.Avalonia.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Title="LLCOM - 跨平台串口调试工具"
-        Width="1024" Height="600"
-        MinWidth="640" MinHeight="400">
-
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+        Icon="/Assets/llcom.ico"
+        Title="{Binding Title}"
+        Width="1200" Height="800"
+        MinWidth="900" MinHeight="650">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://llcom/languages/zh-CN.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
 
     <DockPanel>
         <!-- Status Bar -->
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
-                    Margin="4">
-            <TextBlock Text="{Binding StatusText}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    Margin="4,2" VerticalAlignment="Center">
+            <TextBlock Text="{Binding StatusText}" Margin="0,0,8,0"/>
             <Separator Width="1" Height="16" Background="Gray" Margin="0,0,8,0"/>
-            <TextBlock VerticalAlignment="Center" Margin="0,0,8,0">
-                <Run Text="发送: "/><Run Text="{Binding SentCount}"/>
-            </TextBlock>
-            <TextBlock VerticalAlignment="Center">
-                <Run Text="接收: "/><Run Text="{Binding ReceivedCount}"/>
-            </TextBlock>
+            <TextBlock Text="{Binding SentCount, StringFormat='TX: {0}'}" Margin="0,0,8,0"/>
+            <TextBlock Text="{Binding ReceivedCount, StringFormat='RX: {0}'}" Margin="0,0,8,0"/>
+            <Separator Width="1" Height="16" Background="Gray" Margin="0,0,8,0"/>
+            <TextBlock Text="{Binding PlatformInfo}"/>
         </StackPanel>
 
-        <!-- Toolbar -->
-        <Border DockPanel.Dock="Top" Padding="4" BorderThickness="0,0,0,1"
-                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}">
-            <WrapPanel>
-                <ComboBox ItemsSource="{Binding PortNames}"
-                          SelectedItem="{Binding SelectedPort}"
-                          MinWidth="100" Margin="0,0,4,0"
-                          ToolTip.Tip="选择串口"/>
-                <Button Content="刷新" Command="{Binding RefreshPortsCommand}"
-                        Margin="0,0,4,0"
-                        ToolTip.Tip="刷新串口列表"/>
-                <ComboBox ItemsSource="{Binding BaudRates}"
-                          SelectedItem="{Binding SelectedBaudRate}"
-                          MinWidth="80" Margin="0,0,4,0"
-                          ToolTip.Tip="波特率"/>
-                <ComboBox ItemsSource="{Binding DataBitsList}"
-                          SelectedItem="{Binding SelectedDataBits}"
-                          MinWidth="50" Margin="0,0,4,0"
-                          ToolTip.Tip="数据位"/>
-                <ComboBox ItemsSource="{Binding StopBitsList}"
-                          SelectedItem="{Binding SelectedStopBits}"
-                          MinWidth="50" Margin="0,0,4,0"
-                          ToolTip.Tip="停止位"/>
-                <ComboBox ItemsSource="{Binding ParityList}"
-                          SelectedItem="{Binding SelectedParity}"
-                          MinWidth="65" Margin="0,0,4,0"
-                          ToolTip.Tip="校验位"/>
-                <Button Content="{Binding OpenCloseButtonText}"
-                        Command="{Binding TogglePortCommand}"
-                        MinWidth="80" Margin="0,0,4,0"
-                        Classes="accent"/>
-            </WrapPanel>
-        </Border>
+        <!-- Main Content -->
+        <TabControl SelectedIndex="{Binding SelectedTabIndex}" Margin="2">
+            <!-- Serial Monitor Tab -->
+            <TabItem Header="串口">
+                <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="4">
+                    <!-- Serial config -->
+                    <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto,Auto,Auto">
+                        <TextBlock Text="{DynamicResource ShowPorts}" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding PortNames}"
+                                  SelectedItem="{Binding SelectedPort}" MinWidth="80"/>
+                        <Button Grid.Column="2" Content="{DynamicResource RefreshPortButton}"
+                                Command="{Binding RefreshPortsCommand}"/>
+                        <TextBlock Grid.Column="3" Text="{DynamicResource ShowBaudRate}" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Column="4" ItemsSource="{Binding BaudRates}"
+                                  SelectedItem="{Binding SelectedBaudRate}" MinWidth="80"/>
+                        <Button Grid.Column="5" Content="{DynamicResource OpenPort_open}"
+                                Command="{Binding TogglePortCommand}" MinWidth="60"/>
+                        <CheckBox Grid.Column="6" Content="Hex" IsChecked="{Binding HexDisplay}"/>
+                        <CheckBox Grid.Column="7" Content="{DynamicResource HexSendMode}"
+                                  IsChecked="{Binding HexSend}"/>
+                    </Grid>
 
-        <!-- Send panel (bottom) -->
-        <Border DockPanel.Dock="Bottom" Padding="4" BorderThickness="0,1,0,0"
-                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}">
-            <Grid ColumnDefinitions="Auto,Auto,*,Auto,Auto,Auto"
-                  RowDefinitions="Auto" Margin="0,2">
-                <CheckBox Grid.Column="0" IsChecked="{Binding HexSend}"
-                          Content="Hex" Margin="4,0"/>
-                <CheckBox Grid.Column="1" IsChecked="{Binding ShowSend}"
-                          Content="显示发送" Margin="4,0"/>
-                <TextBox Grid.Column="2" Text="{Binding DataToSend}"
-                         Watermark="输入要发送的数据..." Margin="4,0"/>
-                <Button Grid.Column="3" Content="发送" Margin="4,0"
-                        Command="{Binding SendDataCommand}" Classes="accent"/>
-                <CheckBox Grid.Column="4" IsChecked="{Binding HexDisplay}"
-                          Content="Hex显示" Margin="4,0"/>
-                <Button Grid.Column="5" Content="清除" Margin="4,0"
-                        Command="{Binding ClearDataCommand}"/>
-            </Grid>
-        </Border>
+                    <!-- Send area -->
+                    <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="0,4,0,0">
+                        <TextBox Text="{Binding DataToSend}" Watermark="输入数据..."
+                                 AcceptsReturn="True" FontFamily="Consolas"/>
+                        <Button Grid.Column="1" Content="{DynamicResource SendDataButton}"
+                                Command="{Binding SendDataCommand}" Margin="4,0,0,0"
+                                IsEnabled="{Binding IsPortOpen}" MinWidth="80"/>
+                    </Grid>
 
-        <!-- Main data display area -->
-        <ScrollViewer>
-            <TextBox Text="{Binding ReceivedData}"
-                     IsReadOnly="True"
-                     FontFamily="Cascadia Code,Consolas,monospace"
-                     FontSize="13"
-                     TextWrapping="Wrap"
-                     AcceptsReturn="True"
-                     Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
-                     Padding="4"/>
-        </ScrollViewer>
+                    <!-- Data display -->
+                    <ScrollViewer Grid.Row="2" Margin="0,4">
+                        <SelectableTextBlock Text="{Binding ReceivedData}" FontFamily="Consolas"/>
+                    </ScrollViewer>
+
+                    <!-- Action buttons -->
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,2,0,0">
+                        <Button Content="{DynamicResource ClearLog}" Command="{Binding ClearDataCommand}" Margin="0,0,4,0"/>
+                        <Button Content="{DynamicResource SaveLogButton}" Command="{Binding SaveLogCommand}" Margin="0,0,4,0"/>
+                        <CheckBox Content="{DynamicResource LockLogButton}"
+                                  IsChecked="{Binding LockScroll}" Margin="4,0"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <!-- Socket Public Server Tab -->
+            <TabItem Header="{DynamicResource TcpTabTitle}">
+                <v:TcpTestPageView DataContext="{Binding TcpTestPage}"/>
+            </TabItem>
+
+            <!-- Socket Client Tab -->
+            <TabItem Header="{DynamicResource TcpClientTitle}">
+                <v:SocketClientPageView DataContext="{Binding SocketClientPage}"/>
+            </TabItem>
+
+            <!-- MQTT Tab -->
+            <TabItem Header="MQTT">
+                <v:MqttPageView DataContext="{Binding MqttPage}"/>
+            </TabItem>
+
+            <!-- Plot Tab -->
+            <TabItem Header="{DynamicResource PlotHeader}">
+                <v:PlotPageView DataContext="{Binding PlotPage}"/>
+            </TabItem>
+
+            <!-- Tools Tab -->
+            <TabItem Header="{DynamicResource ToolsTab}">
+                <TabControl>
+                    <TabItem Header="{DynamicResource EncodingToolsTab}">
+                        <v:ConvertPageView DataContext="{Binding ConvertPage}"/>
+                    </TabItem>
+                    <TabItem Header="{DynamicResource EncodingFixHeader}">
+                        <v:EncodingFixPageView DataContext="{Binding EncodingFixPage}"/>
+                    </TabItem>
+                </TabControl>
+            </TabItem>
+
+            <!-- Lua Scripts Tab -->
+            <TabItem Header="{DynamicResource LuaCard}">
+                <DockPanel Margin="4">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,4">
+                        <Button Content="{DynamicResource LuaNewScript}" Margin="0,0,4,0"/>
+                        <Button Content="{DynamicResource LuaRunScript}" Margin="0,0,4,0"/>
+                        <Button Content="{DynamicResource LuaOverload}" Margin="0,0,4,0"/>
+                        <Button Content="{DynamicResource LuaStop}" Margin="0,0,4,0"/>
+                        <Button Content="{DynamicResource LuaOpenFolder}"
+                                Command="{Binding OpenScriptFolderCommand}" Margin="0,0,4,0"/>
+                        <Button Content="{DynamicResource LuaApiReference}"
+                                Command="{Binding OpenApiDocCommand}"/>
+                    </StackPanel>
+                    <Grid RowDefinitions="Auto,*,Auto">
+                        <TextBlock Text="{DynamicResource LuaSendScript}" Margin="0,2"/>
+                        <TextBox Grid.Row="1" AcceptsReturn="True" FontFamily="Consolas"
+                                 Watermark="-- Lua code..."/>
+                        <TextBox Grid.Row="2" IsReadOnly="True" Height="150"
+                                 FontFamily="Consolas" Text="Lua console output..." Margin="0,2"/>
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+
+            <!-- About Tab -->
+            <TabItem Header="{DynamicResource AboutCard}">
+                <v:AboutPageView DataContext="{Binding AboutPage}"/>
+            </TabItem>
+        </TabControl>
     </DockPanel>
 </Window>

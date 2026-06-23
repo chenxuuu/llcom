@@ -50,6 +50,42 @@ public static class PlatformHelper
     /// <summary>Get the path separator char for the current OS.</summary>
     public static char Sep => Path.DirectorySeparatorChar;
 
+    /// <summary>Get a human-readable platform name.</summary>
+    public static string GetPlatformName()
+    {
+        if (IsWindows) return "Windows";
+        if (IsMacOS) return "macOS";
+        if (IsLinux) return "Linux";
+        return "Unknown";
+    }
+
+    /// <summary>Open a URL in the default browser.</summary>
+    public static void OpenUrl(string url)
+    {
+        try
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            });
+        }
+        catch
+        {
+            // Fallback for Linux where UseShellExecute might fail
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = IsWindows ? "cmd" : "xdg-open",
+                    Arguments = IsWindows ? $"/c start {url}" : url,
+                    UseShellExecute = false
+                });
+            }
+            catch { }
+        }
+    }
+
     private static string GetAppPath()
     {
         using var processModule = Process.GetCurrentProcess().MainModule;

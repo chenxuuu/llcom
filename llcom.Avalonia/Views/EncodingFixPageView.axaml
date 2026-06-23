@@ -1,0 +1,21 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
+             x:Class="llcom.Avalonia.Views.EncodingFixPageView"
+             x:DataType="vm:EncodingFixViewModel">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto">
+        <StackPanel Spacing="4" Margin="4">
+            <TextBlock Text="{DynamicResource GarbledCodeData}"/>
+            <TextBox Text="{Binding RawText}" Height="60"
+                     AcceptsReturn="True" TextWrapping="Wrap"/>
+
+            <StackPanel Orientation="Horizontal" Spacing="4">
+                <TextBlock Text="{DynamicResource GarbledCodeDataFixed}" VerticalAlignment="Center"/>
+                <Button Content="{DynamicResource GarbledCodeDataCopy}" Command="{Binding CopySelectedCommand}"/>
+            </StackPanel>
+
+            <DataGrid ItemsSource="{Binding FixResults}" SelectedItem="{Binding SelectedResult}"
+                      AutoGenerateColumns="True" IsReadOnly="True"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

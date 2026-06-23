@@ -1,0 +1,48 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
+             x:Class="llcom.Avalonia.Views.TcpTestPageView"
+             x:DataType="vm:TcpTestViewModel">
+    <Grid RowDefinitions="60,30,*,30" Margin="4">
+        <!-- Create buttons -->
+        <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*"
+              IsVisible="{Binding !IsConnected}">
+            <Button Grid.Column="0" Content="{DynamicResource CreateTcpButton}"
+                    Command="{Binding CreateTcpCommand}" Margin="0,2,2,2"/>
+            <Button Grid.Column="1" Content="{DynamicResource CreateTcpSSLButton}"
+                    Command="{Binding CreateTcpSslCommand}" Margin="0,2,2,2"/>
+            <Button Grid.Column="2" Content="{DynamicResource CreateUdpButton}"
+                    Command="{Binding CreateUdpCommand}" Margin="2,2,0,2"/>
+            <Button Grid.Row="1" Grid.ColumnSpan="3" Content="{DynamicResource CreateTcpIpv6Button}"
+                    Command="{Binding CreateTcpIpv6Command}" Margin="2"/>
+        </Grid>
+
+        <!-- Connected info -->
+        <Grid IsVisible="{Binding IsConnected}" ColumnDefinitions="5*,Auto" RowDefinitions="Auto,Auto">
+            <TextBox Grid.Row="0" Text="{Binding Address}" IsReadOnly="True" Margin="2"/>
+            <TextBox Grid.Row="1" Text="{Binding AddressV6}" IsReadOnly="True" Margin="2"/>
+            <Button Grid.Column="1" Grid.RowSpan="2" Content="{DynamicResource DisconnectButton}"
+                    Command="{Binding DisconnectCommand}" Margin="0,2"/>
+        </Grid>
+
+        <TextBlock Grid.Row="1" Text="Data:" VerticalAlignment="Center" Margin="2"/>
+        <CheckBox Grid.Row="1" Content="Hex" IsChecked="{Binding HexMode}"
+                  HorizontalAlignment="Right" Margin="2"/>
+
+        <ScrollViewer Grid.Row="2">
+            <TextBox Text="{Binding SendText}" AcceptsReturn="True"
+                     TextWrapping="Wrap" Margin="2" FontFamily="Consolas"/>
+        </ScrollViewer>
+
+        <Grid Grid.Row="3" ColumnDefinitions="150,*,Auto,Auto">
+            <ComboBox ItemsSource="{Binding Clients}" SelectedItem="{Binding SelectedClient}"
+                      IsEnabled="{Binding IsConnected}"/>
+            <Button Grid.Column="2" Content="{DynamicResource KickClientButton}"
+                    Command="{Binding KickClientCommand}" Margin="2"
+                    IsEnabled="{Binding IsConnected}"/>
+            <Button Grid.Column="3" Content="{DynamicResource NetSendDataButton}"
+                    Command="{Binding SendCommand}" Margin="2"
+                    IsEnabled="{Binding IsConnected}"/>
+        </Grid>
+    </Grid>
+</UserControl>

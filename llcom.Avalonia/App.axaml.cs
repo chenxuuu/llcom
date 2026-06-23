@@ -1,5 +1,7 @@
 using System;
+using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using llcom.Avalonia.ViewModels;
@@ -23,6 +25,17 @@ public partial class App : Application
             PlatformHelper.ShowMessageCallback = (msg) =>
             {
                 Console.WriteLine($"[llcom message] {msg}");
+            };
+
+            // Set clipboard callback for EncodingFixViewModel
+            EncodingFixViewModel.CopyToClipboardCallback = async (text) =>
+            {
+                if (desktop.MainWindow is { } window)
+                {
+                    var clipboard = TopLevel.GetTopLevel(window)?.Clipboard;
+                    if (clipboard != null)
+                        await clipboard.SetTextAsync(text);
+                }
             };
 
             desktop.MainWindow = new MainWindow
