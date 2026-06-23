@@ -26,23 +26,37 @@ fn embed_hook_dll() {
     let target = std::env::var("TARGET").unwrap_or_else(|_| "x86_64-pc-windows-msvc".into());
     let profile = std::env::var("PROFILE").unwrap_or_else(|_| "release".into());
 
-    let hook_dll_src = workspace_root
-        .join("target")
-        .join(&target)
-        .join(&profile)
-        .join("serial_monitor_hook.dll");
+    // Try target-specific path first (when --target is used),
+    // then fallback to flat path (when building without --target).
+    let hook_dll_src = {
+        let with_target = workspace_root
+            .join("target")
+            .join(&target)
+            .join(&profile)
+            .join("serial_monitor_hook.dll");
+        let flat = workspace_root
+            .join("target")
+            .join(&profile)
+            .join("serial_monitor_hook.dll");
 
-    if !hook_dll_src.exists() {
-        panic!(
-            "\n\nserial_monitor_hook.dll not found.\nExpected: {}\n\n\
-             Build the hook DLL first, then re-build serial_monitor:\n\
-             \n  cargo build{} -p serial_monitor_hook --target {}\n\
-             \nOr just run: .\\build.ps1\n",
-            hook_dll_src.display(),
-            if profile == "release" { " --release" } else { "" },
-            target
-        );
-    }
+        if with_target.exists() {
+            with_target
+        } else if flat.exists() {
+            flat
+        } else {
+            panic!(
+                "\n\nserial_monitor_hook.dll not found.\n\
+                 Tried:\n  {}\n  {}\n\n\
+                 Build the hook DLL first, then re-build serial_monitor:\n\
+                 \n  cargo build{} -p serial_monitor_hook --target {}\n\
+                 \nOr just run: .\\build.ps1\n",
+                with_target.display(),
+                flat.display(),
+                if profile == "release" { " --release" } else { "" },
+                target
+            );
+        }
+    };
 
     let out_dir = PathBuf::from(std::env::var("OUT_DIR").expect("OUT_DIR not set"));
     let dst = out_dir.join("serial_monitor_hook.dll");

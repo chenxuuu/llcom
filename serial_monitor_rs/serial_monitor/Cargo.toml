@@ -31,7 +31,3 @@ features = [
 ]
 
 [build-dependencies]
-
-[profile.release]
-opt-level = 2
-panic = "abort"

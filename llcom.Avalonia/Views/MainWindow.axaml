@@ -108,25 +108,17 @@
 
             <!-- Lua Scripts Tab -->
             <TabItem Header="{DynamicResource LuaCard}">
-                <DockPanel Margin="4">
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,4">
-                        <Button Content="{DynamicResource LuaNewScript}" Margin="0,0,4,0"/>
-                        <Button Content="{DynamicResource LuaRunScript}" Margin="0,0,4,0"/>
-                        <Button Content="{DynamicResource LuaOverload}" Margin="0,0,4,0"/>
-                        <Button Content="{DynamicResource LuaStop}" Margin="0,0,4,0"/>
-                        <Button Content="{DynamicResource LuaOpenFolder}"
-                                Command="{Binding OpenScriptFolderCommand}" Margin="0,0,4,0"/>
-                        <Button Content="{DynamicResource LuaApiReference}"
-                                Command="{Binding OpenApiDocCommand}"/>
-                    </StackPanel>
-                    <Grid RowDefinitions="Auto,*,Auto">
-                        <TextBlock Text="{DynamicResource LuaSendScript}" Margin="0,2"/>
-                        <TextBox Grid.Row="1" AcceptsReturn="True" FontFamily="Consolas"
-                                 Watermark="-- Lua code..."/>
-                        <TextBox Grid.Row="2" IsReadOnly="True" Height="150"
-                                 FontFamily="Consolas" Text="Lua console output..." Margin="0,2"/>
-                    </Grid>
-                </DockPanel>
+                <v:LuaScriptView DataContext="{Binding LuaScriptPage}"/>
+            </TabItem>
+
+            <!-- Online Scripts Tab -->
+            <TabItem Header="在线脚本">
+                <v:OnlineScriptsView DataContext="{Binding OnlineScriptsPage}"/>
+            </TabItem>
+
+            <!-- WinUSB Tab -->
+            <TabItem Header="WinUSB">
+                <v:WinUsbView DataContext="{Binding WinUsbPage}"/>
             </TabItem>
 
             <!-- About Tab -->

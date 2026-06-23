@@ -74,6 +74,9 @@ public partial class MainWindowViewModel : ViewModelBase
     public TcpTestViewModel TcpTestPage { get; } = new();
     public SocketClientViewModel SocketClientPage { get; } = new();
     public PlotViewModel PlotPage { get; } = new();
+    public LuaScriptViewModel LuaScriptPage { get; } = new();
+    public OnlineScriptsViewModel OnlineScriptsPage { get; } = new();
+    public WinUsbViewModel WinUsbPage { get; } = new();
     public AboutViewModel AboutPage { get; } = new();
 
     [ObservableProperty]
@@ -237,5 +240,7 @@ public partial class MainWindowViewModel : ViewModelBase
         TcpTestPage.Cleanup();
         SocketClientPage.Cleanup();
         PlotPage.Cleanup();
+        WinUsbPage.Cleanup();
+        LuaEnv.LuaRunEnv.StopLua("");
     }
 }

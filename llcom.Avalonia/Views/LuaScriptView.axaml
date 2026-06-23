@@ -1,0 +1,34 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
+             x:Class="llcom.Avalonia.Views.LuaScriptView"
+             x:DataType="vm:LuaScriptViewModel">
+  <Grid RowDefinitions="Auto,Auto,*,Auto,Auto" ColumnDefinitions="*">
+    <!-- Toolbar -->
+    <Grid ColumnDefinitions="Auto,Auto,Auto,*" Margin="4">
+      <Button Content="↻" Command="{Binding RefreshScriptListCommand}" ToolTip.Tip="刷新脚本列表" />
+      <ComboBox Grid.Column="1" Width="250" ItemsSource="{Binding ScriptList}"
+                SelectedItem="{Binding SelectedScript}" />
+      <Button Grid.Column="2" Content="{Binding RunStopText}"
+              Command="{Binding ToggleRunCommand}" Margin="4,0" />
+      <TextBlock Grid.Column="3" Text="{Binding StatusText}" VerticalAlignment="Center" Margin="8,0" />
+    </Grid>
+
+    <!-- Hex test bar -->
+    <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto,*" Margin="4">
+      <TextBlock Text="测试:" VerticalAlignment="Center" />
+      <TextBox Grid.Column="1" Watermark="输入文本" Text="{Binding TestData}" Margin="4,0" />
+      <CheckBox Grid.Column="2" Content="Hex" IsChecked="{Binding TestHex}" Margin="4,0" />
+      <Button Grid.Column="3" Content="转换" Command="{Binding TestHexConvertCommand}" Margin="4,0" />
+    </Grid>
+
+    <!-- Log output -->
+    <TextBox Grid.Row="2" Text="{Binding LogOutput}" IsReadOnly="True"
+             FontFamily="Consolas" FontSize="13" TextWrapping="Wrap"
+             AcceptsReturn="True" Margin="4" />
+
+    <!-- Test result -->
+    <TextBox Grid.Row="3" Text="{Binding TestResult}" IsReadOnly="True"
+             FontFamily="Consolas" Margin="4" />
+  </Grid>
+</UserControl>

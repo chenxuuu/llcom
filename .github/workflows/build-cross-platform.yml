@@ -20,7 +20,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: nightly
 
       - name: Build serial_monitor (unix)
         if: runner.os != 'Windows'
@@ -32,8 +34,8 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           cd serial_monitor_rs
-          cargo build --release -p serial_monitor_hook
-          cargo build --release -p serial_monitor
+          cargo build --release -p serial_monitor_hook --target x86_64-pc-windows-msvc
+          cargo build --release -p serial_monitor --target x86_64-pc-windows-msvc
 
       - name: Copy native lib (Linux)
         if: runner.os == 'Linux'
@@ -51,7 +53,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           New-Item -ItemType Directory -Force -Path llcom\native\win-x64
-          Copy-Item serial_monitor_rs\target\release\serial_monitor.dll llcom\native\win-x64\
+          Copy-Item serial_monitor_rs\target\x86_64-pc-windows-msvc\release\serial_monitor.dll llcom\native\win-x64\
 
       - name: Upload Rust artifacts
         uses: actions/upload-artifact@v4
@@ -104,14 +106,7 @@ jobs:
         run: dotnet build llcom.Avalonia/llcom.Avalonia.csproj -c Release --no-restore
 
       - name: Publish
-        run: |
-          dotnet publish llcom.Avalonia/llcom.Avalonia.csproj \
-            -c Release \
-            -r ${{ matrix.rid }} \
-            --self-contained true \
-            -p:PublishSingleFile=true \
-            -p:IncludeNativeLibrariesForSelfExtract=true \
-            -o publish/${{ matrix.rid }}
+        run: dotnet publish llcom.Avalonia/llcom.Avalonia.csproj -c Release -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish/${{ matrix.rid }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

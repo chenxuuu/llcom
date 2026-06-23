@@ -1,0 +1,36 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
+             x:Class="llcom.Avalonia.Views.WinUsbView"
+             x:DataType="vm:WinUsbViewModel">
+  <Grid RowDefinitions="Auto,Auto,Auto,Auto,*" Margin="4">
+    <!-- Device selector -->
+    <Grid ColumnDefinitions="*,Auto,Auto">
+      <ComboBox ItemsSource="{Binding DeviceList}" SelectedItem="{Binding SelectedDevice}" />
+      <Button Grid.Column="1" Content="↻" Command="{Binding RefreshDevicesCommand}" Margin="4,0" />
+      <Button Grid.Column="2" Content="{Binding ConnectText}" Command="{Binding ToggleConnectCommand}" />
+    </Grid>
+
+    <!-- Endpoints (simplified) -->
+    <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="0,4">
+      <TextBox Watermark="IN endpoint" Text="{Binding InEndpoint}" />
+      <TextBox Grid.Column="1" Watermark="OUT endpoint" Text="{Binding OutEndpoint}" Margin="4,0,0,0" />
+    </Grid>
+
+    <!-- Status -->
+    <TextBlock Grid.Row="2" Text="{Binding StatusText}" Margin="0,2" />
+
+    <!-- Send bar -->
+    <Grid Grid.Row="3" ColumnDefinitions="*,Auto,Auto" Margin="0,4">
+      <TextBox Watermark="发送数据" Text="{Binding SendData}" />
+      <CheckBox Grid.Column="1" Content="Hex" IsChecked="{Binding HexSend}" Margin="8,0" />
+      <Button Grid.Column="2" Content="发送" Command="{Binding SendDataCommand}"
+              IsEnabled="{Binding IsConnected}" />
+    </Grid>
+
+    <!-- Raw data display -->
+    <TextBox Grid.Row="4" Text="{Binding ReceivedData}" IsReadOnly="True"
+             FontFamily="Consolas" FontSize="13" TextWrapping="Wrap"
+             AcceptsReturn="True" />
+  </Grid>
+</UserControl>

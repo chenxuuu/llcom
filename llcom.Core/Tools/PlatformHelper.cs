@@ -33,6 +33,9 @@ public static class PlatformHelper
     /// <summary>Callback for loading language files (set by UI layer).</summary>
     public static Action<string>? LoadLanguageFileCallback { get; set; }
 
+    /// <summary>Callback for showing input dialogs (set by UI layer).</summary>
+    public static Func<string, string, string, (bool, string)>? InputDialogCallback { get; set; }
+
     /// <summary>Show a message to the user.</summary>
     public static void ShowMessage(string message)
     {

@@ -127,6 +127,7 @@ fn create_shmem(pipe_name: &str) -> Option<SH> {
         .encode_utf16()
         .chain(std::iter::once(0u16))
         .collect();
+    let name_w = widestring("Local\\llcom_smv2_session");
     let byte_len = (w.len() * 2).max(512) as u32;
 
     unsafe {
@@ -136,7 +137,7 @@ fn create_shmem(pipe_name: &str) -> Option<SH> {
             PAGE_READWRITE,
             0,
             byte_len,
-            PCWSTR::from_raw(widestring("Local\\llcom_smv2_session")),
+            PCWSTR(name_w.as_ptr()),
         )
         .ok()?;
 
