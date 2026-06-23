@@ -82,6 +82,12 @@
     <system:String x:Key="SerialMonitorStop">停止监听</system:String>
     <system:String x:Key="OnlineScriptTitle">社区脚本</system:String>
     <system:String x:Key="OnlineScriptDownload">下载此脚本</system:String>
+    <system:String x:Key="OnlineScriptListTitle">在线脚本</system:String>
+    <system:String x:Key="OnlineScriptRefresh">刷新</system:String>
+    <system:String x:Key="OnlineScriptDiscussion">查看讨论</system:String>
+    <system:String x:Key="OnlineScriptBack">← 返回</system:String>
+    <system:String x:Key="OnlineScriptAuthor">作者: {0}</system:String>
+    <system:String x:Key="OnlineScriptVersion">版本: {0}</system:String>
     <system:String x:Key="Loading">加载中...</system:String>
     <system:String x:Key="AboutCard">关于</system:String>
     <system:String x:Key="ChangeLanguage">语言/Language</system:String>
@@ -143,4 +149,29 @@
     <system:String x:Key="SettingLuaTestButton">测试输入值</system:String>
     <system:String x:Key="SettingLuaRawText">原始数据：</system:String>
     <system:String x:Key="SettingLuaRunResult">运行结果：</system:String>
+    <!-- Status bar messages -->
+    <system:String x:Key="StatusReady">就绪</system:String>
+    <system:String x:Key="StatusPortClosed">串口已关闭</system:String>
+    <system:String x:Key="StatusCloseFailed">关闭失败: {0}</system:String>
+    <system:String x:Key="StatusSelectPort">请选择串口</system:String>
+    <system:String x:Key="StatusConnected">已连接 {0} @ {1}</system:String>
+    <system:String x:Key="StatusOpenFailed">打开失败: {0}</system:String>
+    <system:String x:Key="StatusSentBytes">已发送 {0} 字节</system:String>
+    <system:String x:Key="StatusSendFailed">发送失败: {0}</system:String>
+    <system:String x:Key="StatusLogSaved">日志已保存: {0}</system:String>
+    <system:String x:Key="StatusSaveFailed">保存失败: {0}</system:String>
+    <system:String x:Key="StatusLangZh">语言已切换为简体中文</system:String>
+    <system:String x:Key="StatusLangEn">语言已切换为英文</system:String>
+    <!-- Tab headers without DynamicResource currently -->
+    <system:String x:Key="MqttTabHeader">MQTT</system:String>
+    <system:String x:Key="WinUsbTabHeader">WinUSB</system:String>
+    <system:String x:Key="OnlineScriptTab">📻 社区脚本</system:String>
+    <!-- MQTT page -->
+    <system:String x:Key="MqttTopic">topic</system:String>
+    <system:String x:Key="MqttQos">QOS:</system:String>
+    <system:String x:Key="MqttSubscribed">Subscribed:</system:String>
+    <system:String x:Key="MqttCleanSession">Clean session</system:String>
+    <system:String x:Key="MqttCaCertPath">CA证书文件路径</system:String>
+    <system:String x:Key="MqttClientCertPath">客户端证书文件路径</system:String>
+    <system:String x:Key="MqttCertPassword">证书密码（无则留空）</system:String>
 </ResourceDictionary>

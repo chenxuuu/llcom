@@ -129,10 +129,7 @@
                 </TabItem>
 
                 <!-- 在线脚本 Tab -->
-                <TabItem>
-                    <TabItem.Header>
-                        <TextBlock Text="📻"/>
-                    </TabItem.Header>
+                <TabItem Header="{DynamicResource OnlineScriptTab}">
                     <v:OnlineScriptsView DataContext="{Binding OnlineScriptsPage}"/>
                 </TabItem>
 
@@ -154,7 +151,7 @@
                         <TabItem Header="{DynamicResource EncodingToolsTab}">
                             <v:ConvertPageView DataContext="{Binding ConvertPage}"/>
                         </TabItem>
-                        <TabItem Header="MQTT">
+                        <TabItem Header="{DynamicResource MqttTabHeader}">
                             <v:MqttPageView DataContext="{Binding MqttPage}"/>
                         </TabItem>
                         <TabItem Header="{DynamicResource EncodingFixHeader}">
@@ -166,7 +163,7 @@
                         <TabItem Header="{DynamicResource PlotHeader}">
                             <v:PlotPageView DataContext="{Binding PlotPage}"/>
                         </TabItem>
-                        <TabItem Header="WinUSB">
+                        <TabItem Header="{DynamicResource WinUsbTabHeader}">
                             <v:WinUsbView DataContext="{Binding WinUsbPage}"/>
                         </TabItem>
                     </TabControl>

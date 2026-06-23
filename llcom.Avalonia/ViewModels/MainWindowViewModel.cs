@@ -4,6 +4,7 @@ using System.IO.Ports;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using llcom.Avalonia.Helpers;
 using llcom.Tools;
 
 namespace llcom.Avalonia.ViewModels;
@@ -39,7 +40,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     private bool _isPortOpen;
     [ObservableProperty]
-    private string _openCloseButtonText = "打开串口";
+    private string _openCloseButtonText = Helpers.LocaleHelper.Get("OpenPortButton");
 
     // ── Data display ────────────────────────────────────────────────────
     [ObservableProperty]
@@ -55,7 +56,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     private bool _autoReconnect = true;
     [ObservableProperty]
-    private string _statusText = "就绪";
+    private string _statusText = Helpers.LocaleHelper.Get("StatusReady");
     [ObservableProperty]
     private long _sentCount;
     [ObservableProperty]
@@ -87,10 +88,12 @@ public partial class MainWindowViewModel : ViewModelBase
     public AboutViewModel AboutPage { get; } = new();
 
     [ObservableProperty]
-    private string _title = "LLCOM - 能跑Lua脚本的串口调试工具";
+    private string _title = Helpers.LocaleHelper.Get("AppTitle");
 
     [ObservableProperty]
     private string _platformInfo = $"{PlatformHelper.GetPlatformName()} - .NET 8";
+
+    private string _currentLanguage = "zh-CN";
 
     public MainWindowViewModel()
     {
@@ -98,10 +101,7 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             StatusText = msg;
         };
-        PlatformHelper.LoadLanguageFileCallback = _ =>
-        {
-            // Language loading is handled via Avalonia ResourceDictionaries
-        };
+        // LoadLanguageFileCallback is set by App.axaml.cs after window creation
     }
 
     // ── Commands ────────────────────────────────────────────────────────
@@ -120,16 +120,16 @@ public partial class MainWindowViewModel : ViewModelBase
             {
                 UartManager.Instance.Close();
                 IsPortOpen = false;
-                OpenCloseButtonText = "打开串口";
-                StatusText = "串口已关闭";
+                OpenCloseButtonText = LocaleHelper.Get("OpenPortButton");
+                StatusText = LocaleHelper.Get("StatusPortClosed");
             }
-            catch (Exception ex) { StatusText = $"关闭失败: {ex.Message}"; }
+            catch (Exception ex) { StatusText = LocaleHelper.Format("StatusCloseFailed", ex.Message); }
         }
         else
         {
             if (string.IsNullOrEmpty(SelectedPort))
             {
-                StatusText = "请选择串口";
+                StatusText = LocaleHelper.Get("StatusSelectPort");
                 return;
             }
             try
@@ -151,10 +151,10 @@ public partial class MainWindowViewModel : ViewModelBase
                 uart.UartDataSent += OnDataSent;
                 uart.Open();
                 IsPortOpen = true;
-                OpenCloseButtonText = "关闭串口";
-                StatusText = $"已连接 {SelectedPort} @ {SelectedBaudRate}";
+                OpenCloseButtonText = LocaleHelper.Get("ClosePortButton");
+                StatusText = LocaleHelper.Format("StatusConnected", SelectedPort!, SelectedBaudRate);
             }
-            catch (Exception ex) { StatusText = $"\u6253\u5F00\u5931\u8D25: {ex.Message}"; }
+            catch (Exception ex) { StatusText = LocaleHelper.Format("StatusOpenFailed", ex.Message); }
         }
     }
 
@@ -169,9 +169,9 @@ public partial class MainWindowViewModel : ViewModelBase
                 : System.Text.Encoding.UTF8.GetBytes(DataToSend);
             UartManager.Instance.SendData(data);
             SentCount += data.Length;
-            StatusText = $"已发送 {data.Length} 字节";
+            StatusText = LocaleHelper.Format("StatusSentBytes", data.Length);
         }
-        catch (Exception ex) { StatusText = $"发送失败: {ex.Message}"; }
+        catch (Exception ex) { StatusText = LocaleHelper.Format("StatusSendFailed", ex.Message); }
     }
 
     [RelayCommand]
@@ -193,13 +193,27 @@ public partial class MainWindowViewModel : ViewModelBase
             var text = string.Join(Environment.NewLine,
                 ReceivedLines.Select(line => line.DisplayText));
             System.IO.File.WriteAllText(path, text);
-            StatusText = $"日志已保存: {fileName}";
+            StatusText = LocaleHelper.Format("StatusLogSaved", fileName);
         }
-        catch (Exception ex) { StatusText = $"保存失败: {ex.Message}"; }
+        catch (Exception ex) { StatusText = LocaleHelper.Format("StatusSaveFailed", ex.Message); }
     }
 
     [RelayCommand]
-    private void SwitchLanguage() { /* Toggle between zh-CN and en-US */ }
+    private void SwitchLanguage()
+    {
+        _currentLanguage = _currentLanguage == "zh-CN" ? "en-US" : "zh-CN";
+        LocaleHelper.SetLanguage(_currentLanguage);
+        PlatformHelper.LoadLanguageFile(_currentLanguage);
+
+        // Refresh all ViewModel text properties
+        Title = LocaleHelper.Get("AppTitle");
+        OpenCloseButtonText = IsPortOpen
+            ? LocaleHelper.Get("ClosePortButton")
+            : LocaleHelper.Get("OpenPortButton");
+        StatusText = IsPortOpen
+            ? LocaleHelper.Format("StatusConnected", SelectedPort ?? "", SelectedBaudRate)
+            : LocaleHelper.Get("StatusReady");
+    }
 
     [RelayCommand]
     private void OpenSettings() { /* Open settings window */ }

@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Markup.Xaml.Styling;
 using llcom.Avalonia.ViewModels;
 using llcom.Avalonia.Views;
 using llcom.Tools;
@@ -41,6 +42,20 @@ public partial class App : Application
             desktop.MainWindow = new MainWindow
             {
                 DataContext = new MainWindowViewModel(),
+            };
+
+            // Language switching: swap the merged ResourceDictionary at runtime
+            PlatformHelper.LoadLanguageFileCallback = (language) =>
+            {
+                if (desktop.MainWindow is MainWindow mainWindow)
+                {
+                    var dict = mainWindow.Resources;
+                    dict.MergedDictionaries.Clear();
+                    dict.MergedDictionaries.Add(new ResourceInclude(default(Uri))
+                    {
+                        Source = new Uri($"avares://llcom/languages/{language}.xaml")
+                    });
+                }
             };
         }
 

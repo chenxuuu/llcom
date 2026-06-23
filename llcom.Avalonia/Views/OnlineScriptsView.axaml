@@ -20,11 +20,11 @@
       <Grid IsVisible="{Binding IsInList}">
         <Grid RowDefinitions="Auto,*" Margin="4">
           <Grid ColumnDefinitions="*,Auto,Auto">
-            <TextBlock Text="在线脚本" FontSize="20" FontWeight="Bold" />
+            <TextBlock Text="{DynamicResource OnlineScriptListTitle}" FontSize="20" FontWeight="Bold" />
             <Button Grid.Column="1" Content="↻" Command="{Binding RefreshListCommand}"
-                    ToolTip.Tip="刷新" Margin="4" />
+                    ToolTip.Tip="{DynamicResource OnlineScriptRefresh}" Margin="4" />
             <Button Grid.Column="2" Content="ℹ" Command="{Binding OpenDiscussionPageCommand}"
-                    ToolTip.Tip="查看讨论" Margin="4" />
+                    ToolTip.Tip="{DynamicResource OnlineScriptDiscussion}" Margin="4" />
           </Grid>
 
           <ListBox Grid.Row="1" ItemsSource="{Binding Scripts}"
@@ -57,7 +57,7 @@
       <Grid IsVisible="{Binding !IsInList}">
         <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="4">
           <Grid ColumnDefinitions="Auto,*,Auto">
-            <Button Content="← 返回" Command="{Binding BackToListCommand}" Margin="4" />
+            <Button Content="{DynamicResource OnlineScriptBack}" Command="{Binding BackToListCommand}" Margin="4" />
             <TextBlock Grid.Column="1" Text="{Binding SelectedScript.Name}"
                        FontSize="20" FontWeight="Bold"
                        HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -78,7 +78,7 @@
                    IsReadOnly="True" FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace" FontSize="13"
                    TextWrapping="Wrap" AcceptsReturn="True" Margin="4" />
 
-          <Button Grid.Row="4" Content="下载脚本" Command="{Binding DownloadScriptCommand}"
+          <Button Grid.Row="4" Content="{DynamicResource OnlineScriptDownload}" Command="{Binding DownloadScriptCommand}"
                   Height="40" FontSize="16" Margin="4" />
         </Grid>
       </Grid>

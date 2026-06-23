@@ -82,6 +82,12 @@
     <system:String x:Key="SerialMonitorStop">Stop monitor</system:String>
     <system:String x:Key="OnlineScriptTitle">Community scripts</system:String>
     <system:String x:Key="OnlineScriptDownload">Download this script</system:String>
+    <system:String x:Key="OnlineScriptListTitle">Online Scripts</system:String>
+    <system:String x:Key="OnlineScriptRefresh">Refresh</system:String>
+    <system:String x:Key="OnlineScriptDiscussion">View Discussion</system:String>
+    <system:String x:Key="OnlineScriptBack">← Back</system:String>
+    <system:String x:Key="OnlineScriptAuthor">Author: {0}</system:String>
+    <system:String x:Key="OnlineScriptVersion">Version: {0}</system:String>
     <system:String x:Key="Loading">Loading...</system:String>
     <system:String x:Key="AboutCard">About</system:String>
     <system:String x:Key="ChangeLanguage">语言/Language</system:String>
@@ -143,4 +149,29 @@
     <system:String x:Key="SettingLuaTestButton">Test</system:String>
     <system:String x:Key="SettingLuaRawText">Raw data:</system:String>
     <system:String x:Key="SettingLuaRunResult">Result:</system:String>
+    <!-- Status bar messages -->
+    <system:String x:Key="StatusReady">Ready</system:String>
+    <system:String x:Key="StatusPortClosed">Port closed</system:String>
+    <system:String x:Key="StatusCloseFailed">Close failed: {0}</system:String>
+    <system:String x:Key="StatusSelectPort">Please select a port</system:String>
+    <system:String x:Key="StatusConnected">Connected {0} @ {1}</system:String>
+    <system:String x:Key="StatusOpenFailed">Open failed: {0}</system:String>
+    <system:String x:Key="StatusSentBytes">Sent {0} bytes</system:String>
+    <system:String x:Key="StatusSendFailed">Send failed: {0}</system:String>
+    <system:String x:Key="StatusLogSaved">Log saved: {0}</system:String>
+    <system:String x:Key="StatusSaveFailed">Save failed: {0}</system:String>
+    <system:String x:Key="StatusLangZh">Language switched to Simplified Chinese</system:String>
+    <system:String x:Key="StatusLangEn">Language switched to English</system:String>
+    <!-- Tab headers without DynamicResource currently -->
+    <system:String x:Key="MqttTabHeader">MQTT</system:String>
+    <system:String x:Key="WinUsbTabHeader">WinUSB</system:String>
+    <system:String x:Key="OnlineScriptTab">📻 Community Scripts</system:String>
+    <!-- MQTT page -->
+    <system:String x:Key="MqttTopic">topic</system:String>
+    <system:String x:Key="MqttQos">QOS:</system:String>
+    <system:String x:Key="MqttSubscribed">Subscribed:</system:String>
+    <system:String x:Key="MqttCleanSession">Clean session</system:String>
+    <system:String x:Key="MqttCaCertPath">CA certificate path</system:String>
+    <system:String x:Key="MqttClientCertPath">Client certificate path</system:String>
+    <system:String x:Key="MqttCertPassword">Certificate password (leave empty if none)</system:String>
 </ResourceDictionary>
