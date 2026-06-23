@@ -32,6 +32,7 @@
     <system:String x:Key="LuaPause">Pause Log print</system:String>
     <system:String x:Key="LuaContinue">Continue print log</system:String>
     <system:String x:Key="LuaSendScript">Run Lua command</system:String>
+    <system:String x:Key="TcpServerAddr">Server Address</system:String>
     <system:String x:Key="TcpTabTitle">Socket Public Server</system:String>
     <system:String x:Key="TcpLocalTabTitle">TCP Local Server</system:String>
     <system:String x:Key="UdpLocalTabTitle">UDP Local Server</system:String>
@@ -83,7 +84,7 @@
     <system:String x:Key="SerialMonitorStopped">Monitor stopped</system:String>
     <system:String x:Key="SerialMonitorMonitoring">Monitoring...</system:String>
     <system:String x:Key="SerialMonitorSelectBoth">Please select process and COM port</system:String>
-    <system:String x:Key="SerialMonitorNotAvailable">Serial Monitor is not supported on Linux/macOS</system:String>
+    <system:String x:Key="SerialMonitorNotAvailable">Serial Monitor is not available on Linux/macOS (relies on Windows API hook injection; use strace -e read,write -p PID or socat relay as alternatives)</system:String>
     <!-- WinUSB page -->
     <system:String x:Key="WinUsbDeviceList">USB device list</system:String>
     <system:String x:Key="WinUsbInEndpoint">IN endpoint (0x81)</system:String>
@@ -97,6 +98,17 @@
     <system:String x:Key="LuaFileName">Script name:</system:String>
     <!-- About page -->
     <system:String x:Key="AboutSubTitle">Debug serial port with Lua!</system:String>
+    <system:String x:Key="AboutDiscriptionMain">LLCOM is a serial port debugging tool with reliable connection and auto-reconnect. It features a quick-send panel on the right side.</system:String>
+    <system:String x:Key="AboutDiscriptionMore">In addition to standard data send/receive capabilities, LLCOM includes a Lua runtime environment. Users can write Lua scripts to automate almost any imaginable task, greatly enhancing the tool's usability.</system:String>
+    <system:String x:Key="AboutDevelopers">Developers: chenxuuu, whc2001</system:String>
+    <system:String x:Key="AboutQQGroup">QQ Group: 931546484</system:String>
+    <system:String x:Key="AboutTranslator">Translators: chenxuuu</system:String>
+    <system:String x:Key="AboutGitHubButton">Open GitHub</system:String>
+    <system:String x:Key="AboutFeedBackButton">Create issue</system:String>
+    <system:String x:Key="AboutGitHubText">Open source project, star welcome!</system:String>
+    <system:String x:Key="AboutFeedBack">Found an issue? Click the button below</system:String>
+    <system:String x:Key="AboutThanksProjects">Thanks to these projects:</system:String>
+    <system:String x:Key="AboutVersion">Version</system:String>
     <!-- Online scripts -->
     <system:String x:Key="OnlineScriptFileExists">Script file already exists!</system:String>
     <system:String x:Key="OnlineScriptSaveSuccess">Saved successfully!</system:String>

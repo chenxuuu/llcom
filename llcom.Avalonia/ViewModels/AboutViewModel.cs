@@ -1,9 +1,8 @@
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System;
-using System.Threading.Tasks;
+using System.Reflection;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using llcom.Model;
 using llcom.Tools;
 
 namespace llcom.Avalonia.ViewModels;
@@ -11,7 +10,7 @@ namespace llcom.Avalonia.ViewModels;
 public partial class AboutViewModel : ViewModelBase
 {
     [ObservableProperty]
-    private string _version = "1.0.0";
+    private string _assemblyVersion = "";
 
     [ObservableProperty]
     private string _platform = Environment.OSVersion.ToString();
@@ -19,9 +18,20 @@ public partial class AboutViewModel : ViewModelBase
     [ObservableProperty]
     private string _framework = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
 
+    public List<string> ThanksProjects { get; } = new()
+    {
+        "MoonSharp (Lua)",
+        "Avalonia UI",
+        "AvaloniaEdit",
+        "LibUsbDotNet",
+        "CommunityToolkit.Mvvm",
+        "SkiaSharp"
+    };
+
     public AboutViewModel()
     {
         Platform = $"{PlatformHelper.GetPlatformName()} - {Environment.OSVersion}";
+        AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.0.0";
     }
 
     [RelayCommand]

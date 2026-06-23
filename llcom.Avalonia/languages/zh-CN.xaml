@@ -32,6 +32,7 @@
     <system:String x:Key="LuaPause">暂停打印</system:String>
     <system:String x:Key="LuaContinue">继续打印</system:String>
     <system:String x:Key="LuaSendScript">实时执行lua语句</system:String>
+    <system:String x:Key="TcpServerAddr">服务器地址</system:String>
     <system:String x:Key="TcpTabTitle">socket公共服务端</system:String>
     <system:String x:Key="TcpLocalTabTitle">本机TCP服务端</system:String>
     <system:String x:Key="UdpLocalTabTitle">本机UDP服务端</system:String>
@@ -83,7 +84,7 @@
     <system:String x:Key="SerialMonitorStopped">监听已停止</system:String>
     <system:String x:Key="SerialMonitorMonitoring">监听中...</system:String>
     <system:String x:Key="SerialMonitorSelectBoth">请选择进程和串口</system:String>
-    <system:String x:Key="SerialMonitorNotAvailable">串口监听在 Linux/macOS 上暂不支持</system:String>
+    <system:String x:Key="SerialMonitorNotAvailable">串口监听在 Linux/macOS 上暂不支持（依赖 Windows API hook 注入，Linux 下可用 strace -e read,write -p PID 替代，或使用 socat 中继方案）</system:String>
     <!-- WinUSB page -->
     <system:String x:Key="WinUsbDeviceList">USB 设备列表</system:String>
     <system:String x:Key="WinUsbInEndpoint">IN 端点 (0x81)</system:String>
@@ -97,6 +98,17 @@
     <system:String x:Key="LuaFileName">脚本名称：</system:String>
     <!-- About page -->
     <system:String x:Key="AboutSubTitle">能跑Lua脚本的串口调试工具</system:String>
+    <system:String x:Key="AboutDiscriptionMain">LLCOM是一款串口调试工具，工具连接可靠，断线后可自动重连，同时右侧具有快捷发送区的功能。</system:String>
+    <system:String x:Key="AboutDiscriptionMore">本工具除了具有与其他同类工具，所包含的数据收发功能外，还添加了Lua运行环境。用户可自行使用Lua，完成几乎所有可以想象到的自动化操作，大大提高了串口工具的可用性。</system:String>
+    <system:String x:Key="AboutDevelopers">开发者：chenxuuu、whc2001</system:String>
+    <system:String x:Key="AboutQQGroup">交流群：931546484</system:String>
+    <system:String x:Key="AboutTranslator">简体中文为原版语言</system:String>
+    <system:String x:Key="AboutGitHubButton">前往GitHub查看</system:String>
+    <system:String x:Key="AboutFeedBackButton">提交建议或上报Bug</system:String>
+    <system:String x:Key="AboutGitHubText">开源项目，欢迎star</system:String>
+    <system:String x:Key="AboutFeedBack">如需反馈，请点击下面的按钮</system:String>
+    <system:String x:Key="AboutThanksProjects">感谢以下项目：</system:String>
+    <system:String x:Key="AboutVersion">软件版本</system:String>
     <!-- Online scripts -->
     <system:String x:Key="OnlineScriptFileExists">脚本文件已存在！</system:String>
     <system:String x:Key="OnlineScriptSaveSuccess">保存成功！</system:String>
