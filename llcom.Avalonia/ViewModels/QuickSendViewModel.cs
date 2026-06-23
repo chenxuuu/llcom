@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using llcom.Avalonia.Helpers;
 using llcom.Tools;
 
 namespace llcom.Avalonia.ViewModels;
@@ -17,7 +18,7 @@ public partial class QuickSendItem : ObservableObject
     [ObservableProperty] private int _id;
     [ObservableProperty] private string _text = "";
     [ObservableProperty] private bool _hex;
-    [ObservableProperty] private string _commit = "发送";
+    [ObservableProperty] private string _commit = LocaleHelper.Get("SendDataButton");
     [ObservableProperty] private string _recvScriptPath = "";
     [ObservableProperty] private string _recvScriptPara = "";
     public ICommand? SendItemCommand { get; set; }
@@ -33,7 +34,8 @@ public partial class QuickSendViewModel : ViewModelBase
     private int _currentListIndex;
 
     [ObservableProperty]
-    private ObservableCollection<string> _listNames = new(Enumerable.Range(0, 10).Select(i => $"列表 {i}"));
+    private ObservableCollection<string> _listNames = new(
+        Enumerable.Range(0, 10).Select(i => $"{LocaleHelper.Get("QuickSendListDefault")} {i}"));
 
     public string CurrentListNameDisplay => $"{ListNames[CurrentListIndex]} ({CurrentListIndex})";
 
@@ -137,10 +139,10 @@ public partial class QuickSendViewModel : ViewModelBase
                     });
                 }
                 SaveCurrentList();
-                PlatformHelper.ShowMessage("数据导入成功");
+                PlatformHelper.ShowMessage(LocaleHelper.Get("QuickSendImportSuccess"));
             }
         }
-        catch (Exception ex) { PlatformHelper.ShowMessage($"导入失败: {ex.Message}"); }
+        catch (Exception ex) { PlatformHelper.ShowMessage(LocaleHelper.Format("QuickSendImportFailed", ex.Message)); }
     }
 
     [RelayCommand]
@@ -163,16 +165,16 @@ public partial class QuickSendViewModel : ViewModelBase
                 if (!string.IsNullOrEmpty(path))
                 {
                     await File.WriteAllTextAsync(path, json);
-                    PlatformHelper.ShowMessage("数据导出成功！");
+                    PlatformHelper.ShowMessage(LocaleHelper.Get("QuickSendExportSuccess"));
                 }
             }
             else
             {
                 await File.WriteAllTextAsync(ListFilePath(CurrentListIndex), json);
-                PlatformHelper.ShowMessage("数据已保存到配置目录");
+                PlatformHelper.ShowMessage(LocaleHelper.Get("QuickSendSavedToProfile"));
             }
         }
-        catch (Exception ex) { PlatformHelper.ShowMessage($"导出失败: {ex.Message}"); }
+        catch (Exception ex) { PlatformHelper.ShowMessage(LocaleHelper.Format("QuickSendExportFailed", ex.Message)); }
     }
 
     [RelayCommand]
@@ -186,7 +188,7 @@ public partial class QuickSendViewModel : ViewModelBase
                 path = await callback("SSCOM配置文件|sscom51.ini;sscom.ini|所有文件|*.*");
             else
             {
-                PlatformHelper.ShowMessage("请在 UI 中启用文件选择器");
+                PlatformHelper.ShowMessage(LocaleHelper.Get("QuickSendNeedFilePicker"));
                 return;
             }
             if (string.IsNullOrEmpty(path)) return;
@@ -210,9 +212,9 @@ public partial class QuickSendViewModel : ViewModelBase
                 }
             }
             SaveCurrentList();
-            PlatformHelper.ShowMessage($"已导入 SSCOM {Items.Count} 条数据");
+            PlatformHelper.ShowMessage(LocaleHelper.Format("QuickSendImportSSCOMSuccess", Items.Count));
         }
-        catch (Exception ex) { PlatformHelper.ShowMessage($"导入SSCOM失败: {ex.Message}"); }
+        catch (Exception ex) { PlatformHelper.ShowMessage(LocaleHelper.Format("QuickSendImportSSCOMFailed", ex.Message)); }
     }
 
     // ── Persistence ────────────────────────────────────────────────────

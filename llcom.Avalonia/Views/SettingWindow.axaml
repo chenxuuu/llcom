@@ -39,7 +39,7 @@
                                   IsChecked="{Binding ShowSendRaw}"/>
                         <CheckBox Content="{DynamicResource SettingKeepTop}"
                                   IsChecked="{Binding KeepTop}"/>
-                        <CheckBox Content="终端模式（键盘直发串口）"
+                        <CheckBox Content="{DynamicResource SettingTerminalMode}"
                                   IsChecked="{Binding TerminalMode}"/>
 
                         <StackPanel>
@@ -48,7 +48,7 @@
                                 <TextBox Grid.Column="0" Text="{Binding PacketTimeout}" Width="60"/>
                                 <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="4,0"
                                            Text="{DynamicResource SettingMs}"/>
-                                <CheckBox Grid.Column="2" Content="空白间隔起始"
+                                <CheckBox Grid.Column="2" Content="{DynamicResource SettingBlankStart}"
                                           IsChecked="{Binding TimeoutFromBlank}"/>
                             </Grid>
                         </StackPanel>
@@ -81,7 +81,7 @@
             <TabItem Header="{DynamicResource SettingSendLuaScript}">
                 <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="4">
                     <!-- 顶部提示 -->
-                    <TextBlock Text="发送数据前执行的Lua脚本（传入 uartData，返回处理后的数据）"
+                    <TextBlock Text="{DynamicResource SettingSendScriptDesc}"
                                TextWrapping="Wrap" Margin="0,4"/>
 
                     <!-- 测试面板 -->
@@ -110,9 +110,9 @@
 
                     <!-- 底部提示 -->
                     <WrapPanel Grid.Row="3" Margin="0,4">
-                        <TextBlock Text="传入数据为uartData，传出数据为你脚本return的结果。" TextWrapping="Wrap"/>
-                        <TextBlock Text=" 此处脚本对快捷发送区也生效，对脚本输出数据无效。" TextWrapping="Wrap"/>
-                        <TextBlock Text=" 查看接口文档，可点击接口文档按钮。" TextWrapping="Wrap"/>
+                        <TextBlock Text="{DynamicResource SettingLuaDescMain}" TextWrapping="Wrap"/>
+                        <TextBlock Text=" {DynamicResource SettingLuaDescQuickSend}" TextWrapping="Wrap"/>
+                        <TextBlock Text=" {DynamicResource SettingLuaDescApiDoc}" TextWrapping="Wrap"/>
                     </WrapPanel>
                 </Grid>
             </TabItem>
@@ -121,7 +121,7 @@
             <TabItem Header="{DynamicResource SettingRecvLuaScript}">
                 <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="4">
                     <!-- 顶部提示 -->
-                    <TextBlock Text="接收数据后执行的处理脚本（传入 uartData，返回处理后的显示文本）"
+                    <TextBlock Text="{DynamicResource SettingRecvScriptDesc}"
                                TextWrapping="Wrap" Margin="0,4"/>
 
                     <!-- 测试面板 -->
@@ -150,9 +150,9 @@
 
                     <!-- 底部提示 -->
                     <WrapPanel Grid.Row="3" Margin="0,4">
-                        <TextBlock Text="传入数据为uartData，传出数据为你脚本return的结果。" TextWrapping="Wrap"/>
-                        <TextBlock Text=" 此处脚本仅对数据显示页面有效，对脚本接收接口的数据无影响。" TextWrapping="Wrap"/>
-                        <TextBlock Text=" 查看接口文档，可点击接口文档按钮。" TextWrapping="Wrap"/>
+                        <TextBlock Text="{DynamicResource SettingLuaDescMain}" TextWrapping="Wrap"/>
+                        <TextBlock Text=" {DynamicResource SettingLuaDescRecv}" TextWrapping="Wrap"/>
+                        <TextBlock Text=" {DynamicResource SettingLuaDescApiDoc}" TextWrapping="Wrap"/>
                     </WrapPanel>
                 </Grid>
             </TabItem>
@@ -161,9 +161,9 @@
         <!-- 底部按钮 -->
         <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right"
                     Orientation="Horizontal" Margin="8">
-            <Button Content="保存" Command="{Binding SaveSettingsCommand}"
+            <Button Content="{DynamicResource SettingSave}" Command="{Binding SaveSettingsCommand}"
                     Width="80" Margin="0,0,8,0"/>
-            <Button Content="关闭" Width="80" Click="CloseButton_Click"/>
+            <Button Content="{DynamicResource SettingClose}" Width="80" Click="CloseButton_Click"/>
         </StackPanel>
     </Grid>
 </Window>

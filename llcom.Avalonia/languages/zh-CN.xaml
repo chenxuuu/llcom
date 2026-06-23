@@ -80,6 +80,29 @@
     <system:String x:Key="SerialMonitorHeader">串口监听</system:String>
     <system:String x:Key="SerialMonitorStart">开始监听</system:String>
     <system:String x:Key="SerialMonitorStop">停止监听</system:String>
+    <system:String x:Key="SerialMonitorStopped">监听已停止</system:String>
+    <system:String x:Key="SerialMonitorMonitoring">监听中...</system:String>
+    <system:String x:Key="SerialMonitorSelectBoth">请选择进程和串口</system:String>
+    <system:String x:Key="SerialMonitorNotAvailable">串口监听在 Linux/macOS 上暂不支持</system:String>
+    <!-- WinUSB page -->
+    <system:String x:Key="WinUsbDeviceList">USB 设备列表</system:String>
+    <system:String x:Key="WinUsbInEndpoint">IN 端点 (0x81)</system:String>
+    <system:String x:Key="WinUsbOutEndpoint">OUT 端点 (0x01)</system:String>
+    <system:String x:Key="WinUsbSendPlaceholder">发送数据</system:String>
+    <system:String x:Key="WinUsbNoDevice">未发现 USB 设备 (可能需要 sudo 权限)</system:String>
+    <system:String x:Key="WinUsbSelectDevice">请选择设备</system:String>
+    <!-- Lua editor -->
+    <system:String x:Key="LuaSaveScript">保存脚本</system:String>
+    <system:String x:Key="LuaRunOneLine">单行执行...</system:String>
+    <system:String x:Key="LuaFileName">脚本名称：</system:String>
+    <!-- About page -->
+    <system:String x:Key="AboutSubTitle">能跑Lua脚本的串口调试工具</system:String>
+    <!-- Online scripts -->
+    <system:String x:Key="OnlineScriptFileExists">脚本文件已存在！</system:String>
+    <system:String x:Key="OnlineScriptSaveSuccess">保存成功！</system:String>
+    <system:String x:Key="OnlineScriptSaveFailed">保存失败: {0}</system:String>
+    <system:String x:Key="LoadingOnlineScripts">正在加载在线脚本...</system:String>
+    <system:String x:Key="LoadingProgress">加载中... {0}/{1}</system:String>
     <system:String x:Key="OnlineScriptTitle">社区脚本</system:String>
     <system:String x:Key="OnlineScriptDownload">下载此脚本</system:String>
     <system:String x:Key="OnlineScriptListTitle">在线脚本</system:String>
@@ -142,6 +165,16 @@
     <system:String x:Key="SettingParityEven">偶校验</system:String>
     <system:String x:Key="SettingParityMark">高电平(Mark)</system:String>
     <system:String x:Key="SettingParitySpace">低电平(Space)</system:String>
+    <system:String x:Key="SettingTerminalMode">终端模式（键盘直发串口）</system:String>
+    <system:String x:Key="SettingBlankStart">空白间隔起始</system:String>
+    <system:String x:Key="SettingSendScriptDesc">发送数据前执行的Lua脚本（传入 uartData，返回处理后的数据）</system:String>
+    <system:String x:Key="SettingRecvScriptDesc">接收数据后执行的处理脚本（传入 uartData，返回处理后的显示文本）</system:String>
+    <system:String x:Key="SettingLuaDescMain">传入数据为uartData，传出数据为你脚本return的结果。</system:String>
+    <system:String x:Key="SettingLuaDescQuickSend">此处脚本对快捷发送区也生效，对脚本输出数据无效。</system:String>
+    <system:String x:Key="SettingLuaDescRecv">此处脚本仅对数据显示页面有效，对脚本接收接口的数据无影响。</system:String>
+    <system:String x:Key="SettingLuaDescApiDoc">查看接口文档，可点击接口文档按钮。</system:String>
+    <system:String x:Key="SettingSave">保存</system:String>
+    <system:String x:Key="SettingClose">关闭</system:String>
     <system:String x:Key="SettingSendLuaScript">处理发送数据的脚本</system:String>
     <system:String x:Key="SettingRecvLuaScript">处理接收数据的脚本</system:String>
     <system:String x:Key="SettingLuaTestScript">测试脚本</system:String>

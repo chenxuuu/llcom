@@ -6,16 +6,16 @@
     <ScrollViewer>
         <StackPanel Spacing="8" Margin="16" MaxWidth="400">
             <TextBlock Text="LLCOM" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
-            <TextBlock Text="能跑Lua脚本的串口调试工具" HorizontalAlignment="Center"/>
+            <TextBlock Text="{DynamicResource AboutSubTitle}" HorizontalAlignment="Center"/>
             <Separator/>
             <TextBlock Text="{Binding Version, StringFormat='Version: {0}'}" TextWrapping="Wrap"/>
             <TextBlock Text="{Binding Platform, StringFormat='Platform: {0}'}" TextWrapping="Wrap"/>
             <TextBlock Text="{Binding Framework, StringFormat='Runtime: {0}'}" TextWrapping="Wrap"/>
             <Separator/>
             <TextBlock Text="Developers: chenxuuu, whc2001" TextWrapping="Wrap"/>
-            <Button Content="View on GitHub" Command="{Binding OpenGitHubCommand}"/>
-            <Button Content="Submit Issue / Feedback" Command="{Binding OpenIssueCommand}"/>
-            <Button Content="Lua API Reference" Command="{Binding OpenApiDocCommand}"/>
+            <Button Content="{DynamicResource AboutGitHubButton}" Command="{Binding OpenGitHubCommand}"/>
+            <Button Content="{DynamicResource AboutFeedBackButton}" Command="{Binding OpenIssueCommand}"/>
+            <Button Content="{DynamicResource LuaApiReference}" Command="{Binding OpenApiDocCommand}"/>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

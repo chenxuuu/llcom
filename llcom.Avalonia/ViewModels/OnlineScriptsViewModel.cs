@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using llcom.Avalonia.Helpers;
 using llcom.Model;
 using llcom.Tools;
 
@@ -18,7 +19,7 @@ public partial class OnlineScriptsViewModel : ViewModelBase
     private bool _isLoading;
 
     [ObservableProperty]
-    private string _loadingMsg = "加载中...";
+    private string _loadingMsg = LocaleHelper.Get("Loading");
 
     [ObservableProperty]
     private int _progress;
@@ -46,13 +47,13 @@ public partial class OnlineScriptsViewModel : ViewModelBase
     private async Task RefreshListAsync()
     {
         IsLoading = true;
-        LoadingMsg = "正在加载在线脚本...";
+        LoadingMsg = LocaleHelper.Get("LoadingOnlineScripts");
         Scripts.Clear();
 
         var result = await Task.Run(() =>
             GlobalState.GetOnlineScripts((got, total) =>
             {
-                LoadingMsg = $"加载中... {got}/{total}";
+                LoadingMsg = LocaleHelper.Format("LoadingProgress", got, total);
                 Progress = (int)(got * 100.0 / total);
                 IsIndeterminate = false;
             }));
@@ -100,7 +101,7 @@ public partial class OnlineScriptsViewModel : ViewModelBase
 
         if (File.Exists(path))
         {
-            PlatformHelper.ShowMessage("脚本文件已存在！");
+            PlatformHelper.ShowMessage(LocaleHelper.Get("OnlineScriptFileExists"));
             return;
         }
 
@@ -109,11 +110,11 @@ public partial class OnlineScriptsViewModel : ViewModelBase
             Directory.CreateDirectory(Path.Combine(PlatformHelper.ProfilePath, "user_script_run"));
             await File.WriteAllTextAsync(path, SelectedScript.Script);
             GlobalState.RefreshLuaScriptList();
-            PlatformHelper.ShowMessage("保存成功！");
+            PlatformHelper.ShowMessage(LocaleHelper.Get("OnlineScriptSaveSuccess"));
         }
         catch (Exception ex)
         {
-            PlatformHelper.ShowMessage($"保存失败: {ex.Message}");
+            PlatformHelper.ShowMessage(LocaleHelper.Format("OnlineScriptSaveFailed", ex.Message));
         }
     }
 }

@@ -80,6 +80,29 @@
     <system:String x:Key="SerialMonitorHeader">Serial Monitor</system:String>
     <system:String x:Key="SerialMonitorStart">Start monitor</system:String>
     <system:String x:Key="SerialMonitorStop">Stop monitor</system:String>
+    <system:String x:Key="SerialMonitorStopped">Monitor stopped</system:String>
+    <system:String x:Key="SerialMonitorMonitoring">Monitoring...</system:String>
+    <system:String x:Key="SerialMonitorSelectBoth">Please select process and COM port</system:String>
+    <system:String x:Key="SerialMonitorNotAvailable">Serial Monitor is not supported on Linux/macOS</system:String>
+    <!-- WinUSB page -->
+    <system:String x:Key="WinUsbDeviceList">USB device list</system:String>
+    <system:String x:Key="WinUsbInEndpoint">IN endpoint (0x81)</system:String>
+    <system:String x:Key="WinUsbOutEndpoint">OUT endpoint (0x01)</system:String>
+    <system:String x:Key="WinUsbSendPlaceholder">Send data</system:String>
+    <system:String x:Key="WinUsbNoDevice">No USB devices found (try sudo)</system:String>
+    <system:String x:Key="WinUsbSelectDevice">Please select a device</system:String>
+    <!-- Lua editor -->
+    <system:String x:Key="LuaSaveScript">Save script</system:String>
+    <system:String x:Key="LuaRunOneLine">Run one line...</system:String>
+    <system:String x:Key="LuaFileName">Script name:</system:String>
+    <!-- About page -->
+    <system:String x:Key="AboutSubTitle">Debug serial port with Lua!</system:String>
+    <!-- Online scripts -->
+    <system:String x:Key="OnlineScriptFileExists">Script file already exists!</system:String>
+    <system:String x:Key="OnlineScriptSaveSuccess">Saved successfully!</system:String>
+    <system:String x:Key="OnlineScriptSaveFailed">Save failed: {0}</system:String>
+    <system:String x:Key="LoadingOnlineScripts">Loading online scripts...</system:String>
+    <system:String x:Key="LoadingProgress">Loading... {0}/{1}</system:String>
     <system:String x:Key="OnlineScriptTitle">Community scripts</system:String>
     <system:String x:Key="OnlineScriptDownload">Download this script</system:String>
     <system:String x:Key="OnlineScriptListTitle">Online Scripts</system:String>
@@ -139,6 +162,16 @@
     <system:String x:Key="SettingParityEven">Even</system:String>
     <system:String x:Key="SettingParityMark">Mark</system:String>
     <system:String x:Key="SettingParitySpace">Space</system:String>
+    <system:String x:Key="SettingTerminalMode">Terminal mode (keyboard to serial)</system:String>
+    <system:String x:Key="SettingBlankStart">Start from blank interval</system:String>
+    <system:String x:Key="SettingSendScriptDesc">Lua script executed before sending (input: uartData, output: processed data)</system:String>
+    <system:String x:Key="SettingRecvScriptDesc">Lua script executed after receiving (input: uartData, output: display text)</system:String>
+    <system:String x:Key="SettingLuaDescMain">Input: uartData. Output: the result your script returns.</system:String>
+    <system:String x:Key="SettingLuaDescQuickSend">This script also applies to Quick Send data. Does not affect script output.</system:String>
+    <system:String x:Key="SettingLuaDescRecv">This script only affects data display. Does not affect data received by Lua APIs.</system:String>
+    <system:String x:Key="SettingLuaDescApiDoc">Click the API Reference button to view documentation.</system:String>
+    <system:String x:Key="SettingSave">Save</system:String>
+    <system:String x:Key="SettingClose">Close</system:String>
     <system:String x:Key="SettingOpenLogFolder">Open serial port log directory</system:String>
     <system:String x:Key="SettingShowSendRaw">Show raw sent data (original data before processing)</system:String>
     <system:String x:Key="SettingKeepTop">Keep window on top</system:String>
