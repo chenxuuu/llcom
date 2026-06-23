@@ -85,6 +85,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public LuaScriptViewModel LuaScriptPage { get; } = new();
     public OnlineScriptsViewModel OnlineScriptsPage { get; } = new();
     public WinUsbViewModel WinUsbPage { get; } = new();
+    public SerialMonitorViewModel SerialMonitorPage { get; } = new();
     public AboutViewModel AboutPage { get; } = new();
 
     [ObservableProperty]
@@ -277,6 +278,7 @@ public partial class MainWindowViewModel : ViewModelBase
         SocketClientPage.Cleanup();
         PlotPage.Cleanup();
         WinUsbPage.Cleanup();
+        SerialMonitorPage.Cleanup();
         LuaEnv.LuaRunEnv.StopLua("");
     }
 }

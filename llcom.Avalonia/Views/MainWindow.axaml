@@ -158,7 +158,7 @@
                             <v:EncodingFixPageView DataContext="{Binding EncodingFixPage}"/>
                         </TabItem>
                         <TabItem Header="{DynamicResource SerialMonitorHeader}">
-                            <v:WinUsbView DataContext="{Binding WinUsbPage}"/>
+                            <v:SerialMonitorView DataContext="{Binding SerialMonitorPage}"/>
                         </TabItem>
                         <TabItem Header="{DynamicResource PlotHeader}">
                             <v:PlotPageView DataContext="{Binding PlotPage}"/>
