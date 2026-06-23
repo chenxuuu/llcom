@@ -43,7 +43,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     // ── Data display ────────────────────────────────────────────────────
     [ObservableProperty]
-    private string _receivedData = "";
+    private ObservableCollection<DataLineItem> _receivedLines = new();
     [ObservableProperty]
     private string _dataToSend = "";
     [ObservableProperty]
@@ -62,16 +62,23 @@ public partial class MainWindowViewModel : ViewModelBase
     private long _receivedCount;
     [ObservableProperty]
     private bool _lockScroll;
+    [ObservableProperty]
+    private bool _isReady = true;
+    [ObservableProperty]
+    private bool _showSymbol;
 
     // ── Tabs ────────────────────────────────────────────────────────────
     [ObservableProperty]
     private int _selectedTabIndex;
 
     // Sub-page ViewModels
+    public QuickSendViewModel QuickSendPage { get; } = new();
     public ConvertPageViewModel ConvertPage { get; } = new();
     public EncodingFixViewModel EncodingFixPage { get; } = new();
     public MqttViewModel MqttPage { get; } = new();
     public TcpTestViewModel TcpTestPage { get; } = new();
+    public TcpTestViewModel TcpLocalPage { get; } = new();
+    public TcpTestViewModel UdpLocalPage { get; } = new();
     public SocketClientViewModel SocketClientPage { get; } = new();
     public PlotViewModel PlotPage { get; } = new();
     public LuaScriptViewModel LuaScriptPage { get; } = new();
@@ -147,7 +154,7 @@ public partial class MainWindowViewModel : ViewModelBase
                 OpenCloseButtonText = "关闭串口";
                 StatusText = $"已连接 {SelectedPort} @ {SelectedBaudRate}";
             }
-            catch (Exception ex) { StatusText = $"打开失败: {ex.Message}"; }
+            catch (Exception ex) { StatusText = $"\u6253\u5F00\u5931\u8D25: {ex.Message}"; }
         }
     }
 
@@ -170,7 +177,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private void ClearData()
     {
-        ReceivedData = "";
+        ReceivedLines.Clear();
         SentCount = 0;
         ReceivedCount = 0;
     }
@@ -183,7 +190,9 @@ public partial class MainWindowViewModel : ViewModelBase
         try
         {
             System.IO.Directory.CreateDirectory(PlatformHelper.ProfilePath);
-            System.IO.File.WriteAllText(path, ReceivedData);
+            var text = string.Join(Environment.NewLine,
+                ReceivedLines.Select(line => line.DisplayText));
+            System.IO.File.WriteAllText(path, text);
             StatusText = $"日志已保存: {fileName}";
         }
         catch (Exception ex) { StatusText = $"保存失败: {ex.Message}"; }
@@ -191,6 +200,9 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [RelayCommand]
     private void SwitchLanguage() { /* Toggle between zh-CN and en-US */ }
+
+    [RelayCommand]
+    private void OpenSettings() { /* Open settings window */ }
 
     [RelayCommand]
     private void OpenScriptFolder()
@@ -210,7 +222,13 @@ public partial class MainWindowViewModel : ViewModelBase
         var text = HexDisplay
             ? ByteConvert.Byte2Hex(data, " ")
             : ByteConvert.Byte2Readable(data);
-        AppendReceivedData($"← {text}\n");
+        AppendDataLine(new DataLineItem
+        {
+            Timestamp = DateTime.Now,
+            IsSent = false,
+            Data = text,
+            IsHex = HexDisplay
+        });
         ReceivedCount += data.Length;
     }
 
@@ -220,17 +238,21 @@ public partial class MainWindowViewModel : ViewModelBase
         var text = HexDisplay
             ? ByteConvert.Byte2Hex(data, " ")
             : ByteConvert.Byte2Readable(data);
-        AppendReceivedData($"→ {text}\n");
+        AppendDataLine(new DataLineItem
+        {
+            Timestamp = DateTime.Now,
+            IsSent = true,
+            Data = text,
+            IsHex = HexDisplay
+        });
     }
 
     private int _maxLines = 2000;
-    private void AppendReceivedData(string text)
+    private void AppendDataLine(DataLineItem line)
     {
-        var current = ReceivedData + text;
-        var lines = current.Split('\n');
-        if (lines.Length > _maxLines)
-            current = string.Join('\n', lines.Skip(lines.Length - _maxLines));
-        ReceivedData = current;
+        ReceivedLines.Add(line);
+        while (ReceivedLines.Count > _maxLines)
+            ReceivedLines.RemoveAt(0);
     }
 
     public void Cleanup()

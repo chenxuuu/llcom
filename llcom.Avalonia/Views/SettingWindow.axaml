@@ -1,0 +1,125 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
+        xmlns:avalonEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+        x:Class="llcom.Avalonia.Views.SettingWindow"
+        x:DataType="vm:SettingWindowViewModel"
+        Title="{DynamicResource SettingTitle}"
+        Width="600" Height="550"
+        CanResize="True">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://llcom/languages/zh-CN.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <TabControl>
+            <!-- 串口基本设置 -->
+            <TabItem Header="{DynamicResource SettingBasic}">
+                <ScrollViewer>
+                    <StackPanel Spacing="6" Margin="8">
+                        <CheckBox Content="{DynamicResource SettingAutoReconnect}"
+                                  IsChecked="{Binding AutoReconnect}"/>
+
+                        <StackPanel>
+                            <TextBlock Text="{DynamicResource SettingShowFormat}"/>
+                            <ComboBox SelectedIndex="{Binding DisplayFormat}" Width="200">
+                                <ComboBoxItem Content="{DynamicResource SettingShowBoth}"/>
+                                <ComboBoxItem Content="{DynamicResource SettingShoText}"/>
+                                <ComboBoxItem Content="{DynamicResource SettingShowHexOnly}"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <CheckBox Content="{DynamicResource SettingShowSend}"
+                                  IsChecked="{Binding ShowSendData}"/>
+                        <CheckBox Content="终端模式（键盘直发串口）"
+                                  IsChecked="{Binding TerminalMode}"/>
+
+                        <StackPanel>
+                            <TextBlock Text="{DynamicResource SettingUartTimeout}"/>
+                            <Grid ColumnDefinitions="Auto,80,Auto">
+                                <TextBox Grid.Column="0" Text="{Binding PacketTimeout}" Width="60"/>
+                                <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="4,0"
+                                           Text="{DynamicResource SettingMs}"/>
+                                <CheckBox Grid.Column="2" Content="空白间隔起始"
+                                          IsChecked="{Binding TimeoutFromBlank}"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <Separator/>
+
+                        <TextBlock Text="{DynamicResource SettingDataBits}"/>
+                        <ComboBox ItemsSource="{Binding DataBitsList}"
+                                  SelectedItem="{Binding SelectedDataBits}" Width="100"/>
+
+                        <TextBlock Text="{DynamicResource SettingStopBit}"/>
+                        <ComboBox ItemsSource="{Binding StopBitsList}"
+                                  SelectedItem="{Binding SelectedStopBits}" Width="100"/>
+
+                        <TextBlock Text="{DynamicResource SettingParity}"/>
+                        <ComboBox ItemsSource="{Binding ParityList}"
+                                  SelectedItem="{Binding SelectedParity}" Width="100"/>
+
+                        <TextBlock Text="{DynamicResource Encoding}"/>
+                        <ComboBox ItemsSource="{Binding EncodingList}"
+                                  SelectedItem="{Binding SelectedEncoding}" Width="120"/>
+
+                        <Button Content="打开串口日志目录"
+                                Command="{Binding OpenLogFolderCommand}" Margin="0,8"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- 发送脚本 -->
+            <TabItem Header="发送处理脚本">
+                <Grid RowDefinitions="Auto,*,Auto" Margin="4">
+                    <TextBlock Text="发送数据前执行的Lua脚本（传入 uartData，返回处理后的数据）"
+                               TextWrapping="Wrap" Margin="0,4"/>
+                    <avalonEdit:TextEditor Grid.Row="1"
+                                           Document="{Binding SendScriptDocument}"
+                                           FontFamily="Consolas" FontSize="11"
+                                           ShowLineNumbers="True" WordWrap="True"/>
+                    <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto,*,Auto" Margin="0,4">
+                        <TextBlock Text="测试:" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1" Text="{Binding SendTestInput}" Width="120" Margin="4,0"/>
+                        <CheckBox Grid.Column="2" Content="Hex" IsChecked="{Binding SendTestPara, FallbackValue=false}"/>
+                        <Button Grid.Column="3" Content="测试输入">
+                            <Button.Command> 
+                                <!-- Placeholder test command -->
+                            </Button.Command>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <!-- 接收脚本 -->
+            <TabItem Header="接收处理脚本">
+                <Grid RowDefinitions="Auto,*,Auto" Margin="4">
+                    <TextBlock Text="接收数据后执行的处理脚本（传入 uartData，返回处理后的显示文本）"
+                               TextWrapping="Wrap" Margin="0,4"/>
+                    <avalonEdit:TextEditor Grid.Row="1"
+                                           Document="{Binding RecvScriptDocument}"
+                                           FontFamily="Consolas" FontSize="11"
+                                           ShowLineNumbers="True" WordWrap="True"/>
+                    <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto,*,Auto" Margin="0,4">
+                        <TextBlock Text="测试:" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1" Text="{Binding RecvTestInput}" Width="120" Margin="4,0"/>
+                        <CheckBox Grid.Column="2" Content="Hex" IsChecked="{Binding RecvTestPara, FallbackValue=false}"/>
+                        <Button Grid.Column="3" Content="测试输入"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <!-- 底部按钮 -->
+        <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                    Orientation="Horizontal" Margin="8">
+            <Button Content="保存" Command="{Binding SaveSettingsCommand}"
+                    Width="80" Margin="0,0,8,0"/>
+            <Button Content="关闭" Width="80" Click="CloseButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

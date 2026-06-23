@@ -55,7 +55,19 @@
                         <TextBlock Text="{DynamicResource MQTTKeepAlive}"/>
                         <TextBox Text="{Binding KeepAlive}"/>
                         <CheckBox Content="Clean session" IsChecked="{Binding CleanSession}"/>
-                        <CheckBox Content="TLS" IsChecked="{Binding UseTls}"/>
+                        <CheckBox Content="{DynamicResource MQTTTLS}" IsChecked="{Binding UseTls}"/>
+
+                        <!-- TLS 证书配置 -->
+                        <StackPanel IsVisible="{Binding UseTls}" Spacing="4">
+                            <TextBlock Text="{DynamicResource MQTTTLSCert}" FontWeight="Bold"/>
+                            <TextBlock Text="{DynamicResource MQTTTLSCA}"/>
+                            <TextBox Text="{Binding TlsCaCertPath}" Watermark="CA证书文件路径"/>
+                            <TextBlock Text="{DynamicResource MQTTTLSClient}"/>
+                            <TextBox Text="{Binding TlsClientCertPath}" Watermark="客户端证书文件路径"/>
+                            <TextBlock Text="{DynamicResource MQTTTLSPassword}"/>
+                            <TextBox Text="{Binding TlsCertPassword}" PasswordChar="*"
+                                     Watermark="证书密码（无则留空）"/>
+                        </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

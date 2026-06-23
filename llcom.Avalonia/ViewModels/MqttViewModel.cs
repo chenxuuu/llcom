@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -7,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using llcom.Tools;
 using MQTTnet;
 using MQTTnet.Client;
 
@@ -34,6 +36,12 @@ public partial class MqttViewModel : ViewModelBase
     private int _keepAlive = 60;
     [ObservableProperty]
     private bool _useTls;
+    [ObservableProperty]
+    private string _tlsCaCertPath = "";
+    [ObservableProperty]
+    private string _tlsClientCertPath = "";
+    [ObservableProperty]
+    private string _tlsCertPassword = "";
     [ObservableProperty]
     private bool _useWebSocket;
     [ObservableProperty]
@@ -111,6 +119,12 @@ public partial class MqttViewModel : ViewModelBase
                 optionsBuilder.WithTlsOptions(o =>
                 {
                     o.WithSslProtocols(SslProtocols.Tls12 | SslProtocols.Tls13);
+
+                    if (!string.IsNullOrEmpty(TlsCaCertPath) && File.Exists(TlsCaCertPath))
+                    {
+                        o.WithCertificateValidationHandler(ctx => true);
+                    }
+
                     o.WithAllowUntrustedCertificates(true);
                 });
             }
