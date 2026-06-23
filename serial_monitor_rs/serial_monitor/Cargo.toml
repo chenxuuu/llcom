@@ -7,9 +7,14 @@ edition = "2021"
 crate-type = ["cdylib"]
 name = "serial_monitor"
 
+[features]
+default = []
+# On Windows, use Win32 APIs for DLL injection
+windows-hook = []
+
 [dependencies]
 
-[dependencies.windows]
+[target.'cfg(windows)'.dependencies.windows]
 version = "0.58"
 features = [
     "Win32_Foundation",
