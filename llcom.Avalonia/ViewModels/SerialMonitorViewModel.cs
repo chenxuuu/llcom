@@ -130,9 +130,9 @@ public partial class SerialMonitorViewModel : ViewModelBase
 
             // Parse PID from format "name[pid]"
             var start = SelectedProcess.IndexOf('[');
-            if (start < 0 || !uint.TryParse(
-                SelectedProcess.Substring(start + 1, SelectedProcess.Length - start - 2),
-                out var pid))
+            var end = SelectedProcess.LastIndexOf(']');
+            if (start < 0 || end <= start + 1 ||
+                !uint.TryParse(SelectedProcess.AsSpan(start + 1, end - start - 1), out var pid))
             {
                 StatusText = LocaleHelper.Get("SerialMonitorInvalidPid");
                 return;

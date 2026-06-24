@@ -237,14 +237,18 @@ public partial class MainWindowViewModel : ViewModelBase
         var text = HexDisplay
             ? ByteConvert.Byte2Hex(data, " ")
             : ByteConvert.Byte2Readable(data);
-        AppendDataLine(new DataLineItem
+        var line = new DataLineItem
         {
             Timestamp = DateTime.Now,
             IsSent = false,
             Data = text,
             IsHex = HexDisplay
+        };
+        global::Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+        {
+            AppendDataLine(line);
+            ReceivedCount += data.Length;
         });
-        ReceivedCount += data.Length;
     }
 
     private void OnDataSent(object? sender, byte[] data)
@@ -253,13 +257,14 @@ public partial class MainWindowViewModel : ViewModelBase
         var text = HexDisplay
             ? ByteConvert.Byte2Hex(data, " ")
             : ByteConvert.Byte2Readable(data);
-        AppendDataLine(new DataLineItem
+        var line = new DataLineItem
         {
             Timestamp = DateTime.Now,
             IsSent = true,
             Data = text,
             IsHex = HexDisplay
-        });
+        };
+        global::Avalonia.Threading.Dispatcher.UIThread.Post(() => AppendDataLine(line));
     }
 
     private int _maxLines = 2000;

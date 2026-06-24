@@ -141,7 +141,7 @@ public partial class LuaScriptViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void ToggleRun()
+    private async Task ToggleRun()
     {
         if (IsRunning)
         {
@@ -170,7 +170,7 @@ public partial class LuaScriptViewModel : ViewModelBase
             try
             {
                 LuaEnv.LuaRunEnv.New(SelectedScript);
-                Task.Delay(200).ContinueWith(_ => { });
+                await Task.Delay(200);
                 IsRunning = true;
                 RunStopText = "■";
                 AppendLog($"--- Running: {SelectedScript} ---");

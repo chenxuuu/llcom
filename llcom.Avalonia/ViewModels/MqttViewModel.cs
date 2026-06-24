@@ -196,10 +196,7 @@ public partial class MqttViewModel : ViewModelBase
     {
         hex = System.Text.RegularExpressions.Regex.Replace(hex, "[^0-9A-Fa-f]", "");
         if (hex.Length % 2 != 0) hex = hex[..^1];
-        var bytes = new byte[hex.Length / 2];
-        for (int i = 0; i < bytes.Length; i++)
-            bytes[i] = Convert.ToByte(hex.Substring(i * 2, 2), 16);
-        return bytes;
+        return Convert.FromHexString(hex);
     }
 
     public void Cleanup()

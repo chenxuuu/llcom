@@ -117,6 +117,16 @@ fn hook_dll_path() -> PathBuf {
 }
 
 fn extract_hook_dll(path: &PathBuf) -> bool {
+    // Check if file already exists to avoid write-lock failures when re-injecting
+    if path.exists() {
+        // Optionally compare checksums or file sizes to detect stale dlls
+        let Ok(meta) = std::fs::metadata(path) else {
+            return false;
+        };
+        if meta.len() as usize == HOOK_DLL_BYTES.len() {
+            return true;
+        }
+    }
     std::fs::write(path, HOOK_DLL_BYTES).is_ok()
 }
 

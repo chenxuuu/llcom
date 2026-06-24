@@ -84,7 +84,7 @@ public partial class WinUsbViewModel : ViewModelBase
     private UsbEndpointWriter? _writer;
     private Thread? _readThread;
     private volatile bool _needClose;
-    private readonly List<byte[]> _sendBuffer = new();
+    private readonly Queue<byte[]> _sendBuffer = new();
     private readonly object _sendLock = new();
 
     public WinUsbViewModel()
@@ -92,7 +92,7 @@ public partial class WinUsbViewModel : ViewModelBase
         LuaApis.SendChannelsRegister("winusb", (data, _) =>
         {
             if (!IsConnected) return false;
-            lock (_sendLock) _sendBuffer.Add(data);
+            lock (_sendLock) _sendBuffer.Enqueue(data);
             return true;
         });
     }
@@ -265,8 +265,7 @@ public partial class WinUsbViewModel : ViewModelBase
                     {
                         while (_sendBuffer.Count > 0)
                         {
-                            var sdata = _sendBuffer[0];
-                            _sendBuffer.RemoveAt(0);
+                            var sdata = _sendBuffer.Dequeue();
                             try
                             {
                                 if (_writer == null) break;
@@ -320,7 +319,7 @@ public partial class WinUsbViewModel : ViewModelBase
             byte[] data = HexSend
                 ? ByteConvert.Hex2Byte(SendData)
                 : System.Text.Encoding.UTF8.GetBytes(SendData);
-            lock (_sendLock) _sendBuffer.Add(data);
+            lock (_sendLock) _sendBuffer.Enqueue(data);
         }
         catch (Exception ex)
         {
