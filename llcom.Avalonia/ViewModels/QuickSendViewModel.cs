@@ -67,10 +67,49 @@ public partial class QuickSendViewModel : ViewModelBase
         if (item == null || string.IsNullOrEmpty(item.Text)) return;
         try
         {
-            byte[] data = item.Hex
+            var state = GlobalState.Instance;
+            byte[] rawData = item.Hex
                 ? ByteConvert.Hex2Byte(item.Text)
-                : System.Text.Encoding.UTF8.GetBytes(item.Text);
-            UartManager.Instance.SendData(data);
+                : state.GetEncoding().GetBytes(item.Text);
+
+            // Switch receive script if item has one configured
+            if (!string.IsNullOrEmpty(item.RecvScriptPath))
+            {
+                var recvPath = System.IO.Path.Combine(
+                    PlatformHelper.ProfilePath,
+                    "user_script_recv_convert",
+                    item.RecvScriptPath + ".lua");
+                if (System.IO.File.Exists(recvPath))
+                    state.Settings.recvScript = item.RecvScriptPath;
+                else
+                    item.RecvScriptPath = "";
+            }
+
+            // Run through send script Lua pipeline
+            byte[] processedData;
+            try
+            {
+                processedData = LuaEnv.LuaLoader.Run(
+                    $"{state.Settings.sendScript}.lua",
+                    new System.Collections.ArrayList { "uartData", rawData });
+                if (processedData.Length == 0)
+                    processedData = rawData;
+            }
+            catch
+            {
+                processedData = rawData;
+            }
+
+            // Append CRLF if configured
+            if (state.Settings.extraEnter)
+            {
+                var temp = processedData.ToList();
+                temp.Add(0x0d);
+                temp.Add(0x0a);
+                processedData = temp.ToArray();
+            }
+
+            UartManager.Instance.SendData(processedData, rawData);
         }
         catch (Exception) { /* handle in UI */ }
     }

@@ -1,5 +1,7 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using llcom.Avalonia.ViewModels;
 
 namespace llcom.Avalonia.Views;
@@ -17,6 +19,22 @@ public partial class LuaScriptView : UserControl
         {
             vm.RunCommandCommand.Execute(null);
             e.Handled = true;
+        }
+    }
+
+    private void TextEditor_TextChanged(object? sender, EventArgs e)
+    {
+        if (DataContext is LuaScriptViewModel vm)
+        {
+            vm.MarkDocumentChanged();
+        }
+    }
+
+    private void TextEditor_LostFocus(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is LuaScriptViewModel vm)
+        {
+            vm.OnEditorLostFocus();
         }
     }
 }

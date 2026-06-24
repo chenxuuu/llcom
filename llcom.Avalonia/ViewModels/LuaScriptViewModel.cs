@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AvaloniaEdit.Document;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -71,31 +73,86 @@ public partial class LuaScriptViewModel : ViewModelBase
     [ObservableProperty]
     private string _testResult = "";
 
+    // Auto-save tracking
+    private string _lastLuaFile = "";
+    private DateTime _lastLuaFileTime = DateTime.MinValue;
+    private DateTime _lastLuaChangeTime = DateTime.MinValue;
+
+    // Log buffering
+    private readonly object _logLock = new();
+    private readonly List<string> _logBuffer = new();
+    private readonly EventWaitHandle _logSignal = new(false, EventResetMode.AutoReset);
+    private int _logCount;
+    private bool _isLogTaskRunning;
+
     public LuaScriptViewModel()
     {
         RefreshScriptList();
         LuaEnv.LuaApis.PrintLuaLog += OnLuaLog;
         LuaEnv.LuaRunEnv.LuaRunError += OnLuaError;
+        StartLogTask();
     }
 
     partial void OnSelectedScriptChanged(string? value)
     {
         if (value != null)
         {
+            // Auto-save previous file
+            if (!string.IsNullOrEmpty(_lastLuaFile) && _lastLuaChangeTime > _lastLuaFileTime)
+                SaveLuaFile(_lastLuaFile);
+
             LoadScriptContent(value);
         }
+    }
+
+    /// <summary>Auto-save when editor loses focus or window deactivates.</summary>
+    public void OnEditorLostFocus()
+    {
+        if (!string.IsNullOrEmpty(_lastLuaFile) && _lastLuaChangeTime > _lastLuaFileTime)
+            SaveLuaFile(_lastLuaFile);
+    }
+
+    /// <summary>Check for external file changes when window is activated.</summary>
+    public void OnWindowActivated()
+    {
+        if (string.IsNullOrEmpty(_lastLuaFile)) return;
+        var fullPath = Path.Combine(PlatformHelper.ProfilePath, "user_script_run", _lastLuaFile + ".lua");
+        try
+        {
+            if (File.Exists(fullPath))
+            {
+                var fileTime = File.GetLastWriteTime(fullPath);
+                if (fileTime > _lastLuaFileTime)
+                {
+                    Document = new TextDocument(File.ReadAllText(fullPath));
+                    _lastLuaFileTime = fileTime;
+                    _lastLuaChangeTime = fileTime;
+                    StatusText = $"检测到外部更改，已重新加载: {_lastLuaFile}";
+                }
+            }
+        }
+        catch { }
     }
 
     private void LoadScriptContent(string path)
     {
         try
         {
-            var fullPath = Path.Combine(PlatformHelper.ProfilePath, path);
+            // Validate path to prevent directory traversal
+            var fullPath = GetSafeScriptPath(path, "user_script_run");
+            if (fullPath == null)
+            {
+                StatusText = $"无效的脚本路径: {path}";
+                return;
+            }
             if (File.Exists(fullPath))
             {
                 Document = new TextDocument(File.ReadAllText(fullPath));
                 StatusText = $"已加载: {path}";
                 IsEditorModified = false;
+                _lastLuaFile = Path.GetFileNameWithoutExtension(fullPath);
+                _lastLuaFileTime = File.GetLastWriteTime(fullPath);
+                _lastLuaChangeTime = _lastLuaFileTime;
             }
         }
         catch (Exception ex)
@@ -104,10 +161,55 @@ public partial class LuaScriptViewModel : ViewModelBase
         }
     }
 
+    /// <summary>Ensure the script path doesn't traverse outside the scripts directory.</summary>
+    private static string? GetSafeScriptPath(string path, string subDir)
+    {
+        var baseDir = Path.GetFullPath(Path.Combine(PlatformHelper.ProfilePath, subDir));
+        var fullPath = Path.GetFullPath(Path.Combine(PlatformHelper.ProfilePath, path));
+        return fullPath.StartsWith(baseDir) ? fullPath : null;
+    }
+
+    private void SaveLuaFile(string fileName)
+    {
+        if (Document == null) return;
+        try
+        {
+            var fullPath = Path.Combine(PlatformHelper.ProfilePath, "user_script_run", fileName + ".lua");
+            var dir = Path.GetDirectoryName(fullPath);
+            if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
+            if (!fullPath.StartsWith(Path.GetFullPath(Path.Combine(PlatformHelper.ProfilePath, "user_script_run"))))
+                return;
+            File.WriteAllText(fullPath, Document.Text);
+            _lastLuaFileTime = File.GetLastWriteTime(fullPath);
+            IsEditorModified = false;
+        }
+        catch { }
+    }
+
+    /// <summary>Mark document as modified for auto-save tracking.</summary>
+    public void MarkDocumentChanged()
+    {
+        _lastLuaChangeTime = DateTime.Now;
+        IsEditorModified = true;
+    }
+
     private void OnLuaLog(object? sender, EventArgs e)
     {
-        if (IsLogPaused) return;
-        AppendLog(sender?.ToString() ?? "");
+        if (sender is string msg && msg != null)
+        {
+            lock (_logLock)
+            {
+                if (_logBuffer.Count > 500)
+                {
+                    _logBuffer.Clear();
+                    _logBuffer.Add("too many logs!");
+                    Thread.Sleep(200); // throttle
+                }
+                else
+                    _logBuffer.Add(msg);
+            }
+            _logSignal.Set();
+        }
     }
 
     private void OnLuaError(object? sender, EventArgs e)
@@ -124,6 +226,44 @@ public partial class LuaScriptViewModel : ViewModelBase
         if (newText.Length > _maxLogLen)
             newText = newText[^(Math.Min(_maxLogLen, newText.Length))..];
         LogOutput = newText;
+    }
+
+    private void StartLogTask()
+    {
+        if (_isLogTaskRunning) return;
+        _isLogTaskRunning = true;
+        new Thread(() =>
+        {
+            while (!GlobalState.Instance.IsMainWindowClosed)
+            {
+                _logSignal.WaitOne(200);
+                if (GlobalState.Instance.IsMainWindowClosed) return;
+                if (IsLogPaused) continue;
+
+                string[] logs;
+                lock (_logLock)
+                {
+                    logs = _logBuffer.ToArray();
+                    _logBuffer.Clear();
+                }
+                if (logs.Length == 0) continue;
+
+                _logCount += logs.Length;
+                foreach (var log in logs)
+                {
+                    global::Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+                    {
+                        if (_logCount >= 1000)
+                        {
+                            LogOutput = "Lua log too long, auto cleared.\nMore logs see lua log file.\n";
+                            _logCount = 0;
+                        }
+                        AppendLog(log);
+                    });
+                }
+                Thread.Sleep(10); // throttle
+            }
+        }) { IsBackground = true }.Start();
     }
 
     // ── Commands ────────────────────────────────────────────────────

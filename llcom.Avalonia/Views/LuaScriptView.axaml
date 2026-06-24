@@ -78,7 +78,9 @@
                                        FontSize="13"
                                        ShowLineNumbers="True"
                                        WordWrap="True"
-                                       IsReadOnly="{Binding !IsEditorEnabled}"/>
+                                       IsReadOnly="{Binding !IsEditorEnabled}"
+                                       TextChanged="TextEditor_TextChanged"
+                                       LostFocus="TextEditor_LostFocus"/>
             </Grid>
 
             <!-- 运行日志视图 -->

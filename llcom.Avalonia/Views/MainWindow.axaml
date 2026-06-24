@@ -222,6 +222,16 @@
 
                 <Separator Width="1" Height="14" Background="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" Margin="4,0"/>
 
+                <!-- RTS / DTR -->
+                <CheckBox DockPanel.Dock="Left" Content="RTS"
+                          IsChecked="{Binding RtsEnabled}" Margin="2,0"
+                          ToolTip.Tip="Request To Send"/>
+                <CheckBox DockPanel.Dock="Left" Content="DTR"
+                          IsChecked="{Binding DtrEnabled}" Margin="2,0"
+                          ToolTip.Tip="Data Terminal Ready"/>
+
+                <Separator Width="1" Height="14" Background="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" Margin="4,0"/>
+
                 <TextBlock DockPanel.Dock="Left" Text="{DynamicResource ShowStatus}" VerticalAlignment="Center" Margin="4,0"/>
                 <TextBlock Name="statusTextBlock" DockPanel.Dock="Left"
                            Text="{Binding StatusText}" VerticalAlignment="Center" Margin="0,0,4,0"/>

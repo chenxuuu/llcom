@@ -51,6 +51,15 @@ public static class PlatformHelper
         Console.WriteLine($"[llcom] {message}");
     }
 
+    /// <summary>Show an input dialog to the user. Returns (confirmed, inputText).</summary>
+    public static (bool, string) ShowInputDialog(string prompt, string defaultInput, string title)
+    {
+        if (InputDialogCallback != null)
+            return InputDialogCallback(prompt, defaultInput, title);
+        // Fallback: return default
+        return (false, defaultInput);
+    }
+
     /// <summary>Load language resource file.</summary>
     public static void LoadLanguageFile(string language)
     {

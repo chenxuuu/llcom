@@ -25,8 +25,39 @@ public partial class MainWindowViewModel : ViewModelBase
         "750000", "921600", "1000000", "1500000", "2000000", "3000000",
         Helpers.LocaleHelper.Get("OtherRate")
     };
+    private int _lastBaudRateIndex = -1;
     [ObservableProperty]
     private string _selectedBaudRate = "115200";
+
+    partial void OnSelectedBaudRateChanged(string value)
+    {
+        // Skip if index hasn't changed (programmatic set)
+        var idx = BaudRates.IndexOf(value);
+        if (idx == _lastBaudRateIndex) return;
+        _lastBaudRateIndex = idx;
+
+        if (value == LocaleHelper.Get("OtherRate"))
+        {
+            // Custom baud rate — show input dialog
+            var result = PlatformHelper.ShowInputDialog(
+                LocaleHelper.Get("ShowBaudRate"),
+                "115200",
+                LocaleHelper.Get("OtherRate"));
+            if (result.Item1 && int.TryParse(result.Item2, out var customBaud) && customBaud > 0)
+            {
+                BaudRates[BaudRates.Count - 1] = customBaud.ToString();
+                SelectedBaudRate = customBaud.ToString();
+                _lastBaudRateIndex = BaudRates.Count - 1;
+            }
+            else
+            {
+                PlatformHelper.ShowMessage(LocaleHelper.Get("OtherRateFail"));
+                BaudRates[BaudRates.Count - 1] = LocaleHelper.Get("OtherRate");
+                SelectedBaudRate = "115200";
+                _lastBaudRateIndex = BaudRates.IndexOf("115200");
+            }
+        }
+    }
     [ObservableProperty]
     private ObservableCollection<string> _dataBitsList = new() { "5", "6", "7", "8" };
     [ObservableProperty]
@@ -69,6 +100,32 @@ public partial class MainWindowViewModel : ViewModelBase
     private bool _isReady = true;
     [ObservableProperty]
     private bool _showSymbol;
+
+    // ── RTS / DTR ───────────────────────────────────────────────────────
+    [ObservableProperty]
+    private bool _rtsEnabled;
+    [ObservableProperty]
+    private bool _dtrEnabled = true;
+
+    partial void OnRtsEnabledChanged(bool value)
+    {
+        if (IsPortOpen) UartManager.Instance.Rts = value;
+    }
+
+    partial void OnDtrEnabledChanged(bool value)
+    {
+        if (IsPortOpen) UartManager.Instance.Dtr = value;
+    }
+
+    // ── Window position persistence ─────────────────────────────────────
+    [ObservableProperty]
+    private double _windowLeft = double.NaN;
+    [ObservableProperty]
+    private double _windowTop = double.NaN;
+    [ObservableProperty]
+    private double _windowWidth = 900;
+    [ObservableProperty]
+    private double _windowHeight = 500;
 
     // ── Tabs ────────────────────────────────────────────────────────────
     [ObservableProperty]
@@ -139,15 +196,8 @@ public partial class MainWindowViewModel : ViewModelBase
             {
                 var uart = UartManager.Instance;
                 uart.SetName(SelectedPort);
-                if (SelectedBaudRate == LocaleHelper.Get("OtherRate"))
-                {
-                    // Custom baud rate — use port default (usually 9600)
-                    uart.Serial.BaudRate = 9600;
-                }
-                else if (int.TryParse(SelectedBaudRate, out var baud))
-                {
+                if (int.TryParse(SelectedBaudRate, out var baud) && baud > 0)
                     uart.Serial.BaudRate = baud;
-                }
                 uart.Serial.DataBits = int.Parse(SelectedDataBits);
                 uart.Serial.StopBits = SelectedStopBits switch
                 {
@@ -157,8 +207,11 @@ public partial class MainWindowViewModel : ViewModelBase
                 {
                     "Odd" => Parity.Odd, "Even" => Parity.Even, "Mark" => Parity.Mark, "Space" => Parity.Space, _ => Parity.None
                 };
+                uart.Rts = RtsEnabled;
+                uart.Dtr = DtrEnabled;
                 uart.UartDataReceived += OnDataReceived;
                 uart.UartDataSent += OnDataSent;
+                uart.UartDataRawSent += OnDataRawSent;
                 uart.Open();
                 IsPortOpen = true;
                 OpenCloseButtonText = LocaleHelper.Get("ClosePortButton");
@@ -174,12 +227,38 @@ public partial class MainWindowViewModel : ViewModelBase
         if (!IsPortOpen || string.IsNullOrEmpty(DataToSend)) return;
         try
         {
-            byte[] data = HexSend
+            byte[] rawData = HexSend
                 ? ByteConvert.Hex2Byte(DataToSend)
-                : System.Text.Encoding.UTF8.GetBytes(DataToSend);
-            UartManager.Instance.SendData(data);
-            SentCount += data.Length;
-            StatusText = LocaleHelper.Format("StatusSentBytes", data.Length);
+                : GlobalState.Instance.GetEncoding().GetBytes(DataToSend);
+
+            // Run through send script Lua pipeline (sendScript.lua)
+            byte[] processedData;
+            try
+            {
+                var state = GlobalState.Instance;
+                processedData = LuaEnv.LuaLoader.Run(
+                    $"{state.Settings.sendScript}.lua",
+                    new System.Collections.ArrayList { "uartData", rawData });
+                if (processedData.Length == 0)
+                    processedData = rawData; // fallback if script returns empty
+            }
+            catch
+            {
+                processedData = rawData;
+            }
+
+            // Append CRLF if configured
+            if (GlobalState.Instance.Settings.extraEnter)
+            {
+                var temp = processedData.ToList();
+                temp.Add(0x0d);
+                temp.Add(0x0a);
+                processedData = temp.ToArray();
+            }
+
+            UartManager.Instance.SendData(processedData, rawData);
+            SentCount += rawData.Length;
+            StatusText = LocaleHelper.Format("StatusSentBytes", rawData.Length);
         }
         catch (Exception ex) { StatusText = LocaleHelper.Format("StatusSendFailed", ex.Message); }
     }
@@ -276,6 +355,23 @@ public partial class MainWindowViewModel : ViewModelBase
         global::Avalonia.Threading.Dispatcher.UIThread.Post(() => AppendDataLine(line));
     }
 
+    private void OnDataRawSent(object? sender, byte[] data)
+    {
+        // Show raw sent data (before Lua processing) if ShowSendRaw is enabled
+        if (!GlobalState.Instance.Settings.showSendRaw) return;
+        var text = HexDisplay
+            ? ByteConvert.Byte2Hex(data, " ")
+            : ByteConvert.Byte2Readable(data);
+        var line = new DataLineItem
+        {
+            Timestamp = DateTime.Now,
+            IsSent = true,
+            Data = LocaleHelper.Get("RawDataSentTitle") + ": " + text,
+            IsHex = HexDisplay
+        };
+        global::Avalonia.Threading.Dispatcher.UIThread.Post(() => AppendDataLine(line));
+    }
+
     private int _maxLines = 2000;
     private void AppendDataLine(DataLineItem line)
     {
@@ -286,7 +382,11 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public void Cleanup()
     {
-        UartManager.Instance.Close();
+        var uart = UartManager.Instance;
+        uart.UartDataReceived -= OnDataReceived;
+        uart.UartDataSent -= OnDataSent;
+        uart.UartDataRawSent -= OnDataRawSent;
+        uart.Close();
         MqttPage.Cleanup();
         TcpTestPage.Cleanup();
         SocketClientPage.Cleanup();
@@ -294,5 +394,6 @@ public partial class MainWindowViewModel : ViewModelBase
         WinUsbPage.Cleanup();
         SerialMonitorPage.Cleanup();
         LuaEnv.LuaRunEnv.StopLua("");
+        LuaEnv.LuaLoader.ClearRun();
     }
 }
