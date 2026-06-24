@@ -52,8 +52,19 @@
                         <CheckBox Grid.Column="3" Margin="2"
                                   HorizontalAlignment="Center"
                                   IsChecked="{Binding Hex, Mode=TwoWay}"/>
-                        <TextBlock Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Text="🗄" FontSize="14"/>
+                        <StackPanel Grid.Column="4" Orientation="Horizontal" Spacing="1"
+                                    VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="📜" FontSize="12"
+                                       PointerPressed="ScriptIcon_PointerPressed"
+                                       Cursor="Hand"
+                                       Tag="{Binding}"
+                                       ToolTip.Tip="{DynamicResource QuickSendRecvScriptTip}"/>
+                            <TextBlock Text="🛠" FontSize="12"
+                                       PointerPressed="ScriptParaIcon_PointerPressed"
+                                       Cursor="Hand"
+                                       Tag="{Binding}"
+                                       ToolTip.Tip="{DynamicResource QuickSendRecvScriptParaTip}"/>
+                        </StackPanel>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

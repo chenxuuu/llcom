@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using llcom.Tools;
 
 namespace llcom.Avalonia.ViewModels;
 
@@ -80,18 +81,8 @@ public partial class ConvertPageViewModel : ViewModelBase
         ConvertJobs.RemoveAt(ConvertJobs.Count - 1);
     }
 
-    private static byte[] Hex2Byte(string hex)
-    {
-        hex = Regex.Replace(hex, "[^0-9A-Fa-f]", "");
-        if (hex.Length % 2 != 0)
-            hex = hex.Remove(hex.Length - 1, 1);
-        if (hex.Length <= 0) return Array.Empty<byte>();
-        byte[] vBytes = new byte[hex.Length / 2];
-        for (int i = 0; i < hex.Length; i += 2)
-            if (!byte.TryParse(hex.Substring(i, 2), NumberStyles.HexNumber, null, out vBytes[i / 2]))
-                vBytes[i / 2] = 0;
-        return vBytes;
-    }
+    // Use shared ByteConvert.Hex2Byte with 1MB input size limit
+    private static byte[] Hex2Byte(string hex) => ByteConvert.Hex2Byte(hex);
 
     private static byte[] MD5Encrypt(byte[] b) => MD5.HashData(b);
     private static byte[] SHA1Encrypt(byte[] b) => SHA1.HashData(b);

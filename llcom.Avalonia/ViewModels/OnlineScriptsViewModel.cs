@@ -96,8 +96,21 @@ public partial class OnlineScriptsViewModel : ViewModelBase
     {
         if (SelectedScript == null) return;
 
-        var name = SelectedScript.Name;
-        var path = Path.Combine(PlatformHelper.ProfilePath, "user_script_run", $"{name}.lua");
+        // Sanitize the script name to prevent path traversal
+        var name = SelectedScript.Name
+            ?.Replace("/", "").Replace("\\", "").Replace("..", "")
+            ?? "untitled";
+        foreach (var c in Path.GetInvalidFileNameChars())
+            name = name.Replace(c.ToString(), "");
+        if (string.IsNullOrWhiteSpace(name)) name = "untitled";
+
+        var baseDir = Path.GetFullPath(Path.Combine(PlatformHelper.ProfilePath, "user_script_run"));
+        var path = Path.GetFullPath(Path.Combine(baseDir, $"{name}.lua"));
+        if (!path.StartsWith(baseDir))
+        {
+            PlatformHelper.ShowMessage("无法保存: 无效的脚本名称");
+            return;
+        }
 
         if (File.Exists(path))
         {
@@ -107,7 +120,7 @@ public partial class OnlineScriptsViewModel : ViewModelBase
 
         try
         {
-            Directory.CreateDirectory(Path.Combine(PlatformHelper.ProfilePath, "user_script_run"));
+            Directory.CreateDirectory(baseDir);
             await File.WriteAllTextAsync(path, SelectedScript.Script);
             GlobalState.RefreshLuaScriptList();
             PlatformHelper.ShowMessage(LocaleHelper.Get("OnlineScriptSaveSuccess"));

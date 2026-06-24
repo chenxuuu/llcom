@@ -81,6 +81,15 @@ public static class PlatformHelper
     /// <summary>Open a URL in the default browser.</summary>
     public static void OpenUrl(string url)
     {
+        // Validate URL to prevent command injection
+        if (string.IsNullOrEmpty(url)) return;
+        // Only allow http/https/file URLs or system paths (for opening folders)
+        var isUrl = url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+                    url.StartsWith("https://", StringComparison.OrdinalIgnoreCase) ||
+                    url.StartsWith("file://", StringComparison.OrdinalIgnoreCase);
+        var isPath = Path.IsPathRooted(url) || url.Contains(Sep);
+        if (!isUrl && !isPath) return;
+
         try
         {
             Process.Start(new ProcessStartInfo
@@ -94,12 +103,23 @@ public static class PlatformHelper
             // Fallback for Linux where UseShellExecute might fail
             try
             {
-                Process.Start(new ProcessStartInfo
+                // Use safe argument passing via ProcessStartInfo ArgumentList (no shell injection)
+                if (isUrl)
                 {
-                    FileName = IsWindows ? "cmd" : "xdg-open",
-                    Arguments = IsWindows ? $"/c start {url}" : url,
-                    UseShellExecute = false
-                });
+                    Process.Start(new ProcessStartInfo("xdg-open", url)
+                    {
+                        UseShellExecute = false
+                    });
+                }
+                else
+                {
+                    // For file paths, open via default file manager
+                    var opener = IsWindows ? "explorer.exe" : (IsMacOS ? "open" : "xdg-open");
+                    Process.Start(new ProcessStartInfo(opener, url)
+                    {
+                        UseShellExecute = false
+                    });
+                }
             }
             catch { }
         }

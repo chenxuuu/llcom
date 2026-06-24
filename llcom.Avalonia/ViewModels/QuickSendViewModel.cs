@@ -75,14 +75,23 @@ public partial class QuickSendViewModel : ViewModelBase
             // Switch receive script if item has one configured
             if (!string.IsNullOrEmpty(item.RecvScriptPath))
             {
-                var recvPath = System.IO.Path.Combine(
-                    PlatformHelper.ProfilePath,
-                    "user_script_recv_convert",
-                    item.RecvScriptPath + ".lua");
-                if (System.IO.File.Exists(recvPath))
-                    state.Settings.recvScript = item.RecvScriptPath;
-                else
+                // Validate and sanitize recvScriptPath to prevent directory traversal
+                var safeName = item.RecvScriptPath.Replace("/", "").Replace("\\", "").Replace("..", "");
+                if (string.IsNullOrEmpty(safeName) || safeName != item.RecvScriptPath)
+                {
                     item.RecvScriptPath = "";
+                }
+                else
+                {
+                    var recvPath = System.IO.Path.Combine(
+                        PlatformHelper.ProfilePath,
+                        "user_script_recv_convert",
+                        safeName + ".lua");
+                    if (System.IO.File.Exists(recvPath))
+                        state.Settings.recvScript = safeName;
+                    else
+                        item.RecvScriptPath = "";
+                }
             }
 
             // Run through send script Lua pipeline
@@ -161,8 +170,16 @@ public partial class QuickSendViewModel : ViewModelBase
             }
             if (string.IsNullOrEmpty(path)) return;
 
+            // Read with size limit to prevent DoS
+            var fileInfo = new FileInfo(path);
+            const long maxFileSize = 10 * 1024 * 1024; // 10MB limit
+            if (fileInfo.Exists && fileInfo.Length > maxFileSize)
+            {
+                PlatformHelper.ShowMessage(LocaleHelper.Format("QuickSendImportFailed", "文件过大"));
+                return;
+            }
             var json = await File.ReadAllTextAsync(path);
-            var data = JsonSerializer.Deserialize<List<QuickSendItemData>>(json);
+            var data = JsonSerializer.Deserialize<List<QuickSendItemData>>(json, new JsonSerializerOptions { MaxDepth = 32 });
             if (data != null)
             {
                 Items.Clear();

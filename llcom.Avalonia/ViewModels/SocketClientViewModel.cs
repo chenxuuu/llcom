@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using llcom.Tools;
 
 namespace llcom.Avalonia.ViewModels;
 
@@ -150,12 +151,8 @@ public partial class SocketClientViewModel : ViewModelBase
 
     private void AppendReceive(string msg) => ReceiveText += $"[{DateTime.Now:HH:mm:ss}] {msg}\n";
 
-    private static byte[] HexToBytes(string hex)
-    {
-        hex = System.Text.RegularExpressions.Regex.Replace(hex, "[^0-9A-Fa-f]", "");
-        if (hex.Length % 2 != 0) hex = hex[..^1];
-        return Convert.FromHexString(hex);
-    }
+    // Use shared ByteConvert.Hex2Byte with size limit
+    private static byte[] HexToBytes(string hex) => ByteConvert.Hex2Byte(hex);
 
     public void Cleanup() => Disconnect();
 }

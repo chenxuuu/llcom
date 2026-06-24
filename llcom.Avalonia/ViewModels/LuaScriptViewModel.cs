@@ -357,13 +357,34 @@ public partial class LuaScriptViewModel : ViewModelBase
         SaveCurrentScript();
     }
 
+    /// <summary>
+    /// Sanitize a file name by removing path separators and invalid characters.
+    /// </summary>
+    private static string SanitizeFileName(string name)
+    {
+        if (string.IsNullOrEmpty(name)) return "untitled";
+        // Strip any directory traversal characters
+        name = name.Replace("/", "").Replace("\\", "").Replace("..", "");
+        // Remove other invalid characters
+        foreach (var c in Path.GetInvalidFileNameChars())
+            name = name.Replace(c.ToString(), "");
+        if (string.IsNullOrWhiteSpace(name)) return "untitled";
+        return name.Trim();
+    }
+
     private void SaveCurrentScript()
     {
         if (Document == null || SelectedScript == null) return;
         try
         {
-            var fullPath = Path.Combine(PlatformHelper.ProfilePath, SelectedScript);
-            File.WriteAllText(fullPath, Document.Text);
+            // Validate path to prevent directory traversal
+            var safePath = GetSafeScriptPath(SelectedScript, "user_script_run");
+            if (safePath == null)
+            {
+                StatusText = $"保存失败: 无效的脚本路径";
+                return;
+            }
+            File.WriteAllText(safePath, Document.Text);
             IsEditorModified = false;
             StatusText = "脚本已保存";
         }
@@ -391,8 +412,16 @@ public partial class LuaScriptViewModel : ViewModelBase
 
         try
         {
-            var fileName = NewScriptName.EndsWith(".lua") ? NewScriptName : NewScriptName + ".lua";
+            // Sanitize file name to prevent path traversal
+            var safeName = SanitizeFileName(NewScriptName.Trim());
+            var fileName = safeName.EndsWith(".lua") ? safeName : safeName + ".lua";
             var fullPath = Path.Combine(PlatformHelper.ProfilePath, "user_script_run", fileName);
+
+            if (!fullPath.StartsWith(Path.GetFullPath(Path.Combine(PlatformHelper.ProfilePath, "user_script_run"))))
+            {
+                StatusText = "无效的文件名";
+                return;
+            }
 
             if (File.Exists(fullPath))
             {

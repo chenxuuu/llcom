@@ -5,6 +5,7 @@ using AvaloniaEdit.Document;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using llcom.Tools;
+using Newtonsoft.Json;
 
 namespace llcom.Avalonia.ViewModels;
 
@@ -67,21 +68,49 @@ public partial class SettingWindowViewModel : ViewModelBase
     {
         try
         {
+            var state = GlobalState.Instance;
+            var s = state.Settings;
             var baseDir = PlatformHelper.ProfilePath;
+
+            // Mirror to GlobalState.Settings for immediate use
+            s.autoReconnect = AutoReconnect;
+            s.showHexFormat = DisplayFormat;
+            s.showSend = ShowSendData;
+            s.showSendRaw = ShowSendRaw;
+            s.topmost = KeepTop;
+            s.terminal = TerminalMode;
+
+            // Persist settings.json
+            var json = JsonConvert.SerializeObject(s, Formatting.Indented);
+            File.WriteAllText(Path.Combine(baseDir, "settings.json"), json);
+
             // Save scripts
             if (SendScriptDocument != null)
                 File.WriteAllText(Path.Combine(baseDir, "send_script.lua"), SendScriptDocument.Text);
             if (RecvScriptDocument != null)
                 File.WriteAllText(Path.Combine(baseDir, "recv_script.lua"), RecvScriptDocument.Text);
+
+            PlatformHelper.ShowMessage("设置已保存");
         }
-        catch (Exception) { /* ignore */ }
+        catch (Exception ex) { PlatformHelper.ShowMessage($"保存设置失败: {ex.Message}"); }
     }
 
     private void LoadSettings()
     {
         try
         {
+            var state = GlobalState.Instance;
+            var s = state.Settings;
             var baseDir = PlatformHelper.ProfilePath;
+
+            // Load from GlobalState.Settings
+            AutoReconnect = s.autoReconnect;
+            DisplayFormat = s.showHexFormat;
+            ShowSendData = s.showSend;
+            ShowSendRaw = s.showSendRaw;
+            KeepTop = s.topmost;
+            TerminalMode = s.terminal;
+
             // Load scripts
             var sendPath = Path.Combine(baseDir, "send_script.lua");
             if (File.Exists(sendPath))

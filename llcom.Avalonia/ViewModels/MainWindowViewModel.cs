@@ -101,6 +101,34 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     private bool _showSymbol;
 
+    // ── Terminal mode ────────────────────────────────────────────────────
+    [ObservableProperty]
+    private bool _terminalMode;
+    [ObservableProperty]
+    private string _terminalBorderColor = "Transparent";
+
+    public void HandleTerminalKeyInput(string text)
+    {
+        if (!TerminalMode || !IsPortOpen) return;
+        try
+        {
+            var data = System.Text.Encoding.ASCII.GetBytes(text);
+            UartManager.Instance.SendData(data);
+        }
+        catch { }
+    }
+
+    public void HandleTerminalCtrlKey(int key)
+    {
+        if (!TerminalMode || !IsPortOpen) return;
+        // Ctrl+A..Z sends ASCII control codes 1..26
+        if (key >= 0 && key < 26)
+        {
+            try { UartManager.Instance.SendData(new byte[] { (byte)(key + 1) }); }
+            catch { }
+        }
+    }
+
     // ── RTS / DTR ───────────────────────────────────────────────────────
     [ObservableProperty]
     private bool _rtsEnabled;
@@ -304,8 +332,10 @@ public partial class MainWindowViewModel : ViewModelBase
             : LocaleHelper.Get("StatusReady");
     }
 
+    /// <summary>Open settings window.</summary>
+    public static event Action? OpenSettingsRequested;
     [RelayCommand]
-    private void OpenSettings() { /* Open settings window */ }
+    private void OpenSettings() { OpenSettingsRequested?.Invoke(); }
 
     [RelayCommand]
     private void OpenScriptFolder()

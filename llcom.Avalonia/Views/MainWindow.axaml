@@ -32,11 +32,17 @@
         </Grid.ColumnDefinitions>
 
         <!-- ====== 左侧：数据收发显示区域 ====== -->
-        <Border Grid.Column="0" Grid.Row="0" BorderBrush="Transparent" BorderThickness="0.5">
+        <Border Grid.Column="0" Grid.Row="0"
+                Name="dataShowBorder"
+                BorderBrush="Transparent" BorderThickness="0.5">
             <ListBox Name="dataListBox" ItemsSource="{Binding ReceivedLines}"
                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
                      Margin="0" Padding="0"
-                     Background="Transparent" BorderThickness="0">
+                     Background="Transparent" BorderThickness="0"
+                     KeyDown="DataListBox_KeyDown"
+                     TextInput="DataListBox_TextInput"
+                     GotFocus="DataListBox_GotFocus"
+                     LostFocus="DataListBox_LostFocus">
                 <ListBox.ItemTemplate>
                     <DataTemplate x:DataType="vm:DataLineItem">
                         <TextBlock Text="{Binding DisplayText}"

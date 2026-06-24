@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Text.Json;
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Media;
 using llcom.Avalonia.ViewModels;
 using llcom.Tools;
 
@@ -16,6 +18,14 @@ public partial class MainWindow : Window
         Closed += SaveWindowPosition;
         Activated += OnWindowActivatedEvent;
         Deactivated += OnWindowDeactivatedEvent;
+        MainWindowViewModel.OpenSettingsRequested += ShowSettingsWindow;
+    }
+
+    private void ShowSettingsWindow()
+    {
+        var settingVm = new SettingWindowViewModel();
+        var settingWindow = new SettingWindow { DataContext = settingVm };
+        settingWindow.Show(this);
     }
 
     private void OnWindowActivatedEvent(object? sender, EventArgs e)
@@ -31,6 +41,46 @@ public partial class MainWindow : Window
         if (DataContext is MainWindowViewModel vm)
         {
             vm.LuaScriptPage.OnEditorLostFocus();
+        }
+    }
+
+    // ── Terminal mode: forward keyboard input to serial port ─────────────
+
+    private void DataListBox_GotFocus(object? sender, global::Avalonia.Input.GotFocusEventArgs e)
+    {
+        if (DataContext is MainWindowViewModel { TerminalMode: true } vm)
+        {
+            vm.TerminalBorderColor = "#009400";
+            dataShowBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 148, 0));
+        }
+    }
+
+    private void DataListBox_LostFocus(object? sender, global::Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (DataContext is MainWindowViewModel vm)
+        {
+            vm.TerminalBorderColor = "Transparent";
+            dataShowBorder.BorderBrush = Brushes.Transparent;
+        }
+    }
+
+    private void DataListBox_TextInput(object? sender, TextInputEventArgs e)
+    {
+        if (string.IsNullOrEmpty(e.Text) || DataContext is not MainWindowViewModel vm) return;
+        vm.HandleTerminalKeyInput(e.Text);
+        e.Handled = true;
+    }
+
+    private void DataListBox_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (DataContext is not MainWindowViewModel vm) return;
+        // Ctrl+A..Z sends ASCII control codes
+        var hasCtrl = (e.KeyModifiers & KeyModifiers.Control) != 0;
+        if (hasCtrl && e.Key >= Key.A && e.Key <= Key.Z)
+        {
+            var asciiCode = (int)e.Key - (int)Key.A;
+            vm.HandleTerminalCtrlKey(asciiCode);
+            e.Handled = true;
         }
     }
 

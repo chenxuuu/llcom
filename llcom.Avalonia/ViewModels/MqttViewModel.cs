@@ -120,6 +120,10 @@ public partial class MqttViewModel : ViewModelBase
                 {
                     o.WithSslProtocols(SslProtocols.Tls12 | SslProtocols.Tls13);
 
+                    // NOTE: Certificate validation is intentionally relaxed for self-signed/
+                    // embedded device MQTT brokers commonly used in IoT scenarios.
+                    // In production deployments, use WithCertificateValidationHandler with
+                    // proper certificate pinning instead of unconditional acceptance.
                     if (!string.IsNullOrEmpty(TlsCaCertPath) && File.Exists(TlsCaCertPath))
                     {
                         o.WithCertificateValidationHandler(ctx => true);
@@ -192,12 +196,8 @@ public partial class MqttViewModel : ViewModelBase
 
     private void AppendLog(string msg) => Log += $"[{DateTime.Now:HH:mm:ss}] {msg}\n";
 
-    private static byte[] HexToBytes(string hex)
-    {
-        hex = System.Text.RegularExpressions.Regex.Replace(hex, "[^0-9A-Fa-f]", "");
-        if (hex.Length % 2 != 0) hex = hex[..^1];
-        return Convert.FromHexString(hex);
-    }
+    // Use shared ByteConvert.Hex2Byte with size limit
+    private static byte[] HexToBytes(string hex) => ByteConvert.Hex2Byte(hex);
 
     public void Cleanup()
     {

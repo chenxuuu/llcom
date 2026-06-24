@@ -86,7 +86,12 @@ public static class ByteConvert
     /// <summary>Convert HEX string to byte array.</summary>
     public static byte[] Hex2Byte(string mHex)
     {
+        if (string.IsNullOrEmpty(mHex)) return Array.Empty<byte>();
+        // Sanitize: strip non-hex characters, limit input size to prevent DoS
         mHex = Regex.Replace(mHex, "[^0-9A-Fa-f]", "");
+        const int maxHexLen = 2 * 1024 * 1024; // 1MB worth of hex
+        if (mHex.Length > maxHexLen)
+            mHex = mHex[..maxHexLen];
         if (mHex.Length % 2 != 0)
             mHex = mHex.Remove(mHex.Length - 1, 1);
         if (mHex.Length <= 0) return Array.Empty<byte>();
