@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Layout;
+using Avalonia.Threading;
 using llcom.Avalonia.ViewModels;
 using llcom.Tools;
 
@@ -87,8 +89,11 @@ public partial class QuickSendView : UserControl
         e.Handled = true;
     }
 
-    /// <summary>Handle click on 🛠 icon to set recv script parameters.</summary>
-    private void ScriptParaIcon_PointerPressed(object? sender, PointerPressedEventArgs e)
+    /// <summary>
+    /// Handle click on 🛠 icon to set recv script parameters.
+    /// Uses async pattern to avoid UI thread deadlock.
+    /// </summary>
+    private async void ScriptParaIcon_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         if (sender is not Control icon) return;
         if (icon.Tag is not QuickSendItem item) return;
@@ -102,15 +107,70 @@ public partial class QuickSendView : UserControl
             return;
         }
 
-        // Left-click: show input dialog for script parameters
-        var result = PlatformHelper.ShowInputDialog(
+        // Left-click: show input dialog for script parameters (async, non-blocking)
+        e.Handled = true;
+        var result = await ShowInputDialogAsync(
+            TopLevel.GetTopLevel(this),
             "设置接收脚本参数:",
             item.RecvScriptPara ?? "",
             "脚本参数");
-        if (result.Item1)
+        if (result.confirmed)
         {
-            item.RecvScriptPara = result.Item2;
+            item.RecvScriptPara = result.text;
         }
-        e.Handled = true;
+    }
+
+    /// <summary>
+    /// Async input dialog that doesn't block the UI thread.
+    /// Uses TaskCompletionSource with Show() instead of blocking .Result.
+    /// </summary>
+    private static Task<(bool confirmed, string text)> ShowInputDialogAsync(
+        TopLevel? topLevel, string prompt, string defaultInput, string title)
+    {
+        var tcs = new TaskCompletionSource<(bool, string)>();
+        if (topLevel == null)
+        {
+            tcs.TrySetResult((false, defaultInput));
+            return tcs.Task;
+        }
+
+        var window = new Window
+        {
+            Title = title,
+            Width = 350,
+            Height = 150,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            ShowInTaskbar = false,
+            CanResize = false,
+        };
+
+        var panel = new StackPanel { Margin = new global::Avalonia.Thickness(10) };
+        var promptText = new TextBlock { Text = prompt, Margin = new global::Avalonia.Thickness(0, 0, 0, 8) };
+        var inputBox = new TextBox { Text = defaultInput, Margin = new global::Avalonia.Thickness(0, 0, 0, 12) };
+        var btnPanel = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
+
+        var okBtn = new Button { Content = "确定", Width = 70, Margin = new global::Avalonia.Thickness(0, 0, 8, 0) };
+        var cancelBtn = new Button { Content = "取消", Width = 70 };
+
+        okBtn.Click += (_, _) => { tcs.TrySetResult((true, inputBox.Text ?? "")); window.Close(); };
+        cancelBtn.Click += (_, _) => { tcs.TrySetResult((false, defaultInput)); window.Close(); };
+        window.Closing += (_, _) => tcs.TrySetResult((false, defaultInput));
+
+        btnPanel.Children.Add(okBtn);
+        btnPanel.Children.Add(cancelBtn);
+        panel.Children.Add(promptText);
+        panel.Children.Add(inputBox);
+        panel.Children.Add(btnPanel);
+        window.Content = panel;
+
+        var owner = topLevel as Window;
+        if (owner != null)
+            window.Show(owner);
+        else
+            window.Show();
+        inputBox.Focus();
+        inputBox.SelectAll();
+
+        return tcs.Task;
     }
 }

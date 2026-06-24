@@ -50,13 +50,13 @@ public partial class QuickSendViewModel : ViewModelBase
 
     public QuickSendViewModel()
     {
-        System.IO.Directory.CreateDirectory(PlatformHelper.ProfilePath);
+        try { System.IO.Directory.CreateDirectory(PlatformHelper.ProfilePath); } catch { }
         for (int i = 0; i < 15; i++)
         {
             var item = new QuickSendItem { Id = i, SendItemCommand = SendItemCommand };
             Items.Add(item);
         }
-        LoadList(0);
+        try { LoadList(0); } catch { }
     }
 
     // ── Core commands ──────────────────────────────────────────────────

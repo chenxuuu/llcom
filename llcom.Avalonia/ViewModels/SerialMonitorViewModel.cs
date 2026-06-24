@@ -46,14 +46,23 @@ public partial class SerialMonitorViewModel : ViewModelBase
 
     public SerialMonitorViewModel()
     {
-        IsAvailable = NativeInterop.IsAvailable;
-        AvailabilityMessage = NativeInterop.AvailabilityMessage;
-        if (IsAvailable)
+        try
         {
-            Refresh();
+            IsAvailable = NativeInterop.IsAvailable;
+            AvailabilityMessage = NativeInterop.AvailabilityMessage;
+            if (IsAvailable)
+            {
+                Refresh();
+            }
+            else
+            {
+                StatusText = AvailabilityMessage;
+            }
         }
-        else
+        catch (Exception ex)
         {
+            IsAvailable = false;
+            AvailabilityMessage = $"初始化失败: {ex.Message}";
             StatusText = AvailabilityMessage;
         }
     }

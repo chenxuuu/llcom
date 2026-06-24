@@ -87,10 +87,13 @@ public partial class LuaScriptViewModel : ViewModelBase
 
     public LuaScriptViewModel()
     {
-        RefreshScriptList();
-        LuaEnv.LuaApis.PrintLuaLog += OnLuaLog;
-        LuaEnv.LuaRunEnv.LuaRunError += OnLuaError;
-        StartLogTask();
+        try { RefreshScriptList(); }
+        catch (Exception ex) { StatusText = $"初始化脚本列表失败: {ex.Message}"; }
+
+        try { LuaEnv.LuaApis.PrintLuaLog += OnLuaLog; } catch { }
+        try { LuaEnv.LuaRunEnv.LuaRunError += OnLuaError; } catch { }
+
+        try { StartLogTask(); } catch { }
     }
 
     partial void OnSelectedScriptChanged(string? value)
@@ -271,13 +274,20 @@ public partial class LuaScriptViewModel : ViewModelBase
     [RelayCommand]
     private void RefreshScriptList()
     {
-        var dir = Path.Combine(PlatformHelper.ProfilePath, "user_script_run");
-        if (!Directory.Exists(dir))
-            Directory.CreateDirectory(dir);
+        try
+        {
+            var dir = Path.Combine(PlatformHelper.ProfilePath, "user_script_run");
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
 
-        var files = Directory.GetFiles(dir, "*.lua")
-            .Select(f => "user_script_run/" + Path.GetFileName(f));
-        ScriptList = new ObservableCollection<string>(files);
+            var files = Directory.GetFiles(dir, "*.lua")
+                .Select(f => "user_script_run/" + Path.GetFileName(f));
+            ScriptList = new ObservableCollection<string>(files);
+        }
+        catch (Exception ex)
+        {
+            StatusText = $"刷新脚本列表失败: {ex.Message}";
+        }
     }
 
     [RelayCommand]

@@ -66,14 +66,14 @@ public partial class MainWindow : Window
 
     private void DataListBox_TextInput(object? sender, TextInputEventArgs e)
     {
-        if (string.IsNullOrEmpty(e.Text) || DataContext is not MainWindowViewModel vm) return;
+        if (string.IsNullOrEmpty(e.Text) || DataContext is not MainWindowViewModel { TerminalMode: true, IsPortOpen: true } vm) return;
         vm.HandleTerminalKeyInput(e.Text);
         e.Handled = true;
     }
 
     private void DataListBox_KeyDown(object? sender, KeyEventArgs e)
     {
-        if (DataContext is not MainWindowViewModel vm) return;
+        if (DataContext is not MainWindowViewModel { TerminalMode: true, IsPortOpen: true } vm) return;
         // Ctrl+A..Z sends ASCII control codes
         var hasCtrl = (e.KeyModifiers & KeyModifiers.Control) != 0;
         if (hasCtrl && e.Key >= Key.A && e.Key <= Key.Z)

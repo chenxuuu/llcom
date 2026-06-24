@@ -26,7 +26,10 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            // Initialize cross-platform abstractions
+            // ── Set PlatformHelper callbacks BEFORE creating view models ──
+            // (sub-VMs may access these during construction)
+
+            // Fallback message callback (will be overridden by MainWindowViewModel)
             PlatformHelper.ShowMessageCallback = (msg) =>
             {
                 Console.WriteLine($"[llcom message] {msg}");
@@ -43,9 +46,22 @@ public partial class App : Application
                 }
             };
 
+            // ── Create MainWindow with try/catch for resilience ─────────
+            MainWindowViewModel? mainVm = null;
+            try
+            {
+                mainVm = new MainWindowViewModel();
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"[llcom FATAL] Failed to create MainWindowViewModel: {ex}");
+                // Create a fallback with minimal state
+                mainVm = new MainWindowViewModel();
+            }
+
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = mainVm,
             };
 
             // Language switching: swap the merged ResourceDictionary at runtime
@@ -85,8 +101,6 @@ public partial class App : Application
     private static (bool, string) ShowInputDialogSync(Window owner, string prompt, string defaultInput, string title)
     {
         var tcs = new TaskCompletionSource<(bool, string)>();
-        var topLevel = TopLevel.GetTopLevel(owner);
-        if (topLevel == null) return (false, defaultInput);
 
         var window = new Window
         {
@@ -117,13 +131,10 @@ public partial class App : Application
         panel.Children.Add(btnPanel);
         window.Content = panel;
 
-        window.Show(owner);
-        inputBox.Focus();
-        inputBox.SelectAll();
-
-        // Sync wait with message pump
-        var result = Task.Run(() => tcs.Task).Result;
-        return result;
+        // Use ShowDialog (nested message pump) instead of Show + .Result (deadlocks on UI thread)
+        window.ShowDialog(owner).GetAwaiter().GetResult();
+        // TCS was completed by button click or window close during ShowDialog
+        return tcs.Task.Result;
     }
 
     private static async Task<string?> OpenFilePickerAsync(Window owner, string filter)

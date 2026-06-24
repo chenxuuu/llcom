@@ -9,6 +9,15 @@
     <AssemblyName>llcom</AssemblyName>
     <ApplicationIcon>Assets\llcom.ico</ApplicationIcon>
     <RuntimeIdentifiers>win-x64;linux-x64;osx-x64;osx-arm64</RuntimeIdentifiers>
+    <!-- Reduce self-contained binary: strip unused managed code (ILLink) -->
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
+    <!-- Exclude debug symbols from publish -->
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <!-- Partial trim is conservative; suppress System.Text.Json IL2026 warnings -->
+    <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+    <NoWarn>$(NoWarn);IL2026;IL2067</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,9 +26,15 @@
     <AvaloniaResource Include="languages\**" />
   </ItemGroup>
 
+  <!-- Platform-native Rust serial_monitor library (built by CI) -->
+  <ItemGroup>
+    <None Include="..\llcom\native\**\*" CopyToPublishDirectory="PreserveNewest" LinkBase="native\" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.2.7" />
     <PackageReference Include="Avalonia.Desktop" Version="11.2.7" />
+    <PackageReference Include="Avalonia.FreeDesktop" Version="11.2.7" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.7" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.7" />
     <PackageReference Include="Avalonia.Diagnostics" Version="11.2.7">

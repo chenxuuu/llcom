@@ -134,7 +134,6 @@
     <!-- Lua editor -->
     <system:String x:Key="LuaSaveScript">Save script</system:String>
     <system:String x:Key="LuaRunOneLine">Run one line...</system:String>
-    <system:String x:Key="LuaFileName">Script name:</system:String>
     <!-- About page -->
     <system:String x:Key="AboutSubTitle">Debug serial port with Lua!</system:String>
     <system:String x:Key="AboutDiscriptionMain">LLCOM is a serial port debugging tool with reliable connection and auto-reconnect. It features a quick-send panel on the right side.</system:String>

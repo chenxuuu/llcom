@@ -50,6 +50,9 @@ public static class LocaleHelper
         ["SerialMonitorStartFailed"] = "启动监听失败: {0}",
         ["SerialMonitorSelectBoth"] = "请选择进程和串口",
         ["SerialMonitorInvalidPid"] = "无效的进程ID",
+        // Input dialogs
+        ["InputDialogConfirm"] = "确定",
+        ["InputDialogCancel"] = "取消",
         // QuickSend messages
         ["QuickSendListDefault"] = "列表",
         ["QuickSendImportSuccess"] = "数据导入成功",
@@ -113,6 +116,9 @@ public static class LocaleHelper
         ["SerialMonitorStartFailed"] = "Start monitor failed: {0}",
         ["SerialMonitorSelectBoth"] = "Please select process and COM port",
         ["SerialMonitorInvalidPid"] = "Invalid process ID",
+        // Input dialogs
+        ["InputDialogConfirm"] = "OK",
+        ["InputDialogCancel"] = "Cancel",
         // QuickSend messages
         ["QuickSendListDefault"] = "List",
         ["QuickSendImportSuccess"] = "Data imported successfully",

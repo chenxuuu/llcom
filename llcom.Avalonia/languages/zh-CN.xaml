@@ -131,7 +131,6 @@
     <!-- Lua editor -->
     <system:String x:Key="LuaSaveScript">保存脚本</system:String>
     <system:String x:Key="LuaRunOneLine">单行执行...</system:String>
-    <system:String x:Key="LuaFileName">脚本名称：</system:String>
     <!-- About page -->
     <system:String x:Key="AboutSubTitle">能跑Lua脚本的串口调试工具</system:String>
     <system:String x:Key="AboutDiscriptionMain">LLCOM是一款串口调试工具，工具连接可靠，断线后可自动重连，同时右侧具有快捷发送区的功能。</system:String>
@@ -220,7 +219,6 @@
     <system:String x:Key="ClearCountTip">右键可清空此计数</system:String>
     <system:String x:Key="SendDataButtonTip">按Ctrl+Enter同样也可以发送数据</system:String>
     <system:String x:Key="MoreSettingsTip">可设置串口校验位停止位等信息</system:String>
-    <system:String x:Key="OtherRate">自定义</system:String>
     <system:String x:Key="ShowSymbol">替换不可见字符</system:String>
     <system:String x:Key="MQTTSubcribeList">已订阅主题：</system:String>
     <system:String x:Key="MQTTNotConnect">未连接服务器</system:String>
