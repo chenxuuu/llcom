@@ -1,0 +1,123 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
+             xmlns:avalonEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+             x:Class="llcom.Avalonia.Views.LuaScriptView"
+             x:DataType="vm:LuaScriptViewModel">
+    <Grid RowDefinitions="Auto,Auto,*">
+        <!-- 工具栏 -->
+        <WrapPanel Margin="0,0,0,5" Orientation="Horizontal">
+            <ComboBox Name="luaFileList" Width="150"
+                      ItemsSource="{Binding ScriptList}"
+                      SelectedItem="{Binding SelectedScript}"/>
+            <Button Name="newScriptButton" Margin="3,0,0,0"
+                    Command="{Binding NewScriptCommand}"
+                    ToolTip.Tip="{DynamicResource LuaNewScript}">
+                <TextBlock Text="+" FontWeight="Bold"
+                           Foreground="{DynamicResource SystemAccentColor}"/>
+            </Button>
+            <Button Name="runScriptButton" Margin="2,0,0,0"
+                    Command="{Binding ToggleRunCommand}"
+                    ToolTip.Tip="{DynamicResource LuaRunScript}">
+                <TextBlock Text="{Binding RunStopText}" FontSize="14"/>
+            </Button>
+            <Button Name="openScriptFolderButton" Margin="2,0,0,0"
+                    Command="{Binding OpenScriptFolderCommand}"
+                    ToolTip.Tip="{DynamicResource LuaOpenFolder}">
+                <TextBlock Text="📁"/>
+            </Button>
+            <Button Name="refreshScriptListButton" Margin="2,0,0,0"
+                    Command="{Binding RefreshScriptListCommand}"
+                    ToolTip.Tip="{DynamicResource LuaRefreshList}">
+                <TextBlock Text="↻" Foreground="{DynamicResource SystemControlForegroundAccentBrush}"/>
+            </Button>
+            <Button Name="apiDocumentButton" Margin="2,0,0,0"
+                    Command="{Binding OpenApiDocCommand}"
+                    ToolTip.Tip="{DynamicResource LuaApiReference}">
+                <TextBlock Text="📖"/>
+            </Button>
+            <Button Name="scriptShareButton" Margin="2,0,0,0"
+                    Command="{Binding ScriptShareCommand}"
+                    ToolTip.Tip="{DynamicResource LuaGetShare}">
+                <TextBlock Text="📤"/>
+            </Button>
+            <Button Name="saveScriptButton" Margin="2,0,0,0"
+                    Command="{Binding SaveScriptCommand}"
+                    ToolTip.Tip="{DynamicResource LuaSaveScript}" IsVisible="{Binding IsEditorModified}">
+                <TextBlock Text="💾"/>
+            </Button>
+        </WrapPanel>
+
+        <!-- 新建脚本面板 -->
+        <StackPanel Grid.Row="1"
+                    Name="newLuaFileWrapPanel" Margin="3"
+                    IsVisible="{Binding IsNewScriptPanelVisible}" Orientation="Horizontal">
+            <TextBlock VerticalAlignment="Center" Text="{DynamicResource LuaFileName}"/>
+            <TextBox Name="newLuaFileNameTextBox" Width="90" Margin="4,0"
+                     Text="{Binding NewScriptName, Mode=TwoWay}" Watermark="new script"/>
+            <Button Name="newLuaFilebutton" Margin="3,0,0,0"
+                    VerticalAlignment="Center"
+                    Command="{Binding ConfirmNewScriptCommand}">
+                <TextBlock Text="✓" Foreground="Green" FontWeight="Bold"/>
+            </Button>
+            <Button Name="newLuaFileCancelbutton" Margin="3,0,0,0"
+                    VerticalAlignment="Center"
+                    Command="{Binding CancelNewScriptCommand}">
+                <TextBlock Text="✗" Foreground="Red" FontWeight="Bold"/>
+            </Button>
+        </StackPanel>
+
+        <!-- 编辑器 + 日志（Tab切换） -->
+        <Grid Grid.Row="2">
+            <!-- 代码编辑视图 -->
+            <Grid Name="luaScriptEditorGrid" IsVisible="{Binding IsEditorVisible}"
+                  RowDefinitions="*">
+                <avalonEdit:TextEditor Name="textEditor"
+                                       Document="{Binding Document}"
+                                       FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace"
+                                       FontSize="13"
+                                       ShowLineNumbers="True"
+                                       WordWrap="True"
+                                       IsReadOnly="{Binding !IsEditorEnabled}"
+                                       TextChanged="TextEditor_TextChanged"
+                                       LostFocus="TextEditor_LostFocus"/>
+            </Grid>
+
+            <!-- 运行日志视图 -->
+            <Grid Name="luaLogShowGrid" IsVisible="{Binding IsLogVisible}"
+                  RowDefinitions="*,Auto">
+                <TextBox Grid.Row="0"
+                         Text="{Binding LogOutput}" IsReadOnly="True"
+                         FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace" FontSize="13"
+                         VerticalContentAlignment="Top"
+                         TextWrapping="Wrap"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+
+                <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto,*,Auto">
+                    <Button Name="stopLuaButton" Grid.Column="0" Margin="0,3,3,3"
+                            Command="{Binding StopLuaCommand}"
+                            Foreground="{DynamicResource SystemErrorTextColor}"
+                            ToolTip.Tip="{DynamicResource LuaStop}">
+                        <TextBlock Text="■"/>
+                    </Button>
+                    <Button Name="pauseLuaPrintButton" Grid.Column="1" Margin="0,3,3,3"
+                            Command="{Binding TogglePauseLogCommand}"
+                            Foreground="{DynamicResource SystemControlForegroundAccentBrush}"
+                            ToolTip.Tip="{DynamicResource LuaPause}">
+                        <TextBlock Text="{Binding PauseButtonText}"/>
+                    </Button>
+                    <TextBox Name="runOneLineLuaTextBox" Grid.Column="2"
+                             Margin="0,3" Watermark="{DynamicResource LuaRunOneLine}"
+                             Text="{Binding CommandInput, Mode=TwoWay}"
+                             KeyDown="RunOneLineTextBox_KeyDown"/>
+                    <Button Name="sendLuaScriptButton" Grid.Column="3" Margin="3,3,0,3"
+                            Command="{Binding RunCommandCommand}"
+                            Foreground="{DynamicResource SystemAccentColor}"
+                            ToolTip.Tip="{DynamicResource LuaSendScript}">
+                        <TextBlock Text="↑"/>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

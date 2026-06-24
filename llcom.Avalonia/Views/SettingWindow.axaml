@@ -1,0 +1,169 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
+        xmlns:avalonEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+        x:Class="llcom.Avalonia.Views.SettingWindow"
+        x:DataType="vm:SettingWindowViewModel"
+        Title="{DynamicResource SettingTitle}"
+        Width="600" Height="550"
+        CanResize="True">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://llcom/languages/zh-CN.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <TabControl>
+            <!-- ====== 串口基本设置 ====== -->
+            <TabItem Header="{DynamicResource SettingBasic}">
+                <ScrollViewer>
+                    <StackPanel Spacing="6" Margin="8">
+                        <CheckBox Content="{DynamicResource SettingAutoReconnect}"
+                                  IsChecked="{Binding AutoReconnect}"/>
+
+                        <StackPanel>
+                            <TextBlock Text="{DynamicResource SettingShowFormat}"/>
+                            <ComboBox SelectedIndex="{Binding DisplayFormat}" Width="200">
+                                <ComboBoxItem Content="{DynamicResource SettingShowBoth}"/>
+                                <ComboBoxItem Content="{DynamicResource SettingShoText}"/>
+                                <ComboBoxItem Content="{DynamicResource SettingShowHexOnly}"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <CheckBox Content="{DynamicResource SettingShowSend}"
+                                  IsChecked="{Binding ShowSendData}"/>
+                        <CheckBox Content="{DynamicResource SettingShowSendRaw}"
+                                  IsChecked="{Binding ShowSendRaw}"/>
+                        <CheckBox Content="{DynamicResource SettingKeepTop}"
+                                  IsChecked="{Binding KeepTop}"/>
+                        <CheckBox Content="{DynamicResource SettingTerminalMode}"
+                                  IsChecked="{Binding TerminalMode}"/>
+
+                        <StackPanel>
+                            <TextBlock Text="{DynamicResource SettingUartTimeout}"/>
+                            <Grid ColumnDefinitions="Auto,80,Auto">
+                                <TextBox Grid.Column="0" Text="{Binding PacketTimeout}" Width="60"/>
+                                <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="4,0"
+                                           Text="{DynamicResource SettingMs}"/>
+                                <CheckBox Grid.Column="2" Content="{DynamicResource SettingBlankStart}"
+                                          IsChecked="{Binding TimeoutFromBlank}"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <Separator/>
+
+                        <TextBlock Text="{DynamicResource SettingDataBits}"/>
+                        <ComboBox ItemsSource="{Binding DataBitsList}"
+                                  SelectedItem="{Binding SelectedDataBits}" Width="100"/>
+
+                        <TextBlock Text="{DynamicResource SettingStopBit}"/>
+                        <ComboBox ItemsSource="{Binding StopBitsList}"
+                                  SelectedItem="{Binding SelectedStopBits}" Width="100"/>
+
+                        <TextBlock Text="{DynamicResource SettingParity}"/>
+                        <ComboBox ItemsSource="{Binding ParityList}"
+                                  SelectedItem="{Binding SelectedParity}" Width="100"/>
+
+                        <TextBlock Text="{DynamicResource Encoding}"/>
+                        <ComboBox ItemsSource="{Binding EncodingList}"
+                                  SelectedItem="{Binding SelectedEncoding}" Width="120"/>
+
+                        <Button Content="{DynamicResource SettingOpenLogFolder}"
+                                Command="{Binding OpenLogFolderCommand}" Margin="0,8"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ====== 发送脚本 ====== -->
+            <TabItem Header="{DynamicResource SettingSendLuaScript}">
+                <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="4">
+                    <!-- 顶部提示 -->
+                    <TextBlock Text="{DynamicResource SettingSendScriptDesc}"
+                               TextWrapping="Wrap" Margin="0,4"/>
+
+                    <!-- 测试面板 -->
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto" Margin="0,0,0,6">
+                        <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                                   Text="{DynamicResource SettingLuaTestInput}"/>
+                        <TextBox Grid.Column="1" Text="{Binding SendTestInput}" Width="120" Margin="4,0"/>
+                        <CheckBox Grid.Column="2" Content="HEX"
+                                  IsChecked="{Binding SendTestHex}" Margin="4,0"
+                                  VerticalAlignment="Center"/>
+                        <Button Grid.Column="3" Content="{DynamicResource SettingLuaTestButton}"
+                                Command="{Binding TestSendScriptCommand}"
+                                Margin="4,0"
+                                ToolTip.Tip="{DynamicResource SettingLuaTestButton}"/>
+                        <TextBlock Grid.Column="4" VerticalAlignment="Center" Margin="8,0,4,0"
+                                   Text="{DynamicResource SettingLuaRunResult}"/>
+                        <TextBox Grid.Column="5" Text="{Binding SendTestResult}" IsReadOnly="True"
+                                 Width="120"/>
+                    </Grid>
+
+                    <!-- 编辑器 -->
+                    <avalonEdit:TextEditor Grid.Row="2"
+                                           Document="{Binding SendScriptDocument}"
+                                           FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace" FontSize="13"
+                                           ShowLineNumbers="True" WordWrap="True"/>
+
+                    <!-- 底部提示 -->
+                    <WrapPanel Grid.Row="3" Margin="0,4">
+                        <TextBlock Text="{DynamicResource SettingLuaDescMain}" TextWrapping="Wrap"/>
+                        <TextBlock Text=" {DynamicResource SettingLuaDescQuickSend}" TextWrapping="Wrap"/>
+                        <TextBlock Text=" {DynamicResource SettingLuaDescApiDoc}" TextWrapping="Wrap"/>
+                    </WrapPanel>
+                </Grid>
+            </TabItem>
+
+            <!-- ====== 接收脚本 ====== -->
+            <TabItem Header="{DynamicResource SettingRecvLuaScript}">
+                <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="4">
+                    <!-- 顶部提示 -->
+                    <TextBlock Text="{DynamicResource SettingRecvScriptDesc}"
+                               TextWrapping="Wrap" Margin="0,4"/>
+
+                    <!-- 测试面板 -->
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto" Margin="0,0,0,6">
+                        <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                                   Text="{DynamicResource SettingLuaTestInput}"/>
+                        <TextBox Grid.Column="1" Text="{Binding RecvTestInput}" Width="120" Margin="4,0"/>
+                        <CheckBox Grid.Column="2" Content="HEX"
+                                  IsChecked="{Binding RecvTestHex}" Margin="4,0"
+                                  VerticalAlignment="Center"/>
+                        <Button Grid.Column="3" Content="{DynamicResource SettingLuaTestButton}"
+                                Command="{Binding TestRecvScriptCommand}"
+                                Margin="4,0"
+                                ToolTip.Tip="{DynamicResource SettingLuaTestButton}"/>
+                        <TextBlock Grid.Column="4" VerticalAlignment="Center" Margin="8,0,4,0"
+                                   Text="{DynamicResource SettingLuaRunResult}"/>
+                        <TextBox Grid.Column="5" Text="{Binding RecvTestResult}" IsReadOnly="True"
+                                 Width="120"/>
+                    </Grid>
+
+                    <!-- 编辑器 -->
+                    <avalonEdit:TextEditor Grid.Row="2"
+                                           Document="{Binding RecvScriptDocument}"
+                                           FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace" FontSize="13"
+                                           ShowLineNumbers="True" WordWrap="True"/>
+
+                    <!-- 底部提示 -->
+                    <WrapPanel Grid.Row="3" Margin="0,4">
+                        <TextBlock Text="{DynamicResource SettingLuaDescMain}" TextWrapping="Wrap"/>
+                        <TextBlock Text=" {DynamicResource SettingLuaDescRecv}" TextWrapping="Wrap"/>
+                        <TextBlock Text=" {DynamicResource SettingLuaDescApiDoc}" TextWrapping="Wrap"/>
+                    </WrapPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <!-- 底部按钮 -->
+        <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                    Orientation="Horizontal" Margin="8">
+            <Button Content="{DynamicResource SettingSave}" Command="{Binding SaveSettingsCommand}"
+                    Width="80" Margin="0,0,8,0"/>
+            <Button Content="{DynamicResource SettingClose}" Width="80" Click="CloseButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

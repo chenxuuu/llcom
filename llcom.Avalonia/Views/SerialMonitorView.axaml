@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
+             x:Class="llcom.Avalonia.Views.SerialMonitorView"
+             x:DataType="vm:SerialMonitorViewModel">
+  <Grid RowDefinitions="Auto,Auto,Auto,Auto,*" Margin="4">
+
+    <!-- Process selector -->
+    <Grid ColumnDefinitions="*,Auto">
+      <ComboBox ItemsSource="{Binding ProcessList}" SelectedItem="{Binding SelectedProcess}" />
+      <Button Grid.Column="1" Content="↻" Command="{Binding RefreshCommand}" Margin="4,0" />
+    </Grid>
+
+    <!-- COM port selector -->
+    <Grid Grid.Row="1" ColumnDefinitions="*" Margin="0,4">
+      <ComboBox ItemsSource="{Binding ComPortList}" SelectedItem="{Binding SelectedComPort}" />
+    </Grid>
+
+    <!-- Monitor button + Status -->
+    <Grid Grid.Row="2" ColumnDefinitions="Auto,*,Auto" Margin="0,4">
+      <Button Content="{Binding MonitorButtonText}" Command="{Binding ToggleMonitorCommand}"
+              IsEnabled="{Binding IsAvailable}" />
+      <TextBlock Grid.Column="1" Text="{Binding StatusText}" VerticalAlignment="Center" Margin="8,0" />
+      <Button Grid.Column="2" Content="{DynamicResource ClearLog}" Command="{Binding ClearDataCommand}" />
+    </Grid>
+
+    <!-- Platform warning -->
+    <TextBlock Grid.Row="3" Text="{Binding AvailabilityMessage}" Foreground="Orange"
+               IsVisible="{Binding !IsAvailable}" Margin="0,2" />
+
+    <!-- Data display -->
+    <TextBox Grid.Row="4" Text="{Binding ReceivedData}" IsReadOnly="True"
+             FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace" FontSize="13"
+             TextWrapping="Wrap" AcceptsReturn="True"
+             ScrollViewer.VerticalScrollBarVisibility="Auto" />
+  </Grid>
+</UserControl>

@@ -1,0 +1,58 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
+             x:Class="llcom.Avalonia.Views.AboutPageView"
+             x:DataType="vm:AboutViewModel">
+    <ScrollViewer>
+        <StackPanel Spacing="8" Margin="16" MaxWidth="480">
+            <!-- Icon + Title -->
+            <Image Source="/Assets/llcom.ico" Width="80" Height="80" HorizontalAlignment="Center"/>
+            <TextBlock Text="LLCOM" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <TextBlock Text="{DynamicResource AboutSubTitle}" FontSize="15" HorizontalAlignment="Center"/>
+
+            <!-- Description -->
+            <TextBlock Text="{DynamicResource AboutDiscriptionMain}" FontSize="14" TextWrapping="Wrap" Margin="0,12,0,0"/>
+            <TextBlock Text="{DynamicResource AboutDiscriptionMore}" FontSize="14" TextWrapping="Wrap"/>
+
+            <Separator/>
+
+            <!-- Version Info -->
+            <TextBlock Text="{DynamicResource AboutVersion}" FontSize="15"/>
+            <TextBlock Text="{Binding AssemblyVersion}" FontSize="14" Margin="8,0,0,0"/>
+
+            <Separator/>
+
+            <!-- Developers -->
+            <TextBlock Text="{DynamicResource AboutDevelopers}" FontSize="15"/>
+            <TextBlock Text="{DynamicResource AboutQQGroup}" FontSize="15"/>
+            <TextBlock Text="{DynamicResource AboutTranslator}" FontSize="15"/>
+
+            <!-- GitHub -->
+            <TextBlock Text="{DynamicResource AboutGitHubText}" FontSize="15" Margin="0,8,0,0" HorizontalAlignment="Center"/>
+            <Button Content="{DynamicResource AboutGitHubButton}" Command="{Binding OpenGitHubCommand}" HorizontalAlignment="Center"/>
+
+            <!-- Feedback -->
+            <TextBlock Text="{DynamicResource AboutFeedBack}" FontSize="15" HorizontalAlignment="Center"/>
+            <Button Content="{DynamicResource AboutFeedBackButton}" Command="{Binding OpenIssueCommand}" HorizontalAlignment="Center"/>
+
+            <!-- Thanks -->
+            <TextBlock Text="{DynamicResource AboutThanksProjects}" FontSize="15" Margin="0,8,0,0"/>
+            <ItemsControl ItemsSource="{Binding ThanksProjects}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontSize="14" Margin="8,1,0,1"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Separator/>
+
+            <!-- Technical Info -->
+            <TextBlock Text="{Binding Platform, StringFormat='Platform: {0}'}" FontSize="12" TextWrapping="Wrap" Foreground="Gray"/>
+            <TextBlock Text="{Binding Framework, StringFormat='Runtime: {0}'}" FontSize="12" TextWrapping="Wrap" Foreground="Gray"/>
+
+            <!-- API Doc -->
+            <Button Content="{DynamicResource LuaApiReference}" Command="{Binding OpenApiDocCommand}" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

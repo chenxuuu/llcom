@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
+             x:Class="llcom.Avalonia.Views.PlotPageView"
+             x:DataType="vm:PlotViewModel">
+    <Grid RowDefinitions="Auto,*" Margin="4">
+        <WrapPanel Orientation="Horizontal">
+            <Button Content="{DynamicResource PlotFit}" Command="{Binding FitCommand}" Margin="0,0,4,4"/>
+            <Button Content="{DynamicResource PlotClear}" Command="{Binding ClearCommand}" Margin="0,0,4,4"/>
+            <Button Content="{DynamicResource PlotTheme}" Command="{Binding CycleThemeCommand}" Margin="0,0,4,4"/>
+        </WrapPanel>
+        <Image Grid.Row="1" Source="{Binding PlotImageSource}" Stretch="Uniform"/>
+    </Grid>
+</UserControl>
