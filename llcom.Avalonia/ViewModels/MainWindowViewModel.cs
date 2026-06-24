@@ -19,9 +19,11 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     private ObservableCollection<string> _baudRates = new()
     {
-        "300", "1200", "2400", "4800", "9600", "14400", "19200", "28800",
-        "38400", "56000", "57600", "115200", "128000", "230400", "256000",
-        "460800", "921600", "1000000", "2000000", "3000000"
+        "110", "300", "600", "1200", "2400", "4800", "9600", "14400",
+        "19200", "28800", "38400", "56000", "57600", "115200", "128000",
+        "230400", "256000", "460800", "500000", "512000", "600000",
+        "750000", "921600", "1000000", "1500000", "2000000", "3000000",
+        Helpers.LocaleHelper.Get("OtherRate")
     };
     [ObservableProperty]
     private string _selectedBaudRate = "115200";
@@ -137,8 +139,15 @@ public partial class MainWindowViewModel : ViewModelBase
             {
                 var uart = UartManager.Instance;
                 uart.SetName(SelectedPort);
-                if (int.TryParse(SelectedBaudRate, out var baud))
+                if (SelectedBaudRate == LocaleHelper.Get("OtherRate"))
+                {
+                    // Custom baud rate — use port default (usually 9600)
+                    uart.Serial.BaudRate = 9600;
+                }
+                else if (int.TryParse(SelectedBaudRate, out var baud))
+                {
                     uart.Serial.BaudRate = baud;
+                }
                 uart.Serial.DataBits = int.Parse(SelectedDataBits);
                 uart.Serial.StopBits = SelectedStopBits switch
                 {
