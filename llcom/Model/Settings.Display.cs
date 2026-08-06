@@ -1,7 +1,7 @@
 using System.Text;
 
-namespace llcom.Model
-{
+namespace llcom.Model;
+
     /// <summary>
     /// 显示与编码相关设置（Settings 分部类）。
     /// </summary>
@@ -34,4 +34,3 @@ namespace llcom.Model
             set { if (SetProperty(ref _maxLength, value)) Save(); }
         }
     }
-}

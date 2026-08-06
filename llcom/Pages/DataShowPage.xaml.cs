@@ -4,8 +4,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 
-namespace llcom.Pages
-{
+namespace llcom.Pages;
+
     /// <summary>
     /// DataShowPage.xaml 的交互逻辑（Step 8 MVVM 化）。
     /// 显示逻辑全部移入 DataShowViewModel；本页只保留 UI 桥接
@@ -76,4 +76,3 @@ namespace llcom.Pages
             }
         }
     }
-}

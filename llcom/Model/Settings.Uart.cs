@@ -2,8 +2,8 @@ using System;
 using System.IO.Ports;
 using System.Text;
 
-namespace llcom.Model
-{
+namespace llcom.Model;
+
     /// <summary>
     /// 串口相关设置（Settings 分部类）。
     /// 属性 setter 中涉及串口参数（波特率/校验位/数据位/停止位）的会同步应用到
@@ -228,4 +228,3 @@ namespace llcom.Model
             set { if (SetProperty(ref _enableSymbol, value)) Save(); }
         }
     }
-}

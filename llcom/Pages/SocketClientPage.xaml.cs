@@ -21,8 +21,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static llcom.Pages.SocketClientPage;
 
-namespace llcom.Pages
-{
+namespace llcom.Pages;
+
     /// <summary>
     /// SocketClientPage.xaml 的交互逻辑
     /// </summary>
@@ -431,4 +431,3 @@ namespace llcom.Pages
             }
         }
     }
-}

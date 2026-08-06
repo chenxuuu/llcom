@@ -17,8 +17,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using c = System.Convert;
 
-namespace llcom.Pages
-{
+namespace llcom.Pages;
+
     /// <summary>
     /// ConvertPage.xaml 的交互逻辑
     /// </summary>
@@ -150,4 +150,3 @@ namespace llcom.Pages
             return new Regex(@"\\u([0-9a-fA-F]{4})", RegexOptions.IgnoreCase | RegexOptions.Compiled).Replace(source, x => c.ToChar(c.ToUInt16(x.Result("$1"), 16)).ToString());
         }
     }
-}

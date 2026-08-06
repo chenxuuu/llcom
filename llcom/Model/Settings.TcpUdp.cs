@@ -1,5 +1,5 @@
-namespace llcom.Model
-{
+namespace llcom.Model;
+
     /// <summary>
     /// TCP / UDP 客户端与本地服务器相关设置（Settings 分部类）。
     /// </summary>
@@ -28,4 +28,3 @@ namespace llcom.Model
         public bool luaTestHex { get => _luaTestHex; set { if (SetProperty(ref _luaTestHex, value)) Save(); } }
         public bool luaTestHexRev { get => _luaTestHexRev; set { if (SetProperty(ref _luaTestHexRev, value)) Save(); } }
     }
-}

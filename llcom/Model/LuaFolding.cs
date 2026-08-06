@@ -6,8 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace llcom.Model
-{
+namespace llcom.Model;
+
     //从这里抄的：
     //https://github.com/gmlwns2000/Symphony/blob/master/Symphony/UI/Settings/Sound/LuaFoldingStragey.cs
     //没写开源协议，不过也没关系吧反正这个项目也是开源的
@@ -139,4 +139,3 @@ namespace llcom.Model
             return newFoldings;
         }
     }
-}

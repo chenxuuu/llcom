@@ -21,8 +21,8 @@ using static llcom.Pages.SocketClientPage;
 using llcom.LuaEnv;
 using System.Xml.Linq;
 
-namespace llcom.Pages
-{
+namespace llcom.Pages;
+
     /// <summary>
     /// TcpLocalPage.xaml 的交互逻辑
     /// </summary>
@@ -334,4 +334,3 @@ namespace llcom.Pages
             }
         }
     }
-}

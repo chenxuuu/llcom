@@ -5,8 +5,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace llcom.Model
-{
+namespace llcom.Model;
+
     [PropertyChanged.AddINotifyPropertyChangedInterface]
     public class OnlineScript
     {
@@ -88,4 +88,3 @@ namespace llcom.Model
             return $"{Name} - {Version} {Author}\r\n{Description}";
         }
     }
-}

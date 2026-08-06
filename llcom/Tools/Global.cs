@@ -4,8 +4,8 @@ using System.IO;
 using System.Text;
 using llcom.Model;
 
-namespace llcom.Tools
-{
+namespace llcom.Tools;
+
     /// <summary>
     /// 全局状态与外观层（组合根）。
     /// 经 Step 2 拆分后，本类只保留"全局可变状态 + 全局事件"，以及指向各服务的转发成员，
@@ -196,4 +196,3 @@ namespace llcom.Tools
         /// <returns></returns>
         public static List<OnlineScript> GetOnlineScripts(Action<int, int> callback = null) => OnlineScriptService.GetOnlineScripts(callback);
     }
-}

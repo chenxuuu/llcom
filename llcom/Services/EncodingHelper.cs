@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace llcom.Tools
-{
+namespace llcom.Tools;
+
     /// <summary>
     /// 编码与格式转换服务。
     /// 提供字符串 / HEX / 字节数组 之间的互转，以及全局设置的编码获取。
@@ -159,4 +159,3 @@ namespace llcom.Tools
             return BitConverter.ToString(d, 0, len).Replace("-", s);
         }
     }
-}

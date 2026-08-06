@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace llcom.Model
-{
+namespace llcom.Model;
+
     public class ToSendData : INotifyPropertyChanged
     {
         public static event EventHandler DataChanged;
@@ -91,4 +91,3 @@ namespace llcom.Model
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-}

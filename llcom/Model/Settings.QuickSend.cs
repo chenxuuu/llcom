@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace llcom.Model
-{
+namespace llcom.Model;
+
     /// <summary>
     /// 快捷发送区相关设置（Settings 分部类）。
     /// 共 10 页（quickSendList），每页可重命名（quickListName0~9），当前页由 quickSendSelect 决定。
@@ -129,4 +129,3 @@ namespace llcom.Model
             }
         }
     }
-}

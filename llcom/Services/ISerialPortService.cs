@@ -2,8 +2,8 @@ using System;
 using System.IO.Ports;
 using System.Threading;
 
-namespace llcom.Services
-{
+namespace llcom.Services;
+
     /// <summary>
     /// 串口服务接口。
     /// 封装 SerialPort 的打开/关闭/收发，供 UI（MainWindow/DataShowPage）、
@@ -49,4 +49,3 @@ namespace llcom.Services
         /// <summary>串口接收事件信号量（用于唤醒接收线程，退出时置位）</summary>
         EventWaitHandle WaitUartReceive { get; }
     }
-}

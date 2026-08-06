@@ -4,8 +4,8 @@ using System;
 using System.IO;
 using System.Threading;
 
-namespace llcom.Model
-{
+namespace llcom.Model;
+
     /// <summary>
     /// 全局设置（分部类主文件）。
     /// 继承 ObservableObject（MVVM Toolkit）替代 PropertyChanged.Fody 自动织入，
@@ -117,4 +117,3 @@ namespace llcom.Model
             }
         }
     }
-}

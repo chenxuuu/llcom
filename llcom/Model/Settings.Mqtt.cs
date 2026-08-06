@@ -1,7 +1,7 @@
 using System;
 
-namespace llcom.Model
-{
+namespace llcom.Model;
+
     /// <summary>
     /// MQTT 测试页相关设置（Settings 分部类）。
     /// </summary>
@@ -41,4 +41,3 @@ namespace llcom.Model
         public string mqttPublishTopic { get => _mqttPublishTopic; set { if (SetProperty(ref _mqttPublishTopic, value)) Save(); } }
         public string mqttSubscribeTopic { get => _mqttSubscribeTopic; set { if (SetProperty(ref _mqttSubscribeTopic, value)) Save(); } }
     }
-}

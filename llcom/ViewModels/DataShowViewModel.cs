@@ -6,8 +6,8 @@ using System.Windows;
 using System.Windows.Controls;
 using llcom.Tools;
 
-namespace llcom.ViewModels
-{
+namespace llcom.ViewModels;
+
     /// <summary>
     /// 收发数据区 ViewModel（Step 8）。
     /// 职责：订阅 Logger.DataShowTask，将串口/TCP/MQTT 等通道数据分发显示——
@@ -153,4 +153,3 @@ namespace llcom.ViewModels
             });
         }
     }
-}

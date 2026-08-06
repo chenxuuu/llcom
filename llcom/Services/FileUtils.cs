@@ -5,8 +5,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 
-namespace llcom.Tools
-{
+namespace llcom.Tools;
+
     /// <summary>
     /// 文件工具服务。
     /// 负责：释放软件内嵌资源到磁盘、读取嵌入资源内容、导入 SSCOM 配置文件。
@@ -84,4 +84,3 @@ namespace llcom.Tools
                 File.WriteAllBytes(outPath, GetAssetsFileContent(insidePath));
         }
     }
-}

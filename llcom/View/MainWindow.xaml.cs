@@ -41,8 +41,8 @@ using llcom.ViewModels;
 using System.Web.UI.WebControls.WebParts;
 using Color = System.Windows.Media.Color;
 
-namespace llcom
-{
+namespace llcom;
+
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
@@ -891,4 +891,3 @@ namespace llcom
             recvScriptParaPopup.IsOpen = false;
         }
     }
-}

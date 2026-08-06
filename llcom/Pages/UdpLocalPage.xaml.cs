@@ -17,8 +17,8 @@ using System.Windows.Shapes;
 using static llcom.Pages.SocketClientPage;
 using System.Net.NetworkInformation;
 
-namespace llcom.Pages
-{
+namespace llcom.Pages;
+
     /// <summary>
     /// UdpLocalPage.xaml 的交互逻辑
     /// </summary>
@@ -179,4 +179,3 @@ namespace llcom.Pages
         public UdpClient u;
         public IPEndPoint e;
     }
-}

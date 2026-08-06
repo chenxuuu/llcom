@@ -5,8 +5,8 @@ using System.IO;
 using System.IO.Ports;
 using llcom.Model;
 
-namespace llcom.Tools
-{
+namespace llcom.Tools;
+
     /// <summary>
     /// 配置文件与环境初始化服务。
     /// 负责：加载/保存设置（settings.json）、软件首次运行的文件结构生成、
@@ -250,4 +250,3 @@ namespace llcom.Tools
             Logger.AddUartLogDebug($"[HEX]{EncodingHelper.Byte2Hex((byte[])sender, " ")}");
         }
     }
-}

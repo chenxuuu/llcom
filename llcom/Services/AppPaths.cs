@@ -2,8 +2,8 @@ using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace llcom.Tools
-{
+namespace llcom.Tools;
+
     /// <summary>
     /// 应用路径与环境信息服务。
     /// 负责软件文件名、运行目录、配置目录（ProfilePath）、商店版（MSIX）判断。
@@ -71,4 +71,3 @@ namespace llcom.Tools
             return AppPath.ToUpper().Contains(@"\PROGRAM FILES\WINDOWSAPPS\");
         }
     }
-}

@@ -2,8 +2,8 @@ using System;
 using System.Linq;
 using System.Windows.Media;
 
-namespace llcom.Model
-{
+namespace llcom.Model;
+
     /// <summary>
     /// 收发数据显示条目（分包模式下列表的一项）。
     /// 由 DataShowViewModel 生成，DataShowPage 的 ItemsControl 绑定显示。
@@ -98,4 +98,3 @@ namespace llcom.Model
             HexTextColor = color;
         }
     }
-}

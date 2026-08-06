@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
-namespace llcom.Tools
-{
+namespace llcom.Tools;
+
     class InputDialog
     {
         public static Tuple<bool, string> OpenDialog(string prompt, string defaultInput = "", string title = null)
@@ -38,4 +38,3 @@ namespace llcom.Tools
             }
         }
     }
-}

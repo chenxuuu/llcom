@@ -13,8 +13,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace llcom.ViewModels
-{
+namespace llcom.ViewModels;
+
     /// <summary>
     /// 串口控制区条目：显示名（含设备描述）与端口名（COMx）。
     /// </summary>
@@ -491,4 +491,3 @@ namespace llcom.ViewModels
             }
         }
     }
-}

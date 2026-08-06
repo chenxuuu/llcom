@@ -7,8 +7,8 @@ using System.IO;
 using System.Windows;
 using llcom.Model;
 
-namespace llcom.ViewModels
-{
+namespace llcom.ViewModels;
+
     /// <summary>
     /// 快捷发送区页面条目（菜单项）：页名 + 页索引。
     /// </summary>
@@ -288,4 +288,3 @@ namespace llcom.ViewModels
             Save();
         }
     }
-}

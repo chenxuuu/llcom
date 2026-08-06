@@ -6,8 +6,8 @@ using System.IO.Ports;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace llcom.Services
-{
+namespace llcom.Services;
+
     /// <summary>
     /// 串口服务实现（原 Model/Uart.cs 迁移，Step 4）。
     /// 保留原行为：独立接收线程 + 信号量、refreshSerialDevice 规避
@@ -240,4 +240,3 @@ namespace llcom.Services
             }
         }
     }
-}

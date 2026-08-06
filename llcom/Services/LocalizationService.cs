@@ -1,8 +1,8 @@
 using System;
 using System.Windows;
 
-namespace llcom.Tools
-{
+namespace llcom.Tools;
+
     /// <summary>
     /// 本地化服务：负责切换界面语言资源字典（zh-CN / en-US 等）。
     /// 从原 Tools/Global.cs 拆出（Step 2）。
@@ -31,4 +31,3 @@ namespace llcom.Tools
             }
         }
     }
-}

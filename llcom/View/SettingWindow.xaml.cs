@@ -21,8 +21,8 @@ using System.Windows.Shapes;
 using System.Xml;
 using llcom.ViewModels;
 
-namespace llcom
-{
+namespace llcom;
+
     /// <summary>
     /// SettingWindow.xaml 的交互逻辑
     /// </summary>
@@ -313,4 +313,3 @@ namespace llcom
             _recvEditor?.OnAutoSave();
         }
     }
-}

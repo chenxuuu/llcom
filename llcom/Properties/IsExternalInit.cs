@@ -2,7 +2,6 @@
 // 本补丁为 .NET Framework 4.6.2 提供 record 类型 / init 访问器 语法所需的编译器辅助类型。
 // .NET 5+ 已内置 System.Runtime.CompilerServices.IsExternalInit，旧框架需要自行声明。
 // 仅用于支持 C# 9 的 record/init 语法，不影响运行时行为。
-namespace System.Runtime.CompilerServices
-{
+namespace System.Runtime.CompilerServices;
+
     internal static class IsExternalInit { }
-}

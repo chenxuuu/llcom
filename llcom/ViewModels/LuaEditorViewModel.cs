@@ -4,8 +4,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 
-namespace llcom.ViewModels
-{
+namespace llcom.ViewModels;
+
     /// <summary>
     /// Lua 脚本编辑器 ViewModel（Step 7）。
     /// 通用组件：主窗口的 user_script_run 编辑器、设置窗口的 send/recv_convert 编辑器共用，
@@ -196,4 +196,3 @@ namespace llcom.ViewModels
             LoadFile(value);
         }
     }
-}

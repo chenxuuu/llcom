@@ -9,8 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace llcom.LuaEnv
-{
+namespace llcom.LuaEnv;
+
     /// <summary>
     /// lua虚拟机对象
     /// 自带luat task框架接口
@@ -550,4 +550,3 @@ end
         public string type { get; set; }
         public object data { get; set; }
     }
-}

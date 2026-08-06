@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace llcom.Tools
-{
+namespace llcom.Tools;
+
     class Win32
     {
         [DllImport("user32.dll")]
@@ -23,4 +23,3 @@ namespace llcom.Tools
             return SetWindowLong(hWnd, GWL_STYLE, GetWindowLong(hWnd, GWL_STYLE) & ~WS_SYSMENU) > 0;
         }
     }
-}

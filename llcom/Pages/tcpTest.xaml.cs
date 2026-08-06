@@ -22,8 +22,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WebSocketSharp;
 
-namespace llcom.Pages
-{
+namespace llcom.Pages;
+
     /// <summary>
     /// tcpTest.xaml 的交互逻辑
     /// </summary>
@@ -385,4 +385,3 @@ namespace llcom.Pages
             ConnectWebSocket("tcpv6");
         }
     }
-}

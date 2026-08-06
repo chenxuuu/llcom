@@ -6,8 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace llcom.Tools
-{
+namespace llcom.Tools;
+
     /// <summary>
     /// 在线脚本服务。
     /// 通过 GitHub GraphQL API 拉取仓库讨论区（Discussions）中的脚本分享帖，
@@ -89,4 +89,3 @@ namespace llcom.Tools
             return scripts;
         }
     }
-}

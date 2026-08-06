@@ -26,8 +26,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WebSocketSharp;
 
-namespace llcom.Pages
-{
+namespace llcom.Pages;
+
     /// <summary>
     /// WinUSBPage.xaml 的交互逻辑
     /// </summary>
@@ -372,4 +372,3 @@ namespace llcom.Pages
                 return $"{Name}\r\nVID: 0x{Vid:X04}, PID: 0x{Pid:X04}, Interface: {Interface}\r\n{SerialNumber}";
         }
     }
-}

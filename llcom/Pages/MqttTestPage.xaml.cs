@@ -25,8 +25,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace llcom.Pages
-{
+namespace llcom.Pages;
+
     /// <summary>
     /// MqttTestPage.xaml 的交互逻辑
     /// </summary>
@@ -352,4 +352,3 @@ namespace llcom.Pages
             }
         }
     }
-}
