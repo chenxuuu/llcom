@@ -31,7 +31,7 @@ namespace llcom.Pages;
 /// </summary>
 [INotifyPropertyChanged]
 // 生成器调用此重载（WPF Page 自带的是 DependencyPropertyChangedEventArgs 重载，需手动补充）
-public partial class tcpTest : Page
+public partial class tcpTest : Page, INotifyPropertyChanged
 {
     public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 

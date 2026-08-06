@@ -30,10 +30,11 @@ namespace llcom.Pages;
 /// </summary>
 [INotifyPropertyChanged]
 // 生成器调用此重载（WPF Page 自带的是 DependencyPropertyChangedEventArgs 重载，需手动补充）
-public partial class SocketClientPage : Page
+public partial class SocketClientPage : Page, INotifyPropertyChanged
 {
     public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
+    //WPF 绑定通过 INotifyPropertyChanged 接口订阅通知，必须实现接口（见类声明）
     protected void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e) =>
         PropertyChanged?.Invoke(this, e);
 
