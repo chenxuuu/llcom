@@ -58,7 +58,10 @@ namespace llcom.ViewModels
 
         //串口控制状态
         private bool _isOpeningPort;          //打开串口进行中
-        private bool _forcusClosePort;        //用户主动关闭标记（关闭后不自动重连）
+        //初始为 true：禁止启动时自动重连（serial.PortName 默认 "COM1"，
+        //若本机恰有 COM1 设备，启动刷新会误判为上次端口而自动打开）；
+        //用户手动打开串口（OpenPort）后置 false，才允许后续拔插自动重连
+        private bool _forcusClosePort = true;
         private byte[] _pendingSendData;      //未开串口时的缓存发送数据
         private bool _refreshLock;            //端口列表刷新锁
         private bool _skipSearch;             //WMI 查询连续失败后跳过
