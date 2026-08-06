@@ -251,56 +251,16 @@
                                         <fa:FontAwesome Foreground="Black" Icon="StickyNoteOutline" />
                                     </Grid>
                                 </MenuItem.Header>
-                                <MenuItem
-                                    Name="QuiclListName0"
-                                    Click="MenuItem_Click_QuickSendList"
-                                    Header="{Binding quickListName0}"
-                                    Tag="0" />
-                                <MenuItem
-                                    Name="QuiclListName1"
-                                    Click="MenuItem_Click_QuickSendList"
-                                    Header="{Binding quickListName1}"
-                                    Tag="1" />
-                                <MenuItem
-                                    Name="QuiclListName2"
-                                    Click="MenuItem_Click_QuickSendList"
-                                    Header="{Binding quickListName2}"
-                                    Tag="2" />
-                                <MenuItem
-                                    Name="QuiclListName3"
-                                    Click="MenuItem_Click_QuickSendList"
-                                    Header="{Binding quickListName3}"
-                                    Tag="3" />
-                                <MenuItem
-                                    Name="QuiclListName4"
-                                    Click="MenuItem_Click_QuickSendList"
-                                    Header="{Binding quickListName4}"
-                                    Tag="4" />
-                                <MenuItem
-                                    Name="QuiclListName5"
-                                    Click="MenuItem_Click_QuickSendList"
-                                    Header="{Binding quickListName5}"
-                                    Tag="5" />
-                                <MenuItem
-                                    Name="QuiclListName6"
-                                    Click="MenuItem_Click_QuickSendList"
-                                    Header="{Binding quickListName6}"
-                                    Tag="6" />
-                                <MenuItem
-                                    Name="QuiclListName7"
-                                    Click="MenuItem_Click_QuickSendList"
-                                    Header="{Binding quickListName7}"
-                                    Tag="7" />
-                                <MenuItem
-                                    Name="QuiclListName8"
-                                    Click="MenuItem_Click_QuickSendList"
-                                    Header="{Binding quickListName8}"
-                                    Tag="8" />
-                                <MenuItem
-                                    Name="QuiclListName9"
-                                    Click="MenuItem_Click_QuickSendList"
-                                    Header="{Binding quickListName9}"
-                                    Tag="9" />
+                                <!-- 页面切换菜单：动态绑定 10 页（QuickSendViewModel.Pages） -->
+                                <MenuItem ItemsSource="{Binding QuickSend.Pages}">
+                                    <MenuItem.ItemContainerStyle>
+                                        <Style TargetType="MenuItem">
+                                            <Setter Property="Header" Value="{Binding Name}" />
+                                            <Setter Property="Command" Value="{Binding DataContext.QuickSend.SwitchPageCommand, RelativeSource={RelativeSource AncestorType=Window}}" />
+                                            <Setter Property="CommandParameter" Value="{Binding Index}" />
+                                        </Style>
+                                    </MenuItem.ItemContainerStyle>
+                                </MenuItem>
                             </MenuItem>
                         </Menu>
                     </StackPanel>
@@ -442,7 +402,7 @@
                             Orientation="Horizontal"
                             ToolTip="{DynamicResource QuickSendListNameTip}">
                             <TextBlock Text="(" />
-                            <TextBlock Name="QuickListPageTextBlock" Text="___" />
+                            <TextBlock Name="QuickListPageTextBlock" Text="{Binding QuickSend.CurrentPageName}" />
                             <TextBlock Text=")" />
                         </StackPanel>
                         <TextBlock
@@ -465,6 +425,7 @@
                     <ListBox
                         Name="toSendList"
                         Grid.Row="1"
+                        ItemsSource="{Binding QuickSend.Items}"
                         ItemContainerStyle="{StaticResource toSendListStyle}"
                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                         ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -531,13 +492,13 @@
                             <Button
                                 Name="addSendListButton"
                                 Margin="3"
-                                Click="AddSendListButton_Click"
+                                Command="{Binding QuickSend.AddCommand}"
                                 Content="{DynamicResource QuickSendAdd}" />
                             <Button
                                 Name="deleteSendListButton"
                                 Grid.Column="1"
                                 Margin="3"
-                                Click="DeleteSendListButton_Click"
+                                Command="{Binding QuickSend.RemoveLastCommand}"
                                 Content="{DynamicResource QuickSendRemoveLast}" />
                         </Grid>
                         <TextBlock
@@ -552,13 +513,13 @@
                             <Button
                                 Name="QuickSendImportButton"
                                 Margin="3"
-                                Click="QuickSendImportButton_Click"
+                                Command="{Binding QuickSend.ImportCommand}"
                                 Content="{DynamicResource QuickSendImport}" />
                             <Button
                                 Name="QuickSendExportButton"
                                 Grid.Column="1"
                                 Margin="3"
-                                Click="QuickSendExportButton_Click"
+                                Command="{Binding QuickSend.ExportCommand}"
                                 Content="{DynamicResource QuickSendExport}" />
                         </Grid>
                         <Grid Margin="0,0,0,0">
@@ -570,13 +531,13 @@
                                 Name="removeAllButton"
                                 Grid.Column="0"
                                 Margin="3"
-                                Click="removeAllButton_Click"
+                                Command="{Binding QuickSend.RemoveAllCommand}"
                                 Content="{DynamicResource QuickSendRemoveAll}" />
                             <Button
                                 Name="importSSCOMButton"
                                 Grid.Column="1"
                                 Margin="3"
-                                Click="ImportSSCOMButton_Click"
+                                Command="{Binding QuickSend.ImportSSCOMCommand}"
                                 Content="{DynamicResource QuickSendImportSSCOM}" />
                         </Grid>
 

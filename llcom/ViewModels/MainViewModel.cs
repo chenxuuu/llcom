@@ -88,6 +88,9 @@ namespace llcom.ViewModels
             set { if (Tools.Global.setting.dataToSend != value) Tools.Global.setting.dataToSend = value; }
         }
 
+        /// <summary>快捷发送区（10 页列表管理）</summary>
+        public QuickSendViewModel QuickSend { get; }
+
         /// <summary>已发送字节计数（来自设置，仅 UI 通知）</summary>
         public int SentCount => Tools.Global.setting.SentCount;
         /// <summary>已接收字节计数（来自设置，仅 UI 通知）</summary>
@@ -102,6 +105,7 @@ namespace llcom.ViewModels
         internal MainViewModel(ISerialPortService uart, Model.Settings setting)
         {
             _uart = uart;
+            QuickSend = new QuickSendViewModel(setting);
 
             RefreshPortsCommand = new RelayCommand(() => RefreshPorts());
             OpenClosePortCommand = new RelayCommand(OpenClosePort);

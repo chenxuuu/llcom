@@ -332,6 +332,7 @@
     <Compile Include="Services\SerialPortService.cs" />
     <Compile Include="Tools\Global.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\QuickSendViewModel.cs" />
     <Compile Include="Tools\Logger.cs" />
     <Page Include="languages\en-US.xaml">
       <SubType>Designer</SubType>

@@ -70,8 +70,6 @@ namespace llcom
                 this.Height = Tools.Global.setting.windowHeight;
             }
         }
-        ObservableCollection<ToSendData> toSendListItems = new ObservableCollection<ToSendData>();
-        private bool canSaveSendList = true;
         public static string recvScriptBackup = "";
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -103,26 +101,8 @@ namespace llcom
                     //刷新设备列表
                     _vm.RefreshPorts();
 
-                    //绑定数据
-                    toSendList.ItemsSource = toSendListItems;
-                    QuiclListName0.DataContext = Tools.Global.setting;
-                    QuiclListName1.DataContext = Tools.Global.setting;
-                    QuiclListName2.DataContext = Tools.Global.setting;
-                    QuiclListName3.DataContext = Tools.Global.setting;
-                    QuiclListName4.DataContext = Tools.Global.setting;
-                    QuiclListName5.DataContext = Tools.Global.setting;
-                    QuiclListName6.DataContext = Tools.Global.setting;
-                    QuiclListName7.DataContext = Tools.Global.setting;
-                    QuiclListName8.DataContext = Tools.Global.setting;
-                    QuiclListName9.DataContext = Tools.Global.setting;
+                    //绑定数据（快捷发送/串口区均通过 MainViewModel 绑定）
 
-                    //初始化快捷发送栏的数据
-                    canSaveSendList = false;
-                    if (Global.setting.quickSendSelect == -1)
-                        Global.setting.quickSendSelect = 0;
-                    ToSendData.DataChanged += SaveSendList;
-                    LoadQuickSendList();
-                    canSaveSendList = true;
 
 
                     //快速搜索
@@ -286,32 +266,7 @@ namespace llcom
             return true;
         }
 
-        /// <summary>
-        /// 加载快捷发送区数据
-        /// </summary>
-        private void LoadQuickSendList()
-        {
-            if (Tools.Global.setting.quickSend.Count == 0)
-            {
-                Tools.Global.setting.quickSend = new List<ToSendData>
-                        {
-                            new ToSendData{id = 1,text="example string",commit="右击更改此处文字",hex=false},
-                            new ToSendData{id = 2,text="lua可通过接口获取此处数据",hex=false},
-                            new ToSendData{id = 3,text="aa 01 02 0d 0a",commit="Hex数据也能发",hex=true},
-                            new ToSendData{id = 4,text="此处数据会被lua处理",hex=false},
-                            new ToSendData{id = 5,text="右击序号可以更改这一行的位置",hex=false},
-                            new ToSendData{id = 6,text="",hex=false},
-                        };
-            }
-            foreach (var i in Tools.Global.setting.quickSend)
-            {
-                if (i.commit == null)
-                    i.commit = TryFindResource("QuickSendButton") as string ?? "?!";
-                toSendListItems.Add(i);
-            }
-            CheckToSendListId();
-            QuickListPageTextBlock.Text = Global.setting.GetQuickListNameNow();
-        }
+
 
         private void Uart_UartDataSent(object sender, EventArgs e)
         {
@@ -465,19 +420,9 @@ namespace llcom
 
 
 
-        private void AddSendListButton_Click(object sender, RoutedEventArgs e)
-        {
-            toSendListItems.Add(new ToSendData() { id = toSendListItems.Count + 1, text = "", hex = false , commit = TryFindResource("QuickSendButton") as string ?? "?!" });
-        }
 
-        private void DeleteSendListButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (toSendListItems.Count > 0)
-            {
-                toSendListItems.RemoveAt(toSendListItems.Count - 1);
-            }
-            SaveSendList(null, EventArgs.Empty);
-        }
+
+
 
         private void knowSendDataButton_click(object sender, RoutedEventArgs e)
         {
@@ -524,37 +469,9 @@ namespace llcom
             }
         }
 
-        /// <summary>
-        /// 检查并更正快捷发送区序号
-        /// </summary>
-        public void CheckToSendListId()
-        {
-            //当序号不对时，更正序号
-            for (int i = 0; i < toSendListItems.Count; i++)
-            {
-                if (toSendListItems[i].id != i + 1)
-                {
-                    var item = toSendListItems[i];
-                    toSendListItems.RemoveAt(i);//元素删掉重新加进去
-                    item.id = i + 1;
-                    toSendListItems.Insert(i, item);
-                }
-            }
-        }
 
-        public void SaveSendList(object sender, EventArgs e)
-        {
-            if (!canSaveSendList)
-                return;
-            CheckToSendListId();
-            //保存当前的所有数据
-            var newList = new List<ToSendData>();
-            foreach (ToSendData i in toSendListItems)
-            {
-                newList.Add(i);
-            }
-            Tools.Global.setting.quickSend = newList;
-        }
+
+
 
         private void NewScriptButton_Click(object sender, RoutedEventArgs e)
         {
@@ -881,30 +798,7 @@ namespace llcom
 
 
 
-        private void ImportSSCOMButton_Click(object sender, RoutedEventArgs e)
-        {
-            System.Windows.Forms.OpenFileDialog OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
-            OpenFileDialog.Filter = TryFindResource("QuickSendSSCOMFile") as string ?? "?!";
-            if (OpenFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                this.Dispatcher.Invoke(new Action(delegate
-                {
-                    canSaveSendList = false;
-                    foreach (var i in Tools.Global.ImportFromSSCOM(OpenFileDialog.FileName))
-                    {
-                        toSendListItems.Add(new ToSendData()
-                        {
-                            id = toSendListItems.Count + 1,
-                            text = i.text,
-                            hex = i.hex,
-                            commit = i.commit
-                        });
-                    }
-                    canSaveSendList = true;
-                    SaveSendList(0, EventArgs.Empty);//保存并刷新数据列表
-                }));
-            }
-        }
+
 
 
 
@@ -932,82 +826,30 @@ namespace llcom
 
             if (!ret.Item1)
                 return;
-            CheckToSendListId();
+            var qs = _vm.QuickSend;
+            qs.CheckIds();
             if (ret.Item2.Trim().Length == 0)//留空删除该项目
             {
-                toSendListItems.RemoveAt(data.id-1);
+                qs.Items.RemoveAt(data.id - 1);
             }
             else
             {
                 int index = -1;
                 int.TryParse(ret.Item2, out index);
-                if (index == data.id || index <= 0 || index > toSendListItems.Count) return;
+                if (index == data.id || index <= 0 || index > qs.Items.Count) return;
                 //移动到指定位置
-                var item = toSendListItems[data.id-1];
-                toSendListItems.RemoveAt(data.id-1);
-                toSendListItems.Insert(index - 1, item);
+                var item = qs.Items[data.id - 1];
+                qs.Items.RemoveAt(data.id - 1);
+                qs.Items.Insert(index - 1, item);
             }
-            SaveSendList(null, EventArgs.Empty);
+            qs.Save();
         }
 
-        private void MenuItem_Click_QuickSendList(object sender, RoutedEventArgs e)
-        {
-            canSaveSendList = false;
-            int select = int.Parse((string)((MenuItem)sender).Tag);
-            toSendListItems.Clear();
-            Global.setting.quickSendSelect = select;
-            LoadQuickSendList();
-            canSaveSendList = true;
-        }
 
-        private void QuickSendImportButton_Click(object sender, RoutedEventArgs e)
-        {
-            System.Windows.Forms.OpenFileDialog OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
-            OpenFileDialog.Filter = TryFindResource("QuickSendLLCOMFile") as string ?? "?!";
-            if (OpenFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                List<ToSendData> data = null;
-                try
-                {
-                    data = JsonConvert.DeserializeObject<List<ToSendData>>(
-                        File.ReadAllText(OpenFileDialog.FileName));
-                }
-                catch (Exception err)
-                {
-                    Tools.MessageBox.Show(err.Message);
-                    return;
-                }
-                this.Dispatcher.Invoke(new Action(delegate
-                {
-                    canSaveSendList = false;
-                    foreach(var d in data)
-                    {
-                        toSendListItems.Add(d);
-                    }
-                    canSaveSendList = true;
-                    SaveSendList(0, EventArgs.Empty);//保存并刷新数据列表
-                }));
-            }
-        }
 
-        private void QuickSendExportButton_Click(object sender, RoutedEventArgs e)
-        {
-            System.Windows.Forms.SaveFileDialog SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            SaveFileDialog.FileName = System.Text.RegularExpressions.Regex.Replace(QuickListPageTextBlock.Text, "[<>/\\|:\"?*]", "-");
-            SaveFileDialog.Filter = TryFindResource("QuickSendLLCOMFile") as string ?? "?!";
-            if (SaveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                try
-                {
-                    File.WriteAllText(SaveFileDialog.FileName, JsonConvert.SerializeObject(toSendListItems));
-                    Tools.MessageBox.Show(TryFindResource("QuickSendSaveFileDone") as string ?? "?!");
-                }
-                catch(Exception err)
-                {
-                    Tools.MessageBox.Show(err.Message);
-                }
-            }
-        }
+
+
+
 
         private void sentCountTextBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -1021,14 +863,7 @@ namespace llcom
 
         private void QuickListNameStackPanel_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Tuple<bool, string> ret = Tools.InputDialog.OpenDialog("↓↓↓↓↓↓",
-                Global.setting.GetQuickListNameNow(), TryFindResource("QuickSendListNameChangeTip") as string ?? "?!");
-
-            if (!ret.Item1)
-                return;
-
-            Global.setting.SetQuickListNameNow(ret.Item2);
-            QuickListPageTextBlock.Text = ret.Item2;
+            _vm.QuickSend.RenamePageCommand.Execute(null);
         }
 
         private void pauseLuaPrintButton_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
@@ -1041,16 +876,7 @@ namespace llcom
             lastLuaChangeTime = DateTime.Now;
         }
 
-        private void removeAllButton_Click(object sender, RoutedEventArgs e)
-        {
-            (bool r,string s) = Tools.InputDialog.OpenDialog(TryFindResource("DeleteConfirmationMsg") as string ?? "?!",
-                "", TryFindResource("DeleteConfirmation") as string ?? "?!");
-            if (r && s == "YES")
-            {
-                toSendListItems.Clear();
-                SaveSendList(null, EventArgs.Empty);
-            }
-        }
+
 
         private void uartDataFlowDocument_GotFocus(object sender, RoutedEventArgs e)
         {

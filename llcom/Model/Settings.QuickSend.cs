@@ -87,7 +87,15 @@ namespace llcom.Model
 
         public string GetQuickListNameNow()
         {
-            return _quickSendSelect switch
+            return GetQuickListNameByIndex(_quickSendSelect);
+        }
+
+        /// <summary>
+        /// 获取指定索引页的名称（0-9）
+        /// </summary>
+        public string GetQuickListNameByIndex(int index)
+        {
+            return index switch
             {
                 0 => quickListName0,
                 1 => quickListName1,
