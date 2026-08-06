@@ -244,23 +244,23 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{DynamicResource QuickSendCard}" />
                         <Menu Grid.Column="1" HorizontalAlignment="Left">
-                            <MenuItem ToolTip="{DynamicResource QuickSendChangeList}">
+                            <MenuItem
+                                ToolTip="{DynamicResource QuickSendChangeList}"
+                                ItemsSource="{Binding QuickSend.Pages}">
                                 <MenuItem.Header>
                                     <Grid>
                                         <fa:FontAwesome Foreground="LightYellow" Icon="StickyNote" />
                                         <fa:FontAwesome Foreground="Black" Icon="StickyNoteOutline" />
                                     </Grid>
                                 </MenuItem.Header>
-                                <!-- 页面切换菜单：动态绑定 10 页（QuickSendViewModel.Pages） -->
-                                <MenuItem ItemsSource="{Binding QuickSend.Pages}">
-                                    <MenuItem.ItemContainerStyle>
-                                        <Style TargetType="MenuItem">
-                                            <Setter Property="Header" Value="{Binding Name}" />
-                                            <Setter Property="Command" Value="{Binding DataContext.QuickSend.SwitchPageCommand, RelativeSource={RelativeSource AncestorType=Window}}" />
-                                            <Setter Property="CommandParameter" Value="{Binding Index}" />
-                                        </Style>
-                                    </MenuItem.ItemContainerStyle>
-                                </MenuItem>
+                                <!-- 页面切换：动态绑定 10 页（QuickSendViewModel.Pages），点击直接切换 -->
+                                <MenuItem.ItemContainerStyle>
+                                    <Style TargetType="MenuItem">
+                                        <Setter Property="Header" Value="{Binding Name}" />
+                                        <Setter Property="Command" Value="{Binding DataContext.QuickSend.SwitchPageCommand, RelativeSource={RelativeSource AncestorType=Window}}" />
+                                        <Setter Property="CommandParameter" Value="{Binding Index}" />
+                                    </Style>
+                                </MenuItem.ItemContainerStyle>
                             </MenuItem>
                         </Menu>
                     </StackPanel>
