@@ -313,7 +313,6 @@
     <Compile Include="Model\Settings.TcpUdp.cs" />
     <Compile Include="Model\Settings.Uart.cs" />
     <Compile Include="Model\ToSendData.cs" />
-    <Compile Include="Model\Uart.cs" />
     <Compile Include="Pages\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
@@ -329,6 +328,8 @@
     <Compile Include="Services\LocalizationService.cs" />
     <Compile Include="Services\OnlineScriptService.cs" />
     <Compile Include="Services\ProfileInitializer.cs" />
+    <Compile Include="Services\ISerialPortService.cs" />
+    <Compile Include="Services\SerialPortService.cs" />
     <Compile Include="Tools\Global.cs" />
     <Compile Include="Tools\Logger.cs" />
     <Page Include="languages\en-US.xaml">

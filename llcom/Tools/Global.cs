@@ -48,7 +48,7 @@ namespace llcom.Tools
         }
         //给全局使用的设置参数项
         public static Model.Settings setting;
-        public static Model.Uart uart = new Model.Uart();
+        public static Services.ISerialPortService uart = new Services.SerialPortService();
 
         /// <summary>
         /// 是否上报bug？低版本.net框架的上报行为将被限制
