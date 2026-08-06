@@ -384,6 +384,24 @@ namespace llcom
                     //MessageBox.Show("fail了");
                 }
 
+                // WMI 枚举可能有延迟/缓存（设备刚拔掉时仍返回旧数据），
+                // 以注册表权威端口列表 SerialPort.GetPortNames() 为准，过滤掉已拔掉的设备
+                try
+                {
+                    var currentPorts = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                    foreach (var p in SerialPort.GetPortNames())
+                    {
+                        //有些人遇到了微软库的bug，所以需要手动从0x00截断
+                        currentPorts.Add(p.IndexOf("\0") > 0 ? p.Substring(0, p.IndexOf("\0")) : p);
+                    }
+                    strs.RemoveAll(s =>
+                    {
+                        var m = Regex.Match(s, @"\(COM\d+\)");
+                        return m.Success && !currentPorts.Contains(m.Value.Trim('(', ')'));
+                    });
+                }
+                catch { }
+
                 try
                 {
                     foreach (string p in SerialPort.GetPortNames())//加上缺少的com口
