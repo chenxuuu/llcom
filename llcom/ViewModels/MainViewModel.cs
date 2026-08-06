@@ -233,7 +233,9 @@ namespace llcom.ViewModels
                     _refreshLock = false;
 
                     if (string.IsNullOrEmpty(lastPort))
-                        lastPort = _lastPortName;
+                        //当前串口对象上设置的端口名（即使串口已断开/被拔掉仍存在），
+                        //用于设备重新插回时恢复选中并触发自动重连
+                        lastPort = _uart.GetName();
                     //恢复选中：优先上次端口，否则第一个
                     var target = Ports.FirstOrDefault(p => p.PortName == lastPort);
                     SelectedPort = target ?? Ports.FirstOrDefault();
