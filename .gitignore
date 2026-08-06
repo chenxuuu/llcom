@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+#pi agent
+.pi/
+
 # User-specific files
 *.suo
 *.user
@@ -333,3 +336,6 @@ ASALocalRun/
 serial_monitor_rs/target/
 serial_monitor_rs/Cargo.lock
 **/*.rs.bk
+
+# 本地测试快捷方式
+*.lnk
