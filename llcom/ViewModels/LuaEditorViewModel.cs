@@ -79,9 +79,11 @@ namespace llcom.ViewModels
                 if (f is FileInfo file && file.Name.ToLower().EndsWith(".lua"))
                     Files.Add(file.Name.Substring(0, file.Name.Length - 4));
             }
-            _loading = false;
             _lastFile = _getCurrentScript();
+            //注意：SelectedFile 赋值必须在 _loading=false 之前，
+            //否则会触发 OnSelectedFileChanged → LoadFile → RefreshList 无限递归卡死
             SelectedFile = _lastFile;
+            _loading = false;
         }
 
         /// <summary>
