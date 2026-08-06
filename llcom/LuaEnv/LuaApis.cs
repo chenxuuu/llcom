@@ -10,6 +10,7 @@ namespace llcom.LuaEnv
     class LuaApis
     {
         public static event EventHandler PrintLuaLog;
+
         /// <summary>
         /// 打印日志
         /// </summary>
@@ -17,7 +18,7 @@ namespace llcom.LuaEnv
         public static void PrintLog(string log)
         {
             Tools.Logger.AddLuaLog(log);
-            PrintLuaLog(DateTime.Now.ToString("[HH:mm:ss:ffff]")+log, EventArgs.Empty);
+            PrintLuaLog(DateTime.Now.ToString("[HH:mm:ss:ffff]") + log, EventArgs.Empty);
         }
 
         /// <summary>
@@ -27,9 +28,10 @@ namespace llcom.LuaEnv
         /// <returns></returns>
         public static string Utf8ToAsciiHex(string input)
         {
-            return BitConverter.ToString(Encoding.GetEncoding("GB2312").GetBytes(input)).Replace("-","");
+            return BitConverter
+                .ToString(Encoding.GetEncoding("GB2312").GetBytes(input))
+                .Replace("-", "");
         }
-
 
         /// <summary>
         /// utf8编码改为gbk的hex编码
@@ -69,17 +71,23 @@ namespace llcom.LuaEnv
         /// 输入框
         /// </summary>
         /// <returns></returns>
-        public static bool InputBox(string prompt, out string returnValue, string defaultInput = "", string title = null)
+        public static bool InputBox(
+            string prompt,
+            out string returnValue,
+            string defaultInput = "",
+            string title = null
+        )
         {
-            Tuple<bool, string> ret = App.Current.Dispatcher.Invoke(() => {
+            Tuple<bool, string> ret = App.Current.Dispatcher.Invoke(() =>
+            {
                 return Tools.InputDialog.OpenDialog(prompt, defaultInput, title);
             });
             returnValue = ret.Item2;
             return ret.Item1;
         }
 
-
         public static event EventHandler<Model.LinePlotPoint> LinePlotAdd;
+
         /// <summary>
         /// 画点
         /// </summary>
@@ -93,8 +101,13 @@ namespace llcom.LuaEnv
         /// <summary>
         /// 发送通道的回调函数
         /// </summary>
-        private static Dictionary<string, Func<byte[], XLua.LuaTable, bool>> SendChannels = new Dictionary<string, Func<byte[], XLua.LuaTable, bool>>();
-        public static void SendChannelsRegister(string channel, Func<byte[], XLua.LuaTable, bool> cb) => SendChannels[channel] = cb;
+        private static Dictionary<string, Func<byte[], XLua.LuaTable, bool>> SendChannels =
+            new Dictionary<string, Func<byte[], XLua.LuaTable, bool>>();
+
+        public static void SendChannelsRegister(
+            string channel,
+            Func<byte[], XLua.LuaTable, bool> cb
+        ) => SendChannels[channel] = cb;
 
         /// <summary>
         /// 发送数据到通用通道
@@ -114,6 +127,7 @@ namespace llcom.LuaEnv
         /// </summary>
         /// <param name="channel"></param>
         /// <param name="data"></param>
-        public static void SendChannelsReceived(string channel, object data) => LuaRunEnv.ChannelReceived(channel, data);
+        public static void SendChannelsReceived(string channel, object data) =>
+            LuaRunEnv.ChannelReceived(channel, data);
     }
 }

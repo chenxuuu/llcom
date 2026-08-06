@@ -10,7 +10,6 @@ namespace llcom.LuaEnv
 {
     class LuaLoader
     {
-
         /// <summary>
         /// 初始化lua对象
         /// </summary>
@@ -42,8 +41,11 @@ namespace llcom.LuaEnv
             }
 
             //加上需要require的路径
-            lua.DoString(@"
-local rootPath = '"+ LuaApis.Utf8ToAsciiHex(LuaApis.GetPath()) + @"'
+            lua.DoString(
+                @"
+local rootPath = '"
+                    + LuaApis.Utf8ToAsciiHex(LuaApis.GetPath())
+                    + @"'
 rootPath = rootPath:gsub('[%s%p]', ''):upper()
 rootPath = rootPath:gsub('%x%x', function(c)
                                     return string.char(tonumber(c, 16))
@@ -56,14 +58,16 @@ package.cpath = package.cpath..
 ';'..rootPath..'core_script/?.lua'..
 ';'..rootPath..'?.lua'..
 ';'..rootPath..'user_script_run/requires/?.lua'
-");
+"
+            );
 
             //运行初始化文件
             lua.DoString("require 'core_script.head'");
 
             if (t == "send")
             {
-                lua.DoString(@"
+                lua.DoString(
+                    @"
 --只运行一次的代码
 local rootPath = apiUtf8ToHex(apiGetPath()):fromHex()
 --读到的文件
@@ -77,19 +81,24 @@ _G[""!once!""] = function()
     runLimitStop()
     return result
 end
-");
+"
+                );
             }
         }
 
-
         private static XLua.LuaEnv luaRunner = null;
+
         /// <summary>
         /// 运行lua文件并获取结果
         /// </summary>
         /// <param name="file"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static byte[] Run(string file, ArrayList args = null, string path = "user_script_send_convert/")
+        public static byte[] Run(
+            string file,
+            ArrayList args = null,
+            string path = "user_script_send_convert/"
+        )
         {
             //文件不存在
             if (!File.Exists(Tools.Global.ProfilePath + path + file))
@@ -98,9 +107,9 @@ end
             if (luaRunner == null)
             {
                 luaRunner = new XLua.LuaEnv();
-                lock(luaRunner)
+                lock (luaRunner)
                 {
-                    luaRunner.Global.SetInPath("runType", "send");//一次性处理标志
+                    luaRunner.Global.SetInPath("runType", "send"); //一次性处理标志
                     Initial(luaRunner, "send");
                 }
             }
@@ -108,7 +117,7 @@ end
             {
                 var pathIn = Tools.Global.ProfilePath + path + file;
                 luaRunner.Global.SetInPath("!file!", pathIn);
-                while(luaRunner.Global.GetInPath<string>("!file!") != pathIn)
+                while (luaRunner.Global.GetInPath<string>("!file!") != pathIn)
                     luaRunner.Global.SetInPath("!file!", pathIn);
 
                 if (args != null)
@@ -120,7 +129,7 @@ end
                 XLua.LuaFunction f = null;
                 try
                 {
-                    while(f == null)
+                    while (f == null)
                         f = luaRunner.Global.Get<XLua.LuaFunction>("!once!");
                     var lr = f.Call(null, new Type[] { typeof(byte[]) });
                     var r = lr[0] as byte[];

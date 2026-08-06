@@ -1,4 +1,3 @@
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using Serilog;
 
 namespace llcom.Tools
 {
@@ -13,24 +13,23 @@ namespace llcom.Tools
     {
         //显示日志数据的回调函数
         public static event EventHandler<DataShow> DataShowTask;
+
         //清空显示的回调函数
         public static event EventHandler DataClearEvent;
+
         //清空日志显示
         public static void ClearData()
         {
-            DataClearEvent?.Invoke(null,null);
+            DataClearEvent?.Invoke(null, null);
         }
+
         //显示日志数据
         public static void ShowData(byte[] data, bool send)
         {
             //不刷新日志
             if (Tools.Global.setting.DisableLog)
                 return;
-            DataShowTask?.Invoke(null, new DataShowPara
-            {
-                data = data,
-                send = send
-            });
+            DataShowTask?.Invoke(null, new DataShowPara { data = data, send = send });
         }
 
         public static void ShowRawData(string title, byte[] data, bool send)
@@ -38,13 +37,17 @@ namespace llcom.Tools
             //不刷新日志
             if (Tools.Global.setting.DisableLog)
                 return;
-            DataShowTask?.Invoke(null, new DataShowRaw
-            {
-                title = title,
-                data = data,
-                color = send ? Brushes.DarkRed : Brushes.DarkGreen
-            });
+            DataShowTask?.Invoke(
+                null,
+                new DataShowRaw
+                {
+                    title = title,
+                    data = data,
+                    color = send ? Brushes.DarkRed : Brushes.DarkGreen,
+                }
+            );
         }
+
         //显示日志数据
         public static void ShowDataRaw(DataShowRaw s)
         {
@@ -53,7 +56,6 @@ namespace llcom.Tools
                 return;
             DataShowTask?.Invoke(null, s);
         }
-
 
         private static Serilog.Core.Logger uartLogFile = null;
         private static Serilog.Core.Logger luaLogFile = null;
@@ -66,11 +68,13 @@ namespace llcom.Tools
             uartLogFile = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.Console()
-                .WriteTo.File(Tools.Global.ProfilePath + "logs/log.txt",
+                .WriteTo.File(
+                    Tools.Global.ProfilePath + "logs/log.txt",
                     rollingInterval: RollingInterval.Day,
                     retainedFileCountLimit: 30,
                     encoding: Encoding.UTF8,
-                    rollOnFileSizeLimit: true)
+                    rollOnFileSizeLimit: true
+                )
                 .CreateLogger();
             AddUartLogInfo("[START]Logs by LLCOM. https://github.com/chenxuuu/llcom");
         }
@@ -93,6 +97,7 @@ namespace llcom.Tools
                 InitUartLog();
             uartLogFile.Information(l);
         }
+
         /// <summary>
         /// 写入一条串口日志
         /// </summary>
@@ -112,11 +117,13 @@ namespace llcom.Tools
             luaLogFile = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.Console()
-                .WriteTo.File(Tools.Global.ProfilePath + "user_script_run/logs/log.txt",
+                .WriteTo.File(
+                    Tools.Global.ProfilePath + "user_script_run/logs/log.txt",
                     rollingInterval: RollingInterval.Day,
                     retainedFileCountLimit: 30,
                     encoding: Encoding.UTF8,
-                    rollOnFileSizeLimit: true)
+                    rollOnFileSizeLimit: true
+                )
                 .CreateLogger();
         }
 
@@ -163,5 +170,6 @@ namespace llcom.Tools
         public string title;
         public SolidColorBrush color;
     }
+
     class DataShowSendRaw : DataShow { }
 }

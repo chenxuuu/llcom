@@ -26,6 +26,7 @@ namespace llcom.Pages
         }
 
         private static bool loaded = false;
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             if (loaded)
@@ -33,8 +34,10 @@ namespace llcom.Pages
             loaded = true;
             this.DataContext = Tools.Global.setting;
             aboutScrollViewer.ScrollToTop();
-            versionTextBlock.Text = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
+            versionTextBlock.Text = System
+                .Reflection.Assembly.GetExecutingAssembly()
+                .GetName()
+                .Version.ToString();
 
             //设置为手动检查
             AutoUpdaterDotNET.AutoUpdater.CheckForUpdateEvent += checkUpdateEvent;
@@ -42,6 +45,7 @@ namespace llcom.Pages
         }
 
         private AutoUpdaterDotNET.UpdateInfoEventArgs G_args;
+
         private void checkUpdateEvent(AutoUpdaterDotNET.UpdateInfoEventArgs args)
         {
             if (args != null)
@@ -50,39 +54,64 @@ namespace llcom.Pages
                 if (args.IsUpdateAvailable)
                 {
                     Tools.Global.HasNewVersion = !Tools.Global.IsMSIX();
-                    if(Tools.Global.IsMSIX())
+                    if (Tools.Global.IsMSIX())
                     {
-                        this.Dispatcher.Invoke(new Action(delegate {
-                            CheckUpdateButton.Content = "检测到有更新，请前往微软商店更新";
-                        }));
+                        this.Dispatcher.Invoke(
+                            new Action(
+                                delegate
+                                {
+                                    CheckUpdateButton.Content = "检测到有更新，请前往微软商店更新";
+                                }
+                            )
+                        );
                     }
                     else if (Tools.Global.setting.autoUpdate)
                     {
-                        this.Dispatcher.Invoke(new Action(delegate {
-                            CheckUpdateButton.Content = "检测到有更新，获取中";
-                            AutoUpdaterDotNET.AutoUpdater.ShowUpdateForm(G_args);
-                        }));
+                        this.Dispatcher.Invoke(
+                            new Action(
+                                delegate
+                                {
+                                    CheckUpdateButton.Content = "检测到有更新，获取中";
+                                    AutoUpdaterDotNET.AutoUpdater.ShowUpdateForm(G_args);
+                                }
+                            )
+                        );
                     }
                     else
                     {
-                        this.Dispatcher.Invoke(new Action(delegate {
-                            CheckUpdateButton.IsEnabled = true;
-                            CheckUpdateButton.Content = "检测到有更新，立即更新";
-                        }));
+                        this.Dispatcher.Invoke(
+                            new Action(
+                                delegate
+                                {
+                                    CheckUpdateButton.IsEnabled = true;
+                                    CheckUpdateButton.Content = "检测到有更新，立即更新";
+                                }
+                            )
+                        );
                     }
                 }
                 else
                 {
-                    this.Dispatcher.Invoke(new Action(delegate {
-                        CheckUpdateButton.Content = "已是最新版，无需更新";
-                    }));
+                    this.Dispatcher.Invoke(
+                        new Action(
+                            delegate
+                            {
+                                CheckUpdateButton.Content = "已是最新版，无需更新";
+                            }
+                        )
+                    );
                 }
             }
             else
             {
-                this.Dispatcher.Invoke(new Action(delegate {
-                    CheckUpdateButton.Content = "检查更新失败，请检查网络";
-                }));
+                this.Dispatcher.Invoke(
+                    new Action(
+                        delegate
+                        {
+                            CheckUpdateButton.Content = "检查更新失败，请检查网络";
+                        }
+                    )
+                );
             }
         }
 
@@ -90,17 +119,28 @@ namespace llcom.Pages
         {
             try
             {
-                Random r = new Random();//加上随机参数，确保获取的是最新数据
-                this.Dispatcher.Invoke(new Action(delegate
-                {
-                    AutoUpdaterDotNET.AutoUpdater.Start("https://llcom.papapoi.com/autoUpdate.xml?" + r);
-                }));
+                Random r = new Random(); //加上随机参数，确保获取的是最新数据
+                this.Dispatcher.Invoke(
+                    new Action(
+                        delegate
+                        {
+                            AutoUpdaterDotNET.AutoUpdater.Start(
+                                "https://llcom.papapoi.com/autoUpdate.xml?" + r
+                            );
+                        }
+                    )
+                );
             }
             catch
             {
-                this.Dispatcher.Invoke(new Action(delegate {
-                    CheckUpdateButton.Content = "检查更新失败，请检查网络";
-                }));
+                this.Dispatcher.Invoke(
+                    new Action(
+                        delegate
+                        {
+                            CheckUpdateButton.Content = "检查更新失败，请检查网络";
+                        }
+                    )
+                );
             }
         }
 
