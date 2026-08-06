@@ -307,6 +307,11 @@
     <Compile Include="LuaEnv\LuaLoader.cs" />
     <Compile Include="LuaEnv\LuaRunEnv.cs" />
     <Compile Include="Model\Settings.cs" />
+    <Compile Include="Model\Settings.Display.cs" />
+    <Compile Include="Model\Settings.Mqtt.cs" />
+    <Compile Include="Model\Settings.QuickSend.cs" />
+    <Compile Include="Model\Settings.TcpUdp.cs" />
+    <Compile Include="Model\Settings.Uart.cs" />
     <Compile Include="Model\ToSendData.cs" />
     <Compile Include="Model\Uart.cs" />
     <Compile Include="Pages\AboutPage.xaml.cs">
