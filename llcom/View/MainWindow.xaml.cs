@@ -52,10 +52,11 @@ namespace llcom
             InitializeComponent();
             Tools.Global.LoadSetting();
             if (Tools.Global.setting.windowHeight != 0 &&
-                Tools.Global.setting.windowLeft > 0 &&
-                Tools.Global.setting.windowTop > 0 &&
-                Tools.Global.setting.windowTop < SystemParameters.FullPrimaryScreenHeight &&
-                Tools.Global.setting.windowLeft < SystemParameters.FullPrimaryScreenWidth)
+                Tools.Global.setting.windowWidth != 0 &&
+                Tools.Global.setting.windowLeft >= SystemParameters.VirtualScreenLeft &&
+                Tools.Global.setting.windowTop >= SystemParameters.VirtualScreenTop &&
+                Tools.Global.setting.windowLeft < SystemParameters.VirtualScreenLeft + SystemParameters.VirtualScreenWidth &&
+                Tools.Global.setting.windowTop < SystemParameters.VirtualScreenTop + SystemParameters.VirtualScreenHeight)
             {
                 this.Left = Tools.Global.setting.windowLeft;
                 this.Top = Tools.Global.setting.windowTop;

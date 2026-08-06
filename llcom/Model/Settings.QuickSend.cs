@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace llcom.Model
 {
@@ -21,8 +22,12 @@ namespace llcom.Model
         }
 
         /// <summary>
-        /// 当前选中的快捷发送列表数据
+        /// 当前选中的快捷发送列表数据。
+        /// 注意：此属性是 quickSendList 的“视图”（getter 返回当前页引用），
+        /// 必须 [JsonIgnore]——否则序列化时会与 quickSendList 字段重复写入 JSON，
+        /// 反序列化时 Newtonsoft 的 ObjectCreationHandling.Auto 会向同一 List 追加两次，导致数据翻倍。
         /// </summary>
+        [JsonIgnore]
         public List<ToSendData> quickSend
         {
             get
