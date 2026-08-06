@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -18,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CommunityToolkit.Mvvm.ComponentModel;
 using llcom.LuaEnv;
 using static llcom.Pages.SocketClientPage;
 
@@ -26,9 +28,15 @@ namespace llcom.Pages;
 /// <summary>
 /// SocketClientPage.xaml 的交互逻辑
 /// </summary>
-[PropertyChanged.AddINotifyPropertyChangedInterface]
+[INotifyPropertyChanged]
+// 生成器调用此重载（WPF Page 自带的是 DependencyPropertyChangedEventArgs 重载，需手动补充）
 public partial class SocketClientPage : Page
 {
+    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+    protected void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e) =>
+        PropertyChanged?.Invoke(this, e);
+
     public SocketClientPage()
     {
         InitializeComponent();
@@ -38,12 +46,19 @@ public partial class SocketClientPage : Page
 
     //收到消息的事件
     public event EventHandler<byte[]> DataRecived;
-    public bool IsConnected { get; set; } = false;
-    public bool NeedDisconnected { get; set; } = false;
+
+    [ObservableProperty]
+    private bool _isConnected = false;
+
+    [ObservableProperty]
+    private bool _needDisconnected = false;
 
     //是否可更改服务器信息
-    public bool Changeable { get; set; } = true;
-    public bool HexMode { get; set; } = false;
+    [ObservableProperty]
+    private bool _changeable = true;
+
+    [ObservableProperty]
+    private bool _hexMode = false;
 
     //暂存一个对象
     SocketObj socketNow = null;

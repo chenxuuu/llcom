@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -16,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CommunityToolkit.Mvvm.ComponentModel;
 using llcom.LuaEnv;
 using llcom.Tools;
 using Newtonsoft.Json;
@@ -27,9 +29,15 @@ namespace llcom.Pages;
 /// <summary>
 /// tcpTest.xaml 的交互逻辑
 /// </summary>
-[PropertyChanged.AddINotifyPropertyChangedInterface]
+[INotifyPropertyChanged]
+// 生成器调用此重载（WPF Page 自带的是 DependencyPropertyChangedEventArgs 重载，需手动补充）
 public partial class tcpTest : Page
 {
+    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+    protected void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e) =>
+        PropertyChanged?.Invoke(this, e);
+
     public tcpTest()
     {
         InitializeComponent();
@@ -42,11 +50,20 @@ public partial class tcpTest : Page
     /// <summary>
     /// 连接状态
     /// </summary>
-    public bool IsConnected { get; set; } = false;
-    public bool HexMode { get; set; } = false;
-    public string Address { get; set; } = "loading...";
-    public string AddressV6 { get; set; } = "loading...";
-    public string ConnectionType { get; set; } = "unknow";
+    [ObservableProperty]
+    private bool _isConnected = false;
+
+    [ObservableProperty]
+    private bool _hexMode = false;
+
+    [ObservableProperty]
+    private string _address = "loading...";
+
+    [ObservableProperty]
+    private string _addressV6 = "loading...";
+
+    [ObservableProperty]
+    private string _connectionType = "unknow";
 
     private static bool loaded = false;
 
@@ -326,13 +343,14 @@ public partial class tcpTest : Page
         );
     }
 
-    public bool connecting { get; set; } = false;
+    [ObservableProperty]
+    private bool _connecting = false;
 
     private async void ConnectWebSocket(string ctype, string stype = null)
     {
-        if (connecting)
+        if (Connecting)
             return;
-        connecting = true;
+        Connecting = true;
         ShowData($"📢 Server is creating...");
         await Task.Run(() =>
         {
@@ -358,7 +376,7 @@ public partial class tcpTest : Page
                 //ShowData($"📢 Create failed, {e.Message}");
             }
         });
-        connecting = false;
+        Connecting = false;
     }
 
     private void CreateTcpButton_Click(object sender, RoutedEventArgs e)

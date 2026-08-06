@@ -11,7 +11,6 @@ namespace llcom.Pages;
 /// 显示逻辑全部移入 DataShowViewModel；本页只保留 UI 桥接
 /// （流式文本框增量追加、滚动、分包/流式切换、保存日志对话框）。
 /// </summary>
-[PropertyChanged.AddINotifyPropertyChangedInterface]
 public partial class DataShowPage : Page
 {
     private DataShowViewModel _vm;

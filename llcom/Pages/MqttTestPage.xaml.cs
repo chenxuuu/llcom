@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
@@ -16,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CommunityToolkit.Mvvm.ComponentModel;
 using llcom.LuaEnv;
 using llcom.Model;
 using MQTTnet;
@@ -30,9 +32,15 @@ namespace llcom.Pages;
 /// <summary>
 /// MqttTestPage.xaml 的交互逻辑
 /// </summary>
-[PropertyChanged.AddINotifyPropertyChangedInterface]
+[INotifyPropertyChanged]
+// 生成器调用此重载（WPF Page 自带的是 DependencyPropertyChangedEventArgs 重载，需手动补充）
 public partial class MqttTestPage : Page
 {
+    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+    protected void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e) =>
+        PropertyChanged?.Invoke(this, e);
+
     public MqttTestPage()
     {
         InitializeComponent();
@@ -41,7 +49,9 @@ public partial class MqttTestPage : Page
     private bool initial = false;
     private static MqttFactory factory = new MqttFactory();
     private MQTTnet.Client.IMqttClient mqttClient = factory.CreateMqttClient();
-    public bool MqttIsConnected { get; set; } = false;
+
+    [ObservableProperty]
+    private bool _mqttIsConnected = false;
 
     private void Page_Loaded(object sender, RoutedEventArgs e)
     {

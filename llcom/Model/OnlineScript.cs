@@ -1,49 +1,56 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace llcom.Model;
 
-[PropertyChanged.AddINotifyPropertyChangedInterface]
-public class OnlineScript
+public partial class OnlineScript : ObservableObject
 {
     /// <summary>
     /// 作者
     /// </summary>
-    public string Author { get; set; }
+    [ObservableProperty]
+    private string _author;
 
     /// <summary>
     /// 脚本名
     /// </summary>
-    public string Name { get; set; }
+    [ObservableProperty]
+    private string _name;
 
     /// <summary>
     /// 简介
     /// </summary>
-    public string Description { get; set; }
+    [ObservableProperty]
+    private string _description;
 
     /// <summary>
     /// 版本
     /// </summary>
-    public int Version { get; set; }
+    [ObservableProperty]
+    private int _version;
 
     /// <summary>
     /// 备注
     /// </summary>
-    public string Note { get; set; }
+    [ObservableProperty]
+    private string _note;
 
     /// <summary>
     /// 脚本内容
     /// </summary>
-    public string Script { get; set; }
+    [ObservableProperty]
+    private string _script;
 
     /// <summary>
     /// 脚本网址
     /// </summary>
-    public string Url { get; set; } = null;
+    [ObservableProperty]
+    private string _url = null;
 
     /// <summary>
     /// 导入来自GitHub的原始数据

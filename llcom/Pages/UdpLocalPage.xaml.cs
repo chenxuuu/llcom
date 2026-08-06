@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -15,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CommunityToolkit.Mvvm.ComponentModel;
 using static llcom.Pages.SocketClientPage;
 
 namespace llcom.Pages;
@@ -22,15 +24,22 @@ namespace llcom.Pages;
 /// <summary>
 /// UdpLocalPage.xaml 的交互逻辑
 /// </summary>
-[PropertyChanged.AddINotifyPropertyChangedInterface]
+[INotifyPropertyChanged]
+// 生成器调用此重载（WPF Page 自带的是 DependencyPropertyChangedEventArgs 重载，需手动补充）
 public partial class UdpLocalPage : Page
 {
+    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+    protected void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e) =>
+        PropertyChanged?.Invoke(this, e);
+
     public UdpLocalPage()
     {
         InitializeComponent();
     }
 
-    public bool IsConnected { get; set; } = false;
+    [ObservableProperty]
+    private bool _isConnected = false;
 
     private static bool loaded = false;
 

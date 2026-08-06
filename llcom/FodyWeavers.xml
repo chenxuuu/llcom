@@ -9,5 +9,4 @@
 		serial_monitor
 	</Unmanaged64Assemblies>
   </Costura>
-  <PropertyChanged />
 </Weavers>

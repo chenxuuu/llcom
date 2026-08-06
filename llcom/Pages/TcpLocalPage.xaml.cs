@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -18,6 +19,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 using CoAP.Server;
+using CommunityToolkit.Mvvm.ComponentModel;
 using llcom.LuaEnv;
 using static llcom.Pages.SocketClientPage;
 
@@ -26,9 +28,15 @@ namespace llcom.Pages;
 /// <summary>
 /// TcpLocalPage.xaml 的交互逻辑
 /// </summary>
-[PropertyChanged.AddINotifyPropertyChangedInterface]
+[INotifyPropertyChanged]
+// 生成器调用此重载（WPF Page 自带的是 DependencyPropertyChangedEventArgs 重载，需手动补充）
 public partial class TcpLocalPage : Page
 {
+    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+    protected void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e) =>
+        PropertyChanged?.Invoke(this, e);
+
     public TcpLocalPage()
     {
         InitializeComponent();
@@ -36,7 +44,9 @@ public partial class TcpLocalPage : Page
 
     //收到消息的事件
     public event EventHandler<byte[]> DataRecived;
-    public bool IsConnected { get; set; } = false;
+
+    [ObservableProperty]
+    private bool _isConnected = false;
 
     private static bool loaded = false;
 
@@ -311,7 +321,8 @@ public partial class TcpLocalPage : Page
         catch { }
     }
 
-    public bool HexMode { get; set; } = false;
+    [ObservableProperty]
+    private bool _hexMode = false;
 
     private void SendDataButton_Click(object sender, RoutedEventArgs e)
     {
