@@ -91,6 +91,9 @@ namespace llcom.ViewModels
         /// <summary>快捷发送区（10 页列表管理）</summary>
         public QuickSendViewModel QuickSend { get; }
 
+        /// <summary>Lua 脚本编辑器（user_script_run 目录，主窗口 Lua Tab）</summary>
+        public LuaEditorViewModel LuaEditor { get; }
+
         /// <summary>已发送字节计数（来自设置，仅 UI 通知）</summary>
         public int SentCount => Tools.Global.setting.SentCount;
         /// <summary>已接收字节计数（来自设置，仅 UI 通知）</summary>
@@ -106,6 +109,10 @@ namespace llcom.ViewModels
         {
             _uart = uart;
             QuickSend = new QuickSendViewModel(setting);
+            LuaEditor = new LuaEditorViewModel(
+                "user_script_run/",
+                () => setting.runScript,
+                v => setting.runScript = v);
 
             RefreshPortsCommand = new RelayCommand(() => RefreshPorts());
             OpenClosePortCommand = new RelayCommand(OpenClosePort);
@@ -392,7 +399,7 @@ namespace llcom.ViewModels
         /// </summary>
         private void SendData()
         {
-            Tools.Global.setting.recvScript = MainWindow.recvScriptBackup;
+            Tools.Global.setting.recvScript = Tools.Global.recvScriptBackup;
             var data = Tools.Global.GetEncoding().GetBytes(SendText);
             SendUartData(data);
         }

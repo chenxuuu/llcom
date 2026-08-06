@@ -61,6 +61,11 @@ namespace llcom.Tools
         public static bool HasNewVersion { get; set; } = false;
 
         /// <summary>
+        /// 用户当前选择的接收转换脚本（发送时恢复用；逐条指定接收脚本时不覆盖此值）
+        /// </summary>
+        public static string recvScriptBackup = "";
+
+        /// <summary>
         /// 更换软件标题栏文字
         /// </summary>
         public static event EventHandler<string> ChangeTitleEvent;

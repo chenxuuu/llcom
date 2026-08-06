@@ -557,7 +557,8 @@
                             <ComboBox
                                 Name="luaFileList"
                                 Width="150"
-                                SelectionChanged="LuaFileList_SelectionChanged" />
+                                ItemsSource="{Binding LuaEditor.Files}"
+                                SelectedItem="{Binding LuaEditor.SelectedFile}" />
                             <Button
                                 Name="newScriptButton"
                                 Margin="3,0,0,0"

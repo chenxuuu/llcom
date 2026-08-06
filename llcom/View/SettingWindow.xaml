@@ -133,7 +133,8 @@
                         <ComboBox
                             Name="luaFileList"
                             Width="250"
-                            SelectionChanged="LuaFileList_SelectionChanged" />
+                            ItemsSource="{Binding Files}"
+                            SelectedItem="{Binding SelectedFile}" />
                         <Button
                             Name="newScriptButton"
                             Margin="3,0,0,0"
@@ -264,7 +265,8 @@
                         <ComboBox
                             Name="luaFileListRev"
                             Width="250"
-                            SelectionChanged="luaFileListRev_SelectionChanged" />
+                            ItemsSource="{Binding Files}"
+                            SelectedItem="{Binding SelectedFile}" />
                         <Button
                             Name="newScriptButtonRev"
                             Margin="3,0,0,0"

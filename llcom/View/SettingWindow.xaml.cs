@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml;
+using llcom.ViewModels;
 
 namespace llcom
 {
@@ -32,124 +33,15 @@ namespace llcom
             InitializeComponent();
         }
 
-        //重载锁，防止逻辑卡死
-        private static bool fileLoading = false;
-        private static bool fileLoadingRev = false;
-        //上次打开文件名
-        private static string lastLuaFile = "";
-        private static string lastLuaFileRev = "";
+        //发送/接收转换脚本编辑器（与主窗口 Lua 编辑器共用 LuaEditorViewModel）
+        private LuaEditorViewModel _sendEditor;
+        private LuaEditorViewModel _recvEditor;
 
-        /// <summary>
-        /// 加载lua脚本文件
-        /// </summary>
-        /// <param name="fileName">文件名，不带.lua</param>
-        private void loadLuaFile(string fileName)
-        {
-            //检查文件是否存在
-            if (!File.Exists(Tools.Global.ProfilePath + $"user_script_send_convert/{fileName}.lua"))
-            {
-                Tools.Global.setting.sendScript = "default";
-                if (!File.Exists(Tools.Global.ProfilePath + $"user_script_send_convert/{Tools.Global.setting.sendScript}.lua"))
-                {
-                    File.Create(Tools.Global.ProfilePath + $"user_script_send_convert/{Tools.Global.setting.sendScript}.lua").Close();
-                }
-            }
-            else
-            {
-                Tools.Global.setting.sendScript = fileName;
-            }
 
-            //文件内容显示出来
-            textEditor.Text = File.ReadAllText(Tools.Global.ProfilePath + $"user_script_send_convert/{Tools.Global.setting.sendScript}.lua");
 
-            //刷新文件列表
-            DirectoryInfo luaFileDir = new DirectoryInfo(Tools.Global.ProfilePath + "user_script_send_convert/");
-            FileSystemInfo[] luaFiles = luaFileDir.GetFileSystemInfos();
-            fileLoading = true;
-            luaFileList.Items.Clear();
-            for (int i = 0; i < luaFiles.Length; i++)
-            {
-                FileInfo file = luaFiles[i] as FileInfo;
-                //是文件
-                if (file != null && file.Name.EndsWith(".lua"))
-                {
-                    string name = file.Name.Substring(0, file.Name.Length - 4); ;
-                    luaFileList.Items.Add(name);
-                    if (name == Tools.Global.setting.sendScript)
-                    {
-                        luaFileList.SelectedIndex = luaFileList.Items.Count - 1;
-                    }
-                }
-            }
-            lastLuaFile = Tools.Global.setting.sendScript;
-            fileLoading = false;
 
-            //重载脚本
-            LuaEnv.LuaLoader.ClearRun();
-        }
-        private void loadLuaFileRev(string fileName)
-        {
-            //检查文件是否存在
-            if (!File.Exists(Tools.Global.ProfilePath + $"user_script_recv_convert/{fileName}.lua"))
-            {
-                Tools.Global.setting.recvScript = "default";
-                if (!File.Exists(Tools.Global.ProfilePath + $"user_script_recv_convert/{Tools.Global.setting.recvScript}.lua"))
-                {
-                    File.Create(Tools.Global.ProfilePath + $"user_script_recv_convert/{Tools.Global.setting.recvScript}.lua").Close();
-                }
-            }
-            else
-            {
-                Tools.Global.setting.recvScript = fileName;
-            }
 
-            //文件内容显示出来
-            textEditorRev.Text = File.ReadAllText(Tools.Global.ProfilePath + $"user_script_recv_convert/{Tools.Global.setting.recvScript}.lua");
 
-            //刷新文件列表
-            DirectoryInfo luaFileDir = new DirectoryInfo(Tools.Global.ProfilePath + "user_script_recv_convert/");
-            FileSystemInfo[] luaFiles = luaFileDir.GetFileSystemInfos();
-            fileLoadingRev = true;
-            luaFileListRev.Items.Clear();
-            for (int i = 0; i < luaFiles.Length; i++)
-            {
-                FileInfo file = luaFiles[i] as FileInfo;
-                //是文件
-                 if (file != null && file.Name.EndsWith(".lua"))
-                {
-                    string name = file.Name.Substring(0, file.Name.Length - 4); ;
-                    luaFileListRev.Items.Add(name);
-                    if (name== Tools.Global.setting.recvScript)
-                    {
-                        luaFileListRev.SelectedIndex = luaFileListRev.Items.Count - 1;
-                    }
-                }
-            }
-            lastLuaFileRev = Tools.Global.setting.recvScript;
-            fileLoadingRev = false;
-
-            //重载脚本
-            LuaEnv.LuaLoader.ClearRun();
-        }
-
-        /// <summary>
-        /// 保存lua文件
-        /// </summary>
-        /// <param name="fileName">文件名，不带.lua</param>
-        private void saveLuaFile(string fileName)
-        {
-            File.WriteAllText(Tools.Global.ProfilePath + $"user_script_send_convert/{fileName}.lua", textEditor.Text);
-
-            //重载脚本
-            LuaEnv.LuaLoader.ClearRun();
-        }
-        private void saveLuaFileRev(string fileName)
-        {
-            File.WriteAllText(Tools.Global.ProfilePath + $"user_script_recv_convert/{fileName}.lua", textEditorRev.Text);
-
-            //重载脚本
-            LuaEnv.LuaLoader.ClearRun();
-        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -184,10 +76,23 @@ namespace llcom
                     textEditorRev.SyntaxHighlighting = HighlightingLoader.Load(xshd, HighlightingManager.Instance);
                 }
             }
-            //加载上次打开的文件
-            loadLuaFile(Tools.Global.setting.sendScript);
-            if(!string.IsNullOrEmpty(MainWindow.recvScriptBackup)) loadLuaFileRev(MainWindow.recvScriptBackup);
-            else loadLuaFileRev(Tools.Global.setting.recvScript);
+            //加载上次打开的文件（LuaEditorViewModel 构造时已加载）
+            _sendEditor = new LuaEditorViewModel(
+                "user_script_send_convert/",
+                () => Tools.Global.setting.sendScript,
+                v => Tools.Global.setting.sendScript = v,
+                () => LuaEnv.LuaLoader.ClearRun());
+            _recvEditor = new LuaEditorViewModel(
+                "user_script_recv_convert/",
+                () => Tools.Global.setting.recvScript,
+                v => Tools.Global.setting.recvScript = v,
+                () => LuaEnv.LuaLoader.ClearRun(),
+                f => Tools.Global.recvScriptBackup = f);
+            luaFileList.DataContext = _sendEditor;
+            luaFileListRev.DataContext = _recvEditor;
+            //编辑器文本桥接（AvalonEdit Text 不可绑定，经回调访问）
+            _sendEditor.SetTextBridge(() => textEditor.Text, t => textEditor.Text = t);
+            _recvEditor.SetTextBridge(() => textEditorRev.Text, t => textEditorRev.Text = t);
             //加载编码
             var el = Encoding.GetEncodings();
             List<EncodingInfo> encodingList = new List<EncodingInfo>(el);
@@ -207,10 +112,8 @@ namespace llcom
         private void SettingWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             //自动保存脚本
-            if (lastLuaFile != "")
-                saveLuaFile(lastLuaFile);
-            if (lastLuaFileRev != "")
-                saveLuaFileRev(lastLuaFileRev);
+            _sendEditor?.OnAutoSave();
+            _recvEditor?.OnAutoSave();
             if (Tools.Global.isMainWindowsClosed)
             {
                 //说明软件关了
@@ -264,21 +167,11 @@ namespace llcom
             newLuaFileWrapPanel.Visibility = Visibility.Visible;
         }
 
-        private void TestScriptButton_Click(object sender, RoutedEventArgs e)
+        private void NewLuaFilebutton_Click(object sender, RoutedEventArgs e)
         {
+            //创建/重名校验与加载都在 VM.CreateNew 内完成
+            _sendEditor.CreateNew(newLuaFileNameTextBox.Text);
             newLuaFileWrapPanel.Visibility = Visibility.Collapsed;
-            luaTestWrapPanel.Visibility = Visibility.Visible;
-        }
-
-        private void LuaFileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (luaFileList.SelectedItem != null && !fileLoading)
-            {
-                if (lastLuaFile != "")
-                    saveLuaFile(lastLuaFile);
-                string fileName = luaFileList.SelectedItem as string;
-                loadLuaFile(fileName);
-            }
         }
 
         private void NewLuaFileCancelbutton_Click(object sender, RoutedEventArgs e)
@@ -286,39 +179,25 @@ namespace llcom
             newLuaFileWrapPanel.Visibility = Visibility.Collapsed;
         }
 
-        private void NewLuaFilebutton_Click(object sender, RoutedEventArgs e)
+        private void TestScriptButton_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(newLuaFileNameTextBox.Text))
-            {
-                Tools.MessageBox.Show(TryFindResource("LuaNoName") as string ?? "?!");
-                return;
-            }
-            if (File.Exists(Tools.Global.ProfilePath + $"user_script_send_convert/{newLuaFileNameTextBox.Text}.lua"))
-            {
-                Tools.MessageBox.Show(TryFindResource("LuaExist") as string ?? "?!");
-                return;
-            }
-
-            try
-            {
-                File.Create(Tools.Global.ProfilePath + $"user_script_send_convert/{newLuaFileNameTextBox.Text}.lua").Close();
-                loadLuaFile(newLuaFileNameTextBox.Text);
-            }
-            catch
-            {
-                Tools.MessageBox.Show(TryFindResource("LuaCreateFail") as string ?? "?!");
-                return;
-            }
             newLuaFileWrapPanel.Visibility = Visibility.Collapsed;
+            luaTestWrapPanel.Visibility = Visibility.Visible;
         }
+
+
+
+
+
+
 
         private void LuaTestbutton_Click(object sender, RoutedEventArgs e)
         {
-            if (luaFileList.SelectedItem != null && !fileLoading)
+            if (!string.IsNullOrEmpty(_sendEditor?.SelectedFile))
             {
                 try
                 {
-                    byte[] r = LuaEnv.LuaLoader.Run($"{luaFileList.SelectedItem as string}.lua",
+                    byte[] r = LuaEnv.LuaLoader.Run($"{_sendEditor.SelectedFile}.lua",
                                         new System.Collections.ArrayList{"uartData",
                                             (bool)luaTestHexCheck.IsChecked ? Tools.Global.Hex2Byte(luaTestTextBox.Text) :
                                             Tools.Global.GetEncoding().GetBytes(luaTestTextBox.Text)});
@@ -341,8 +220,7 @@ namespace llcom
         private void TextEditor_LostFocus(object sender, RoutedEventArgs e)
         {
             //自动保存脚本
-            if (lastLuaFile != "")
-                saveLuaFile(lastLuaFile);
+            _sendEditor?.OnAutoSave();
         }
 
         private void OpenLogButton_Click(object sender, RoutedEventArgs e)
@@ -365,22 +243,24 @@ namespace llcom
             Tools.Global.setting.encoding = (int)((ComboBoxItem)c.SelectedItem).Tag;
         }
 
-        private void luaFileListRev_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (luaFileListRev.SelectedItem != null && !fileLoadingRev)
-            {
-                if (lastLuaFileRev != "")
-                    saveLuaFileRev(lastLuaFileRev);
-                string fileName = luaFileListRev.SelectedItem as string;
-                loadLuaFileRev(fileName);
-                MainWindow.recvScriptBackup = fileName;
-            }
-        }
+
 
         private void newScriptButtonRev_Click(object sender, RoutedEventArgs e)
         {
             luaTestWrapPanelRev.Visibility = Visibility.Collapsed;
             newLuaFileWrapPanelRev.Visibility = Visibility.Visible;
+        }
+
+        private void newLuaFilebuttonRev_Click(object sender, RoutedEventArgs e)
+        {
+            //创建/重名校验与加载都在 VM.CreateNew 内完成
+            _recvEditor.CreateNew(newLuaFileNameTextBoxRev.Text);
+            newLuaFileWrapPanelRev.Visibility = Visibility.Collapsed;
+        }
+
+        private void newLuaFileCancelbuttonRev_Click(object sender, RoutedEventArgs e)
+        {
+            newLuaFileWrapPanelRev.Visibility = Visibility.Collapsed;
         }
 
         private void testScriptButtonRev_Click(object sender, RoutedEventArgs e)
@@ -394,45 +274,18 @@ namespace llcom
             System.Diagnostics.Process.Start("explorer.exe", Tools.Global.GetTrueProfilePath() + "user_script_recv_convert");
         }
 
-        private void newLuaFilebuttonRev_Click(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(newLuaFileNameTextBoxRev.Text))
-            {
-                Tools.MessageBox.Show(TryFindResource("LuaNoName") as string ?? "?!");
-                return;
-            }
-            if (File.Exists(Tools.Global.ProfilePath + $"user_script_recv_convert/{newLuaFileNameTextBoxRev.Text}.lua"))
-            {
-                Tools.MessageBox.Show(TryFindResource("LuaExist") as string ?? "?!");
-                return;
-            }
 
-            try
-            {
-                File.Create(Tools.Global.ProfilePath + $"user_script_recv_convert/{newLuaFileNameTextBoxRev.Text}.lua").Close();
-                loadLuaFileRev(newLuaFileNameTextBoxRev.Text);
-            }
-            catch
-            {
-                Tools.MessageBox.Show(TryFindResource("LuaCreateFail") as string ?? "?!");
-                return;
-            }
-            newLuaFileWrapPanelRev.Visibility = Visibility.Collapsed;
-        }
 
-        private void newLuaFileCancelbuttonRev_Click(object sender, RoutedEventArgs e)
-        {
-            newLuaFileWrapPanelRev.Visibility = Visibility.Collapsed;
-        }
+
 
         private void luaTestbuttonRev_Click(object sender, RoutedEventArgs e)
         {
-            if (luaFileListRev.SelectedItem != null && !fileLoadingRev)
+            if (!string.IsNullOrEmpty(_recvEditor?.SelectedFile))
             {
                 try
                 {
                     byte[] r = LuaEnv.LuaLoader.Run(
-                        $"{luaFileListRev.SelectedItem as string}.lua",
+                        $"{_recvEditor.SelectedFile}.lua",
                         new System.Collections.ArrayList{
                             "uartData", (bool)(luaTestHexCheckRev.IsChecked) ? 
                             Tools.Global.Hex2Byte(luaTestTextBoxRev.Text) : 
@@ -457,8 +310,7 @@ namespace llcom
         private void textEditorRev_LostFocus(object sender, RoutedEventArgs e)
         {
             //自动保存脚本
-            if (lastLuaFileRev != "")
-                saveLuaFileRev(lastLuaFileRev);
+            _recvEditor?.OnAutoSave();
         }
     }
 }

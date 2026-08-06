@@ -70,7 +70,6 @@ namespace llcom
                 this.Height = Tools.Global.setting.windowHeight;
             }
         }
-        public static string recvScriptBackup = "";
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //延迟启动，加快软件第一屏出现速度
@@ -97,6 +96,9 @@ namespace llcom
                     dataShowFrame.Navigate(new Uri("Pages/DataShowPage.xaml", UriKind.Relative));
 
                     // 绑定事件监听,用于监听HID设备插拔
+                    //Lua 编辑器文本桥接（AvalonEdit Text 不可绑定，经回调访问）
+                    _vm.LuaEditor.SetTextBridge(() => textEditor.Text, t => textEditor.Text = t);
+
                     (PresentationSource.FromVisual(this) as HwndSource)?.AddHook(WndProc);
                     //刷新设备列表
                     _vm.RefreshPorts();
@@ -137,9 +139,6 @@ namespace llcom
                             textEditor.SyntaxHighlighting = HighlightingLoader.Load(xshd, HighlightingManager.Instance);
                         }
                     }
-
-                    //加载上次打开的文件
-                    loadLuaFile(Tools.Global.setting.runScript);
 
                     //加载lua日志打印事件
                     LuaEnv.LuaApis.PrintLuaLog += LuaApis_PrintLuaLog;
@@ -250,12 +249,12 @@ namespace llcom
 
                     Tools.Global.RefreshLuaScriptListEvent += (n, s) =>
                     {
-                        this.Dispatcher.Invoke(() => RefreshScriptList());
+                        this.Dispatcher.Invoke(() => _vm.LuaEditor.RefreshList());
                     };
                 }));
             });
-            recvScriptBackup = Tools.Global.setting.recvScript;
-            if (string.IsNullOrEmpty(recvScriptBackup)) recvScriptBackup = "default";
+            Tools.Global.recvScriptBackup = Tools.Global.setting.recvScript;
+            if (string.IsNullOrEmpty(Tools.Global.recvScriptBackup)) Tools.Global.recvScriptBackup = "default";
         }
 
         private bool DoInvoke(Action action)
@@ -288,30 +287,7 @@ namespace llcom
 
 
 
-        private void RefreshScriptList()
-        {
-            //刷新文件列表
-            DirectoryInfo luaFileDir = new DirectoryInfo(Tools.Global.ProfilePath + "user_script_run/");
-            FileSystemInfo[] luaFiles = luaFileDir.GetFileSystemInfos();
-            fileLoading = true;
-            luaFileList.Items.Clear();
-            for (int i = 0; i < luaFiles.Length; i++)
-            {
-                FileInfo file = luaFiles[i] as FileInfo;
-                //是文件
-                if (file != null && file.Name.ToLower().EndsWith(".lua"))
-                {
-                    string name = file.Name.Substring(0, file.Name.Length - 4);
-                    luaFileList.Items.Add(name);
-                    if (name== Tools.Global.setting.runScript)
-                    {
-                        luaFileList.SelectedIndex = luaFileList.Items.Count - 1;
-                    }
-                }
-            }
-            lastLuaFile = Tools.Global.setting.runScript;
-            fileLoading = false;
-        }
+
 
         private static int UsbPluginDeley = 0;
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -362,8 +338,7 @@ namespace llcom
             Tools.Global.setting.windowWidth = this.Width;
             Tools.Global.setting.windowHeight = this.Height;
             //自动保存脚本
-            if (lastLuaFile != "")
-                saveLuaFile(lastLuaFile);
+            _vm.LuaEditor.OnAutoSave();
             Tools.Global.isMainWindowsClosed = true;
             foreach (Window win in App.Current.Windows)
             {
@@ -403,7 +378,25 @@ namespace llcom
 
         private void RefreshScriptListButton_Click(object sender, RoutedEventArgs e)
         {
-            RefreshScriptList();
+            _vm.LuaEditor.RefreshList();
+        }
+
+        /// <summary>Lua 编辑器失焦自动保存</summary>
+        private void TextEditor_LostFocus(object sender, RoutedEventArgs e)
+        {
+            _vm.LuaEditor.OnAutoSave();
+        }
+
+        /// <summary>窗口切换后台自动保存</summary>
+        private void Window_Deactivated(object sender, EventArgs e)
+        {
+            _vm.LuaEditor.OnAutoSave();
+        }
+
+        /// <summary>窗口激活时检测外部修改（其他编辑器改过则重新加载）</summary>
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            _vm.LuaEditor.CheckExternalChange();
         }
 
 
@@ -448,7 +441,7 @@ namespace llcom
             }
             else
             {
-                Tools.Global.setting.recvScript = recvScriptBackup;
+                Tools.Global.setting.recvScript = Tools.Global.recvScriptBackup;
             }
 
             var sendData = data.hex ? Global.Hex2Byte(data.text) : Global.GetEncoding().GetBytes(data.text);
@@ -480,10 +473,10 @@ namespace llcom
 
         private void RunScriptButton_Click(object sender, RoutedEventArgs e)
         {
-            if (luaFileList.SelectedItem != null && !fileLoading)
+            if (!string.IsNullOrEmpty(_vm.LuaEditor.SelectedFile))
             {
                 luaLogTextBox.Clear();
-                LuaEnv.LuaRunEnv.New($"user_script_run/{luaFileList.SelectedItem as string}.lua");
+                LuaEnv.LuaRunEnv.New($"user_script_run/{_vm.LuaEditor.SelectedFile}.lua");
                 luaScriptEditorGrid.Visibility = Visibility.Collapsed;
                 luaLogShowGrid.Visibility = Visibility.Visible;
                 luaLogPrintable = true;
@@ -493,27 +486,8 @@ namespace llcom
 
         private void NewLuaFilebutton_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(newLuaFileNameTextBox.Text))
-            {
-                Tools.MessageBox.Show(TryFindResource("LuaNoName") as string ?? "?!");
-                return;
-            }
-            if (File.Exists(Tools.Global.ProfilePath + $"user_script_run/{newLuaFileNameTextBox.Text}.lua"))
-            {
-                Tools.MessageBox.Show(TryFindResource("LuaExist") as string ?? "?!");
-                return;
-            }
-
-            try
-            {
-                File.Create(Tools.Global.ProfilePath + $"user_script_run/{newLuaFileNameTextBox.Text}.lua").Close();
-                loadLuaFile(newLuaFileNameTextBox.Text);
-            }
-            catch
-            {
-                Tools.MessageBox.Show(TryFindResource("LuaCreateFail") as string ?? "?!");
-                return;
-            }
+            //创建/重名校验与加载都在 VM.CreateNew 内完成
+            _vm.LuaEditor.CreateNew(newLuaFileNameTextBox.Text);
             newLuaFileWrapPanel.Visibility = Visibility.Collapsed;
         }
 
@@ -522,107 +496,14 @@ namespace llcom
             newLuaFileWrapPanel.Visibility = Visibility.Collapsed;
         }
 
-        //重载锁，防止逻辑卡死
-        private static bool fileLoading = false;
-        //上次打开文件名
-        private static string lastLuaFile = "";
-        //最后打开文件的时间
-        private static DateTime lastLuaFileTime = DateTime.Now;
-        //最后修改文件的时间
-        private static DateTime lastLuaChangeTime = DateTime.Now;
-        /// <summary>
-        /// 加载lua脚本文件
-        /// </summary>
-        /// <param name="fileName">文件名，不带.lua</param>
-        private void loadLuaFile(string fileName)
-        {
-            //检查文件是否存在
-            if (!File.Exists(Tools.Global.ProfilePath + $"user_script_run/{fileName}.lua"))
-            {
-                Tools.Global.setting.runScript = "example";
-                if (!File.Exists(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua"))
-                {
-                    File.Create(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua").Close();
-                }
-            }
-            else
-            {
-                Tools.Global.setting.runScript = fileName;
-            }
 
-            //文件内容显示出来
-            try
-            {
-                textEditor.Text = File.ReadAllText(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua");
-            }
-            catch
-            {
-                Tools.MessageBox.Show("File load failed.\r\n" +
-                    "Do not open this file in other application!");
-                return;
-            }
-            
-            //记录最后时间
-            lastLuaFileTime = File.GetLastWriteTime(Tools.Global.ProfilePath + $"user_script_run/{Tools.Global.setting.runScript}.lua");
-            //加载文件,修改时间使用文件时间
-            lastLuaChangeTime = lastLuaFileTime;
 
-            RefreshScriptList();
-        }
 
-        /// <summary>
-        /// 保存lua文件
-        /// </summary>
-        /// <param name="fileName">文件名，不带.lua</param>
-        private void saveLuaFile(string fileName)
-        {
-            try
-            {
-                //如果修改时间大于文件时间才执行保存操作
-                if (lastLuaChangeTime > lastLuaFileTime)
-                {
-                    File.WriteAllText(Tools.Global.ProfilePath + $"user_script_run/{fileName}.lua", textEditor.Text);
-                    //记录最后时间
-                    lastLuaFileTime = File.GetLastWriteTime(Tools.Global.ProfilePath + $"user_script_run/{fileName}.lua");
-                }
-            }
-            catch { }
-        }
 
-        private void LuaFileList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (luaFileList.SelectedItem != null && !fileLoading)
-            {
-                if (lastLuaFile != "")
-                    saveLuaFile(lastLuaFile);
-                string fileName = luaFileList.SelectedItem as string;
-                loadLuaFile(fileName);
-            }
-        }
-        private void TextEditor_LostFocus(object sender, RoutedEventArgs e)
-        {
-            //自动保存脚本
-            if (lastLuaFile != "")
-                saveLuaFile(lastLuaFile);
-        }
-        private void Window_Deactivated(object sender, EventArgs e)
-        {
-            //窗口变为后台,可能在切换编辑器,自动保存脚本
-            if (lastLuaFile != "")
-                saveLuaFile(lastLuaFile);
-        }
-        private void Window_Activated(object sender, EventArgs e)
-        {
-            if (lastLuaFile != "")
-            {
-                //当前文件最后时间
-                DateTime fileTime = File.GetLastWriteTime(Tools.Global.ProfilePath + $"user_script_run/{lastLuaFile}.lua");
-                if (fileTime > lastLuaFileTime)//代码在外部被修改
-                {
-                    loadLuaFile(lastLuaFile);
-                }
-            }
-        }
+
+
+
+
 
         //是否可打印标记
         private bool _luaLogPrintable = true;
@@ -770,7 +651,7 @@ namespace llcom
             {
                 stopLuaOrExitIcon.Icon = FontAwesomeIcon.Stop;
                 stopLuaButton.ToolTip = TryFindResource("LuaStop") as string ?? "?!";
-                LuaEnv.LuaRunEnv.New($"user_script_run/{luaFileList.SelectedItem as string}.lua");
+                LuaEnv.LuaRunEnv.New($"user_script_run/{_vm.LuaEditor.SelectedFile}.lua");
                 LuaEnv.LuaRunEnv.canRun = true;
                 luaLogPrintable = true;
             }
@@ -873,7 +754,7 @@ namespace llcom
 
         private void textEditor_TextChanged(object sender, EventArgs e)
         {
-            lastLuaChangeTime = DateTime.Now;
+            _vm.LuaEditor.OnTextChanged();
         }
 
 
