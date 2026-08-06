@@ -318,6 +318,12 @@
     <Compile Include="View\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\AppPaths.cs" />
+    <Compile Include="Services\EncodingHelper.cs" />
+    <Compile Include="Services\FileUtils.cs" />
+    <Compile Include="Services\LocalizationService.cs" />
+    <Compile Include="Services\OnlineScriptService.cs" />
+    <Compile Include="Services\ProfileInitializer.cs" />
     <Compile Include="Tools\Global.cs" />
     <Compile Include="Tools\Logger.cs" />
     <Page Include="languages\en-US.xaml">
