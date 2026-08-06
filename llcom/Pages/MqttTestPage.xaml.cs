@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
@@ -17,7 +18,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using CommunityToolkit.Mvvm.ComponentModel;
 using llcom.LuaEnv;
 using llcom.Model;
 using MQTTnet;
@@ -32,14 +32,26 @@ namespace llcom.Pages;
 /// <summary>
 /// MqttTestPage.xaml 的交互逻辑
 /// </summary>
-[INotifyPropertyChanged]
-// 生成器调用此重载（WPF Page 自带的是 DependencyPropertyChangedEventArgs 重载，需手动补充）
 public partial class MqttTestPage : Page, INotifyPropertyChanged
 {
-    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-    protected void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e) =>
-        PropertyChanged?.Invoke(this, e);
+    /// <summary>
+    /// 设置属性值，值变化时触发 PropertyChanged（XAML 生成的 g.cs 基类固定为 Page，
+    /// 无法继承 ObservableObject/ObservablePage，故类内自带此帮助方法）
+    /// </summary>
+    protected bool SetProperty<T>(
+        ref T field,
+        T value,
+        [CallerMemberName] string propertyName = null
+    )
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value))
+            return false;
+        field = value;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        return true;
+    }
 
     public MqttTestPage()
     {
@@ -50,8 +62,12 @@ public partial class MqttTestPage : Page, INotifyPropertyChanged
     private static MqttFactory factory = new MqttFactory();
     private MQTTnet.Client.IMqttClient mqttClient = factory.CreateMqttClient();
 
-    [ObservableProperty]
     private bool _mqttIsConnected = false;
+    public bool MqttIsConnected
+    {
+        get => _mqttIsConnected;
+        set => SetProperty(ref _mqttIsConnected, value);
+    }
 
     private void Page_Loaded(object sender, RoutedEventArgs e)
     {

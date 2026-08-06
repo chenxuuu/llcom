@@ -29,7 +29,7 @@
     <Grid
       Name="CreateButtonGrid"
       Visibility="{Binding IsConnected,Converter={StaticResource boolNotVisibeConverter}}"
-      IsEnabled="{Binding connecting,Converter={StaticResource boolNotConverter}}"
+      IsEnabled="{Binding Connecting,Converter={StaticResource boolNotConverter}}"
     >
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />

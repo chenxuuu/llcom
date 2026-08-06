@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,7 +17,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using CommunityToolkit.Mvvm.ComponentModel;
 using static llcom.Pages.SocketClientPage;
 
 namespace llcom.Pages;
@@ -24,22 +24,38 @@ namespace llcom.Pages;
 /// <summary>
 /// UdpLocalPage.xaml 的交互逻辑
 /// </summary>
-[INotifyPropertyChanged]
-// 生成器调用此重载（WPF Page 自带的是 DependencyPropertyChangedEventArgs 重载，需手动补充）
 public partial class UdpLocalPage : Page, INotifyPropertyChanged
 {
-    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-    protected void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e) =>
-        PropertyChanged?.Invoke(this, e);
+    /// <summary>
+    /// 设置属性值，值变化时触发 PropertyChanged（XAML 生成的 g.cs 基类固定为 Page，
+    /// 无法继承 ObservableObject/ObservablePage，故类内自带此帮助方法）
+    /// </summary>
+    protected bool SetProperty<T>(
+        ref T field,
+        T value,
+        [CallerMemberName] string propertyName = null
+    )
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value))
+            return false;
+        field = value;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        return true;
+    }
 
     public UdpLocalPage()
     {
         InitializeComponent();
     }
 
-    [ObservableProperty]
     private bool _isConnected = false;
+    public bool IsConnected
+    {
+        get => _isConnected;
+        set => SetProperty(ref _isConnected, value);
+    }
 
     private static bool loaded = false;
 

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
@@ -19,7 +20,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using CommunityToolkit.Mvvm.ComponentModel;
 using llcom.LuaEnv;
 using static llcom.Pages.SocketClientPage;
 
@@ -28,15 +28,26 @@ namespace llcom.Pages;
 /// <summary>
 /// SocketClientPage.xaml 的交互逻辑
 /// </summary>
-[INotifyPropertyChanged]
-// 生成器调用此重载（WPF Page 自带的是 DependencyPropertyChangedEventArgs 重载，需手动补充）
 public partial class SocketClientPage : Page, INotifyPropertyChanged
 {
-    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-    //WPF 绑定通过 INotifyPropertyChanged 接口订阅通知，必须实现接口（见类声明）
-    protected void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e) =>
-        PropertyChanged?.Invoke(this, e);
+    /// <summary>
+    /// 设置属性值，值变化时触发 PropertyChanged（XAML 生成的 g.cs 基类固定为 Page，
+    /// 无法继承 ObservableObject/ObservablePage，故类内自带此帮助方法）
+    /// </summary>
+    protected bool SetProperty<T>(
+        ref T field,
+        T value,
+        [CallerMemberName] string propertyName = null
+    )
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value))
+            return false;
+        field = value;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        return true;
+    }
 
     public SocketClientPage()
     {
@@ -48,18 +59,34 @@ public partial class SocketClientPage : Page, INotifyPropertyChanged
     //收到消息的事件
     public event EventHandler<byte[]> DataRecived;
 
-    [ObservableProperty]
     private bool _isConnected = false;
+    public bool IsConnected
+    {
+        get => _isConnected;
+        set => SetProperty(ref _isConnected, value);
+    }
 
-    [ObservableProperty]
     private bool _needDisconnected = false;
+    public bool NeedDisconnected
+    {
+        get => _needDisconnected;
+        set => SetProperty(ref _needDisconnected, value);
+    }
 
     //是否可更改服务器信息
-    [ObservableProperty]
     private bool _changeable = true;
+    public bool Changeable
+    {
+        get => _changeable;
+        set => SetProperty(ref _changeable, value);
+    }
 
-    [ObservableProperty]
     private bool _hexMode = false;
+    public bool HexMode
+    {
+        get => _hexMode;
+        set => SetProperty(ref _hexMode, value);
+    }
 
     //暂存一个对象
     SocketObj socketNow = null;

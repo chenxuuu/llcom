@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
@@ -17,7 +18,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using CommunityToolkit.Mvvm.ComponentModel;
 using llcom.LuaEnv;
 using llcom.Tools;
 using Newtonsoft.Json;
@@ -29,14 +29,26 @@ namespace llcom.Pages;
 /// <summary>
 /// tcpTest.xaml 的交互逻辑
 /// </summary>
-[INotifyPropertyChanged]
-// 生成器调用此重载（WPF Page 自带的是 DependencyPropertyChangedEventArgs 重载，需手动补充）
 public partial class tcpTest : Page, INotifyPropertyChanged
 {
-    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-    protected void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e) =>
-        PropertyChanged?.Invoke(this, e);
+    /// <summary>
+    /// 设置属性值，值变化时触发 PropertyChanged（XAML 生成的 g.cs 基类固定为 Page，
+    /// 无法继承 ObservableObject/ObservablePage，故类内自带此帮助方法）
+    /// </summary>
+    protected bool SetProperty<T>(
+        ref T field,
+        T value,
+        [CallerMemberName] string propertyName = null
+    )
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value))
+            return false;
+        field = value;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        return true;
+    }
 
     public tcpTest()
     {
@@ -50,20 +62,40 @@ public partial class tcpTest : Page, INotifyPropertyChanged
     /// <summary>
     /// 连接状态
     /// </summary>
-    [ObservableProperty]
     private bool _isConnected = false;
+    public bool IsConnected
+    {
+        get => _isConnected;
+        set => SetProperty(ref _isConnected, value);
+    }
 
-    [ObservableProperty]
     private bool _hexMode = false;
+    public bool HexMode
+    {
+        get => _hexMode;
+        set => SetProperty(ref _hexMode, value);
+    }
 
-    [ObservableProperty]
     private string _address = "loading...";
+    public string Address
+    {
+        get => _address;
+        set => SetProperty(ref _address, value);
+    }
 
-    [ObservableProperty]
     private string _addressV6 = "loading...";
+    public string AddressV6
+    {
+        get => _addressV6;
+        set => SetProperty(ref _addressV6, value);
+    }
 
-    [ObservableProperty]
     private string _connectionType = "unknow";
+    public string ConnectionType
+    {
+        get => _connectionType;
+        set => SetProperty(ref _connectionType, value);
+    }
 
     private static bool loaded = false;
 
@@ -343,8 +375,12 @@ public partial class tcpTest : Page, INotifyPropertyChanged
         );
     }
 
-    [ObservableProperty]
     private bool _connecting = false;
+    public bool Connecting
+    {
+        get => _connecting;
+        set => SetProperty(ref _connecting, value);
+    }
 
     private async void ConnectWebSocket(string ctype, string stype = null)
     {

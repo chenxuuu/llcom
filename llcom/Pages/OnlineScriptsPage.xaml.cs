@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,7 +16,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using CommunityToolkit.Mvvm.ComponentModel;
 using llcom.Model;
 
 namespace llcom.Pages;
@@ -23,31 +23,59 @@ namespace llcom.Pages;
 /// <summary>
 /// OnlineScriptsPage.xaml 的交互逻辑
 /// </summary>
-[INotifyPropertyChanged]
-// 生成器调用此重载（WPF Page 自带的是 DependencyPropertyChangedEventArgs 重载，需手动补充）
 public partial class OnlineScriptsPage : Page, INotifyPropertyChanged
 {
-    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-    protected void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e) =>
-        PropertyChanged?.Invoke(this, e);
+    /// <summary>
+    /// 设置属性值，值变化时触发 PropertyChanged（XAML 生成的 g.cs 基类固定为 Page，
+    /// 无法继承 ObservableObject/ObservablePage，故类内自带此帮助方法）
+    /// </summary>
+    protected bool SetProperty<T>(
+        ref T field,
+        T value,
+        [CallerMemberName] string propertyName = null
+    )
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value))
+            return false;
+        field = value;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        return true;
+    }
 
     public OnlineScriptsPage()
     {
         InitializeComponent();
     }
 
-    [ObservableProperty]
     private int _progress = 0;
+    public int Progress
+    {
+        get => _progress;
+        set => SetProperty(ref _progress, value);
+    }
 
-    [ObservableProperty]
     private bool _isIndeterminate = true;
+    public bool IsIndeterminate
+    {
+        get => _isIndeterminate;
+        set => SetProperty(ref _isIndeterminate, value);
+    }
 
-    [ObservableProperty]
     private string _loadingMsg = "";
+    public string LoadingMsg
+    {
+        get => _loadingMsg;
+        set => SetProperty(ref _loadingMsg, value);
+    }
 
-    [ObservableProperty]
     private bool _isLoding = true;
+    public bool IsLoding
+    {
+        get => _isLoding;
+        set => SetProperty(ref _isLoding, value);
+    }
 
     /// <summary>
     /// 加载中。。。
@@ -132,11 +160,19 @@ public partial class OnlineScriptsPage : Page, INotifyPropertyChanged
     /// <summary>
     /// 是否在看脚本列表页？
     /// </summary>
-    [ObservableProperty]
     private bool _isInList = true;
+    public bool IsInList
+    {
+        get => _isInList;
+        set => SetProperty(ref _isInList, value);
+    }
 
-    [ObservableProperty]
     private OnlineScript _scriptNow = new OnlineScript();
+    public OnlineScript ScriptNow
+    {
+        get => _scriptNow;
+        set => SetProperty(ref _scriptNow, value);
+    }
 
     //打开了某个脚本的详情页
     private void Button_Click(object sender, RoutedEventArgs e)
