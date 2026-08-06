@@ -82,6 +82,7 @@
             <ItemsControl
                 Name="MainList"
                 Background="Transparent"
+                ItemsSource="{Binding Items}"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                 VirtualizingStackPanel.CacheLength="2,2"
@@ -134,41 +135,41 @@
                 Name="RTSCheckBox"
                 Margin="5,0,0,0"
                 Content="RTS"
-                IsChecked="{Binding Rts}" />
+                IsChecked="{Binding Rts, Mode=TwoWay}" />
             <CheckBox
                 Name="DTRCheckBox"
                 Margin="5,0,0,0"
                 Content="DTR"
-                IsChecked="{Binding Dtr}" />
+                IsChecked="{Binding Dtr, Mode=TwoWay}" />
             <CheckBox
                 Name="HEXBox"
                 Margin="5,0,0,0"
                 Content="{DynamicResource ShowHexFormat}"
-                IsChecked="{Binding showHexFormat, Converter={StaticResource showHexFormatConverter}}"
+                IsChecked="{Binding Setting.showHexFormat, Converter={StaticResource showHexFormatConverter}}"
                 IsThreeState="True"
                 ToolTip="{DynamicResource ShowHexFormatTip}" />
             <CheckBox
                 Name="HexSendCheckBox"
                 Margin="5,0,0,0"
                 Content="{DynamicResource HexSendMode}"
-                IsChecked="{Binding hexSend}" />
+                IsChecked="{Binding Setting.hexSend}" />
             <CheckBox
                 Name="ExtraEnterCheckBox"
                 Margin="5,0,0,0"
                 Content="{DynamicResource AddExtraEnter}"
-                IsChecked="{Binding extraEnter}"
+                IsChecked="{Binding Setting.extraEnter}"
                 ToolTip="{DynamicResource AddExtraEnterTip}" />
             <CheckBox
                 Name="EnableSymbolCheckBox"
                 Margin="5,0,0,0"
                 Content="{DynamicResource ShowSymbol}"
-                IsChecked="{Binding EnableSymbol}"
+                IsChecked="{Binding Setting.EnableSymbol}"
                 ToolTip="{DynamicResource ShowSymbolTooltip}" />
             <CheckBox
                 Name="DisableLogCheckBox"
                 Margin="5,0,0,0"
                 Content="{DynamicResource DisableLog}"
-                IsChecked="{Binding DisableLog}" />
+                IsChecked="{Binding Setting.DisableLog}" />
         </StackPanel>
         <Button
             Name="LockLogButton"

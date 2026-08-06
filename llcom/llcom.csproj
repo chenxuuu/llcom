@@ -262,6 +262,7 @@
     </ApplicationDefinition>
     <Compile Include="LuaEnv\LuaEnv.cs" />
     <Compile Include="Model\LinePlotPoint.cs" />
+    <Compile Include="Model\DataShowItem.cs" />
     <Compile Include="Model\LuaFolding.cs" />
     <Compile Include="Model\OnlineScript.cs" />
     <Compile Include="Pages\Convert.cs" />
@@ -333,6 +334,7 @@
     <Compile Include="Tools\Global.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\QuickSendViewModel.cs" />
+    <Compile Include="ViewModels\DataShowViewModel.cs" />
     <Compile Include="ViewModels\LuaEditorViewModel.cs" />
     <Compile Include="Tools\Logger.cs" />
     <Page Include="languages\en-US.xaml">
