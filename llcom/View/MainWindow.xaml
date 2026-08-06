@@ -22,7 +22,6 @@
         <Style BasedOn="{StaticResource {x:Type Window}}" TargetType="Window" />
     </Window.Style>
     <Window.Resources>
-        <RoutedUICommand x:Key="SendUartData" Text="SendUartData" />
         <local_page:boolVisibe x:Key="boolVisibeConverter" />
         <local_page:boolNotVisibe x:Key="boolNotVisibeConverter" />
         <local_page:rsTooltip x:Key="rsToolTipConverter" />
@@ -32,12 +31,9 @@
     <Window.InputBindings>
         <KeyBinding
             Key="Return"
-            Command="{StaticResource SendUartData}"
+            Command="{Binding SendCommand}"
             Gesture="Ctrl+Return" />
     </Window.InputBindings>
-    <Window.CommandBindings>
-        <CommandBinding Command="{StaticResource SendUartData}" Executed="SendUartData_Executed" />
-    </Window.CommandBindings>
     <Grid Name="MainGrid" IsEnabled="False">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -82,9 +78,9 @@
                 Grid.RowSpan="2"
                 Grid.Column="3"
                 Margin="2"
-                Click="OpenClosePortButton_Click">
+                Command="{Binding OpenClosePortCommand}">
                 <WrapPanel>
-                    <TextBlock Name="openClosePortTextBlock" Text="{DynamicResource OpenPort_open}" />
+                    <TextBlock Text="{Binding OpenCloseButtonText}" />
                     <TextBlock Text="{DynamicResource OpenPort_port}" />
                 </WrapPanel>
             </Button>
@@ -111,7 +107,7 @@
                 VerticalContentAlignment="Top"
                 AcceptsReturn="True"
                 FontFamily="Consolas"
-                Text="{Binding dataToSend}"
+                Text="{Binding SendText, UpdateSourceTrigger=PropertyChanged}"
                 TextWrapping="Wrap"
                 VerticalScrollBarVisibility="Auto" />
             <Button
@@ -119,7 +115,7 @@
                 Grid.RowSpan="2"
                 Grid.Column="6"
                 Margin="2"
-                Command="{StaticResource SendUartData}"
+                Command="{Binding SendCommand}"
                 Content="{DynamicResource SendDataButton}"
                 ToolTip="{DynamicResource SendDataButtonTip}" />
         </Grid>
@@ -159,7 +155,7 @@
                 <Button
                     Name="refreshPortButton"
                     Grid.Column="0"
-                    Click="RefreshPortButton_Click"
+                    Command="{Binding RefreshPortsCommand}"
                     Content="{DynamicResource RefreshPortButton}"
                     IsEnabled="{Binding ElementName=serialPortsListComboBox, Path=IsEnabled}" />
                 <StatusBarItem Grid.Column="1">
@@ -170,7 +166,11 @@
                     <ComboBox
                         Name="serialPortsListComboBox"
                         MinWidth="150"
-                        MaxWidth="300" />
+                        MaxWidth="300"
+                        DisplayMemberPath="DisplayName"
+                        IsEnabled="{Binding IsPortComboEnabled}"
+                        ItemsSource="{Binding Ports}"
+                        SelectedItem="{Binding SelectedPort}" />
                 </StatusBarItem>
                 <Separator Grid.Column="4" />
                 <StatusBarItem Grid.Column="5">
@@ -181,37 +181,9 @@
                     <ComboBox
                         Name="baudRateComboBox"
                         Width="80"
-                        DropDownClosed="BaudRateComboBox_Changed"
-                        DropDownOpened="BaudRateComboBox_Changed">
-                        <ComboBoxItem Content="110" />
-                        <ComboBoxItem Content="330" />
-                        <ComboBoxItem Content="600" />
-                        <ComboBoxItem Content="1200" />
-                        <ComboBoxItem Content="2400" />
-                        <ComboBoxItem Content="4800" />
-                        <ComboBoxItem Content="9600" />
-                        <ComboBoxItem Content="14400" />
-                        <ComboBoxItem Content="19200" />
-                        <ComboBoxItem Content="38400" />
-                        <ComboBoxItem Content="56000" />
-                        <ComboBoxItem Content="57600" />
-                        <ComboBoxItem Content="115200" />
-                        <ComboBoxItem Content="128000" />
-                        <ComboBoxItem Content="230400" />
-                        <ComboBoxItem Content="256000" />
-                        <ComboBoxItem Content="460800" />
-                        <ComboBoxItem Content="500000" />
-                        <ComboBoxItem Content="128000" />
-                        <ComboBoxItem Content="512000" />
-                        <ComboBoxItem Content="600000" />
-                        <ComboBoxItem Content="750000" />
-                        <ComboBoxItem Content="921600" />
-                        <ComboBoxItem Content="1000000" />
-                        <ComboBoxItem Content="1500000" />
-                        <ComboBoxItem Content="2000000" />
-                        <ComboBoxItem Content="3000000" />
-                        <ComboBoxItem Content="{DynamicResource OtherRate}" />
-                    </ComboBox>
+                        DisplayMemberPath="Display"
+                        ItemsSource="{Binding BaudRates}"
+                        SelectedItem="{Binding SelectedBaudRate}" />
                 </StatusBarItem>
                 <Separator Grid.Column="8" />
                 <StatusBarItem Grid.Column="9">
@@ -219,7 +191,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="10" />
                 <StatusBarItem Grid.Column="11">
-                    <TextBlock Name="statusTextBlock" Text="{DynamicResource OpenPort_close}" />
+                    <TextBlock Name="statusTextBlock" Text="{Binding StatusText}" />
                 </StatusBarItem>
                 <Separator Grid.Column="12" />
                 <StatusBarItem Grid.Column="13">

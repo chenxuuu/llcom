@@ -37,6 +37,7 @@ using ICSharpCode.AvalonEdit;
 using System.Runtime.InteropServices;
 using System.Windows.Controls.Primitives;
 using llcom.LuaEnv;
+using llcom.ViewModels;
 using System.Web.UI.WebControls.WebParts;
 using Color = System.Windows.Media.Color;
 
@@ -47,10 +48,15 @@ namespace llcom
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>串口控制区 ViewModel（Step 5 MVVM 化）</summary>
+        private readonly MainViewModel _vm;
+
         public MainWindow()
         {
             InitializeComponent();
             Tools.Global.LoadSetting();
+            _vm = new MainViewModel();
+            DataContext = _vm;
             if (Tools.Global.setting.windowHeight != 0 &&
                 Tools.Global.setting.windowWidth != 0 &&
                 Tools.Global.setting.windowLeft >= SystemParameters.VirtualScreenLeft &&
@@ -65,9 +71,7 @@ namespace llcom
             }
         }
         ObservableCollection<ToSendData> toSendListItems = new ObservableCollection<ToSendData>();
-        private bool forcusClosePort = true;
         private bool canSaveSendList = true;
-        private bool isOpeningPort = false;
         public static string recvScriptBackup = "";
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -94,27 +98,13 @@ namespace llcom
                     //收发数据显示页面
                     dataShowFrame.Navigate(new Uri("Pages/DataShowPage.xaml", UriKind.Relative));
 
-                    //加载初始波特率
-                    var br = Tools.Global.setting.baudRate.ToString();
-                    if(baudRateComboBox.Items.Contains(br))
-                        baudRateComboBox.Text = Tools.Global.setting.baudRate.ToString();
-                    else
-                    {
-                        lastBaudRateSelectedIndex = baudRateComboBox.Items.Count - 1;//防止弹窗提示
-                        baudRateComboBox.Items[baudRateComboBox.Items.Count - 1] = br;
-                        baudRateComboBox.Text = br;
-                    }
-
                     // 绑定事件监听,用于监听HID设备插拔
                     (PresentationSource.FromVisual(this) as HwndSource)?.AddHook(WndProc);
                     //刷新设备列表
-                    refreshPortList();
+                    _vm.RefreshPorts();
 
                     //绑定数据
-                    this.toSendDataTextBox.DataContext = Tools.Global.setting;
                     toSendList.ItemsSource = toSendListItems;
-                    this.sentCountTextBlock.DataContext = Tools.Global.setting;
-                    this.receivedCountTextBlock.DataContext = Tools.Global.setting;
                     QuiclListName0.DataContext = Tools.Global.setting;
                     QuiclListName1.DataContext = Tools.Global.setting;
                     QuiclListName2.DataContext = Tools.Global.setting;
@@ -341,143 +331,7 @@ namespace llcom
             Tools.Logger.ShowData(sender as byte[], false);
         }
 
-        private bool refreshLock = false;
-        private bool skipSearch = false;
-        private int searchCount = 0;
-        /// <summary>
-        /// 刷新设备列表
-        /// </summary>
-        private void refreshPortList(string lastPort = null)
-        {
-            if (refreshLock)
-                return;
-            refreshLock = true;
-            serialPortsListComboBox.Items.Clear();
-            List<string> strs = new List<string>();
-            searchCount = 0;
-            Task.Run(() =>
-            {
-                while (!skipSearch)
-                //while (true)
-                {
-                    try
-                    {
-                        ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PnPEntity");
-                        Regex regExp = new Regex("\\(COM\\d+\\)");
-                        foreach (ManagementObject queryObj in searcher.Get())
-                        {
-                            if ((queryObj["Caption"] != null) && regExp.IsMatch(queryObj["Caption"].ToString()))
-                            {
-                                strs.Add(queryObj["Caption"].ToString());
-                            }
-                        }
-                        break;
-                    }
-                    catch(Exception ex) 
-                    {
-                        if (++searchCount >= 3) { 
-                            skipSearch = true;
-                            Tools.MessageBox.Show(ex.Message);
-                        }
-                        else Task.Delay(500).Wait();
-                    }
-                    //MessageBox.Show("fail了");
-                }
 
-                // WMI 枚举可能有延迟/缓存（设备刚拔掉时仍返回旧数据），
-                // 以注册表权威端口列表 SerialPort.GetPortNames() 为准，过滤掉已拔掉的设备
-                try
-                {
-                    var currentPorts = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                    foreach (var p in SerialPort.GetPortNames())
-                    {
-                        //有些人遇到了微软库的bug，所以需要手动从0x00截断
-                        currentPorts.Add(p.IndexOf("\0") > 0 ? p.Substring(0, p.IndexOf("\0")) : p);
-                    }
-                    strs.RemoveAll(s =>
-                    {
-                        var m = Regex.Match(s, @"\(COM\d+\)");
-                        return m.Success && !currentPorts.Contains(m.Value.Trim('(', ')'));
-                    });
-                }
-                catch { }
-
-                try
-                {
-                    foreach (string p in SerialPort.GetPortNames())//加上缺少的com口
-                    {
-                        //有些人遇到了微软库的bug，所以需要手动从0x00截断
-                        var pp = p;
-                        if (p.IndexOf("\0") > 0)
-                            pp = p.Substring(0, p.IndexOf("\0"));
-                        bool notMatch = true;
-                        foreach (string n in strs)
-                        {
-                            if (n.Contains($"({pp})"))//如果和选中项目匹配
-                            {
-                                notMatch = false;
-                                break;
-                            }
-                        }
-                        if (notMatch)
-                            strs.Add($"Serial Port {pp} ({pp})");//如果列表中没有，就自己加上
-                    }
-                }
-                catch{ }
-                finally { /*Tools.MessageBox.Show(String.Join("\n",SerialPort.GetPortNames()));*/ }
-
-
-                this.Dispatcher.Invoke(new Action(delegate {
-                    foreach (string i in strs)
-                        serialPortsListComboBox.Items.Add(i);
-                    if (strs.Count >= 1)
-                    {
-                        openClosePortButton.IsEnabled = true;
-                        serialPortsListComboBox.SelectedIndex = 0;
-                    }
-                    else
-                    {
-                        openClosePortButton.IsEnabled = false;
-                    }
-                    refreshLock = false;
-
-                    if (string.IsNullOrEmpty(lastPort))
-                        lastPort = Tools.Global.uart.GetName();
-                    //选定上次的com口
-                    foreach (string c in serialPortsListComboBox.Items)
-                    {
-                        if (c.Contains($"({lastPort})"))
-                        {
-                            serialPortsListComboBox.Text = c;
-                            //自动重连，不管结果
-                            if (!forcusClosePort && Tools.Global.setting.autoReconnect && !isOpeningPort)
-                            {
-                                Task.Run(() =>
-                                {
-                                    isOpeningPort = true;
-                                    try
-                                    {
-                                        Tools.Global.uart.Open();
-                                        Dispatcher.Invoke(new Action(delegate
-                                        {
-                                            openClosePortTextBlock.Text = (TryFindResource("OpenPort_close") as string ?? "?!");
-                                            serialPortsListComboBox.IsEnabled = false;
-                                            statusTextBlock.Text = (TryFindResource("OpenPort_open") as string ?? "?!");
-                                        }));
-                                    }
-                                    catch
-                                    {
-                                        //MessageBox.Show("串口打开失败！");
-                                    }
-                                    isOpeningPort = false;
-                                });
-                            }
-                            break;
-                        }
-                    }
-                }));
-            });
-        }
 
         private void RefreshScriptList()
         {
@@ -519,7 +373,7 @@ namespace llcom
                         UsbPluginDeley = 0;
                         Dispatcher.Invoke(() =>
                         {
-                            UsbDeviceNotifier_OnDeviceNotify();
+                            _vm.OnUsbDeviceChanged();
                         });
                         Logger.AddUartLogInfo($"[USB拔插事件] {DateTime.Now:HH:mm:ss.fff}");
                     });
@@ -529,28 +383,7 @@ namespace llcom
             }
             return IntPtr.Zero;
         }
-        private void UsbDeviceNotifier_OnDeviceNotify()
-        {
-            if (Tools.Global.uart.IsOpen())
-            {
-                refreshPortList();
-                foreach (string c in serialPortsListComboBox.Items)
-                {
-                    if (c.Contains($"({Tools.Global.uart.GetName()})"))
-                    {
-                        serialPortsListComboBox.Text = c;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                openClosePortTextBlock.Text = (TryFindResource("OpenPort_open") as string ?? "?!");
-                serialPortsListComboBox.IsEnabled = true;
-                statusTextBlock.Text = (TryFindResource("OpenPort_close") as string ?? "?!");
-                refreshPortList();
-            }
-        }
+
 
         /// <summary>
         /// 响应其他代码传来的窗口置顶事件
@@ -618,212 +451,19 @@ namespace llcom
             RefreshScriptList();
         }
 
-        private byte[] toSendData = null;//待发送的数据
-        private void openPort()
-        {
-            Tools.Logger.AddUartLogDebug($"[openPort]{isOpeningPort},{serialPortsListComboBox.SelectedItem}");
-            if (isOpeningPort)
-                return;
-            if (serialPortsListComboBox.SelectedItem != null)
-            {
-                string[] ports;//获取所有串口列表
-                try
-                {
-                    Tools.Logger.AddUartLogDebug($"[openPort]GetPortNames");
-                    ports = SerialPort.GetPortNames();
-                    Tools.Logger.AddUartLogDebug($"[openPort]GetPortNames{ports.Length}");
-                }
-                catch(Exception e)
-                {
-                    ports = new string[0];
-                    Tools.Logger.AddUartLogDebug($"[openPort]GetPortNames Exception:{e.Message}");
-                }
-                string port = "";//最终串口名
-                foreach (string p in ports)//循环查找符合名称串口
-                {
-                    //有些人遇到了微软库的bug，所以需要手动从0x00截断
-                    var pp = p;
-                    if (p.IndexOf("\0") > 0)
-                        pp = p.Substring(0, p.IndexOf("\0"));
-                    if ((serialPortsListComboBox.SelectedItem as string).Contains($"({pp})"))//如果和选中项目匹配
-                    {
-                        port = pp;
-                        break;
-                    }
-                }
-                Tools.Logger.AddUartLogDebug($"[openPort]PortName:{port},isOpeningPort:{isOpeningPort}");
-                if (port != "")
-                {
-                    Task.Run(() =>
-                    {
-                        isOpeningPort = true;
-                        try
-                        {
-                            forcusClosePort = false;//不再强制关闭串口
-                            Tools.Logger.AddUartLogDebug($"[openPort]SetName");
-                            Tools.Global.uart.SetName(port);
-                            Tools.Logger.AddUartLogDebug($"[openPort]open");
-                            Tools.Global.uart.Open();
-                            Tools.Logger.AddUartLogDebug($"[openPort]change show");
-                            this.Dispatcher.Invoke(new Action(delegate
-                            {
-                                openClosePortTextBlock.Text = (TryFindResource("OpenPort_close") as string ?? "?!");
-                                serialPortsListComboBox.IsEnabled = false;
-                                statusTextBlock.Text = (TryFindResource("OpenPort_open") as string ?? "?!");
-                            }));
-                            Tools.Logger.AddUartLogDebug($"[openPort]check to send");
-                            if (toSendData != null)
-                            {
-                                sendUartData(toSendData);
-                                toSendData = null;
-                            }
-                            Tools.Logger.AddUartLogDebug($"[openPort]done");
-                        }
-                        catch(Exception e)
-                        {
-                            Tools.Logger.AddUartLogDebug($"[openPort]open error:{e.Message}");
-                            //串口打开失败！
-                            Tools.MessageBox.Show(TryFindResource("ErrorOpenPort") as string ?? "?!");
-                        }
-                        isOpeningPort = false;
-                        Tools.Logger.AddUartLogDebug($"[openPort]all done");
-                    });
 
-                }
-            }
-        }
-        private void OpenClosePortButton_Click(object sender, RoutedEventArgs e)
-        {
-            Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]now:{Tools.Global.uart.IsOpen()}");
-            if (!Tools.Global.uart.IsOpen())//打开串口逻辑
-            {
-                openPort();
-            }
-            else//关闭串口逻辑
-            {
-                string lastPort = null;//记录一下上次的串口号
-                try
-                {
-                    Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]close");
-                    forcusClosePort = true;//不再重新开启串口
-                    lastPort = Tools.Global.uart.GetName();//串口号
-                    Tools.Global.uart.Close();
-                    Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]close done");
-                }
-                catch
-                {
-                    //串口关闭失败！
-                    Tools.MessageBox.Show(TryFindResource("ErrorClosePort") as string ?? "?!");
-                }
-                Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]change show");
-                openClosePortTextBlock.Text = (TryFindResource("OpenPort_open") as string ?? "?!");
-                serialPortsListComboBox.IsEnabled = true;
-                statusTextBlock.Text = (TryFindResource("OpenPort_close") as string ?? "?!");
-                Tools.Logger.AddUartLogDebug($"[OpenClosePortButton]change show done");
-                refreshPortList(lastPort);
-            }
 
-        }
 
         private void ClearLogButton_Click(object sender, RoutedEventArgs e)
         {
             Tools.Logger.ClearData();
         }
 
-        private int lastBaudRateSelectedIndex = -1;
-        private void BaudRateComboBox_Changed(object sender, EventArgs e)
-        {
-            //选的没变
-            if(lastBaudRateSelectedIndex == baudRateComboBox.SelectedIndex)
-                return;
 
-            if (baudRateComboBox.SelectedItem != null)
-            {
-                lastBaudRateSelectedIndex = baudRateComboBox.SelectedIndex;
-                if (baudRateComboBox.SelectedIndex == baudRateComboBox.Items.Count - 1)
-                {
-                    int br = 0;
-                    Tuple<bool, string> ret = Tools.InputDialog.OpenDialog(TryFindResource("ShowBaudRate") as string ?? "?!",
-                        "115200", TryFindResource("OtherRate") as string ?? "?!");
-                    if (!ret.Item1 || !int.TryParse(ret.Item2,out br))//啥都没选
-                    {
-                        Tools.MessageBox.Show(TryFindResource("OtherRateFail") as string ?? "?!");
-                    }
-                    Tools.Global.setting.baudRate = br;
-                    Task.Run(() =>
-                    {
-                        this.Dispatcher.Invoke(new Action(delegate {
-                            var text = Tools.Global.setting.baudRate.ToString();
-                            baudRateComboBox.Items[baudRateComboBox.Items.Count - 1] = text;
-                            baudRateComboBox.Text = text;
-                        }));
-                    });
-                }
-                else
-                {
-                    Tools.Global.setting.baudRate =
-                        int.Parse((baudRateComboBox.SelectedItem as ComboBoxItem).Content.ToString());
-                    baudRateComboBox.Items[baudRateComboBox.Items.Count - 1] = TryFindResource("OtherRate") as string ?? "?!";
-                }
-            }
-        }
 
-        /// <summary>
-        /// 发串口数据
-        /// </summary>
-        /// <param name="data"></param>
-        private void sendUartData(byte[] data, bool? is_hex = null)
-        {
-            if (!Tools.Global.uart.IsOpen())
-            {
-                openPort();
-                toSendData = (byte[])data.Clone();//带发送数据缓存起来，连上串口后发出去
-            }
 
-            if (Tools.Global.uart.IsOpen())
-            {
-                byte[] dataConvert;
-                try
-                {
-                    dataConvert = LuaEnv.LuaLoader.Run(
-                        $"{Tools.Global.setting.sendScript}.lua",
-                        new System.Collections.ArrayList 
-                        { 
-                            "uartData",
-                            is_hex == null ? 
-                            (Tools.Global.setting.hexSend ? Tools.Global.Hex2Byte(Tools.Global.Byte2String(data)) : data) : data
-                        });
-                }
-                catch (Exception ex)
-                {
-                    Tools.MessageBox.Show($"{TryFindResource("ErrorScript") as string ?? "?!"}\r\n" + ex.ToString());
-                    return;
-                }
-                try
-                {
-                    if (Tools.Global.setting.extraEnter)
-                    {
-                        var temp = dataConvert.ToList();
-                        temp.Add(0x0d);
-                        temp.Add(0x0a);
-                        dataConvert = temp.ToArray();
-                    }
-                    Tools.Global.uart.SendData(dataConvert, data);
-                }
-                catch(Exception ex)
-                {
-                    Tools.MessageBox.Show($"{TryFindResource("ErrorSendFail") as string ?? "?!"}\r\n"+ ex.ToString());
-                    return;
-                }
-            }
-        }
 
-        private void SendUartData_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            Global.setting.recvScript = recvScriptBackup;
-            var data = Global.GetEncoding().GetBytes(toSendDataTextBox.Text);
-            sendUartData(data);
-        }
+
 
         private void AddSendListButton_Click(object sender, RoutedEventArgs e)
         {
@@ -867,7 +507,7 @@ namespace llcom
             }
 
             var sendData = data.hex ? Global.Hex2Byte(data.text) : Global.GetEncoding().GetBytes(data.text);
-            sendUartData(sendData, true);
+            _vm.SendUartData(sendData, true);
         }
 
         private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -1239,10 +879,7 @@ namespace llcom
             System.Diagnostics.Process.Start("https://github.com/chenxuuu/llcom/blob/master/scripts");
         }
 
-        private void RefreshPortButton_Click(object sender, RoutedEventArgs e)
-        {
-            refreshPortList();
-        }
+
 
         private void ImportSSCOMButton_Click(object sender, RoutedEventArgs e)
         {
@@ -1269,15 +906,9 @@ namespace llcom
             }
         }
 
-        private void sentCountTextBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Tools.Global.setting.SentCount = 0;
-        }
 
-        private void receivedCountTextBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Tools.Global.setting.ReceivedCount = 0;
-        }
+
+
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -1376,6 +1007,16 @@ namespace llcom
                     Tools.MessageBox.Show(err.Message);
                 }
             }
+        }
+
+        private void sentCountTextBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Tools.Global.setting.SentCount = 0;
+        }
+
+        private void receivedCountTextBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Tools.Global.setting.ReceivedCount = 0;
         }
 
         private void QuickListNameStackPanel_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
