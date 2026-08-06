@@ -5,7 +5,7 @@ namespace llcom.Model
     /// <summary>
     /// MQTT 测试页相关设置（Settings 分部类）。
     /// </summary>
-    internal partial class Settings
+    partial class Settings
     {
         private string _mqttServer = "broker.emqx.io";
         private int _mqttPort = 1883;

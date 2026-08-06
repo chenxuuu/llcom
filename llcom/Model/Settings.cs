@@ -19,7 +19,7 @@ namespace llcom.Model
     ///   Settings.QuickSend.cs —— 快捷发送列表
     ///   Settings.Display.cs —— 显示/编码参数
     /// </summary>
-    internal partial class Settings : ObservableObject
+    public partial class Settings : ObservableObject
     {
         public event EventHandler MainWindowTop;
 

@@ -5,7 +5,7 @@ namespace llcom.Model
     /// <summary>
     /// 显示与编码相关设置（Settings 分部类）。
     /// </summary>
-    internal partial class Settings
+    partial class Settings
     {
         private bool _bitDelay = true;
         public bool bitDelay

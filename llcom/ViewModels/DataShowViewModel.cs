@@ -18,7 +18,7 @@ namespace llcom.ViewModels
     public partial class DataShowViewModel : ObservableObject
     {
         /// <summary>全局设置（供 XAML 绑定各显示开关）</summary>
-        internal Model.Settings Setting { get; }
+        public Model.Settings Setting { get; }
 
         /// <summary>分包模式显示条目（绑定 MainList）</summary>
         public ObservableCollection<Model.DataShowItem> Items { get; } = new ObservableCollection<Model.DataShowItem>();
@@ -52,7 +52,7 @@ namespace llcom.ViewModels
         /// <summary>分包模式新增条目后触发（View 据此滚动到底部）</summary>
         public event Action ScrollRequested;
 
-        internal DataShowViewModel(Model.Settings setting)
+        public DataShowViewModel(Model.Settings setting)
         {
             Setting = setting;
             Tools.Logger.DataShowTask += Logger_DataShowTask;

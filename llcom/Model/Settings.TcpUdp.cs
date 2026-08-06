@@ -3,7 +3,7 @@ namespace llcom.Model
     /// <summary>
     /// TCP / UDP 客户端与本地服务器相关设置（Settings 分部类）。
     /// </summary>
-    internal partial class Settings
+    partial class Settings
     {
         private string _tcpClientServer = "qq.com";
         private int _tcpClientPort = 80;

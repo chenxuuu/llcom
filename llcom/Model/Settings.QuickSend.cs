@@ -7,7 +7,7 @@ namespace llcom.Model
     /// 快捷发送区相关设置（Settings 分部类）。
     /// 共 10 页（quickSendList），每页可重命名（quickListName0~9），当前页由 quickSendSelect 决定。
     /// </summary>
-    internal partial class Settings
+    partial class Settings
     {
         public List<List<ToSendData>> quickSendList = new List<List<ToSendData>>();
         private int _quickSendSelect = -1;

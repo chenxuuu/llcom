@@ -9,7 +9,7 @@ namespace llcom.Model
     /// 属性 setter 中涉及串口参数（波特率/校验位/数据位/停止位）的会同步应用到
     /// Global.uart.serial，与重构前行为一致。
     /// </summary>
-    internal partial class Settings
+    partial class Settings
     {
         private string _dataToSend = "uart data";
         public string dataToSend
