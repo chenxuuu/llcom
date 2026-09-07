@@ -100,8 +100,8 @@ namespace llcom
                     else
                     {
                         lastBaudRateSelectedIndex = baudRateComboBox.Items.Count - 1;//防止弹窗提示
-                        baudRateComboBox.Items[baudRateComboBox.Items.Count - 1] = br;
-                        baudRateComboBox.Text = br;
+                        SetBaudRateCustomItemText(br);
+                        baudRateComboBox.Text = GetBaudRateCustomLabel(br);
                     }
 
                     // 绑定事件监听,用于监听HID设备插拔
@@ -712,11 +712,31 @@ namespace llcom
         }
 
         private int lastBaudRateSelectedIndex = -1;
+        private bool baudRateCustomItemClicked = false;
+        private void BaudRateCustomItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            baudRateCustomItemClicked = true;
+        }
+        private string GetBaudRateCustomLabel(string value)
+        {
+            var baseLabel = TryFindResource("OtherRate") as string ?? "?!";
+            return string.IsNullOrEmpty(value) ? baseLabel : baseLabel + ":" + value;
+        }
+        private void SetBaudRateCustomItemText(string value)
+        {
+            string label = GetBaudRateCustomLabel(value);
+            int last = baudRateComboBox.Items.Count - 1;
+            var item = baudRateComboBox.Items[last] as ComboBoxItem;
+            if (item != null) item.Content = label;
+            else baudRateComboBox.Items[last] = label;
+        }
         private void BaudRateComboBox_Changed(object sender, EventArgs e)
         {
             //选的没变
-            if(lastBaudRateSelectedIndex == baudRateComboBox.SelectedIndex)
+            if(lastBaudRateSelectedIndex == baudRateComboBox.SelectedIndex && !baudRateCustomItemClicked)
                 return;
+
+            baudRateCustomItemClicked = false;
 
             if (baudRateComboBox.SelectedItem != null)
             {
@@ -735,8 +755,8 @@ namespace llcom
                     {
                         this.Dispatcher.Invoke(new Action(delegate {
                             var text = Tools.Global.setting.baudRate.ToString();
-                            baudRateComboBox.Items[baudRateComboBox.Items.Count - 1] = text;
-                            baudRateComboBox.Text = text;
+                            SetBaudRateCustomItemText(text);
+                            baudRateComboBox.Text = GetBaudRateCustomLabel(text);
                         }));
                     });
                 }
@@ -744,7 +764,7 @@ namespace llcom
                 {
                     Tools.Global.setting.baudRate =
                         int.Parse((baudRateComboBox.SelectedItem as ComboBoxItem).Content.ToString());
-                    baudRateComboBox.Items[baudRateComboBox.Items.Count - 1] = TryFindResource("OtherRate") as string ?? "?!";
+                    SetBaudRateCustomItemText("");
                 }
             }
         }
