@@ -333,3 +333,9 @@ ASALocalRun/
 serial_monitor_rs/target/
 serial_monitor_rs/Cargo.lock
 **/*.rs.bk
+
+# CodeBuddy
+.codebuddy/
+
+# Solution filter files
+*.slnx

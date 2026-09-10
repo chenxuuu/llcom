@@ -1,0 +1,80 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
+             x:Class="llcom.Avalonia.Views.MqttPageView"
+             x:DataType="vm:MqttViewModel">
+    <Grid RowDefinitions="Auto,*">
+        <TabControl Grid.Row="0">
+            <TabItem Header="{DynamicResource MQTTHeardr1}">
+                <Grid RowDefinitions="Auto,Auto,*,*,Auto" Margin="4">
+                    <!-- Subscribe -->
+                    <Grid ColumnDefinitions="*,Auto,Auto,Auto">
+                        <TextBox Text="{Binding SubscribeTopic}" Watermark="{DynamicResource MqttTopic}"/>
+                        <Button Grid.Column="1" Content="{DynamicResource MQTTSubcribe}"
+                                Command="{Binding SubscribeCommand}"/>
+                        <TextBlock Grid.Column="2" Text="{DynamicResource MqttQos}" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Column="3" ItemsSource="{Binding QosOptions}"
+                                  SelectedIndex="{Binding SubscribeQos}" Width="60"/>
+                    </Grid>
+                    <TextBlock Grid.Row="1" Text="{DynamicResource MqttSubscribed}" FontWeight="Bold"/>
+                    <ListBox Grid.Row="2" ItemsSource="{Binding SubscribedTopics}"
+                             Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"/>
+                    <!-- Publish area -->
+                    <ScrollViewer Grid.Row="3">
+                        <TextBox Text="{Binding PublishPayload}"
+                                 AcceptsReturn="True" TextWrapping="Wrap" FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace"/>
+                    </ScrollViewer>
+                    <Grid Grid.Row="4" ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+                        <TextBox Text="{Binding PublishTopic}" Watermark="{DynamicResource MqttTopic}"/>
+                        <Button Grid.Column="1" Content="{DynamicResource MQTTPublish}"
+                                Command="{Binding PublishCommand}"/>
+                        <TextBlock Grid.Column="2" Text="{DynamicResource MqttQos}" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Column="3" ItemsSource="{Binding QosOptions}"
+                                  SelectedIndex="{Binding PublishQos}" Width="60"/>
+                        <CheckBox Grid.Column="4" Content="{DynamicResource HexSendMode}" IsChecked="{Binding HexMode}"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{DynamicResource MQTTHeardr2}">
+                <ScrollViewer>
+                    <StackPanel Spacing="4" Margin="4">
+                        <Button Content="{Binding IsConnected, StringFormat='{}{0} - Click to toggle'}"
+                                Command="{Binding ToggleConnectCommand}"/>
+                        <TextBlock Text="{DynamicResource MQTTServer}"/>
+                        <TextBox Text="{Binding Server}"/>
+                        <TextBlock Text="{DynamicResource MQTTPort}"/>
+                        <TextBox Text="{Binding Port}"/>
+                        <TextBlock Text="{DynamicResource MQTTClientID}"/>
+                        <TextBox Text="{Binding ClientId}"/>
+                        <CheckBox Content="{DynamicResource MQTTWS}" IsChecked="{Binding UseWebSocket}"/>
+                        <TextBlock Text="{DynamicResource MQTTWsPath}" IsVisible="{Binding UseWebSocket}"/>
+                        <TextBox Text="{Binding WsPath}" IsVisible="{Binding UseWebSocket}"/>
+                        <TextBlock Text="{DynamicResource MQTTUser}"/>
+                        <TextBox Text="{Binding UserName}"/>
+                        <TextBlock Text="{DynamicResource MQTTPassword}"/>
+                        <TextBox Text="{Binding Password}" PasswordChar="*"/>
+                        <TextBlock Text="{DynamicResource MQTTKeepAlive}"/>
+                        <TextBox Text="{Binding KeepAlive}"/>
+                        <CheckBox Content="{DynamicResource MqttCleanSession}" IsChecked="{Binding CleanSession}"/>
+                        <CheckBox Content="{DynamicResource MQTTTLS}" IsChecked="{Binding UseTls}"/>
+
+                        <!-- TLS 证书配置 -->
+                        <StackPanel IsVisible="{Binding UseTls}" Spacing="4">
+                            <TextBlock Text="{DynamicResource MQTTTLSCert}" FontWeight="Bold"/>
+                            <TextBlock Text="{DynamicResource MQTTTLSCA}"/>
+                            <TextBox Text="{Binding TlsCaCertPath}" Watermark="{DynamicResource MqttCaCertPath}"/>
+                            <TextBlock Text="{DynamicResource MQTTTLSClient}"/>
+                            <TextBox Text="{Binding TlsClientCertPath}" Watermark="{DynamicResource MqttClientCertPath}"/>
+                            <TextBlock Text="{DynamicResource MQTTTLSPassword}"/>
+                            <TextBox Text="{Binding TlsCertPassword}" PasswordChar="*"
+                                     Watermark="{DynamicResource MqttCertPassword}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+        <!-- Log -->
+        <TextBox Grid.Row="1" Text="{Binding Log}" IsReadOnly="True"
+                 AcceptsReturn="True" TextWrapping="Wrap" FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace" Margin="4"/>
+    </Grid>
+</UserControl>

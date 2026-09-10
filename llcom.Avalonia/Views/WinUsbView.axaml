@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
+             x:Class="llcom.Avalonia.Views.WinUsbView"
+             x:DataType="vm:WinUsbViewModel">
+  <Grid RowDefinitions="Auto,Auto,Auto,Auto,*" Margin="4">
+    <!-- Device selector -->
+    <Grid ColumnDefinitions="*,Auto,Auto">
+      <ComboBox ItemsSource="{Binding DeviceList}" SelectedItem="{Binding SelectedDevice}"
+                IsEnabled="{Binding !IsConnected}" />
+      <Button Grid.Column="1" Content="↻" Command="{Binding RefreshDevicesCommand}"
+              IsEnabled="{Binding !IsBusy}" Margin="4,0" />
+      <Button Grid.Column="2" Content="{Binding ConnectText}" Command="{Binding ToggleConnectCommand}" />
+    </Grid>
+
+    <!-- Endpoints -->
+    <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="0,4">
+      <TextBox Watermark="{DynamicResource WinUsbInEndpoint}" Text="{Binding InEpText}"
+               IsEnabled="{Binding !IsConnected}" />
+      <TextBox Grid.Column="1" Watermark="{DynamicResource WinUsbOutEndpoint}" Text="{Binding OutEpText}"
+               IsEnabled="{Binding !IsConnected}" Margin="4,0,0,0" />
+    </Grid>
+
+    <!-- Status -->
+    <TextBlock Grid.Row="2" Text="{Binding StatusText}" Margin="0,2" />
+
+    <!-- Send bar -->
+    <Grid Grid.Row="3" ColumnDefinitions="*,Auto,Auto" Margin="0,4">
+      <TextBox Watermark="{DynamicResource WinUsbSendPlaceholder}" Text="{Binding SendData}" />
+      <CheckBox Grid.Column="1" Content="{DynamicResource HexSendMode}" IsChecked="{Binding HexSend}" Margin="8,0" />
+      <Button Grid.Column="2" Content="{DynamicResource SendDataButton}" Command="{Binding SendUsbDataCommand}"
+              IsEnabled="{Binding IsConnected}" />
+    </Grid>
+
+    <!-- Raw data display -->
+    <TextBox Grid.Row="4" Text="{Binding ReceivedData}" IsReadOnly="True"
+             FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace" FontSize="13" TextWrapping="Wrap"
+             AcceptsReturn="True" />
+  </Grid>
+</UserControl>

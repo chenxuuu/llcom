@@ -1,0 +1,87 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
+             xmlns:model="clr-namespace:llcom.Model;assembly=llcom.Core"
+             x:Class="llcom.Avalonia.Views.OnlineScriptsView"
+             x:DataType="vm:OnlineScriptsViewModel">
+  <Grid>
+    <!-- Loading overlay -->
+    <Grid IsVisible="{Binding IsLoading}">
+      <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="8">
+        <TextBlock Text="{Binding LoadingMsg}" FontSize="20" HorizontalAlignment="Center" />
+        <ProgressBar Value="{Binding Progress}" Maximum="100"
+                     IsIndeterminate="{Binding IsIndeterminate}" Height="10" Width="300" />
+      </StackPanel>
+    </Grid>
+
+    <!-- Script list -->
+    <Grid IsVisible="{Binding !IsLoading}">
+      <!-- List view -->
+      <Grid IsVisible="{Binding IsInList}">
+        <Grid RowDefinitions="Auto,*" Margin="4">
+          <Grid ColumnDefinitions="*,Auto,Auto">
+            <TextBlock Text="{DynamicResource OnlineScriptListTitle}" FontSize="20" FontWeight="Bold" />
+            <Button Grid.Column="1" Content="↻" Command="{Binding RefreshListCommand}"
+                    ToolTip.Tip="{DynamicResource OnlineScriptRefresh}" Margin="4" />
+            <Button Grid.Column="2" Content="ℹ" Command="{Binding OpenDiscussionPageCommand}"
+                    ToolTip.Tip="{DynamicResource OnlineScriptDiscussion}" Margin="4" />
+          </Grid>
+
+          <ListBox Grid.Row="1" ItemsSource="{Binding Scripts}"
+                   SelectedItem="{Binding SelectedScript}">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="model:OnlineScript">
+                <Button HorizontalContentAlignment="Stretch"
+                        HorizontalAlignment="Stretch"
+                        Margin="2" Padding="8"
+                        Tag="{Binding}">
+                  <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
+                    <TextBlock Text="{Binding Author}" FontSize="14"
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                               Margin="0,0,8,0" />
+                    <TextBlock Grid.Column="1" Text="{Binding Name}"
+                               FontSize="16" FontWeight="Bold" />
+                    <TextBlock Grid.Row="1" Grid.ColumnSpan="2"
+                               Text="{Binding Description}" FontSize="13"
+                               TextWrapping="Wrap"
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+                  </Grid>
+                </Button>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </Grid>
+      </Grid>
+
+      <!-- Detail view -->
+      <Grid IsVisible="{Binding !IsInList}">
+        <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="4">
+          <Grid ColumnDefinitions="Auto,*,Auto">
+            <Button Content="{DynamicResource OnlineScriptBack}" Command="{Binding BackToListCommand}" Margin="4" />
+            <TextBlock Grid.Column="1" Text="{Binding SelectedScript.Name}"
+                       FontSize="20" FontWeight="Bold"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Button Grid.Column="2" Content="?" Command="{Binding OpenScriptUrlCommand}"
+                    Margin="4" />
+          </Grid>
+
+          <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="4">
+            <TextBlock Text="{Binding SelectedScript.Author, StringFormat='作者: {0}'}" FontSize="14" />
+            <TextBlock Grid.Column="1" Text="{Binding SelectedScript.Version, StringFormat='版本: {0}'}"
+                       FontSize="14" HorizontalAlignment="Right" />
+          </Grid>
+
+          <TextBlock Grid.Row="2" Text="{Binding SelectedScript.Description}"
+                     TextWrapping="Wrap" Margin="4" FontSize="14" />
+
+          <TextBox Grid.Row="3" Text="{Binding SelectedScript.Script}"
+                   IsReadOnly="True" FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace" FontSize="13"
+                   TextWrapping="Wrap" AcceptsReturn="True" Margin="4" />
+
+          <Button Grid.Row="4" Content="{DynamicResource OnlineScriptDownload}" Command="{Binding DownloadScriptCommand}"
+                  Height="40" FontSize="16" Margin="4" />
+        </Grid>
+      </Grid>
+    </Grid>
+  </Grid>
+</UserControl>

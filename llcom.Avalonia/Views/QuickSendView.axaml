@@ -1,0 +1,99 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
+             x:Class="llcom.Avalonia.Views.QuickSendView"
+             x:DataType="vm:QuickSendViewModel"
+             x:Name="Root">
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+
+        <!-- Row 0：列表切换（独立行，不与 header 列竞争空间） -->
+        <StackPanel Orientation="Horizontal" Spacing="6" Margin="2,2,2,4">
+            <TextBlock Text="{DynamicResource QuickSendChangeList}" VerticalAlignment="Center"/>
+            <ComboBox ItemsSource="{Binding ListNames}"
+                      SelectedIndex="{Binding CurrentListIndex}"
+                      Width="90" Height="22" FontSize="11"
+                      ToolTip.Tip="{DynamicResource QuickSendChangeList}"/>
+            <TextBlock Text="{Binding CurrentListNameDisplay}" VerticalAlignment="Center"
+                       FontWeight="Bold"
+                       ToolTip.Tip="{DynamicResource QuickSendListNameTip}"/>
+        </StackPanel>
+
+        <!-- Row 1：表头 —— 对齐 WPF 5 列 30,*,40,25,25 -->
+        <!--         Col 1 同时包含 list name 左对齐 + "内容" 居中（WPF 同列设计） -->
+        <Grid Grid.Row="1" ColumnDefinitions="30,*,40,25,25" Margin="0,0,0,2">
+            <TextBlock Grid.Column="0" HorizontalAlignment="Center"
+                       Text="{DynamicResource QuickSendId}"/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Center"
+                       Text="{DynamicResource QuickSendContent}"/>
+            <TextBlock Grid.Column="3" HorizontalAlignment="Center"
+                       Text="{DynamicResource QuickSendHex}"/>
+            <TextBlock Grid.Column="4" HorizontalAlignment="Center"
+                       Text="{DynamicResource QuickSendRecvScript}"/>
+        </Grid>
+
+        <!-- Row 2：快捷发送列表 —— 列宽与表头对齐 -->
+        <ListBox Grid.Row="2" ItemsSource="{Binding Items}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="vm:QuickSendItem">
+                    <Grid ColumnDefinitions="30,*,40,25,25" Margin="0,2,0,0" MinHeight="26">
+                        <TextBlock Grid.Column="0" Margin="2" HorizontalAlignment="Center"
+                                   Text="{Binding Id}"
+                                   ToolTip.Tip="{DynamicResource QuickSendIdTip}"/>
+                        <TextBox Grid.Column="1" Margin="0,0,2,0"
+                                 Text="{Binding Text, Mode=TwoWay}"
+                                 FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace"/>
+                        <Button Grid.Column="2"
+                                Content="{Binding Commit}"
+                                Command="{Binding SendItemCommand}"
+                                CommandParameter="{Binding}"
+                                ToolTip.Tip="{DynamicResource QuickSendButtonTip}"/>
+                        <CheckBox Grid.Column="3" Margin="2"
+                                  HorizontalAlignment="Center"
+                                  IsChecked="{Binding Hex, Mode=TwoWay}"/>
+                        <StackPanel Grid.Column="4" Orientation="Horizontal" Spacing="1"
+                                    VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="📜" FontSize="12"
+                                       PointerPressed="ScriptIcon_PointerPressed"
+                                       Cursor="Hand"
+                                       Tag="{Binding}"
+                                       ToolTip.Tip="{DynamicResource QuickSendRecvScriptTip}"/>
+                            <TextBlock Text="🛠" FontSize="12"
+                                       PointerPressed="ScriptParaIcon_PointerPressed"
+                                       Cursor="Hand"
+                                       Tag="{Binding}"
+                                       ToolTip.Tip="{DynamicResource QuickSendRecvScriptParaTip}"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!-- Row 3：底部按钮 -->
+        <StackPanel Grid.Row="3" Margin="0,8,0,0">
+            <Grid ColumnDefinitions="*,*">
+                <Button Grid.Column="0" Margin="3" Command="{Binding AddItemCommand}"
+                        Content="{DynamicResource QuickSendAdd}"/>
+                <Button Grid.Column="1" Margin="3" Command="{Binding RemoveLastItemCommand}"
+                        Content="{DynamicResource QuickSendRemoveLast}"/>
+            </Grid>
+            <TextBlock FontWeight="Bold" Text="{DynamicResource QuickSendTip}" TextWrapping="Wrap" Margin="0,4"/>
+            <Grid ColumnDefinitions="*,*">
+                <Button Grid.Column="0" Margin="3"
+                        Command="{Binding ImportDataCommand}"
+                        Content="{DynamicResource QuickSendImport}"/>
+                <Button Grid.Column="1" Margin="3"
+                        Command="{Binding ExportDataCommand}"
+                        Content="{DynamicResource QuickSendExport}"/>
+            </Grid>
+            <Grid ColumnDefinitions="*,*">
+                <Button Grid.Column="0" Margin="3" Command="{Binding ClearAllCommand}"
+                        Content="{DynamicResource QuickSendRemoveAll}"/>
+                <Button Grid.Column="1" Margin="3"
+                        Command="{Binding ImportSSCOMCommand}"
+                        Content="{DynamicResource QuickSendImportSSCOM}"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

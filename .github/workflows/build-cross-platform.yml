@@ -1,0 +1,142 @@
+name: Build Cross-Platform (Avalonia)
+
+on:
+  push:
+    branches: [ master, main, update-linux ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  # ── Build Rust native library ────────────────────────────────
+  build-rust:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: nightly
+
+      - name: Build serial_monitor (unix)
+        if: runner.os != 'Windows'
+        run: |
+          cd serial_monitor_rs
+          cargo build --release -p serial_monitor
+
+      - name: Build serial_monitor (windows)
+        if: runner.os == 'Windows'
+        run: |
+          cd serial_monitor_rs
+          cargo build --release -p serial_monitor_hook --target x86_64-pc-windows-msvc
+          cargo build --release -p serial_monitor --target x86_64-pc-windows-msvc
+
+      - name: Copy native lib (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          mkdir -p llcom/native/linux-x64
+          cp serial_monitor_rs/target/release/libserial_monitor.so llcom/native/linux-x64/
+
+      - name: Copy native lib (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          mkdir -p llcom/native/osx-x64
+          cp serial_monitor_rs/target/release/libserial_monitor.dylib llcom/native/osx-x64/
+
+      - name: Copy native lib (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          New-Item -ItemType Directory -Force -Path llcom\native\win-x64
+          Copy-Item serial_monitor_rs\target\x86_64-pc-windows-msvc\release\serial_monitor.dll llcom\native\win-x64\
+
+      - name: Upload Rust artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-${{ matrix.os }}
+          path: |
+            llcom/native/**
+
+  # ── Build .NET Avalonia app ──────────────────────────────────
+  build-dotnet:
+    needs: build-rust
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        rid: [linux-x64, win-x64, osx-x64]
+        exclude:
+          - os: ubuntu-latest
+            rid: win-x64
+          - os: ubuntu-latest
+            rid: osx-x64
+          - os: windows-latest
+            rid: linux-x64
+          - os: windows-latest
+            rid: osx-x64
+          - os: macos-latest
+            rid: linux-x64
+          - os: macos-latest
+            rid: win-x64
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Download native lib
+        uses: actions/download-artifact@v4
+        with:
+          name: native-${{ matrix.os }}
+          path: llcom/native/
+
+      - name: Restore
+        run: dotnet restore llcom.Avalonia/llcom.Avalonia.csproj
+
+      - name: Build
+        run: dotnet build llcom.Avalonia/llcom.Avalonia.csproj -c Release --no-restore
+
+      - name: Publish
+        run: dotnet publish llcom.Avalonia/llcom.Avalonia.csproj -c Release -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:PublishTrimmed=true -p:TrimMode=partial -o publish/${{ matrix.rid }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: llcom-${{ matrix.rid }}
+          path: publish/${{ matrix.rid }}/
+
+  # ── Build original WPF app (Windows only) ────────────────────
+  build-wpf:
+    runs-on: windows-latest
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore llcom.sln
+
+      - name: Build
+        run: msbuild llcom/llcom.csproj /p:Configuration=Release /p:Platform=x64 /v:normal
+
+      - name: Upload WPF artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: llcom-wpf-x64
+          path: llcom/bin/x64/Release/

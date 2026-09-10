@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:llcom.Avalonia.ViewModels"
+             x:Class="llcom.Avalonia.Views.ConvertPageView"
+             x:DataType="vm:ConvertPageViewModel">
+    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,2*,2*,Auto,4*">
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource EncodingToolsJobs}"
+                   VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2"/>
+        <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding ConverterNames}"
+                  SelectedIndex="{Binding SelectedConverterIndex}" Margin="2"/>
+
+        <Border Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Margin="2"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}" BorderThickness="1">
+            <ListBox ItemsSource="{Binding ConvertJobs}"
+                     Background="{DynamicResource SystemControlBackgroundChromeWhiteBrush}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
+
+        <Button Grid.Row="1" Grid.Column="1" Margin="2"
+                Content="{DynamicResource EncodingToolsAddJob}"
+                Command="{Binding AddJobCommand}"/>
+        <Button Grid.Row="2" Grid.Column="1" Margin="2"
+                Content="{DynamicResource EncodingToolsDeleteJob}"
+                Command="{Binding RemoveLastJobCommand}"/>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="{DynamicResource EncodingToolsRowData}"
+                   VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" Text="{DynamicResource EncodingToolsResultData}"
+                   VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2"/>
+
+        <TextBox Grid.Row="4" Grid.Column="0" Text="{Binding RawText}" Margin="2"
+                 AcceptsReturn="True" TextWrapping="Wrap" FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding ResultText}" Margin="2"
+                 IsReadOnly="True" TextWrapping="Wrap" FontFamily="Cascadia Code,Consolas,DejaVu Sans Mono,monospace"/>
+    </Grid>
+</UserControl>
