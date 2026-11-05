@@ -128,12 +128,12 @@ namespace llcom.Pages
 
         private void AddPoint(double d, int line)
         {
-            if (line >= 10)
+            if (line >= 10 || line < 0)
                 return;
             if(Data[line] == null)
                 Data[line] = new double[MaxPoints];
-            for(int i = 0;i < MaxPoints - 1;i++)
-                Data[line][i] = Data[line][i + 1];
+            //每来一个点就把整条曲线搬一次，用 Array.Copy 比逐点赋值快很多
+            Array.Copy(Data[line], 1, Data[line], 0, MaxPoints - 1);
             Data[line][MaxPoints - 1] = d;
             Refresh();
         }
