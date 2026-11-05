@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static llcom.Pages.SocketClientPage;
+using llcom.LuaEnv;
 using System.Net.NetworkInformation;
 
 namespace llcom.Pages
@@ -43,6 +44,22 @@ namespace llcom.Pages
             //绑定
             MainGrid.DataContext = this;
             IpPortTextBox.DataContext = Tools.Global.setting;
+
+            //适配一下通用通道：收到的数据转给lua；lua发过来的数据回给最近一次发数据的地址
+            LuaApis.SendChannelsRegister("udp-server", (data, _) =>
+            {
+                if (Server != null && data != null && lastRemote != null)
+                {
+                    try
+                    {
+                        Server.Send(data, data.Length, lastRemote);
+                        return true;
+                    }
+                    catch { return false; }
+                }
+                else
+                    return false;
+            });
         }
 
         /// <summary>
@@ -82,6 +99,8 @@ namespace llcom.Pages
 
 
         private UdpClient Server = null;
+        //最近一次收到数据的来源，通用通道发数据时就用它
+        private IPEndPoint lastRemote = null;
 
         /// <summary>
         /// 开始监听服务器
@@ -111,6 +130,14 @@ namespace llcom.Pages
                     byte[] receiveBytes = u.EndReceive(ar, ref e);
                     var isV6 = e.Address.ToString().Contains(":");
                     ShowData($"{(isV6 ? "[" : "")}{e.Address}{(isV6 ? "]" : "")}:{e.Port}", receiveBytes);
+                    lastRemote = new IPEndPoint(e.Address, e.Port);
+                    //通用通道收到消息
+                    LuaApis.SendChannelsReceived("udp-server",
+                        new
+                        {
+                            from = $"{(isV6 ? "[" : "")}{e.Address}{(isV6 ? "]" : "")}:{e.Port}",
+                            data = receiveBytes
+                        });
                     Server.BeginReceive(newConnectionCb, ar.AsyncState);
                 }
                 catch { }
@@ -139,6 +166,7 @@ namespace llcom.Pages
             Server?.Close();
             Server?.Dispose();
             Server = null;
+            lastRemote = null;
         }
 
         private void RefreshIpButton_Click(object sender, RoutedEventArgs e)
