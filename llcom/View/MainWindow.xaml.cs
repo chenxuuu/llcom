@@ -354,6 +354,9 @@ namespace llcom
             serialPortsListComboBox.Items.Clear();
             List<string> strs = new List<string>();
             searchCount = 0;
+            //每次刷新都要重新尝试一次WMI，否则上一次连续失败3次后，
+            //skipSearch会一直是true，从此再也枚举不出口设备名（表现为串口列表变空或只剩COM号）
+            skipSearch = false;
             Task.Run(() =>
             {
                 while (!skipSearch)
@@ -361,13 +364,19 @@ namespace llcom
                 {
                     try
                     {
-                        ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PnPEntity");
-                        Regex regExp = new Regex("\\(COM\\d+\\)");
-                        foreach (ManagementObject queryObj in searcher.Get())
+                        //WMI对象不释放会漏句柄，长时间挂着软件反复刷新后枚举会越来越慢甚至失败
+                        using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PnPEntity"))
                         {
-                            if ((queryObj["Caption"] != null) && regExp.IsMatch(queryObj["Caption"].ToString()))
+                            Regex regExp = new Regex("\\(COM\\d+\\)");
+                            foreach (ManagementObject queryObj in searcher.Get())
                             {
-                                strs.Add(queryObj["Caption"].ToString());
+                                using (queryObj)
+                                {
+                                    if ((queryObj["Caption"] != null) && regExp.IsMatch(queryObj["Caption"].ToString()))
+                                    {
+                                        strs.Add(queryObj["Caption"].ToString());
+                                    }
+                                }
                             }
                         }
                         break;
@@ -387,10 +396,10 @@ namespace llcom
                 {
                     foreach (string p in SerialPort.GetPortNames())//加上缺少的com口
                     {
-                        //有些人遇到了微软库的bug，所以需要手动从0x00截断
+                        //微软库的bug：字符串里可能带\0截断，从头就是\0时也要截
                         var pp = p;
-                        if (p.IndexOf("\0") > 0)
-                            pp = p.Substring(0, p.IndexOf("\0"));
+                        if (p.IndexOf('\0') >= 0)
+                            pp = p.Substring(0, p.IndexOf('\0'));
                         bool notMatch = true;
                         foreach (string n in strs)
                         {
