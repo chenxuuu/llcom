@@ -1430,17 +1430,42 @@ namespace llcom
             if (Tools.Global.uart.IsOpen())
                 try
                 {
-                    Tools.Global.uart.SendData(Encoding.ASCII.GetBytes(e.TextComposition.Text));
+                    //用设置里的编码，而不是写死ASCII，否则中文等字符会被替换成?
+                    Tools.Global.uart.SendData(Tools.Global.GetEncoding().GetBytes(e.TextComposition.Text));
                 }
                 catch { }
         }
 
         private void uartDataFlowDocument_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) ||
-                !Tools.Global.setting.terminal)
+            if (!Tools.Global.setting.terminal || !Tools.Global.uart.IsOpen())
                 return;
-            if (e.Key >= Key.A && e.Key <= Key.Z && Tools.Global.uart.IsOpen())
+
+            //空格与退格不会走到PreviewTextInput（输入法会把空格当上屏键吃掉，
+            //退格根本不产生TextComposition），只能在这里单独发
+            switch (e.Key)
+            {
+                case Key.Space:
+                    try
+                    {
+                        Tools.Global.uart.SendData(new byte[] { 0x20 });
+                    }
+                    catch { }
+                    e.Handled = true;
+                    return;
+                case Key.Back:
+                    try
+                    {
+                        Tools.Global.uart.SendData(new byte[] { 0x08 });
+                    }
+                    catch { }
+                    e.Handled = true;
+                    return;
+            }
+
+            if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                return;
+            if (e.Key >= Key.A && e.Key <= Key.Z)
                 try
                 {
                     Tools.Global.uart.SendData(new byte[] { (byte)((int)e.Key - (int)Key.A + 1) });
