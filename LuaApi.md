@@ -18,6 +18,20 @@
 
 ## C#层增加的接口(底层接口)
 
+### 通用通道一览
+
+`apiSend` / `apiSetCb` 里能用的通道名称，每个通道对应软件里的一个选项卡，完整用法见软件自带的 `channel-demo.lua`。
+
+|channel|对应功能|回调收到的数据|发送用法|
+|-|-|-|-|
+|`uart`|串口|string，收到的原始字节|`apiSend("uart",data)`|
+|`mqtt`|MQTT 选项卡|table：`topic` / `payload` / `qos`|`apiSend("mqtt",nil,{topic=…,payload=…,qos=…})`|
+|`tcp-server`|本机TCP服务端 选项卡|table：`from` / `data`；`from` 为 `"connected"` / `"disconnected"` 时表示客户端连上或断开|`apiSend("tcp-server",data)`，广播给所有客户端|
+|`socket-client`|socket客户端 选项卡|string，收到的字节|`apiSend("socket-client",data)`|
+|`netlab`|socket公共服务端 选项卡|table：`client` / `data`；`client` 为 `"connected"` / `"disconnected"` 时表示客户端连上或断开|`apiSend("netlab",nil,{client=…,data=…})`|
+|`winusb`|winusb 选项卡|string，收到的字节|`apiSend("winusb",data)`|
+|`udp-server`|本机UDP服务端 选项卡|table：`from`（`"ip:port"`）/ `data`|`apiSend("udp-server",data)` 回给最近一次发数据的地址；也可 `apiSend("udp-server",nil,{from="ip:port",data=…})` 指定目标|
+
 ### apiSend(channel,data[,table])
 
 发送数据到某个通道，具体用法请见软件自带的`channel-demo.lua`例子

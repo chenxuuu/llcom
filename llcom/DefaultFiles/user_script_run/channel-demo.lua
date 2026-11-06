@@ -64,3 +64,19 @@ apiSetCb("winusb",function (data)
   log.info("winusb received", data)
 end)
 local sendResult = apiSend("winusb",string.char(0,4))
+
+-- udp-server，对应 本机UDP服务端 选项卡
+apiSetCb("udp-server",function (data)
+    log.info(
+      "udp-server received",
+      data.from,
+      data.data)
+end)
+-- 不带table发送时，数据会回给最近一次发数据过来的那个地址
+local sendResult = apiSend("udp-server","echo from lua!")
+-- 也可以带table指定目标地址，此时from填"ip:port"
+-- local sendResult = apiSend("udp-server",nil,
+-- {
+--   from = "127.0.0.1:8080",
+--   data = "test data~"
+-- })
