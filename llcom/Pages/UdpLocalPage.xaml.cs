@@ -46,19 +46,22 @@ namespace llcom.Pages
             IpPortTextBox.DataContext = Tools.Global.setting;
 
             //适配一下通用通道：收到的数据转给lua；lua发过来的数据回给最近一次发数据的地址
-            LuaApis.SendChannelsRegister("udp-server", (data, _) =>
+            LuaApis.SendChannelsRegister("udp-server", (data, table) =>
             {
-                if (Server != null && data != null && lastRemote != null)
-                {
-                    try
-                    {
-                        Server.Send(data, data.Length, lastRemote);
-                        return true;
-                    }
-                    catch { return false; }
-                }
-                else
+                if (Server == null)
                     return false;
+                var payload = data ?? table?.Get<byte[]>("data");
+                if (payload == null)
+                    return false;
+                var target = ParseEndPoint(table?.Get<string>("from")) ?? lastRemote;
+                if (target == null)
+                    return false;
+                try
+                {
+                    Server.Send(payload, payload.Length, target);
+                    return true;
+                }
+                catch { return false; }
             });
         }
 
@@ -97,6 +100,37 @@ namespace llcom.Pages
             });
         }
 
+
+        /// <summary>
+        /// 解析 "ip:port" / "[ipv6]:port" 形式的地址，失败返回null
+        /// </summary>
+        private static IPEndPoint ParseEndPoint(string addr)
+        {
+            if (string.IsNullOrWhiteSpace(addr))
+                return null;
+            addr = addr.Trim();
+            string host;
+            string port;
+            if (addr.StartsWith("["))
+            {
+                var end = addr.IndexOf(']');
+                if (end <= 0 || end + 1 >= addr.Length || addr[end + 1] != ':')
+                    return null;
+                host = addr.Substring(1, end - 1);
+                port = addr.Substring(end + 2);
+            }
+            else
+            {
+                var idx = addr.LastIndexOf(':');
+                if (idx <= 0)
+                    return null;
+                host = addr.Substring(0, idx);
+                port = addr.Substring(idx + 1);
+            }
+            if (!IPAddress.TryParse(host, out var ip) || !ushort.TryParse(port, out var p))
+                return null;
+            return new IPEndPoint(ip, p);
+        }
 
         private UdpClient Server = null;
         //最近一次收到数据的来源，通用通道发数据时就用它
